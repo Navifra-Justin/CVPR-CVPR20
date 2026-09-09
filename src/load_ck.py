@@ -1,0 +1,11 @@
+import torch, collections
+ck = torch.load('/work/data/ckpt/rvt-t-gen1.ckpt', map_location='cpu', weights_only=False)
+print("TOPKEYS:", list(ck.keys())[:12])
+sd = ck.get('state_dict', ck)
+print("NTENSORS:", len(sd))
+ks = list(sd.keys())
+print("FIRST8:", ks[:8])
+print("PREFIX:", dict(collections.Counter(k.split('.')[0] for k in ks)))
+print("PLVER:", ck.get('pytorch-lightning_version'))
+hp = ck.get('hyper_parameters')
+if hp is not None: print("HP:", str(hp)[:600])

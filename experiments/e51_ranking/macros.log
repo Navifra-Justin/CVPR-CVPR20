@@ -1,0 +1,34 @@
+stratum     order at delta=0                                        gap   gain  ratio
+all moving  rvt-b > rvt-s > rvt-t > s5vit-base > s5vit-small      0.472  0.085   0.18
+10-25 px/s  s5vit-base > rvt-b > rvt-t > s5vit-small > rvt-s      0.331  0.136   0.41
+25-50 px/s  s5vit-base > rvt-b > s5vit-small > rvt-s > rvt-t      0.112  0.058   0.52
+>50 px/s    rvt-b > rvt-t > s5vit-small > rvt-s > s5vit-base      0.209  0.065   0.31
+
+rank by stratum
+  rvt-t        all moving:3  10-25 px/s:3  25-50 px/s:5  >50 px/s:2
+  rvt-s        all moving:2  10-25 px/s:5  25-50 px/s:4  >50 px/s:4
+  rvt-b        all moving:1  10-25 px/s:2  25-50 px/s:2  >50 px/s:1
+  s5vit-small  all moving:5  10-25 px/s:4  25-50 px/s:3  >50 px/s:3
+  s5vit-base   all moving:4  10-25 px/s:1  25-50 px/s:1  >50 px/s:5
+
+WROTE experiments/e51_ranking/macros.tex
+
+%% ===== E51-E53 measured 2026-09-08 (experiments/e51_ranking): does the interval change a
+%% benchmark COMPARISON? Detections for all five released checkpoints were dumped under one
+%% protocol (same frames, same confidence, same NMS, ground truth identical across models and
+%% identical to E37's), then each model was scored at delta = 0 and again at its own best
+%% displacement, in four speed strata. The ordering never changes, and it cannot: in every
+%% stratum the largest gain any model draws from alignment is a fraction of the smallest gap
+%% between adjacent models, so no refinement of the grid can reorder them.
+\newcommand{\rankCkpts}{5}            %% released checkpoints scored
+\newcommand{\rankStrata}{four}          %% speed strata examined
+\newcommand{\rankFlips}{0}              %% pairwise sign flips, of 10 per stratum
+\newcommand{\rankMaxGain}{0.14}      %% mAP points, the largest alignment gain seen
+\newcommand{\rankMinGap}{0.11}       %% mAP points, the smallest adjacent gap seen
+\newcommand{\rankRatio}{52}          %% percent: worst-case gain over gap within a stratum
+\newcommand{\rankArgLo}{\ensuremath{-15}}   %% ms, earliest per-model argmax
+\newcommand{\rankArgHi}{\ensuremath{-0}}    %% ms, latest per-model argmax
+\newcommand{\rankMover}{\texttt{s5vit-base}}  %% the checkpoint whose rank moves most
+\newcommand{\rankMoverBest}{1}          %% its best rank across strata
+\newcommand{\rankMoverWorst}{5}         %% and its worst
+

@@ -1,0 +1,19 @@
+
+%% ===== E51-E53 measured 2026-09-08 (experiments/e51_ranking): does the interval change a
+%% benchmark COMPARISON? Detections for all five released checkpoints were dumped under one
+%% protocol (same frames, same confidence, same NMS, ground truth identical across models and
+%% identical to E37's), then each model was scored at delta = 0 and again at its own best
+%% displacement, in four speed strata. The ordering never changes, and it cannot: in every
+%% stratum the largest gain any model draws from alignment is a fraction of the smallest gap
+%% between adjacent models, so no refinement of the grid can reorder them.
+\newcommand{\rankCkpts}{5}            %% released checkpoints scored
+\newcommand{\rankStrata}{four}          %% speed strata examined
+\newcommand{\rankFlips}{0}              %% pairwise sign flips, of 10 per stratum
+\newcommand{\rankMaxGain}{0.14}      %% mAP points, the largest alignment gain seen
+\newcommand{\rankMinGap}{0.11}       %% mAP points, the smallest adjacent gap seen
+\newcommand{\rankRatio}{52}          %% percent: worst-case gain over gap within a stratum
+\newcommand{\rankArgLo}{\ensuremath{-15}}   %% ms, earliest per-model argmax
+\newcommand{\rankArgHi}{\ensuremath{0}}    %% ms, latest per-model argmax
+\newcommand{\rankMover}{\texttt{s5vit-base}}  %% the checkpoint whose rank moves most
+\newcommand{\rankMoverBest}{1}          %% its best rank across strata
+\newcommand{\rankMoverWorst}{5}         %% and its worst

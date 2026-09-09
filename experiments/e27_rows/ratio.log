@@ -1,0 +1,15 @@
+rows 22534   median |v| 5.39 px/s   22.3 % below 2 px/s
+
+ estimator                                   value (ms)
+  ratio, mean over all rows                     +24.22 +- 27.73
+  ratio, median over all rows                   +12.32
+  ratio, interquartile range                    429.53
+  ratio, mean above    5 px/s (n= 11881)      +17.96 +- 7.05
+  ratio, mean above   10 px/s (n=  7471)      +10.69 +- 5.74
+  ratio, mean above   15 px/s (n=  5005)      +13.34 +- 6.17
+  ratio, mean above   25 px/s (n=  2405)      +12.97 +- 6.01
+
+  reported vector regression, no floor            -2.40 +- 7.18
+
+  the ratio's sample standard deviation over all rows: 4170.4 ms, against 269.2 ms above 15 px/s
+WROTE experiments/e27_rows/ratio.json

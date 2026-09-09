@@ -1,0 +1,42 @@
+{
+ "5000": {
+  "W_us": 5000,
+  "periods": 0.5,
+  "frames": 1085,
+  "sd_us": 218.1,
+  "null_us": 46.5,
+  "excess_us": 212.6,
+  "excess_over_null": 4.572,
+  "frac_sd_gt_null": 0.988
+ },
+ "10000": {
+  "W_us": 10000,
+  "periods": 1.0,
+  "frames": 1118,
+  "sd_us": 211.5,
+  "null_us": 74.4,
+  "excess_us": 195.2,
+  "excess_over_null": 2.624,
+  "frac_sd_gt_null": 0.9606
+ },
+ "14996": {
+  "W_us": 14996,
+  "periods": 1.4996,
+  "frames": 1134,
+  "sd_us": 206.6,
+  "null_us": 93.0,
+  "excess_us": 183.6,
+  "excess_over_null": 1.975,
+  "frac_sd_gt_null": 0.9012
+ },
+ "20000": {
+  "W_us": 20000,
+  "periods": 2.0,
+  "frames": 1137,
+  "sd_us": 271.2,
+  "null_us": 108.0,
+  "excess_us": 246.8,
+  "excess_over_null": 2.284,
+  "frac_sd_gt_null": 0.9446
+ }
+}

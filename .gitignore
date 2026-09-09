@@ -1,0 +1,26 @@
+# Datasets and released checkpoints. Everything under data/ is fetched, not authored:
+# Gen1 and DSEC as distributed, and the RVT and SSM-ViT checkpoints. 35 GB, and the
+# provenance for re-fetching it is in experiments/e47_ssm/PROVENANCE.md and data/dsec/fetch.sh.
+data/
+
+# Rendered PNG sequences for the video. 124 MB, and every one of them is reproducible from
+# src/v0*.py plus the experiment artifacts that are tracked. The encoded clips are kept.
+video/frames/
+
+# LaTeX build products
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.blg
+paper/body.txt
+paper/supp.txt
+paper/p78.txt
+
+# Vendored upstream source, kept out of this repository's history on purpose:
+# src/RVT is github.com/uzh-rpg/RVT and src/SSMViT is the RVT subtree of
+# github.com/uzh-rpg/ssms_event_cameras. Both are third-party code read but not modified.
+src/RVT/
+src/SSMViT/
+
+__pycache__/
+*.pyc

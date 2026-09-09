@@ -1,0 +1,56 @@
+{
+ "seq": "zurich_city_09_a",
+ "min_observations": 5,
+ "raw": {
+  "tracks": 103,
+  "observations": 6798,
+  "between_sd_us": 149.2,
+  "mean_within_sd_us": 185.3,
+  "no_effect_sd_us": 39.3,
+  "var_ratio": 14.41,
+  "lag1_acf": 0.721,
+  "lag1_acf_within_track_centred": 0.559,
+  "acf_pairs": 6695
+ },
+ "minus_8x8_cell_means": {
+  "tracks": 103,
+  "observations": 6798,
+  "between_sd_us": 146.4,
+  "mean_within_sd_us": 182.9,
+  "no_effect_sd_us": 39.3,
+  "var_ratio": 13.85,
+  "lag1_acf": 0.709,
+  "lag1_acf_within_track_centred": 0.54,
+  "acf_pairs": 6695
+ },
+ "minus_16x16_cell_means": {
+  "tracks": 103,
+  "observations": 6798,
+  "between_sd_us": 130.2,
+  "mean_within_sd_us": 182.2,
+  "no_effect_sd_us": 40.3,
+  "var_ratio": 10.42,
+  "lag1_acf": 0.678,
+  "lag1_acf_within_track_centred": 0.504,
+  "acf_pairs": 6695
+ },
+ "minus_32x32_cell_means": {
+  "tracks": 103,
+  "observations": 6798,
+  "between_sd_us": 118.9,
+  "mean_within_sd_us": 180.9,
+  "no_effect_sd_us": 40.5,
+  "var_ratio": 8.63,
+  "lag1_acf": 0.642,
+  "lag1_acf_within_track_centred": 0.467,
+  "acf_pairs": 6695
+ },
+ "displacement_split": {
+  "median_path_px": 278.3,
+  "low_tracks": 51,
+  "low_lag1_acf": 0.611,
+  "high_tracks": 52,
+  "high_lag1_acf": 0.773,
+  "corr_path_events": -0.045
+ }
+}

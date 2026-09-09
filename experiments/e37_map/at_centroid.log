@@ -1,0 +1,22 @@
+frames 20296  detections 86788  ground truth 40698
+ground truth with a centered velocity: 27943 (68.7 %)
+
+=== all ===
+  zero          delta   +0.00 ms   mAP 0.38900   AP50 0.69878
+  centroid_new  delta  -23.81 ms   mAP 0.38867   AP50 0.69913
+  centroid_old  delta  -24.94 ms   mAP 0.38851   AP50 0.69914
+  grid_25       delta  -25.00 ms   mAP 0.38851   AP50 0.69914
+  grid_20       delta  -20.00 ms   mAP 0.38884   AP50 0.69918
+  cost at centroid_new  +0.033 mAP points = +0.08 % of mAP
+  cost at centroid_old  +0.048 mAP points = +0.12 % of mAP
+
+=== moving ===
+  zero          delta   +0.00 ms   mAP 0.33458   AP50 0.57978
+  centroid_new  delta  -23.81 ms   mAP 0.33419   AP50 0.58038
+  centroid_old  delta  -24.94 ms   mAP 0.33399   AP50 0.58040
+  grid_25       delta  -25.00 ms   mAP 0.33399   AP50 0.58040
+  grid_20       delta  -20.00 ms   mAP 0.33442   AP50 0.58048
+  cost at centroid_new  +0.039 mAP points = +0.12 % of mAP
+  cost at centroid_old  +0.059 mAP points = +0.18 % of mAP
+
+WROTE experiments/e37_map/at_centroid.json

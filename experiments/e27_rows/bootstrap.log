@@ -1,0 +1,10 @@
+FWL      tau = -2.3952 ms   placebo = -2.6621 ms
+full design  -2.4021              -2.6555          (must agree)
+
+cluster bootstrap over 376 sequences, 4000 draws
+  tau     median   -2.41  95% CI [-16.98, +11.47]
+  placebo median   -2.63  95% CI [-6.18, +0.61]
+  draws with tau >= 23.81 ms (the influence centroid): 0.0008  = 3 of 4000
+  at the superseded 24.94 ms, for the record:  0.0008  = 3 of 4000
+  draws with tau <= 0: 0.6310
+WROTE experiments/e27_rows/bootstrap.json

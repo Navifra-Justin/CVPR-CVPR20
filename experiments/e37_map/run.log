@@ -1,0 +1,39 @@
+10:49:40 launching on GPU1
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+/usr/local/lib/python3.10/dist-packages/torch/functional.py:554: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /pytorch/aten/src/ATen/native/TensorShape.cpp:4314.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+  25 seqs, 1100 frames, 3097 dets, 1862 gt
+  50 seqs, 2432 frames, 6784 dets, 3881 gt
+  75 seqs, 4006 frames, 12020 dets, 6674 gt
+  100 seqs, 4497 frames, 12898 dets, 7220 gt
+  150 seqs, 5352 frames, 14241 dets, 8146 gt
+  175 seqs, 5774 frames, 14906 dets, 8600 gt
+  200 seqs, 6191 frames, 15582 dets, 9047 gt
+  225 seqs, 7172 frames, 17406 dets, 10211 gt
+  250 seqs, 9648 frames, 27651 dets, 16321 gt
+  275 seqs, 10832 frames, 33871 dets, 18437 gt
+  300 seqs, 13196 frames, 45804 dets, 24205 gt
+  325 seqs, 14486 frames, 53208 dets, 27185 gt
+  350 seqs, 15858 frames, 63880 dets, 31795 gt
+  375 seqs, 16730 frames, 68602 dets, 33412 gt
+  400 seqs, 17321 frames, 70883 dets, 34246 gt
+  425 seqs, 19364 frames, 80964 dets, 38614 gt
+
+WROTE /work/experiments/e37_map/dets.npz  frames 20296  dets 86788  gt 40698
+  gt with a centered velocity: 27943
+== Timing statistics ==
+exit=0

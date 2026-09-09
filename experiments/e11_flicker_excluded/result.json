@@ -1,0 +1,29 @@
+{
+ "ALL": {
+  "frames": 1133,
+  "median_objects": 6.0,
+  "sd_us": 229.5,
+  "sd_p90": 333.5,
+  "null_us": 93.4,
+  "excess_us": 208.8,
+  "frac_frames_sd_gt_null": 0.9179
+ },
+ "CLEAN": {
+  "frames": 1133,
+  "median_objects": 6.0,
+  "sd_us": 232.9,
+  "sd_p90": 336.4,
+  "null_us": 97.6,
+  "excess_us": 207.3,
+  "frac_frames_sd_gt_null": 0.9117
+ },
+ "RANDCTL": {
+  "frames": 1133,
+  "median_objects": 6.0,
+  "sd_us": 229.4,
+  "sd_p90": 335.2,
+  "null_us": 95.3,
+  "excess_us": 207.5,
+  "frac_frames_sd_gt_null": 0.9162
+ }
+}

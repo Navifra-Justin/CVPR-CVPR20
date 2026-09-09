@@ -1,0 +1,31 @@
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+zurich_city_00_a     boxes= 2914 mod_med=0.428 Z100=117.60 Z137= 3.15 lock=0.997 | grad n= 2734 cos=+0.2406 rot=-0.0053 time=0.0022 12.6SE
+zurich_city_01_a     boxes= 2134 mod_med=0.440 Z100= 99.11 Z137= 4.69 lock=0.990 | grad n= 2061 cos=+0.1791 rot=+0.0033 time=-0.0 8.1SE
+zurich_city_02_a     boxes=  619 mod_med=0.445 Z100= 68.40 Z137= 2.75 lock=0.994 | grad n=  600 cos=+0.0002 rot=-0.0033 time=-0.0081 0.0SE
+zurich_city_03_a     boxes=  241 mod_med=0.489 Z100=310.86 Z137=25.84 lock=1.000 | grad n=  232 cos=-0.1068 rot=-0.0555 time=0.0205 1.6SE
+zurich_city_09_a     boxes= 6997 mod_med=0.466 Z100=251.52 Z137= 7.82 lock=0.998 | grad n= 6627 cos=+0.1518 rot=+0.0022 time=-0.0058 12.4SE
+zurich_city_10_a     boxes= 3611 mod_med=0.438 Z100=111.56 Z137= 3.33 lock=0.997 | grad n= 3450 cos=+0.1191 rot=-0.0109 time=-0.0075 7.0SE
+
+POOLED across 6 sequences: weighted mean cos = +0.1540
+  sequences with cos > 0: 5/6
+  median 100 Hz Rayleigh Z across sequences: 114.58 (null 0.693)
+  median 137 Hz control Z: 4.01
+WROTE

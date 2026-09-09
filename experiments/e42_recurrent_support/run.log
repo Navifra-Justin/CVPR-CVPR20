@@ -1,0 +1,54 @@
+17:00:47 launching on GPU1
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+/usr/local/lib/python3.10/dist-packages/torch/functional.py:554: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /pytorch/aten/src/ATen/native/TensorShape.cpp:4314.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+  seq 1, 48 samples
+  seq 2, 96 samples
+  seq 3, 144 samples
+  seq 4, 192 samples
+  seq 5, 240 samples
+  seq 6, 288 samples
+  seq 7, 336 samples
+  seq 8, 384 samples
+  seq 9, 432 samples
+  seq 10, 480 samples
+  seq 11, 528 samples
+  seq 12, 576 samples
+
+samples 576
+ lag  window centre (ms)   influence   sem    share of total
+   0          -25.0     0.02282  0.00039    29.09 %
+   1          -75.0     0.01254  0.00020    15.98 %
+   2         -125.0     0.00893  0.00013    11.39 %
+   3         -175.0     0.00695  0.00010     8.86 %
+   4         -225.0     0.00583  0.00008     7.43 %
+   5         -275.0     0.00506  0.00007     6.45 %
+   6         -325.0     0.00454  0.00007     5.79 %
+   7         -375.0     0.00415  0.00006     5.29 %
+   8         -425.0     0.00386  0.00007     4.92 %
+   9         -475.0     0.00378  0.00010     4.81 %
+
+ current window alone (E17's conditional measurement) centres at -25.00 ms
+ FULL support centroid over 10 windows            -165.86 ms
+ the current window carries 29.1 % of the total influence
+ half the influence is reached by lag 2 (-125 ms)
+
+ zeroing the recurrent state changes the output by 0.0839 of its norm (sem 0.0005)
+   for comparison, occluding the whole current window changes it by 0.0228
+WROTE
+== Timing statistics ==
+exit=0

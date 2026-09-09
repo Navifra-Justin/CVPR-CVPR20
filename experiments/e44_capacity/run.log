@@ -1,0 +1,121 @@
+=================== rvt-s 21:45:40
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+rvt-s: 9.87M params
+/usr/local/lib/python3.10/dist-packages/torch/functional.py:554: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /pytorch/aten/src/ATen/native/TensorShape.cpp:4314.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+  seq 1, 48 samples
+  seq 2, 96 samples
+  seq 3, 144 samples
+  seq 4, 192 samples
+  seq 5, 240 samples
+  seq 6, 288 samples
+  seq 7, 336 samples
+  seq 8, 384 samples
+  seq 9, 432 samples
+  seq 10, 480 samples
+  seq 11, 528 samples
+  seq 12, 576 samples
+
+rvt-s  samples 576
+  newest-window centroid   -23.89 ms   CV over bins 0.1223
+  support centroid, 500 ms -168.7 ms   newest share 29.2 %
+  support centroid, 1000 ms -337.3 ms   newest share 20.6 %
+  zeroing the state        0.0889   newest window alone 0.0238   ratio 3.73
+WROTE
+== Timing statistics ==
+rvt-s exit=0
+=================== rvt-b 22:19:41
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+rvt-b: 18.54M params
+/usr/local/lib/python3.10/dist-packages/torch/functional.py:554: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /pytorch/aten/src/ATen/native/TensorShape.cpp:4314.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+  seq 1, 48 samples
+  seq 2, 96 samples
+  seq 3, 144 samples
+  seq 4, 192 samples
+  seq 5, 240 samples
+  seq 6, 288 samples
+  seq 7, 336 samples
+  seq 8, 384 samples
+  seq 9, 432 samples
+  seq 10, 480 samples
+  seq 11, 528 samples
+  seq 12, 576 samples
+
+rvt-b  samples 576
+  newest-window centroid   -24.11 ms   CV over bins 0.1065
+  support centroid, 500 ms -173.4 ms   newest share 26.8 %
+  support centroid, 1000 ms -339.3 ms   newest share 19.0 %
+  zeroing the state        0.0811   newest window alone 0.0267   ratio 3.03
+WROTE
+== Timing statistics ==
+rvt-b exit=0
+=================== rvt-t 22:37:52
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+rvt-t: 4.41M params
+/usr/local/lib/python3.10/dist-packages/torch/functional.py:554: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /pytorch/aten/src/ATen/native/TensorShape.cpp:4314.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+  seq 1, 48 samples
+  seq 2, 96 samples
+  seq 3, 144 samples
+  seq 4, 192 samples
+  seq 5, 240 samples
+  seq 6, 288 samples
+  seq 7, 336 samples
+  seq 8, 384 samples
+  seq 9, 432 samples
+  seq 10, 480 samples
+  seq 11, 528 samples
+  seq 12, 576 samples
+
+rvt-t  samples 576
+  newest-window centroid   -23.84 ms   CV over bins 0.1316
+  support centroid, 500 ms -160.6 ms   newest share 30.0 %
+  support centroid, 1000 ms -299.4 ms   newest share 22.7 %
+  zeroing the state        0.0867   newest window alone 0.0231   ratio 3.76
+WROTE
+== Timing statistics ==
+rvt-t exit=0
+ALL DONE 23:01:19

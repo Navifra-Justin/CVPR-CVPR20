@@ -1,0 +1,12 @@
+{
+ "config_file": "src/RVT/config/dataset/gen1.yaml",
+ "ev_repr_name": "stacked_histogram_dt=50_nbins=10",
+ "window_ms": 50,
+ "n_bins": 10,
+ "bin_width_ms": 5.0,
+ "uniform_weight_centroid_ms": -25.0,
+ "preprocess_file": "src/RVT/scripts/genx/preprocess_dataset.py",
+ "construction_line": 405,
+ "construction_source": "ev_repr_timestamps_us_end = list(reversed(range(frame_timestamps_us[0], 0, -delta_t_us)))[1:-1]",
+ "counts_backwards_from_label": true
+}

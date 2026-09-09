@@ -1,0 +1,24 @@
+synthetic tracks 2000 x 14 labels, dt = 50 ms, label noise sigma = 0.6515 px (E28, Gen1)
+
+A. NO LAG IN THE DETECTOR (tau_true = 0). Any non-zero output is estimator artefact.
+   velocity     tau_hat (ms)   placebo (ms)
+   fwd             -5.64          -0.00
+   back            +5.84          +0.03
+   centered        +0.00          +0.02
+   forward + backward = +0.20 ms  (equal and opposite if the mechanism is the shared label-noise term)
+   analytic prediction for the forward artefact: -var(delta)/dt / var(v) ~ -5.63 ms
+
+   the same with NO label noise, to confirm nothing else in the setup leaks:
+   fwd             +0.02          -0.08
+   back            +0.02          -0.09
+   centered        +0.02          -0.09
+
+B. RECOVERY AND ATTENUATION. A true lag is injected; centered velocity is used.
+   tau_true (ms)   tau_hat (ms)   ratio (attenuation)
+      +10.0          +9.15       0.915
+      +25.0         +23.12       0.925
+      +50.0         +46.00       0.920
+   predicted attenuation lambda = 1 - Var(noise)/Var(observed) = 0.933
+
+   and with no label noise, recovery should be exact:
+      +25.0         +24.87       0.995

@@ -1,0 +1,35 @@
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+off-frequencies (8): 70, 91, 112, 126, 133, 168, 175, 189
+  zurich_city_00_a     boxes  2914  Z100 med   117.60  Zoff med  20.57  empirical p<1e-3 cut 4716.73  locked   0.96 % (analytic  99.69 %)
+  zurich_city_01_a     boxes  2134  Z100 med    99.11  Zoff med  21.62  empirical p<1e-3 cut 2627.08  locked   0.89 % (analytic  98.97 %)
+  zurich_city_02_a     boxes   619  Z100 med    68.40  Zoff med  18.16  empirical p<1e-3 cut  686.43  locked   0.81 % (analytic  99.35 %)
+  zurich_city_03_a     boxes   241  Z100 med   310.86  Zoff med 170.10  empirical p<1e-3 cut 9931.36  locked   1.24 % (analytic 100.00 %)
+  zurich_city_09_a     boxes  6997  Z100 med   251.52  Zoff med  76.93  empirical p<1e-3 cut 8568.12  locked   0.19 % (analytic  99.84 %)
+  zurich_city_10_a     boxes  3611  Z100 med   111.56  Zoff med  27.86  empirical p<1e-3 cut 2557.56  locked   0.69 % (analytic  99.70 %)
+
+pooled over all six sequences
+  off-frequency Z: median 38.394, p99 2634.27, p99.9 7180.99   (Exp(1) gives 0.693, 4.61, 6.91)
+  the empirical null is inflated over Exp(1) by a factor of 55.39 at the median
+  100 Hz Z: median 153.54
+  boxes above the EMPIRICAL 1e-3 cut: 0.20 %
+  boxes above the ANALYTIC  1e-3 cut: 99.65 %
+  ratio of medians, 100 Hz to off-frequency: 4.0x
+WROTE

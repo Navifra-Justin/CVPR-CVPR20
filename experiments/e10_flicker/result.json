@@ -1,0 +1,20 @@
+{
+ "night_14996us": {
+  "seq": "zurich_city_09_a",
+  "events": 410548624,
+  "line_ratio_100Hz": 48694.204,
+  "line_ratio_120Hz": 4.441,
+  "line_ratio_50Hz": 82.935,
+  "strongest_peak_Hz": 200.0,
+  "frac_events_in_top1pct_pixels": 0.0397
+ },
+ "day_1478us": {
+  "seq": "interlaken_00_c",
+  "events": 352628359,
+  "line_ratio_100Hz": 6.385,
+  "line_ratio_120Hz": 3.492,
+  "line_ratio_50Hz": 8.228,
+  "strongest_peak_Hz": 25.9,
+  "frac_events_in_top1pct_pixels": 0.0314
+ }
+}

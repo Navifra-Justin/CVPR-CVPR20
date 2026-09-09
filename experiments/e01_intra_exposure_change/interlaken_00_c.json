@@ -1,0 +1,4303 @@
+{
+ "summary": {
+  "seq": "interlaken_00_c",
+  "n_frames_measured": 536,
+  "exp_us_med": 1478.0,
+  "events_per_exposure_med": 20616.0,
+  "events_per_exposure_p90": 33319.0,
+  "frac_pixels_active_med": 0.06006510416666667,
+  "frac_pixels_active_p90": 0.0883154296875,
+  "crossings_per_active_pix_med": 1.098134475203154,
+  "crossings_per_active_pix_p90": 1.2380684959269814
+ },
+ "rows": [
+  {
+   "k": 1,
+   "exp_us": 1459,
+   "n_events": 16049,
+   "active_pix": 15158,
+   "crossings_per_active_pix": 1.0587808417997098,
+   "frac_pixels_active": 0.049342447916666664
+  },
+  {
+   "k": 2,
+   "exp_us": 1454,
+   "n_events": 17081,
+   "active_pix": 16198,
+   "crossings_per_active_pix": 1.0545129028275095,
+   "frac_pixels_active": 0.05272786458333333
+  },
+  {
+   "k": 3,
+   "exp_us": 1449,
+   "n_events": 17723,
+   "active_pix": 16609,
+   "crossings_per_active_pix": 1.0670720693599856,
+   "frac_pixels_active": 0.05406575520833334
+  },
+  {
+   "k": 4,
+   "exp_us": 1443,
+   "n_events": 18764,
+   "active_pix": 17586,
+   "crossings_per_active_pix": 1.0669851017855112,
+   "frac_pixels_active": 0.05724609375
+  },
+  {
+   "k": 5,
+   "exp_us": 1438,
+   "n_events": 19895,
+   "active_pix": 18389,
+   "crossings_per_active_pix": 1.0818967861221382,
+   "frac_pixels_active": 0.05986002604166667
+  },
+  {
+   "k": 6,
+   "exp_us": 1427,
+   "n_events": 21361,
+   "active_pix": 19549,
+   "crossings_per_active_pix": 1.0926901631797024,
+   "frac_pixels_active": 0.06363606770833333
+  },
+  {
+   "k": 7,
+   "exp_us": 1417,
+   "n_events": 21316,
+   "active_pix": 19554,
+   "crossings_per_active_pix": 1.090109440523678,
+   "frac_pixels_active": 0.06365234375
+  },
+  {
+   "k": 8,
+   "exp_us": 1411,
+   "n_events": 21121,
+   "active_pix": 19373,
+   "crossings_per_active_pix": 1.090228668765808,
+   "frac_pixels_active": 0.06306315104166667
+  },
+  {
+   "k": 9,
+   "exp_us": 1401,
+   "n_events": 20797,
+   "active_pix": 19029,
+   "crossings_per_active_pix": 1.0929108203268696,
+   "frac_pixels_active": 0.061943359375
+  },
+  {
+   "k": 10,
+   "exp_us": 1395,
+   "n_events": 21336,
+   "active_pix": 19432,
+   "crossings_per_active_pix": 1.0979827089337175,
+   "frac_pixels_active": 0.06325520833333333
+  },
+  {
+   "k": 11,
+   "exp_us": 1385,
+   "n_events": 21330,
+   "active_pix": 19448,
+   "crossings_per_active_pix": 1.096770876182641,
+   "frac_pixels_active": 0.06330729166666667
+  },
+  {
+   "k": 12,
+   "exp_us": 1379,
+   "n_events": 20207,
+   "active_pix": 18646,
+   "crossings_per_active_pix": 1.0837176874396652,
+   "frac_pixels_active": 0.060696614583333336
+  },
+  {
+   "k": 13,
+   "exp_us": 1369,
+   "n_events": 19273,
+   "active_pix": 17910,
+   "crossings_per_active_pix": 1.0761027359017308,
+   "frac_pixels_active": 0.05830078125
+  },
+  {
+   "k": 14,
+   "exp_us": 1358,
+   "n_events": 19211,
+   "active_pix": 17841,
+   "crossings_per_active_pix": 1.0767894176335406,
+   "frac_pixels_active": 0.058076171875
+  },
+  {
+   "k": 15,
+   "exp_us": 1353,
+   "n_events": 20326,
+   "active_pix": 18708,
+   "crossings_per_active_pix": 1.0864870643574942,
+   "frac_pixels_active": 0.0608984375
+  },
+  {
+   "k": 16,
+   "exp_us": 1353,
+   "n_events": 19615,
+   "active_pix": 18175,
+   "crossings_per_active_pix": 1.0792297111416782,
+   "frac_pixels_active": 0.059163411458333336
+  },
+  {
+   "k": 17,
+   "exp_us": 1358,
+   "n_events": 18778,
+   "active_pix": 17666,
+   "crossings_per_active_pix": 1.0629457715385486,
+   "frac_pixels_active": 0.05750651041666666
+  },
+  {
+   "k": 18,
+   "exp_us": 1358,
+   "n_events": 18641,
+   "active_pix": 17432,
+   "crossings_per_active_pix": 1.0693552088113814,
+   "frac_pixels_active": 0.05674479166666667
+  },
+  {
+   "k": 19,
+   "exp_us": 1358,
+   "n_events": 18322,
+   "active_pix": 17292,
+   "crossings_per_active_pix": 1.0595651168170253,
+   "frac_pixels_active": 0.0562890625
+  },
+  {
+   "k": 20,
+   "exp_us": 1363,
+   "n_events": 18483,
+   "active_pix": 17331,
+   "crossings_per_active_pix": 1.0664704864116323,
+   "frac_pixels_active": 0.056416015625
+  },
+  {
+   "k": 21,
+   "exp_us": 1363,
+   "n_events": 18712,
+   "active_pix": 17533,
+   "crossings_per_active_pix": 1.0672446244225176,
+   "frac_pixels_active": 0.057073567708333335
+  },
+  {
+   "k": 22,
+   "exp_us": 1363,
+   "n_events": 18469,
+   "active_pix": 17428,
+   "crossings_per_active_pix": 1.0597314666054625,
+   "frac_pixels_active": 0.056731770833333334
+  },
+  {
+   "k": 23,
+   "exp_us": 1363,
+   "n_events": 17337,
+   "active_pix": 16525,
+   "crossings_per_active_pix": 1.0491376701966717,
+   "frac_pixels_active": 0.053792317708333336
+  },
+  {
+   "k": 24,
+   "exp_us": 1363,
+   "n_events": 17540,
+   "active_pix": 16716,
+   "crossings_per_active_pix": 1.0492940894950946,
+   "frac_pixels_active": 0.0544140625
+  },
+  {
+   "k": 25,
+   "exp_us": 1353,
+   "n_events": 18043,
+   "active_pix": 17101,
+   "crossings_per_active_pix": 1.0550844979825742,
+   "frac_pixels_active": 0.05566731770833333
+  },
+  {
+   "k": 26,
+   "exp_us": 1347,
+   "n_events": 18013,
+   "active_pix": 17038,
+   "crossings_per_active_pix": 1.0572250264115506,
+   "frac_pixels_active": 0.055462239583333336
+  },
+  {
+   "k": 27,
+   "exp_us": 1337,
+   "n_events": 18957,
+   "active_pix": 17917,
+   "crossings_per_active_pix": 1.0580454317128984,
+   "frac_pixels_active": 0.058323567708333336
+  },
+  {
+   "k": 28,
+   "exp_us": 1326,
+   "n_events": 18815,
+   "active_pix": 17688,
+   "crossings_per_active_pix": 1.063715513342379,
+   "frac_pixels_active": 0.057578125
+  },
+  {
+   "k": 29,
+   "exp_us": 1315,
+   "n_events": 19022,
+   "active_pix": 17962,
+   "crossings_per_active_pix": 1.0590134728872063,
+   "frac_pixels_active": 0.058470052083333335
+  },
+  {
+   "k": 30,
+   "exp_us": 1304,
+   "n_events": 19815,
+   "active_pix": 18662,
+   "crossings_per_active_pix": 1.0617833029685992,
+   "frac_pixels_active": 0.060748697916666664
+  },
+  {
+   "k": 31,
+   "exp_us": 1288,
+   "n_events": 20533,
+   "active_pix": 19106,
+   "crossings_per_active_pix": 1.0746885795038208,
+   "frac_pixels_active": 0.06219401041666667
+  },
+  {
+   "k": 32,
+   "exp_us": 1278,
+   "n_events": 21546,
+   "active_pix": 20009,
+   "crossings_per_active_pix": 1.0768154330551252,
+   "frac_pixels_active": 0.06513346354166667
+  },
+  {
+   "k": 33,
+   "exp_us": 1262,
+   "n_events": 20713,
+   "active_pix": 19301,
+   "crossings_per_active_pix": 1.0731568312522668,
+   "frac_pixels_active": 0.06282877604166667
+  },
+  {
+   "k": 34,
+   "exp_us": 1251,
+   "n_events": 21133,
+   "active_pix": 19585,
+   "crossings_per_active_pix": 1.0790400816951748,
+   "frac_pixels_active": 0.06375325520833333
+  },
+  {
+   "k": 35,
+   "exp_us": 1235,
+   "n_events": 20933,
+   "active_pix": 19335,
+   "crossings_per_active_pix": 1.082648047582105,
+   "frac_pixels_active": 0.062939453125
+  },
+  {
+   "k": 36,
+   "exp_us": 1224,
+   "n_events": 20671,
+   "active_pix": 19120,
+   "crossings_per_active_pix": 1.0811192468619246,
+   "frac_pixels_active": 0.062239583333333334
+  },
+  {
+   "k": 37,
+   "exp_us": 1208,
+   "n_events": 19824,
+   "active_pix": 18426,
+   "crossings_per_active_pix": 1.0758710517746661,
+   "frac_pixels_active": 0.05998046875
+  },
+  {
+   "k": 38,
+   "exp_us": 1192,
+   "n_events": 18168,
+   "active_pix": 17148,
+   "crossings_per_active_pix": 1.059482155353394,
+   "frac_pixels_active": 0.0558203125
+  },
+  {
+   "k": 39,
+   "exp_us": 1181,
+   "n_events": 17996,
+   "active_pix": 16954,
+   "crossings_per_active_pix": 1.0614604223192168,
+   "frac_pixels_active": 0.055188802083333335
+  },
+  {
+   "k": 40,
+   "exp_us": 1165,
+   "n_events": 18111,
+   "active_pix": 17094,
+   "crossings_per_active_pix": 1.0594945594945595,
+   "frac_pixels_active": 0.05564453125
+  },
+  {
+   "k": 41,
+   "exp_us": 1149,
+   "n_events": 18691,
+   "active_pix": 17589,
+   "crossings_per_active_pix": 1.0626527943601114,
+   "frac_pixels_active": 0.057255859375
+  },
+  {
+   "k": 42,
+   "exp_us": 1133,
+   "n_events": 18470,
+   "active_pix": 17487,
+   "crossings_per_active_pix": 1.056213186938869,
+   "frac_pixels_active": 0.056923828125
+  },
+  {
+   "k": 43,
+   "exp_us": 1117,
+   "n_events": 17982,
+   "active_pix": 16985,
+   "crossings_per_active_pix": 1.058698851928172,
+   "frac_pixels_active": 0.05528971354166667
+  },
+  {
+   "k": 44,
+   "exp_us": 1107,
+   "n_events": 17278,
+   "active_pix": 16414,
+   "crossings_per_active_pix": 1.0526379919580846,
+   "frac_pixels_active": 0.05343098958333333
+  },
+  {
+   "k": 45,
+   "exp_us": 1091,
+   "n_events": 17877,
+   "active_pix": 16929,
+   "crossings_per_active_pix": 1.0559985823143718,
+   "frac_pixels_active": 0.055107421875
+  },
+  {
+   "k": 46,
+   "exp_us": 1075,
+   "n_events": 18763,
+   "active_pix": 17626,
+   "crossings_per_active_pix": 1.0645069783274708,
+   "frac_pixels_active": 0.05737630208333333
+  },
+  {
+   "k": 47,
+   "exp_us": 1059,
+   "n_events": 18756,
+   "active_pix": 17492,
+   "crossings_per_active_pix": 1.0722616053052825,
+   "frac_pixels_active": 0.056940104166666665
+  },
+  {
+   "k": 48,
+   "exp_us": 1048,
+   "n_events": 18943,
+   "active_pix": 17443,
+   "crossings_per_active_pix": 1.0859943817003956,
+   "frac_pixels_active": 0.05678059895833333
+  },
+  {
+   "k": 49,
+   "exp_us": 1032,
+   "n_events": 19022,
+   "active_pix": 17536,
+   "crossings_per_active_pix": 1.0847399635036497,
+   "frac_pixels_active": 0.05708333333333333
+  },
+  {
+   "k": 50,
+   "exp_us": 1016,
+   "n_events": 18512,
+   "active_pix": 17102,
+   "crossings_per_active_pix": 1.0824464974856742,
+   "frac_pixels_active": 0.05567057291666667
+  },
+  {
+   "k": 51,
+   "exp_us": 1000,
+   "n_events": 18055,
+   "active_pix": 16707,
+   "crossings_per_active_pix": 1.0806847429221285,
+   "frac_pixels_active": 0.054384765625
+  },
+  {
+   "k": 52,
+   "exp_us": 984,
+   "n_events": 17741,
+   "active_pix": 16420,
+   "crossings_per_active_pix": 1.080450669914738,
+   "frac_pixels_active": 0.053450520833333334
+  },
+  {
+   "k": 53,
+   "exp_us": 968,
+   "n_events": 17712,
+   "active_pix": 16225,
+   "crossings_per_active_pix": 1.091648690292758,
+   "frac_pixels_active": 0.052815755208333336
+  },
+  {
+   "k": 54,
+   "exp_us": 952,
+   "n_events": 17153,
+   "active_pix": 15662,
+   "crossings_per_active_pix": 1.095198569786745,
+   "frac_pixels_active": 0.050983072916666664
+  },
+  {
+   "k": 55,
+   "exp_us": 941,
+   "n_events": 16332,
+   "active_pix": 15015,
+   "crossings_per_active_pix": 1.0877122877122878,
+   "frac_pixels_active": 0.048876953125
+  },
+  {
+   "k": 56,
+   "exp_us": 930,
+   "n_events": 15073,
+   "active_pix": 14080,
+   "crossings_per_active_pix": 1.0705255681818182,
+   "frac_pixels_active": 0.04583333333333333
+  },
+  {
+   "k": 57,
+   "exp_us": 914,
+   "n_events": 13907,
+   "active_pix": 13180,
+   "crossings_per_active_pix": 1.0551593323216995,
+   "frac_pixels_active": 0.04290364583333333
+  },
+  {
+   "k": 58,
+   "exp_us": 903,
+   "n_events": 12986,
+   "active_pix": 12565,
+   "crossings_per_active_pix": 1.0335057699960206,
+   "frac_pixels_active": 0.04090169270833333
+  },
+  {
+   "k": 59,
+   "exp_us": 887,
+   "n_events": 12384,
+   "active_pix": 11973,
+   "crossings_per_active_pix": 1.0343272362816336,
+   "frac_pixels_active": 0.038974609375
+  },
+  {
+   "k": 60,
+   "exp_us": 877,
+   "n_events": 12279,
+   "active_pix": 11837,
+   "crossings_per_active_pix": 1.0373405423671538,
+   "frac_pixels_active": 0.038531901041666664
+  },
+  {
+   "k": 61,
+   "exp_us": 866,
+   "n_events": 12412,
+   "active_pix": 12006,
+   "crossings_per_active_pix": 1.0338164251207729,
+   "frac_pixels_active": 0.03908203125
+  },
+  {
+   "k": 62,
+   "exp_us": 861,
+   "n_events": 12167,
+   "active_pix": 11806,
+   "crossings_per_active_pix": 1.0305776723699813,
+   "frac_pixels_active": 0.03843098958333333
+  },
+  {
+   "k": 63,
+   "exp_us": 855,
+   "n_events": 11957,
+   "active_pix": 11611,
+   "crossings_per_active_pix": 1.0297993282232365,
+   "frac_pixels_active": 0.03779622395833333
+  },
+  {
+   "k": 64,
+   "exp_us": 845,
+   "n_events": 12461,
+   "active_pix": 12075,
+   "crossings_per_active_pix": 1.0319668737060042,
+   "frac_pixels_active": 0.039306640625
+  },
+  {
+   "k": 65,
+   "exp_us": 839,
+   "n_events": 13304,
+   "active_pix": 12896,
+   "crossings_per_active_pix": 1.031637717121588,
+   "frac_pixels_active": 0.041979166666666665
+  },
+  {
+   "k": 66,
+   "exp_us": 834,
+   "n_events": 13907,
+   "active_pix": 13363,
+   "crossings_per_active_pix": 1.04070942153708,
+   "frac_pixels_active": 0.043499348958333336
+  },
+  {
+   "k": 67,
+   "exp_us": 834,
+   "n_events": 14903,
+   "active_pix": 14093,
+   "crossings_per_active_pix": 1.0574753423685517,
+   "frac_pixels_active": 0.04587565104166667
+  },
+  {
+   "k": 68,
+   "exp_us": 834,
+   "n_events": 15490,
+   "active_pix": 14600,
+   "crossings_per_active_pix": 1.060958904109589,
+   "frac_pixels_active": 0.047526041666666664
+  },
+  {
+   "k": 69,
+   "exp_us": 834,
+   "n_events": 15537,
+   "active_pix": 14459,
+   "crossings_per_active_pix": 1.0745556400857597,
+   "frac_pixels_active": 0.047067057291666665
+  },
+  {
+   "k": 70,
+   "exp_us": 834,
+   "n_events": 15551,
+   "active_pix": 14601,
+   "crossings_per_active_pix": 1.0650640367098143,
+   "frac_pixels_active": 0.047529296875
+  },
+  {
+   "k": 71,
+   "exp_us": 834,
+   "n_events": 14805,
+   "active_pix": 14140,
+   "crossings_per_active_pix": 1.047029702970297,
+   "frac_pixels_active": 0.04602864583333333
+  },
+  {
+   "k": 72,
+   "exp_us": 834,
+   "n_events": 15084,
+   "active_pix": 14469,
+   "crossings_per_active_pix": 1.0425046651461747,
+   "frac_pixels_active": 0.047099609375
+  },
+  {
+   "k": 73,
+   "exp_us": 834,
+   "n_events": 14138,
+   "active_pix": 13446,
+   "crossings_per_active_pix": 1.051465119738212,
+   "frac_pixels_active": 0.04376953125
+  },
+  {
+   "k": 74,
+   "exp_us": 834,
+   "n_events": 14589,
+   "active_pix": 13760,
+   "crossings_per_active_pix": 1.0602470930232557,
+   "frac_pixels_active": 0.04479166666666667
+  },
+  {
+   "k": 75,
+   "exp_us": 834,
+   "n_events": 14289,
+   "active_pix": 13453,
+   "crossings_per_active_pix": 1.062142273098937,
+   "frac_pixels_active": 0.043792317708333334
+  },
+  {
+   "k": 76,
+   "exp_us": 834,
+   "n_events": 14554,
+   "active_pix": 13623,
+   "crossings_per_active_pix": 1.0683403068340307,
+   "frac_pixels_active": 0.044345703125
+  },
+  {
+   "k": 77,
+   "exp_us": 834,
+   "n_events": 14658,
+   "active_pix": 13529,
+   "crossings_per_active_pix": 1.0834503658807006,
+   "frac_pixels_active": 0.044039713541666664
+  },
+  {
+   "k": 78,
+   "exp_us": 834,
+   "n_events": 15011,
+   "active_pix": 13812,
+   "crossings_per_active_pix": 1.0868085722560092,
+   "frac_pixels_active": 0.0449609375
+  },
+  {
+   "k": 79,
+   "exp_us": 834,
+   "n_events": 15381,
+   "active_pix": 13956,
+   "crossings_per_active_pix": 1.1021066208082546,
+   "frac_pixels_active": 0.0454296875
+  },
+  {
+   "k": 80,
+   "exp_us": 834,
+   "n_events": 14305,
+   "active_pix": 13317,
+   "crossings_per_active_pix": 1.074190883832695,
+   "frac_pixels_active": 0.043349609375
+  },
+  {
+   "k": 81,
+   "exp_us": 834,
+   "n_events": 14576,
+   "active_pix": 13542,
+   "crossings_per_active_pix": 1.0763550435681584,
+   "frac_pixels_active": 0.04408203125
+  },
+  {
+   "k": 82,
+   "exp_us": 829,
+   "n_events": 15428,
+   "active_pix": 14108,
+   "crossings_per_active_pix": 1.0935639353558264,
+   "frac_pixels_active": 0.045924479166666664
+  },
+  {
+   "k": 83,
+   "exp_us": 829,
+   "n_events": 15898,
+   "active_pix": 14273,
+   "crossings_per_active_pix": 1.1138513276816366,
+   "frac_pixels_active": 0.04646158854166667
+  },
+  {
+   "k": 84,
+   "exp_us": 829,
+   "n_events": 16018,
+   "active_pix": 14234,
+   "crossings_per_active_pix": 1.1253337080230434,
+   "frac_pixels_active": 0.046334635416666665
+  },
+  {
+   "k": 85,
+   "exp_us": 829,
+   "n_events": 13482,
+   "active_pix": 13161,
+   "crossings_per_active_pix": 1.024390243902439,
+   "frac_pixels_active": 0.042841796875
+  },
+  {
+   "k": 86,
+   "exp_us": 829,
+   "n_events": 13643,
+   "active_pix": 13310,
+   "crossings_per_active_pix": 1.0250187828700226,
+   "frac_pixels_active": 0.04332682291666667
+  },
+  {
+   "k": 87,
+   "exp_us": 829,
+   "n_events": 13243,
+   "active_pix": 12857,
+   "crossings_per_active_pix": 1.0300225558061755,
+   "frac_pixels_active": 0.04185221354166667
+  },
+  {
+   "k": 88,
+   "exp_us": 829,
+   "n_events": 12868,
+   "active_pix": 12498,
+   "crossings_per_active_pix": 1.0296047367578813,
+   "frac_pixels_active": 0.04068359375
+  },
+  {
+   "k": 89,
+   "exp_us": 829,
+   "n_events": 11812,
+   "active_pix": 11353,
+   "crossings_per_active_pix": 1.0404298423324232,
+   "frac_pixels_active": 0.036956380208333334
+  },
+  {
+   "k": 90,
+   "exp_us": 829,
+   "n_events": 11293,
+   "active_pix": 10863,
+   "crossings_per_active_pix": 1.0395839086808432,
+   "frac_pixels_active": 0.035361328125
+  },
+  {
+   "k": 91,
+   "exp_us": 834,
+   "n_events": 10726,
+   "active_pix": 10287,
+   "crossings_per_active_pix": 1.0426752211529113,
+   "frac_pixels_active": 0.033486328125
+  },
+  {
+   "k": 92,
+   "exp_us": 839,
+   "n_events": 11857,
+   "active_pix": 11478,
+   "crossings_per_active_pix": 1.0330196898414359,
+   "frac_pixels_active": 0.03736328125
+  },
+  {
+   "k": 93,
+   "exp_us": 845,
+   "n_events": 10430,
+   "active_pix": 9829,
+   "crossings_per_active_pix": 1.0611455895818496,
+   "frac_pixels_active": 0.031995442708333335
+  },
+  {
+   "k": 94,
+   "exp_us": 845,
+   "n_events": 10901,
+   "active_pix": 10097,
+   "crossings_per_active_pix": 1.0796276121620283,
+   "frac_pixels_active": 0.032867838541666666
+  },
+  {
+   "k": 95,
+   "exp_us": 845,
+   "n_events": 11439,
+   "active_pix": 10446,
+   "crossings_per_active_pix": 1.095060310166571,
+   "frac_pixels_active": 0.03400390625
+  },
+  {
+   "k": 96,
+   "exp_us": 845,
+   "n_events": 12049,
+   "active_pix": 10736,
+   "crossings_per_active_pix": 1.1222988077496274,
+   "frac_pixels_active": 0.03494791666666667
+  },
+  {
+   "k": 97,
+   "exp_us": 845,
+   "n_events": 12703,
+   "active_pix": 11165,
+   "crossings_per_active_pix": 1.1377519032691445,
+   "frac_pixels_active": 0.03634440104166667
+  },
+  {
+   "k": 98,
+   "exp_us": 845,
+   "n_events": 15424,
+   "active_pix": 13695,
+   "crossings_per_active_pix": 1.1262504563709383,
+   "frac_pixels_active": 0.044580078125
+  },
+  {
+   "k": 99,
+   "exp_us": 845,
+   "n_events": 14071,
+   "active_pix": 13431,
+   "crossings_per_active_pix": 1.047650956741866,
+   "frac_pixels_active": 0.043720703125
+  },
+  {
+   "k": 100,
+   "exp_us": 845,
+   "n_events": 12431,
+   "active_pix": 12007,
+   "crossings_per_active_pix": 1.035312734238361,
+   "frac_pixels_active": 0.03908528645833333
+  },
+  {
+   "k": 101,
+   "exp_us": 855,
+   "n_events": 11239,
+   "active_pix": 10965,
+   "crossings_per_active_pix": 1.0249886000911992,
+   "frac_pixels_active": 0.035693359375
+  },
+  {
+   "k": 102,
+   "exp_us": 871,
+   "n_events": 13182,
+   "active_pix": 12835,
+   "crossings_per_active_pix": 1.027035449941566,
+   "frac_pixels_active": 0.04178059895833333
+  },
+  {
+   "k": 103,
+   "exp_us": 887,
+   "n_events": 14784,
+   "active_pix": 14326,
+   "crossings_per_active_pix": 1.0319698450369956,
+   "frac_pixels_active": 0.04663411458333333
+  },
+  {
+   "k": 104,
+   "exp_us": 903,
+   "n_events": 16989,
+   "active_pix": 16296,
+   "crossings_per_active_pix": 1.0425257731958764,
+   "frac_pixels_active": 0.053046875
+  },
+  {
+   "k": 105,
+   "exp_us": 909,
+   "n_events": 13426,
+   "active_pix": 13014,
+   "crossings_per_active_pix": 1.0316582142308284,
+   "frac_pixels_active": 0.04236328125
+  },
+  {
+   "k": 106,
+   "exp_us": 914,
+   "n_events": 12594,
+   "active_pix": 12049,
+   "crossings_per_active_pix": 1.0452319694580463,
+   "frac_pixels_active": 0.039222005208333334
+  },
+  {
+   "k": 107,
+   "exp_us": 909,
+   "n_events": 13148,
+   "active_pix": 12401,
+   "crossings_per_active_pix": 1.0602370776550278,
+   "frac_pixels_active": 0.040367838541666666
+  },
+  {
+   "k": 108,
+   "exp_us": 909,
+   "n_events": 14971,
+   "active_pix": 13979,
+   "crossings_per_active_pix": 1.070963588239502,
+   "frac_pixels_active": 0.045504557291666664
+  },
+  {
+   "k": 109,
+   "exp_us": 909,
+   "n_events": 16108,
+   "active_pix": 14871,
+   "crossings_per_active_pix": 1.0831820321430974,
+   "frac_pixels_active": 0.048408203125
+  },
+  {
+   "k": 110,
+   "exp_us": 914,
+   "n_events": 16117,
+   "active_pix": 14823,
+   "crossings_per_active_pix": 1.0872967685353843,
+   "frac_pixels_active": 0.048251953125
+  },
+  {
+   "k": 111,
+   "exp_us": 920,
+   "n_events": 17269,
+   "active_pix": 15694,
+   "crossings_per_active_pix": 1.10035682426405,
+   "frac_pixels_active": 0.05108723958333333
+  },
+  {
+   "k": 112,
+   "exp_us": 930,
+   "n_events": 16865,
+   "active_pix": 15633,
+   "crossings_per_active_pix": 1.0788076504829527,
+   "frac_pixels_active": 0.050888671875
+  },
+  {
+   "k": 113,
+   "exp_us": 936,
+   "n_events": 16315,
+   "active_pix": 15362,
+   "crossings_per_active_pix": 1.0620361932040099,
+   "frac_pixels_active": 0.050006510416666664
+  },
+  {
+   "k": 114,
+   "exp_us": 946,
+   "n_events": 16225,
+   "active_pix": 15533,
+   "crossings_per_active_pix": 1.04455031223846,
+   "frac_pixels_active": 0.050563151041666664
+  },
+  {
+   "k": 115,
+   "exp_us": 962,
+   "n_events": 17022,
+   "active_pix": 16188,
+   "crossings_per_active_pix": 1.0515196441808747,
+   "frac_pixels_active": 0.0526953125
+  },
+  {
+   "k": 116,
+   "exp_us": 978,
+   "n_events": 17670,
+   "active_pix": 16605,
+   "crossings_per_active_pix": 1.0641373080397472,
+   "frac_pixels_active": 0.054052734375
+  },
+  {
+   "k": 117,
+   "exp_us": 994,
+   "n_events": 17996,
+   "active_pix": 16994,
+   "crossings_per_active_pix": 1.0589619865835,
+   "frac_pixels_active": 0.05531901041666667
+  },
+  {
+   "k": 118,
+   "exp_us": 1010,
+   "n_events": 18873,
+   "active_pix": 17506,
+   "crossings_per_active_pix": 1.0780875128527363,
+   "frac_pixels_active": 0.05698567708333333
+  },
+  {
+   "k": 119,
+   "exp_us": 1021,
+   "n_events": 19658,
+   "active_pix": 18157,
+   "crossings_per_active_pix": 1.0826678416037891,
+   "frac_pixels_active": 0.05910481770833333
+  },
+  {
+   "k": 120,
+   "exp_us": 1037,
+   "n_events": 20791,
+   "active_pix": 18808,
+   "crossings_per_active_pix": 1.1054338579327945,
+   "frac_pixels_active": 0.061223958333333335
+  },
+  {
+   "k": 121,
+   "exp_us": 1048,
+   "n_events": 20449,
+   "active_pix": 19050,
+   "crossings_per_active_pix": 1.0734383202099738,
+   "frac_pixels_active": 0.06201171875
+  },
+  {
+   "k": 122,
+   "exp_us": 1059,
+   "n_events": 21430,
+   "active_pix": 19656,
+   "crossings_per_active_pix": 1.0902523402523403,
+   "frac_pixels_active": 0.063984375
+  },
+  {
+   "k": 123,
+   "exp_us": 1069,
+   "n_events": 21557,
+   "active_pix": 19313,
+   "crossings_per_active_pix": 1.1161911665717392,
+   "frac_pixels_active": 0.06286783854166667
+  },
+  {
+   "k": 124,
+   "exp_us": 1080,
+   "n_events": 21914,
+   "active_pix": 19462,
+   "crossings_per_active_pix": 1.1259891069777002,
+   "frac_pixels_active": 0.06335286458333333
+  },
+  {
+   "k": 125,
+   "exp_us": 1091,
+   "n_events": 20853,
+   "active_pix": 18967,
+   "crossings_per_active_pix": 1.0994358622871303,
+   "frac_pixels_active": 0.061741536458333336
+  },
+  {
+   "k": 126,
+   "exp_us": 1096,
+   "n_events": 21321,
+   "active_pix": 19223,
+   "crossings_per_active_pix": 1.1091400925974093,
+   "frac_pixels_active": 0.06257486979166667
+  },
+  {
+   "k": 127,
+   "exp_us": 1101,
+   "n_events": 21261,
+   "active_pix": 19006,
+   "crossings_per_active_pix": 1.1186467431337472,
+   "frac_pixels_active": 0.06186848958333333
+  },
+  {
+   "k": 128,
+   "exp_us": 1107,
+   "n_events": 21624,
+   "active_pix": 19538,
+   "crossings_per_active_pix": 1.1067663015661788,
+   "frac_pixels_active": 0.06360026041666667
+  },
+  {
+   "k": 129,
+   "exp_us": 1107,
+   "n_events": 21679,
+   "active_pix": 19658,
+   "crossings_per_active_pix": 1.102808017092278,
+   "frac_pixels_active": 0.06399088541666667
+  },
+  {
+   "k": 130,
+   "exp_us": 1107,
+   "n_events": 23166,
+   "active_pix": 20540,
+   "crossings_per_active_pix": 1.1278481012658228,
+   "frac_pixels_active": 0.06686197916666667
+  },
+  {
+   "k": 131,
+   "exp_us": 1107,
+   "n_events": 24629,
+   "active_pix": 21289,
+   "crossings_per_active_pix": 1.1568885339846868,
+   "frac_pixels_active": 0.06930013020833334
+  },
+  {
+   "k": 132,
+   "exp_us": 1107,
+   "n_events": 25330,
+   "active_pix": 21785,
+   "crossings_per_active_pix": 1.1627266467753041,
+   "frac_pixels_active": 0.07091471354166666
+  },
+  {
+   "k": 133,
+   "exp_us": 1107,
+   "n_events": 25432,
+   "active_pix": 21581,
+   "crossings_per_active_pix": 1.178444001668134,
+   "frac_pixels_active": 0.07025065104166667
+  },
+  {
+   "k": 134,
+   "exp_us": 1107,
+   "n_events": 22007,
+   "active_pix": 19069,
+   "crossings_per_active_pix": 1.154072054119251,
+   "frac_pixels_active": 0.06207356770833333
+  },
+  {
+   "k": 135,
+   "exp_us": 1107,
+   "n_events": 19245,
+   "active_pix": 16795,
+   "crossings_per_active_pix": 1.1458767490324502,
+   "frac_pixels_active": 0.054671223958333334
+  },
+  {
+   "k": 136,
+   "exp_us": 1107,
+   "n_events": 17142,
+   "active_pix": 15826,
+   "crossings_per_active_pix": 1.0831543030456212,
+   "frac_pixels_active": 0.05151692708333333
+  },
+  {
+   "k": 137,
+   "exp_us": 1117,
+   "n_events": 17453,
+   "active_pix": 16015,
+   "crossings_per_active_pix": 1.0897908211052139,
+   "frac_pixels_active": 0.05213216145833333
+  },
+  {
+   "k": 138,
+   "exp_us": 1123,
+   "n_events": 17947,
+   "active_pix": 16196,
+   "crossings_per_active_pix": 1.108113114349222,
+   "frac_pixels_active": 0.052721354166666665
+  },
+  {
+   "k": 139,
+   "exp_us": 1123,
+   "n_events": 19299,
+   "active_pix": 17153,
+   "crossings_per_active_pix": 1.1251093103247245,
+   "frac_pixels_active": 0.05583658854166667
+  },
+  {
+   "k": 140,
+   "exp_us": 1123,
+   "n_events": 18569,
+   "active_pix": 16895,
+   "crossings_per_active_pix": 1.0990825688073393,
+   "frac_pixels_active": 0.05499674479166667
+  },
+  {
+   "k": 141,
+   "exp_us": 1123,
+   "n_events": 19217,
+   "active_pix": 17155,
+   "crossings_per_active_pix": 1.1201981929466627,
+   "frac_pixels_active": 0.05584309895833333
+  },
+  {
+   "k": 142,
+   "exp_us": 1123,
+   "n_events": 20126,
+   "active_pix": 17633,
+   "crossings_per_active_pix": 1.1413826348324165,
+   "frac_pixels_active": 0.057399088541666664
+  },
+  {
+   "k": 143,
+   "exp_us": 1123,
+   "n_events": 19971,
+   "active_pix": 17735,
+   "crossings_per_active_pix": 1.1260783760924724,
+   "frac_pixels_active": 0.05773111979166667
+  },
+  {
+   "k": 144,
+   "exp_us": 1133,
+   "n_events": 20113,
+   "active_pix": 17433,
+   "crossings_per_active_pix": 1.1537314288992142,
+   "frac_pixels_active": 0.056748046875
+  },
+  {
+   "k": 145,
+   "exp_us": 1139,
+   "n_events": 20126,
+   "active_pix": 17331,
+   "crossings_per_active_pix": 1.1612717096532226,
+   "frac_pixels_active": 0.056416015625
+  },
+  {
+   "k": 146,
+   "exp_us": 1144,
+   "n_events": 20617,
+   "active_pix": 17477,
+   "crossings_per_active_pix": 1.179664702180008,
+   "frac_pixels_active": 0.05689127604166667
+  },
+  {
+   "k": 147,
+   "exp_us": 1149,
+   "n_events": 18472,
+   "active_pix": 16094,
+   "crossings_per_active_pix": 1.1477569280477196,
+   "frac_pixels_active": 0.05238932291666667
+  },
+  {
+   "k": 148,
+   "exp_us": 1155,
+   "n_events": 16659,
+   "active_pix": 14784,
+   "crossings_per_active_pix": 1.1268262987012987,
+   "frac_pixels_active": 0.048125
+  },
+  {
+   "k": 149,
+   "exp_us": 1149,
+   "n_events": 16142,
+   "active_pix": 14598,
+   "crossings_per_active_pix": 1.1057679134127962,
+   "frac_pixels_active": 0.04751953125
+  },
+  {
+   "k": 150,
+   "exp_us": 1149,
+   "n_events": 16511,
+   "active_pix": 14793,
+   "crossings_per_active_pix": 1.11613601027513,
+   "frac_pixels_active": 0.048154296875
+  },
+  {
+   "k": 151,
+   "exp_us": 1149,
+   "n_events": 16142,
+   "active_pix": 14464,
+   "crossings_per_active_pix": 1.1160121681415929,
+   "frac_pixels_active": 0.04708333333333333
+  },
+  {
+   "k": 152,
+   "exp_us": 1149,
+   "n_events": 17347,
+   "active_pix": 15256,
+   "crossings_per_active_pix": 1.1370608285264814,
+   "frac_pixels_active": 0.04966145833333333
+  },
+  {
+   "k": 153,
+   "exp_us": 1149,
+   "n_events": 18382,
+   "active_pix": 15853,
+   "crossings_per_active_pix": 1.1595281650160854,
+   "frac_pixels_active": 0.051604817708333334
+  },
+  {
+   "k": 154,
+   "exp_us": 1139,
+   "n_events": 16825,
+   "active_pix": 14982,
+   "crossings_per_active_pix": 1.1230142838072354,
+   "frac_pixels_active": 0.04876953125
+  },
+  {
+   "k": 155,
+   "exp_us": 1128,
+   "n_events": 17062,
+   "active_pix": 14756,
+   "crossings_per_active_pix": 1.156275413391163,
+   "frac_pixels_active": 0.04803385416666667
+  },
+  {
+   "k": 156,
+   "exp_us": 1117,
+   "n_events": 19160,
+   "active_pix": 16210,
+   "crossings_per_active_pix": 1.1819864281307835,
+   "frac_pixels_active": 0.05276692708333333
+  },
+  {
+   "k": 157,
+   "exp_us": 1107,
+   "n_events": 17881,
+   "active_pix": 15634,
+   "crossings_per_active_pix": 1.1437252142765766,
+   "frac_pixels_active": 0.05089192708333334
+  },
+  {
+   "k": 158,
+   "exp_us": 1101,
+   "n_events": 17360,
+   "active_pix": 15113,
+   "crossings_per_active_pix": 1.1486799444187124,
+   "frac_pixels_active": 0.049195963541666665
+  },
+  {
+   "k": 159,
+   "exp_us": 1091,
+   "n_events": 16073,
+   "active_pix": 14323,
+   "crossings_per_active_pix": 1.122181107309921,
+   "frac_pixels_active": 0.04662434895833333
+  },
+  {
+   "k": 160,
+   "exp_us": 1096,
+   "n_events": 14648,
+   "active_pix": 12932,
+   "crossings_per_active_pix": 1.132694092174451,
+   "frac_pixels_active": 0.04209635416666667
+  },
+  {
+   "k": 161,
+   "exp_us": 1091,
+   "n_events": 13064,
+   "active_pix": 12156,
+   "crossings_per_active_pix": 1.0746956235603817,
+   "frac_pixels_active": 0.0395703125
+  },
+  {
+   "k": 162,
+   "exp_us": 1107,
+   "n_events": 12815,
+   "active_pix": 11857,
+   "crossings_per_active_pix": 1.0807961541705322,
+   "frac_pixels_active": 0.03859700520833333
+  },
+  {
+   "k": 163,
+   "exp_us": 1117,
+   "n_events": 13014,
+   "active_pix": 11815,
+   "crossings_per_active_pix": 1.101481168006771,
+   "frac_pixels_active": 0.03846028645833333
+  },
+  {
+   "k": 164,
+   "exp_us": 1128,
+   "n_events": 12260,
+   "active_pix": 11614,
+   "crossings_per_active_pix": 1.0556225245393491,
+   "frac_pixels_active": 0.03780598958333333
+  },
+  {
+   "k": 165,
+   "exp_us": 1139,
+   "n_events": 11874,
+   "active_pix": 11105,
+   "crossings_per_active_pix": 1.0692480864475462,
+   "frac_pixels_active": 0.036149088541666666
+  },
+  {
+   "k": 166,
+   "exp_us": 1149,
+   "n_events": 12393,
+   "active_pix": 11531,
+   "crossings_per_active_pix": 1.074755008238661,
+   "frac_pixels_active": 0.03753580729166667
+  },
+  {
+   "k": 167,
+   "exp_us": 1160,
+   "n_events": 12586,
+   "active_pix": 11371,
+   "crossings_per_active_pix": 1.106850760707062,
+   "frac_pixels_active": 0.037014973958333336
+  },
+  {
+   "k": 168,
+   "exp_us": 1171,
+   "n_events": 11665,
+   "active_pix": 11273,
+   "crossings_per_active_pix": 1.0347733522576066,
+   "frac_pixels_active": 0.03669596354166667
+  },
+  {
+   "k": 169,
+   "exp_us": 1181,
+   "n_events": 12069,
+   "active_pix": 11563,
+   "crossings_per_active_pix": 1.0437602698261697,
+   "frac_pixels_active": 0.037639973958333336
+  },
+  {
+   "k": 170,
+   "exp_us": 1192,
+   "n_events": 12516,
+   "active_pix": 11836,
+   "crossings_per_active_pix": 1.0574518418384589,
+   "frac_pixels_active": 0.03852864583333333
+  },
+  {
+   "k": 171,
+   "exp_us": 1208,
+   "n_events": 14365,
+   "active_pix": 13615,
+   "crossings_per_active_pix": 1.0550863018729342,
+   "frac_pixels_active": 0.04431966145833333
+  },
+  {
+   "k": 172,
+   "exp_us": 1224,
+   "n_events": 11669,
+   "active_pix": 11394,
+   "crossings_per_active_pix": 1.0241355099175005,
+   "frac_pixels_active": 0.03708984375
+  },
+  {
+   "k": 173,
+   "exp_us": 1240,
+   "n_events": 12153,
+   "active_pix": 11798,
+   "crossings_per_active_pix": 1.0300898457365655,
+   "frac_pixels_active": 0.03840494791666667
+  },
+  {
+   "k": 174,
+   "exp_us": 1256,
+   "n_events": 11941,
+   "active_pix": 11401,
+   "crossings_per_active_pix": 1.0473642662924305,
+   "frac_pixels_active": 0.03711263020833333
+  },
+  {
+   "k": 175,
+   "exp_us": 1278,
+   "n_events": 12139,
+   "active_pix": 11716,
+   "crossings_per_active_pix": 1.0361044725162172,
+   "frac_pixels_active": 0.038138020833333335
+  },
+  {
+   "k": 176,
+   "exp_us": 1294,
+   "n_events": 11871,
+   "active_pix": 11450,
+   "crossings_per_active_pix": 1.036768558951965,
+   "frac_pixels_active": 0.037272135416666664
+  },
+  {
+   "k": 177,
+   "exp_us": 1315,
+   "n_events": 12527,
+   "active_pix": 11991,
+   "crossings_per_active_pix": 1.0447001918105245,
+   "frac_pixels_active": 0.039033203125
+  },
+  {
+   "k": 178,
+   "exp_us": 1331,
+   "n_events": 13122,
+   "active_pix": 12507,
+   "crossings_per_active_pix": 1.0491724634204844,
+   "frac_pixels_active": 0.040712890625
+  },
+  {
+   "k": 179,
+   "exp_us": 1347,
+   "n_events": 11942,
+   "active_pix": 11428,
+   "crossings_per_active_pix": 1.0449772488624431,
+   "frac_pixels_active": 0.037200520833333334
+  },
+  {
+   "k": 180,
+   "exp_us": 1358,
+   "n_events": 12242,
+   "active_pix": 11690,
+   "crossings_per_active_pix": 1.0472198460222413,
+   "frac_pixels_active": 0.03805338541666667
+  },
+  {
+   "k": 181,
+   "exp_us": 1369,
+   "n_events": 13187,
+   "active_pix": 12479,
+   "crossings_per_active_pix": 1.056735315329754,
+   "frac_pixels_active": 0.040621744791666664
+  },
+  {
+   "k": 182,
+   "exp_us": 1385,
+   "n_events": 14348,
+   "active_pix": 13115,
+   "crossings_per_active_pix": 1.0940144872283644,
+   "frac_pixels_active": 0.04269205729166667
+  },
+  {
+   "k": 183,
+   "exp_us": 1401,
+   "n_events": 15261,
+   "active_pix": 13872,
+   "crossings_per_active_pix": 1.1001297577854672,
+   "frac_pixels_active": 0.04515625
+  },
+  {
+   "k": 184,
+   "exp_us": 1411,
+   "n_events": 15828,
+   "active_pix": 14095,
+   "crossings_per_active_pix": 1.1229514012061015,
+   "frac_pixels_active": 0.045882161458333334
+  },
+  {
+   "k": 185,
+   "exp_us": 1422,
+   "n_events": 14113,
+   "active_pix": 13415,
+   "crossings_per_active_pix": 1.052031308237048,
+   "frac_pixels_active": 0.04366861979166667
+  },
+  {
+   "k": 186,
+   "exp_us": 1433,
+   "n_events": 12976,
+   "active_pix": 12520,
+   "crossings_per_active_pix": 1.0364217252396166,
+   "frac_pixels_active": 0.040755208333333334
+  },
+  {
+   "k": 187,
+   "exp_us": 1443,
+   "n_events": 13252,
+   "active_pix": 12569,
+   "crossings_per_active_pix": 1.0543400429628451,
+   "frac_pixels_active": 0.04091471354166667
+  },
+  {
+   "k": 188,
+   "exp_us": 1470,
+   "n_events": 12571,
+   "active_pix": 12314,
+   "crossings_per_active_pix": 1.0208705538411564,
+   "frac_pixels_active": 0.04008463541666667
+  },
+  {
+   "k": 189,
+   "exp_us": 1497,
+   "n_events": 13058,
+   "active_pix": 12704,
+   "crossings_per_active_pix": 1.0278652392947103,
+   "frac_pixels_active": 0.041354166666666664
+  },
+  {
+   "k": 190,
+   "exp_us": 1518,
+   "n_events": 13712,
+   "active_pix": 13195,
+   "crossings_per_active_pix": 1.0391815081470255,
+   "frac_pixels_active": 0.042952473958333334
+  },
+  {
+   "k": 191,
+   "exp_us": 1545,
+   "n_events": 14350,
+   "active_pix": 13635,
+   "crossings_per_active_pix": 1.0524385771910525,
+   "frac_pixels_active": 0.044384765625
+  },
+  {
+   "k": 192,
+   "exp_us": 1572,
+   "n_events": 13362,
+   "active_pix": 12966,
+   "crossings_per_active_pix": 1.030541416011106,
+   "frac_pixels_active": 0.04220703125
+  },
+  {
+   "k": 193,
+   "exp_us": 1593,
+   "n_events": 14126,
+   "active_pix": 13664,
+   "crossings_per_active_pix": 1.033811475409836,
+   "frac_pixels_active": 0.04447916666666667
+  },
+  {
+   "k": 194,
+   "exp_us": 1614,
+   "n_events": 14929,
+   "active_pix": 14344,
+   "crossings_per_active_pix": 1.0407836029001674,
+   "frac_pixels_active": 0.04669270833333333
+  },
+  {
+   "k": 195,
+   "exp_us": 1631,
+   "n_events": 15406,
+   "active_pix": 14663,
+   "crossings_per_active_pix": 1.050671758848803,
+   "frac_pixels_active": 0.047731119791666665
+  },
+  {
+   "k": 196,
+   "exp_us": 1647,
+   "n_events": 15693,
+   "active_pix": 14871,
+   "crossings_per_active_pix": 1.0552753681662295,
+   "frac_pixels_active": 0.048408203125
+  },
+  {
+   "k": 197,
+   "exp_us": 1663,
+   "n_events": 14835,
+   "active_pix": 14412,
+   "crossings_per_active_pix": 1.0293505412156536,
+   "frac_pixels_active": 0.0469140625
+  },
+  {
+   "k": 198,
+   "exp_us": 1679,
+   "n_events": 15658,
+   "active_pix": 14992,
+   "crossings_per_active_pix": 1.0444236926360726,
+   "frac_pixels_active": 0.048802083333333336
+  },
+  {
+   "k": 199,
+   "exp_us": 1689,
+   "n_events": 32745,
+   "active_pix": 27812,
+   "crossings_per_active_pix": 1.1773694807996549,
+   "frac_pixels_active": 0.09053385416666666
+  },
+  {
+   "k": 200,
+   "exp_us": 1705,
+   "n_events": 34018,
+   "active_pix": 28163,
+   "crossings_per_active_pix": 1.2078968859851578,
+   "frac_pixels_active": 0.09167643229166667
+  },
+  {
+   "k": 201,
+   "exp_us": 1716,
+   "n_events": 32742,
+   "active_pix": 27996,
+   "crossings_per_active_pix": 1.1695242177453922,
+   "frac_pixels_active": 0.0911328125
+  },
+  {
+   "k": 202,
+   "exp_us": 1732,
+   "n_events": 33342,
+   "active_pix": 27794,
+   "crossings_per_active_pix": 1.1996114269266749,
+   "frac_pixels_active": 0.09047526041666666
+  },
+  {
+   "k": 203,
+   "exp_us": 1748,
+   "n_events": 35301,
+   "active_pix": 28760,
+   "crossings_per_active_pix": 1.227433936022253,
+   "frac_pixels_active": 0.09361979166666666
+  },
+  {
+   "k": 204,
+   "exp_us": 1770,
+   "n_events": 38144,
+   "active_pix": 30122,
+   "crossings_per_active_pix": 1.2663169776243277,
+   "frac_pixels_active": 0.09805338541666667
+  },
+  {
+   "k": 205,
+   "exp_us": 1786,
+   "n_events": 40640,
+   "active_pix": 31376,
+   "crossings_per_active_pix": 1.295257521672616,
+   "frac_pixels_active": 0.10213541666666667
+  },
+  {
+   "k": 206,
+   "exp_us": 1802,
+   "n_events": 41064,
+   "active_pix": 31446,
+   "crossings_per_active_pix": 1.305857660751765,
+   "frac_pixels_active": 0.10236328125
+  },
+  {
+   "k": 207,
+   "exp_us": 1818,
+   "n_events": 43693,
+   "active_pix": 32566,
+   "crossings_per_active_pix": 1.3416753669471229,
+   "frac_pixels_active": 0.10600911458333333
+  },
+  {
+   "k": 208,
+   "exp_us": 1834,
+   "n_events": 42282,
+   "active_pix": 32493,
+   "crossings_per_active_pix": 1.3012648878219923,
+   "frac_pixels_active": 0.105771484375
+  },
+  {
+   "k": 209,
+   "exp_us": 1844,
+   "n_events": 41251,
+   "active_pix": 31881,
+   "crossings_per_active_pix": 1.293905460932844,
+   "frac_pixels_active": 0.103779296875
+  },
+  {
+   "k": 210,
+   "exp_us": 1860,
+   "n_events": 40820,
+   "active_pix": 31778,
+   "crossings_per_active_pix": 1.2845364717729246,
+   "frac_pixels_active": 0.10344401041666666
+  },
+  {
+   "k": 211,
+   "exp_us": 1898,
+   "n_events": 40865,
+   "active_pix": 31619,
+   "crossings_per_active_pix": 1.2924191150890287,
+   "frac_pixels_active": 0.10292643229166666
+  },
+  {
+   "k": 212,
+   "exp_us": 1935,
+   "n_events": 40872,
+   "active_pix": 31698,
+   "crossings_per_active_pix": 1.2894188907817528,
+   "frac_pixels_active": 0.10318359375
+  },
+  {
+   "k": 213,
+   "exp_us": 1967,
+   "n_events": 40552,
+   "active_pix": 31212,
+   "crossings_per_active_pix": 1.2992438805587594,
+   "frac_pixels_active": 0.1016015625
+  },
+  {
+   "k": 214,
+   "exp_us": 1994,
+   "n_events": 39184,
+   "active_pix": 30365,
+   "crossings_per_active_pix": 1.2904330643833362,
+   "frac_pixels_active": 0.09884440104166667
+  },
+  {
+   "k": 215,
+   "exp_us": 2021,
+   "n_events": 35640,
+   "active_pix": 28983,
+   "crossings_per_active_pix": 1.2296863678708208,
+   "frac_pixels_active": 0.094345703125
+  },
+  {
+   "k": 216,
+   "exp_us": 2042,
+   "n_events": 33735,
+   "active_pix": 27546,
+   "crossings_per_active_pix": 1.2246787192332824,
+   "frac_pixels_active": 0.08966796875
+  },
+  {
+   "k": 217,
+   "exp_us": 2058,
+   "n_events": 32701,
+   "active_pix": 27065,
+   "crossings_per_active_pix": 1.2082394236098282,
+   "frac_pixels_active": 0.08810221354166667
+  },
+  {
+   "k": 218,
+   "exp_us": 2064,
+   "n_events": 34165,
+   "active_pix": 27499,
+   "crossings_per_active_pix": 1.242408814865995,
+   "frac_pixels_active": 0.08951497395833333
+  },
+  {
+   "k": 219,
+   "exp_us": 2064,
+   "n_events": 32657,
+   "active_pix": 26631,
+   "crossings_per_active_pix": 1.2262776463519958,
+   "frac_pixels_active": 0.086689453125
+  },
+  {
+   "k": 220,
+   "exp_us": 2064,
+   "n_events": 30096,
+   "active_pix": 25973,
+   "crossings_per_active_pix": 1.1587417702999268,
+   "frac_pixels_active": 0.08454752604166667
+  },
+  {
+   "k": 221,
+   "exp_us": 2048,
+   "n_events": 30396,
+   "active_pix": 25786,
+   "crossings_per_active_pix": 1.178779182502133,
+   "frac_pixels_active": 0.08393880208333333
+  },
+  {
+   "k": 222,
+   "exp_us": 2026,
+   "n_events": 31828,
+   "active_pix": 26638,
+   "crossings_per_active_pix": 1.1948344470305579,
+   "frac_pixels_active": 0.08671223958333334
+  },
+  {
+   "k": 223,
+   "exp_us": 2005,
+   "n_events": 33296,
+   "active_pix": 27264,
+   "crossings_per_active_pix": 1.221244131455399,
+   "frac_pixels_active": 0.08875
+  },
+  {
+   "k": 224,
+   "exp_us": 1983,
+   "n_events": 31998,
+   "active_pix": 26776,
+   "crossings_per_active_pix": 1.1950253958769046,
+   "frac_pixels_active": 0.08716145833333333
+  },
+  {
+   "k": 225,
+   "exp_us": 1967,
+   "n_events": 31116,
+   "active_pix": 26269,
+   "crossings_per_active_pix": 1.1845140660093647,
+   "frac_pixels_active": 0.08551106770833333
+  },
+  {
+   "k": 226,
+   "exp_us": 1957,
+   "n_events": 31832,
+   "active_pix": 26609,
+   "crossings_per_active_pix": 1.196286970573866,
+   "frac_pixels_active": 0.08661783854166667
+  },
+  {
+   "k": 227,
+   "exp_us": 1941,
+   "n_events": 33076,
+   "active_pix": 27175,
+   "crossings_per_active_pix": 1.217148114075437,
+   "frac_pixels_active": 0.08846028645833333
+  },
+  {
+   "k": 228,
+   "exp_us": 1935,
+   "n_events": 34028,
+   "active_pix": 27490,
+   "crossings_per_active_pix": 1.237831938886868,
+   "frac_pixels_active": 0.08948567708333334
+  },
+  {
+   "k": 229,
+   "exp_us": 1925,
+   "n_events": 32528,
+   "active_pix": 27086,
+   "crossings_per_active_pix": 1.2009156021560954,
+   "frac_pixels_active": 0.08817057291666666
+  },
+  {
+   "k": 230,
+   "exp_us": 1930,
+   "n_events": 32903,
+   "active_pix": 27037,
+   "crossings_per_active_pix": 1.2169619410437549,
+   "frac_pixels_active": 0.08801106770833333
+  },
+  {
+   "k": 231,
+   "exp_us": 1930,
+   "n_events": 34813,
+   "active_pix": 27767,
+   "crossings_per_active_pix": 1.253754456729211,
+   "frac_pixels_active": 0.09038736979166667
+  },
+  {
+   "k": 232,
+   "exp_us": 1919,
+   "n_events": 37258,
+   "active_pix": 29161,
+   "crossings_per_active_pix": 1.2776653749871403,
+   "frac_pixels_active": 0.09492513020833333
+  },
+  {
+   "k": 233,
+   "exp_us": 1914,
+   "n_events": 39907,
+   "active_pix": 30259,
+   "crossings_per_active_pix": 1.318847285105258,
+   "frac_pixels_active": 0.09849934895833333
+  },
+  {
+   "k": 234,
+   "exp_us": 1914,
+   "n_events": 34612,
+   "active_pix": 28419,
+   "crossings_per_active_pix": 1.2179175903444879,
+   "frac_pixels_active": 0.092509765625
+  },
+  {
+   "k": 235,
+   "exp_us": 1914,
+   "n_events": 32772,
+   "active_pix": 27581,
+   "crossings_per_active_pix": 1.188209274500562,
+   "frac_pixels_active": 0.08978190104166667
+  },
+  {
+   "k": 236,
+   "exp_us": 1903,
+   "n_events": 33950,
+   "active_pix": 28279,
+   "crossings_per_active_pix": 1.2005375013260724,
+   "frac_pixels_active": 0.09205403645833334
+  },
+  {
+   "k": 237,
+   "exp_us": 1909,
+   "n_events": 35230,
+   "active_pix": 29008,
+   "crossings_per_active_pix": 1.214492553778268,
+   "frac_pixels_active": 0.09442708333333333
+  },
+  {
+   "k": 238,
+   "exp_us": 1909,
+   "n_events": 34626,
+   "active_pix": 28856,
+   "crossings_per_active_pix": 1.1999584141946216,
+   "frac_pixels_active": 0.09393229166666667
+  },
+  {
+   "k": 239,
+   "exp_us": 1909,
+   "n_events": 34338,
+   "active_pix": 28871,
+   "crossings_per_active_pix": 1.18935956496138,
+   "frac_pixels_active": 0.09398111979166666
+  },
+  {
+   "k": 240,
+   "exp_us": 1909,
+   "n_events": 36148,
+   "active_pix": 29781,
+   "crossings_per_active_pix": 1.213794029750512,
+   "frac_pixels_active": 0.096943359375
+  },
+  {
+   "k": 241,
+   "exp_us": 1925,
+   "n_events": 37144,
+   "active_pix": 30194,
+   "crossings_per_active_pix": 1.2301781810955819,
+   "frac_pixels_active": 0.09828776041666666
+  },
+  {
+   "k": 242,
+   "exp_us": 1941,
+   "n_events": 37795,
+   "active_pix": 30869,
+   "crossings_per_active_pix": 1.224367488418802,
+   "frac_pixels_active": 0.10048502604166666
+  },
+  {
+   "k": 243,
+   "exp_us": 1962,
+   "n_events": 34850,
+   "active_pix": 29623,
+   "crossings_per_active_pix": 1.176450730851028,
+   "frac_pixels_active": 0.09642903645833334
+  },
+  {
+   "k": 244,
+   "exp_us": 1989,
+   "n_events": 35569,
+   "active_pix": 29935,
+   "crossings_per_active_pix": 1.1882077835309839,
+   "frac_pixels_active": 0.09744466145833333
+  },
+  {
+   "k": 245,
+   "exp_us": 2010,
+   "n_events": 37160,
+   "active_pix": 30849,
+   "crossings_per_active_pix": 1.2045771337806737,
+   "frac_pixels_active": 0.100419921875
+  },
+  {
+   "k": 246,
+   "exp_us": 2037,
+   "n_events": 38479,
+   "active_pix": 31718,
+   "crossings_per_active_pix": 1.213159720032789,
+   "frac_pixels_active": 0.10324869791666667
+  },
+  {
+   "k": 247,
+   "exp_us": 2053,
+   "n_events": 39627,
+   "active_pix": 32001,
+   "crossings_per_active_pix": 1.2383050529670947,
+   "frac_pixels_active": 0.104169921875
+  },
+  {
+   "k": 248,
+   "exp_us": 2069,
+   "n_events": 39489,
+   "active_pix": 31745,
+   "crossings_per_active_pix": 1.2439439281776659,
+   "frac_pixels_active": 0.10333658854166666
+  },
+  {
+   "k": 249,
+   "exp_us": 2074,
+   "n_events": 40095,
+   "active_pix": 31777,
+   "crossings_per_active_pix": 1.261761651508953,
+   "frac_pixels_active": 0.10344075520833333
+  },
+  {
+   "k": 250,
+   "exp_us": 2074,
+   "n_events": 40124,
+   "active_pix": 31394,
+   "crossings_per_active_pix": 1.27807861374785,
+   "frac_pixels_active": 0.10219401041666666
+  },
+  {
+   "k": 251,
+   "exp_us": 2074,
+   "n_events": 40626,
+   "active_pix": 31386,
+   "crossings_per_active_pix": 1.294398776524565,
+   "frac_pixels_active": 0.10216796875
+  },
+  {
+   "k": 252,
+   "exp_us": 2064,
+   "n_events": 39265,
+   "active_pix": 30309,
+   "crossings_per_active_pix": 1.2954897885116632,
+   "frac_pixels_active": 0.098662109375
+  },
+  {
+   "k": 253,
+   "exp_us": 2048,
+   "n_events": 38953,
+   "active_pix": 30094,
+   "crossings_per_active_pix": 1.294377616800691,
+   "frac_pixels_active": 0.09796223958333333
+  },
+  {
+   "k": 254,
+   "exp_us": 2031,
+   "n_events": 40429,
+   "active_pix": 30500,
+   "crossings_per_active_pix": 1.3255409836065575,
+   "frac_pixels_active": 0.09928385416666667
+  },
+  {
+   "k": 255,
+   "exp_us": 2010,
+   "n_events": 42839,
+   "active_pix": 31458,
+   "crossings_per_active_pix": 1.3617839659228177,
+   "frac_pixels_active": 0.10240234375
+  },
+  {
+   "k": 256,
+   "exp_us": 1983,
+   "n_events": 43123,
+   "active_pix": 31346,
+   "crossings_per_active_pix": 1.3757098194346966,
+   "frac_pixels_active": 0.10203776041666666
+  },
+  {
+   "k": 257,
+   "exp_us": 1951,
+   "n_events": 40485,
+   "active_pix": 30020,
+   "crossings_per_active_pix": 1.3486009327115256,
+   "frac_pixels_active": 0.09772135416666666
+  },
+  {
+   "k": 258,
+   "exp_us": 1909,
+   "n_events": 37470,
+   "active_pix": 28909,
+   "crossings_per_active_pix": 1.2961361513715453,
+   "frac_pixels_active": 0.09410481770833333
+  },
+  {
+   "k": 259,
+   "exp_us": 1860,
+   "n_events": 33107,
+   "active_pix": 26989,
+   "crossings_per_active_pix": 1.2266849457186262,
+   "frac_pixels_active": 0.08785481770833334
+  },
+  {
+   "k": 260,
+   "exp_us": 1812,
+   "n_events": 30890,
+   "active_pix": 25923,
+   "crossings_per_active_pix": 1.1916059098098213,
+   "frac_pixels_active": 0.084384765625
+  },
+  {
+   "k": 261,
+   "exp_us": 1770,
+   "n_events": 30127,
+   "active_pix": 25602,
+   "crossings_per_active_pix": 1.1767440043746582,
+   "frac_pixels_active": 0.08333984375
+  },
+  {
+   "k": 262,
+   "exp_us": 1743,
+   "n_events": 29557,
+   "active_pix": 26111,
+   "crossings_per_active_pix": 1.1319750296809774,
+   "frac_pixels_active": 0.08499674479166666
+  },
+  {
+   "k": 263,
+   "exp_us": 1716,
+   "n_events": 30752,
+   "active_pix": 26902,
+   "crossings_per_active_pix": 1.1431120362798306,
+   "frac_pixels_active": 0.08757161458333333
+  },
+  {
+   "k": 264,
+   "exp_us": 1695,
+   "n_events": 31734,
+   "active_pix": 27252,
+   "crossings_per_active_pix": 1.1644649933949802,
+   "frac_pixels_active": 0.0887109375
+  },
+  {
+   "k": 265,
+   "exp_us": 1673,
+   "n_events": 16671,
+   "active_pix": 15537,
+   "crossings_per_active_pix": 1.0729870631396023,
+   "frac_pixels_active": 0.050576171875
+  },
+  {
+   "k": 266,
+   "exp_us": 1657,
+   "n_events": 16348,
+   "active_pix": 15739,
+   "crossings_per_active_pix": 1.038693690831692,
+   "frac_pixels_active": 0.05123372395833333
+  },
+  {
+   "k": 267,
+   "exp_us": 1641,
+   "n_events": 16389,
+   "active_pix": 15531,
+   "crossings_per_active_pix": 1.055244350009658,
+   "frac_pixels_active": 0.050556640625
+  },
+  {
+   "k": 268,
+   "exp_us": 1631,
+   "n_events": 17443,
+   "active_pix": 16295,
+   "crossings_per_active_pix": 1.0704510586069347,
+   "frac_pixels_active": 0.05304361979166667
+  },
+  {
+   "k": 269,
+   "exp_us": 1620,
+   "n_events": 18467,
+   "active_pix": 17105,
+   "crossings_per_active_pix": 1.0796258403975445,
+   "frac_pixels_active": 0.055680338541666666
+  },
+  {
+   "k": 270,
+   "exp_us": 1609,
+   "n_events": 18682,
+   "active_pix": 17033,
+   "crossings_per_active_pix": 1.0968120706863147,
+   "frac_pixels_active": 0.055445963541666664
+  },
+  {
+   "k": 271,
+   "exp_us": 1604,
+   "n_events": 18352,
+   "active_pix": 16982,
+   "crossings_per_active_pix": 1.080673654457661,
+   "frac_pixels_active": 0.05527994791666667
+  },
+  {
+   "k": 272,
+   "exp_us": 1604,
+   "n_events": 19384,
+   "active_pix": 17301,
+   "crossings_per_active_pix": 1.1203976648748628,
+   "frac_pixels_active": 0.056318359375
+  },
+  {
+   "k": 273,
+   "exp_us": 1604,
+   "n_events": 20931,
+   "active_pix": 18499,
+   "crossings_per_active_pix": 1.1314665657603113,
+   "frac_pixels_active": 0.060218098958333334
+  },
+  {
+   "k": 274,
+   "exp_us": 1604,
+   "n_events": 22852,
+   "active_pix": 19664,
+   "crossings_per_active_pix": 1.1621236777868185,
+   "frac_pixels_active": 0.06401041666666667
+  },
+  {
+   "k": 275,
+   "exp_us": 1604,
+   "n_events": 20862,
+   "active_pix": 18255,
+   "crossings_per_active_pix": 1.142810188989318,
+   "frac_pixels_active": 0.059423828125
+  },
+  {
+   "k": 276,
+   "exp_us": 1604,
+   "n_events": 19635,
+   "active_pix": 17868,
+   "crossings_per_active_pix": 1.0988918737407656,
+   "frac_pixels_active": 0.0581640625
+  },
+  {
+   "k": 277,
+   "exp_us": 1604,
+   "n_events": 18798,
+   "active_pix": 17120,
+   "crossings_per_active_pix": 1.0980140186915888,
+   "frac_pixels_active": 0.05572916666666667
+  },
+  {
+   "k": 278,
+   "exp_us": 1631,
+   "n_events": 18815,
+   "active_pix": 17376,
+   "crossings_per_active_pix": 1.0828153775322285,
+   "frac_pixels_active": 0.0565625
+  },
+  {
+   "k": 279,
+   "exp_us": 1652,
+   "n_events": 18529,
+   "active_pix": 16948,
+   "crossings_per_active_pix": 1.0932853434033514,
+   "frac_pixels_active": 0.05516927083333333
+  },
+  {
+   "k": 280,
+   "exp_us": 1668,
+   "n_events": 17536,
+   "active_pix": 16192,
+   "crossings_per_active_pix": 1.08300395256917,
+   "frac_pixels_active": 0.052708333333333336
+  },
+  {
+   "k": 281,
+   "exp_us": 1684,
+   "n_events": 16545,
+   "active_pix": 15310,
+   "crossings_per_active_pix": 1.080666231221424,
+   "frac_pixels_active": 0.04983723958333333
+  },
+  {
+   "k": 282,
+   "exp_us": 1695,
+   "n_events": 30048,
+   "active_pix": 24855,
+   "crossings_per_active_pix": 1.2089318044659023,
+   "frac_pixels_active": 0.080908203125
+  },
+  {
+   "k": 283,
+   "exp_us": 1705,
+   "n_events": 30763,
+   "active_pix": 25023,
+   "crossings_per_active_pix": 1.2293889621548175,
+   "frac_pixels_active": 0.081455078125
+  },
+  {
+   "k": 284,
+   "exp_us": 1700,
+   "n_events": 31003,
+   "active_pix": 24910,
+   "crossings_per_active_pix": 1.2446005620232838,
+   "frac_pixels_active": 0.08108723958333333
+  },
+  {
+   "k": 285,
+   "exp_us": 1700,
+   "n_events": 29668,
+   "active_pix": 24452,
+   "crossings_per_active_pix": 1.213315884181253,
+   "frac_pixels_active": 0.07959635416666666
+  },
+  {
+   "k": 286,
+   "exp_us": 1716,
+   "n_events": 27338,
+   "active_pix": 23330,
+   "crossings_per_active_pix": 1.171795970852979,
+   "frac_pixels_active": 0.07594401041666667
+  },
+  {
+   "k": 287,
+   "exp_us": 1743,
+   "n_events": 27826,
+   "active_pix": 23699,
+   "crossings_per_active_pix": 1.174142368876324,
+   "frac_pixels_active": 0.07714518229166667
+  },
+  {
+   "k": 288,
+   "exp_us": 1780,
+   "n_events": 26542,
+   "active_pix": 22756,
+   "crossings_per_active_pix": 1.1663737036386008,
+   "frac_pixels_active": 0.07407552083333334
+  },
+  {
+   "k": 289,
+   "exp_us": 1823,
+   "n_events": 25171,
+   "active_pix": 21681,
+   "crossings_per_active_pix": 1.1609704349430376,
+   "frac_pixels_active": 0.070576171875
+  },
+  {
+   "k": 290,
+   "exp_us": 1855,
+   "n_events": 24863,
+   "active_pix": 21332,
+   "crossings_per_active_pix": 1.1655259703731484,
+   "frac_pixels_active": 0.06944010416666667
+  },
+  {
+   "k": 291,
+   "exp_us": 1882,
+   "n_events": 22493,
+   "active_pix": 19742,
+   "crossings_per_active_pix": 1.1393475838314253,
+   "frac_pixels_active": 0.06426432291666667
+  },
+  {
+   "k": 292,
+   "exp_us": 1903,
+   "n_events": 21542,
+   "active_pix": 19345,
+   "crossings_per_active_pix": 1.1135693977772034,
+   "frac_pixels_active": 0.06297200520833333
+  },
+  {
+   "k": 293,
+   "exp_us": 1919,
+   "n_events": 19430,
+   "active_pix": 17712,
+   "crossings_per_active_pix": 1.096996386630533,
+   "frac_pixels_active": 0.05765625
+  },
+  {
+   "k": 294,
+   "exp_us": 1930,
+   "n_events": 19995,
+   "active_pix": 18511,
+   "crossings_per_active_pix": 1.080168548430663,
+   "frac_pixels_active": 0.06025716145833333
+  },
+  {
+   "k": 295,
+   "exp_us": 1935,
+   "n_events": 19337,
+   "active_pix": 17997,
+   "crossings_per_active_pix": 1.0744568539200978,
+   "frac_pixels_active": 0.058583984375
+  },
+  {
+   "k": 296,
+   "exp_us": 1935,
+   "n_events": 19314,
+   "active_pix": 17691,
+   "crossings_per_active_pix": 1.091741563506868,
+   "frac_pixels_active": 0.057587890625
+  },
+  {
+   "k": 297,
+   "exp_us": 1935,
+   "n_events": 17832,
+   "active_pix": 16470,
+   "crossings_per_active_pix": 1.0826958105646631,
+   "frac_pixels_active": 0.05361328125
+  },
+  {
+   "k": 298,
+   "exp_us": 1935,
+   "n_events": 17247,
+   "active_pix": 15947,
+   "crossings_per_active_pix": 1.0815200351163228,
+   "frac_pixels_active": 0.051910807291666666
+  },
+  {
+   "k": 299,
+   "exp_us": 1935,
+   "n_events": 19654,
+   "active_pix": 18081,
+   "crossings_per_active_pix": 1.0869974005862508,
+   "frac_pixels_active": 0.058857421875
+  },
+  {
+   "k": 300,
+   "exp_us": 1935,
+   "n_events": 19985,
+   "active_pix": 18356,
+   "crossings_per_active_pix": 1.0887448245805187,
+   "frac_pixels_active": 0.05975260416666667
+  },
+  {
+   "k": 301,
+   "exp_us": 1919,
+   "n_events": 19660,
+   "active_pix": 18126,
+   "crossings_per_active_pix": 1.0846298135275294,
+   "frac_pixels_active": 0.05900390625
+  },
+  {
+   "k": 302,
+   "exp_us": 1909,
+   "n_events": 19379,
+   "active_pix": 17921,
+   "crossings_per_active_pix": 1.0813570671279504,
+   "frac_pixels_active": 0.058336588541666665
+  },
+  {
+   "k": 303,
+   "exp_us": 1898,
+   "n_events": 19375,
+   "active_pix": 17847,
+   "crossings_per_active_pix": 1.0856166302459798,
+   "frac_pixels_active": 0.058095703125
+  },
+  {
+   "k": 304,
+   "exp_us": 1892,
+   "n_events": 19632,
+   "active_pix": 17847,
+   "crossings_per_active_pix": 1.100016809547823,
+   "frac_pixels_active": 0.058095703125
+  },
+  {
+   "k": 305,
+   "exp_us": 1892,
+   "n_events": 19366,
+   "active_pix": 17661,
+   "crossings_per_active_pix": 1.0965403997508636,
+   "frac_pixels_active": 0.057490234375
+  },
+  {
+   "k": 306,
+   "exp_us": 1876,
+   "n_events": 19817,
+   "active_pix": 18080,
+   "crossings_per_active_pix": 1.0960730088495576,
+   "frac_pixels_active": 0.058854166666666666
+  },
+  {
+   "k": 307,
+   "exp_us": 1866,
+   "n_events": 19397,
+   "active_pix": 17460,
+   "crossings_per_active_pix": 1.1109392898052692,
+   "frac_pixels_active": 0.0568359375
+  },
+  {
+   "k": 308,
+   "exp_us": 1855,
+   "n_events": 20154,
+   "active_pix": 18318,
+   "crossings_per_active_pix": 1.1002292826727809,
+   "frac_pixels_active": 0.05962890625
+  },
+  {
+   "k": 309,
+   "exp_us": 1844,
+   "n_events": 19974,
+   "active_pix": 17754,
+   "crossings_per_active_pix": 1.1250422440013519,
+   "frac_pixels_active": 0.05779296875
+  },
+  {
+   "k": 310,
+   "exp_us": 1834,
+   "n_events": 20542,
+   "active_pix": 18473,
+   "crossings_per_active_pix": 1.1120012991934174,
+   "frac_pixels_active": 0.06013346354166667
+  },
+  {
+   "k": 311,
+   "exp_us": 1818,
+   "n_events": 21291,
+   "active_pix": 18796,
+   "crossings_per_active_pix": 1.1327410087252607,
+   "frac_pixels_active": 0.061184895833333336
+  },
+  {
+   "k": 312,
+   "exp_us": 1807,
+   "n_events": 22530,
+   "active_pix": 19631,
+   "crossings_per_active_pix": 1.1476745963017676,
+   "frac_pixels_active": 0.06390299479166667
+  },
+  {
+   "k": 313,
+   "exp_us": 1791,
+   "n_events": 25388,
+   "active_pix": 21833,
+   "crossings_per_active_pix": 1.1628269133879907,
+   "frac_pixels_active": 0.07107096354166667
+  },
+  {
+   "k": 314,
+   "exp_us": 1775,
+   "n_events": 26162,
+   "active_pix": 22595,
+   "crossings_per_active_pix": 1.1578667846868775,
+   "frac_pixels_active": 0.07355143229166666
+  },
+  {
+   "k": 315,
+   "exp_us": 1759,
+   "n_events": 28470,
+   "active_pix": 24456,
+   "crossings_per_active_pix": 1.1641315014720315,
+   "frac_pixels_active": 0.079609375
+  },
+  {
+   "k": 316,
+   "exp_us": 1743,
+   "n_events": 30702,
+   "active_pix": 26127,
+   "crossings_per_active_pix": 1.1751062119646343,
+   "frac_pixels_active": 0.085048828125
+  },
+  {
+   "k": 317,
+   "exp_us": 1721,
+   "n_events": 33655,
+   "active_pix": 28207,
+   "crossings_per_active_pix": 1.1931435459283157,
+   "frac_pixels_active": 0.09181966145833333
+  },
+  {
+   "k": 318,
+   "exp_us": 1700,
+   "n_events": 34026,
+   "active_pix": 28068,
+   "crossings_per_active_pix": 1.2122702009405728,
+   "frac_pixels_active": 0.0913671875
+  },
+  {
+   "k": 319,
+   "exp_us": 1684,
+   "n_events": 17598,
+   "active_pix": 16538,
+   "crossings_per_active_pix": 1.0640948119482405,
+   "frac_pixels_active": 0.053834635416666665
+  },
+  {
+   "k": 320,
+   "exp_us": 1668,
+   "n_events": 17294,
+   "active_pix": 16307,
+   "crossings_per_active_pix": 1.0605261544122155,
+   "frac_pixels_active": 0.05308268229166667
+  },
+  {
+   "k": 321,
+   "exp_us": 1647,
+   "n_events": 17752,
+   "active_pix": 16661,
+   "crossings_per_active_pix": 1.0654822639697497,
+   "frac_pixels_active": 0.05423502604166667
+  },
+  {
+   "k": 322,
+   "exp_us": 1631,
+   "n_events": 18367,
+   "active_pix": 17126,
+   "crossings_per_active_pix": 1.0724629218731754,
+   "frac_pixels_active": 0.055748697916666666
+  },
+  {
+   "k": 323,
+   "exp_us": 1614,
+   "n_events": 18813,
+   "active_pix": 17477,
+   "crossings_per_active_pix": 1.0764433255135322,
+   "frac_pixels_active": 0.05689127604166667
+  },
+  {
+   "k": 324,
+   "exp_us": 1598,
+   "n_events": 19500,
+   "active_pix": 17890,
+   "crossings_per_active_pix": 1.0899944102850754,
+   "frac_pixels_active": 0.05823567708333333
+  },
+  {
+   "k": 325,
+   "exp_us": 1577,
+   "n_events": 19574,
+   "active_pix": 17881,
+   "crossings_per_active_pix": 1.0946815055086405,
+   "frac_pixels_active": 0.05820638020833333
+  },
+  {
+   "k": 326,
+   "exp_us": 1556,
+   "n_events": 18890,
+   "active_pix": 17431,
+   "crossings_per_active_pix": 1.0837014514370948,
+   "frac_pixels_active": 0.05674153645833333
+  },
+  {
+   "k": 327,
+   "exp_us": 1540,
+   "n_events": 18947,
+   "active_pix": 17523,
+   "crossings_per_active_pix": 1.081264623637505,
+   "frac_pixels_active": 0.057041015625
+  },
+  {
+   "k": 328,
+   "exp_us": 1518,
+   "n_events": 19402,
+   "active_pix": 17783,
+   "crossings_per_active_pix": 1.0910420064106168,
+   "frac_pixels_active": 0.057887369791666664
+  },
+  {
+   "k": 329,
+   "exp_us": 1497,
+   "n_events": 19549,
+   "active_pix": 17815,
+   "crossings_per_active_pix": 1.0973337075498175,
+   "frac_pixels_active": 0.05799153645833333
+  },
+  {
+   "k": 330,
+   "exp_us": 1475,
+   "n_events": 20365,
+   "active_pix": 18330,
+   "crossings_per_active_pix": 1.1110201854882706,
+   "frac_pixels_active": 0.05966796875
+  },
+  {
+   "k": 331,
+   "exp_us": 1454,
+   "n_events": 20113,
+   "active_pix": 18352,
+   "crossings_per_active_pix": 1.0959568439407148,
+   "frac_pixels_active": 0.05973958333333333
+  },
+  {
+   "k": 332,
+   "exp_us": 1433,
+   "n_events": 19922,
+   "active_pix": 18248,
+   "crossings_per_active_pix": 1.0917360806663743,
+   "frac_pixels_active": 0.05940104166666667
+  },
+  {
+   "k": 333,
+   "exp_us": 1411,
+   "n_events": 19660,
+   "active_pix": 18114,
+   "crossings_per_active_pix": 1.0853483493430496,
+   "frac_pixels_active": 0.05896484375
+  },
+  {
+   "k": 334,
+   "exp_us": 1390,
+   "n_events": 20033,
+   "active_pix": 18628,
+   "crossings_per_active_pix": 1.0754240927635816,
+   "frac_pixels_active": 0.060638020833333334
+  },
+  {
+   "k": 335,
+   "exp_us": 1369,
+   "n_events": 21127,
+   "active_pix": 19320,
+   "crossings_per_active_pix": 1.0935300207039338,
+   "frac_pixels_active": 0.062890625
+  },
+  {
+   "k": 336,
+   "exp_us": 1353,
+   "n_events": 20794,
+   "active_pix": 18949,
+   "crossings_per_active_pix": 1.097366615652541,
+   "frac_pixels_active": 0.061682942708333334
+  },
+  {
+   "k": 337,
+   "exp_us": 1337,
+   "n_events": 21684,
+   "active_pix": 19540,
+   "crossings_per_active_pix": 1.1097236438075742,
+   "frac_pixels_active": 0.06360677083333334
+  },
+  {
+   "k": 338,
+   "exp_us": 1331,
+   "n_events": 21101,
+   "active_pix": 18920,
+   "crossings_per_active_pix": 1.1152748414376321,
+   "frac_pixels_active": 0.06158854166666667
+  },
+  {
+   "k": 339,
+   "exp_us": 1326,
+   "n_events": 22640,
+   "active_pix": 20056,
+   "crossings_per_active_pix": 1.1288392500997209,
+   "frac_pixels_active": 0.06528645833333334
+  },
+  {
+   "k": 340,
+   "exp_us": 1326,
+   "n_events": 24410,
+   "active_pix": 21103,
+   "crossings_per_active_pix": 1.1567075771217363,
+   "frac_pixels_active": 0.06869466145833333
+  },
+  {
+   "k": 341,
+   "exp_us": 1326,
+   "n_events": 26521,
+   "active_pix": 22432,
+   "crossings_per_active_pix": 1.182284236804565,
+   "frac_pixels_active": 0.07302083333333333
+  },
+  {
+   "k": 342,
+   "exp_us": 1342,
+   "n_events": 23105,
+   "active_pix": 20544,
+   "crossings_per_active_pix": 1.1246592679127725,
+   "frac_pixels_active": 0.066875
+  },
+  {
+   "k": 343,
+   "exp_us": 1363,
+   "n_events": 23207,
+   "active_pix": 20430,
+   "crossings_per_active_pix": 1.1359275575134606,
+   "frac_pixels_active": 0.06650390625
+  },
+  {
+   "k": 344,
+   "exp_us": 1395,
+   "n_events": 24660,
+   "active_pix": 21408,
+   "crossings_per_active_pix": 1.1519058295964126,
+   "frac_pixels_active": 0.0696875
+  },
+  {
+   "k": 345,
+   "exp_us": 1433,
+   "n_events": 23502,
+   "active_pix": 21000,
+   "crossings_per_active_pix": 1.1191428571428572,
+   "frac_pixels_active": 0.068359375
+  },
+  {
+   "k": 346,
+   "exp_us": 1459,
+   "n_events": 23624,
+   "active_pix": 21178,
+   "crossings_per_active_pix": 1.1154972140900934,
+   "frac_pixels_active": 0.06893880208333333
+  },
+  {
+   "k": 347,
+   "exp_us": 1481,
+   "n_events": 22977,
+   "active_pix": 21206,
+   "crossings_per_active_pix": 1.0835140997830803,
+   "frac_pixels_active": 0.06902994791666667
+  },
+  {
+   "k": 348,
+   "exp_us": 1502,
+   "n_events": 23342,
+   "active_pix": 21581,
+   "crossings_per_active_pix": 1.0815995551642648,
+   "frac_pixels_active": 0.07025065104166667
+  },
+  {
+   "k": 349,
+   "exp_us": 1518,
+   "n_events": 23888,
+   "active_pix": 21912,
+   "crossings_per_active_pix": 1.090178897407813,
+   "frac_pixels_active": 0.071328125
+  },
+  {
+   "k": 350,
+   "exp_us": 1529,
+   "n_events": 24146,
+   "active_pix": 21976,
+   "crossings_per_active_pix": 1.0987440844557699,
+   "frac_pixels_active": 0.07153645833333333
+  },
+  {
+   "k": 351,
+   "exp_us": 1540,
+   "n_events": 24089,
+   "active_pix": 22090,
+   "crossings_per_active_pix": 1.090493435943866,
+   "frac_pixels_active": 0.07190755208333334
+  },
+  {
+   "k": 352,
+   "exp_us": 1550,
+   "n_events": 24232,
+   "active_pix": 22143,
+   "crossings_per_active_pix": 1.0943413268301494,
+   "frac_pixels_active": 0.072080078125
+  },
+  {
+   "k": 353,
+   "exp_us": 1561,
+   "n_events": 25105,
+   "active_pix": 22743,
+   "crossings_per_active_pix": 1.1038561315569626,
+   "frac_pixels_active": 0.074033203125
+  },
+  {
+   "k": 354,
+   "exp_us": 1566,
+   "n_events": 24042,
+   "active_pix": 22069,
+   "crossings_per_active_pix": 1.0894014228102769,
+   "frac_pixels_active": 0.07183919270833333
+  },
+  {
+   "k": 355,
+   "exp_us": 1572,
+   "n_events": 23039,
+   "active_pix": 21433,
+   "crossings_per_active_pix": 1.074931180889283,
+   "frac_pixels_active": 0.06976888020833333
+  },
+  {
+   "k": 356,
+   "exp_us": 1577,
+   "n_events": 22386,
+   "active_pix": 20895,
+   "crossings_per_active_pix": 1.071356783919598,
+   "frac_pixels_active": 0.068017578125
+  },
+  {
+   "k": 357,
+   "exp_us": 1577,
+   "n_events": 22276,
+   "active_pix": 20888,
+   "crossings_per_active_pix": 1.06644963615473,
+   "frac_pixels_active": 0.06799479166666667
+  },
+  {
+   "k": 358,
+   "exp_us": 1577,
+   "n_events": 22594,
+   "active_pix": 20993,
+   "crossings_per_active_pix": 1.0762635164102319,
+   "frac_pixels_active": 0.06833658854166667
+  },
+  {
+   "k": 359,
+   "exp_us": 1577,
+   "n_events": 22293,
+   "active_pix": 20593,
+   "crossings_per_active_pix": 1.0825523236051084,
+   "frac_pixels_active": 0.06703450520833333
+  },
+  {
+   "k": 360,
+   "exp_us": 1577,
+   "n_events": 21609,
+   "active_pix": 20109,
+   "crossings_per_active_pix": 1.0745934656124123,
+   "frac_pixels_active": 0.065458984375
+  },
+  {
+   "k": 361,
+   "exp_us": 1577,
+   "n_events": 21787,
+   "active_pix": 20394,
+   "crossings_per_active_pix": 1.0683044032558595,
+   "frac_pixels_active": 0.06638671875
+  },
+  {
+   "k": 362,
+   "exp_us": 1577,
+   "n_events": 21360,
+   "active_pix": 20301,
+   "crossings_per_active_pix": 1.0521649179843358,
+   "frac_pixels_active": 0.066083984375
+  },
+  {
+   "k": 363,
+   "exp_us": 1577,
+   "n_events": 22681,
+   "active_pix": 21548,
+   "crossings_per_active_pix": 1.052580285873399,
+   "frac_pixels_active": 0.07014322916666667
+  },
+  {
+   "k": 364,
+   "exp_us": 1577,
+   "n_events": 23106,
+   "active_pix": 21726,
+   "crossings_per_active_pix": 1.063518365092516,
+   "frac_pixels_active": 0.07072265625
+  },
+  {
+   "k": 365,
+   "exp_us": 1577,
+   "n_events": 23332,
+   "active_pix": 21611,
+   "crossings_per_active_pix": 1.0796353708759427,
+   "frac_pixels_active": 0.07034830729166666
+  },
+  {
+   "k": 366,
+   "exp_us": 1577,
+   "n_events": 23216,
+   "active_pix": 21374,
+   "crossings_per_active_pix": 1.0861794703845793,
+   "frac_pixels_active": 0.06957682291666667
+  },
+  {
+   "k": 367,
+   "exp_us": 1566,
+   "n_events": 24187,
+   "active_pix": 22291,
+   "crossings_per_active_pix": 1.0850567493607286,
+   "frac_pixels_active": 0.07256184895833333
+  },
+  {
+   "k": 368,
+   "exp_us": 1556,
+   "n_events": 24141,
+   "active_pix": 22553,
+   "crossings_per_active_pix": 1.0704119185917615,
+   "frac_pixels_active": 0.07341471354166666
+  },
+  {
+   "k": 369,
+   "exp_us": 1540,
+   "n_events": 23088,
+   "active_pix": 21655,
+   "crossings_per_active_pix": 1.0661740937427846,
+   "frac_pixels_active": 0.07049153645833334
+  },
+  {
+   "k": 370,
+   "exp_us": 1529,
+   "n_events": 23845,
+   "active_pix": 22514,
+   "crossings_per_active_pix": 1.0591187705427734,
+   "frac_pixels_active": 0.07328776041666667
+  },
+  {
+   "k": 371,
+   "exp_us": 1524,
+   "n_events": 23935,
+   "active_pix": 22167,
+   "crossings_per_active_pix": 1.0797581991248253,
+   "frac_pixels_active": 0.072158203125
+  },
+  {
+   "k": 372,
+   "exp_us": 1513,
+   "n_events": 24378,
+   "active_pix": 22409,
+   "crossings_per_active_pix": 1.0878664822169664,
+   "frac_pixels_active": 0.07294596354166667
+  },
+  {
+   "k": 373,
+   "exp_us": 1502,
+   "n_events": 25003,
+   "active_pix": 23080,
+   "crossings_per_active_pix": 1.0833188908145581,
+   "frac_pixels_active": 0.07513020833333334
+  },
+  {
+   "k": 374,
+   "exp_us": 1497,
+   "n_events": 26412,
+   "active_pix": 24315,
+   "crossings_per_active_pix": 1.0862430598396051,
+   "frac_pixels_active": 0.079150390625
+  },
+  {
+   "k": 375,
+   "exp_us": 1492,
+   "n_events": 26935,
+   "active_pix": 24581,
+   "crossings_per_active_pix": 1.0957650217647776,
+   "frac_pixels_active": 0.08001627604166667
+  },
+  {
+   "k": 376,
+   "exp_us": 1481,
+   "n_events": 28510,
+   "active_pix": 26169,
+   "crossings_per_active_pix": 1.0894569910963354,
+   "frac_pixels_active": 0.085185546875
+  },
+  {
+   "k": 377,
+   "exp_us": 1470,
+   "n_events": 28449,
+   "active_pix": 26261,
+   "crossings_per_active_pix": 1.0833174669662238,
+   "frac_pixels_active": 0.08548502604166666
+  },
+  {
+   "k": 378,
+   "exp_us": 1459,
+   "n_events": 28794,
+   "active_pix": 26557,
+   "crossings_per_active_pix": 1.0842339119629476,
+   "frac_pixels_active": 0.08644856770833333
+  },
+  {
+   "k": 379,
+   "exp_us": 1443,
+   "n_events": 28702,
+   "active_pix": 26239,
+   "crossings_per_active_pix": 1.0938679065513168,
+   "frac_pixels_active": 0.08541341145833334
+  },
+  {
+   "k": 380,
+   "exp_us": 1427,
+   "n_events": 28298,
+   "active_pix": 25975,
+   "crossings_per_active_pix": 1.089432146294514,
+   "frac_pixels_active": 0.08455403645833333
+  },
+  {
+   "k": 381,
+   "exp_us": 1406,
+   "n_events": 28237,
+   "active_pix": 25710,
+   "crossings_per_active_pix": 1.098288603656165,
+   "frac_pixels_active": 0.08369140625
+  },
+  {
+   "k": 382,
+   "exp_us": 1385,
+   "n_events": 27497,
+   "active_pix": 25118,
+   "crossings_per_active_pix": 1.0947129548530934,
+   "frac_pixels_active": 0.08176432291666667
+  },
+  {
+   "k": 383,
+   "exp_us": 1363,
+   "n_events": 27273,
+   "active_pix": 24878,
+   "crossings_per_active_pix": 1.0962697966074444,
+   "frac_pixels_active": 0.08098307291666666
+  },
+  {
+   "k": 384,
+   "exp_us": 1337,
+   "n_events": 27875,
+   "active_pix": 25226,
+   "crossings_per_active_pix": 1.1050107032426861,
+   "frac_pixels_active": 0.08211588541666667
+  },
+  {
+   "k": 385,
+   "exp_us": 1310,
+   "n_events": 25985,
+   "active_pix": 24048,
+   "crossings_per_active_pix": 1.080547238855622,
+   "frac_pixels_active": 0.07828125
+  },
+  {
+   "k": 386,
+   "exp_us": 1283,
+   "n_events": 25733,
+   "active_pix": 23710,
+   "crossings_per_active_pix": 1.0853226486714467,
+   "frac_pixels_active": 0.07718098958333333
+  },
+  {
+   "k": 387,
+   "exp_us": 1251,
+   "n_events": 25690,
+   "active_pix": 23472,
+   "crossings_per_active_pix": 1.0944955691888207,
+   "frac_pixels_active": 0.07640625
+  },
+  {
+   "k": 388,
+   "exp_us": 1224,
+   "n_events": 26030,
+   "active_pix": 23853,
+   "crossings_per_active_pix": 1.0912673458265207,
+   "frac_pixels_active": 0.077646484375
+  },
+  {
+   "k": 389,
+   "exp_us": 1192,
+   "n_events": 26389,
+   "active_pix": 24080,
+   "crossings_per_active_pix": 1.095888704318937,
+   "frac_pixels_active": 0.07838541666666667
+  },
+  {
+   "k": 390,
+   "exp_us": 1160,
+   "n_events": 26490,
+   "active_pix": 23910,
+   "crossings_per_active_pix": 1.107904642409034,
+   "frac_pixels_active": 0.07783203125
+  },
+  {
+   "k": 391,
+   "exp_us": 1128,
+   "n_events": 27085,
+   "active_pix": 24079,
+   "crossings_per_active_pix": 1.1248390713900078,
+   "frac_pixels_active": 0.07838216145833334
+  },
+  {
+   "k": 392,
+   "exp_us": 1096,
+   "n_events": 27093,
+   "active_pix": 24010,
+   "crossings_per_active_pix": 1.1284048313202832,
+   "frac_pixels_active": 0.07815755208333333
+  },
+  {
+   "k": 393,
+   "exp_us": 1064,
+   "n_events": 26626,
+   "active_pix": 23589,
+   "crossings_per_active_pix": 1.1287464496163466,
+   "frac_pixels_active": 0.076787109375
+  },
+  {
+   "k": 394,
+   "exp_us": 1032,
+   "n_events": 26613,
+   "active_pix": 23419,
+   "crossings_per_active_pix": 1.136384986549383,
+   "frac_pixels_active": 0.07623372395833333
+  },
+  {
+   "k": 395,
+   "exp_us": 1000,
+   "n_events": 26173,
+   "active_pix": 22948,
+   "crossings_per_active_pix": 1.1405351228865261,
+   "frac_pixels_active": 0.07470052083333334
+  },
+  {
+   "k": 396,
+   "exp_us": 973,
+   "n_events": 27086,
+   "active_pix": 23865,
+   "crossings_per_active_pix": 1.1349675256652,
+   "frac_pixels_active": 0.077685546875
+  },
+  {
+   "k": 397,
+   "exp_us": 946,
+   "n_events": 25992,
+   "active_pix": 22978,
+   "crossings_per_active_pix": 1.1311689442075028,
+   "frac_pixels_active": 0.07479817708333333
+  },
+  {
+   "k": 398,
+   "exp_us": 925,
+   "n_events": 25051,
+   "active_pix": 22502,
+   "crossings_per_active_pix": 1.1132788196604746,
+   "frac_pixels_active": 0.07324869791666666
+  },
+  {
+   "k": 399,
+   "exp_us": 898,
+   "n_events": 24884,
+   "active_pix": 22319,
+   "crossings_per_active_pix": 1.1149245037860118,
+   "frac_pixels_active": 0.07265299479166666
+  },
+  {
+   "k": 400,
+   "exp_us": 877,
+   "n_events": 23862,
+   "active_pix": 21578,
+   "crossings_per_active_pix": 1.1058485494485124,
+   "frac_pixels_active": 0.07024088541666666
+  },
+  {
+   "k": 401,
+   "exp_us": 855,
+   "n_events": 23341,
+   "active_pix": 20752,
+   "crossings_per_active_pix": 1.1247590593677719,
+   "frac_pixels_active": 0.06755208333333333
+  },
+  {
+   "k": 402,
+   "exp_us": 839,
+   "n_events": 22846,
+   "active_pix": 20280,
+   "crossings_per_active_pix": 1.1265285996055228,
+   "frac_pixels_active": 0.066015625
+  },
+  {
+   "k": 403,
+   "exp_us": 829,
+   "n_events": 22043,
+   "active_pix": 19634,
+   "crossings_per_active_pix": 1.1226953244372009,
+   "frac_pixels_active": 0.06391276041666667
+  },
+  {
+   "k": 404,
+   "exp_us": 834,
+   "n_events": 21041,
+   "active_pix": 19058,
+   "crossings_per_active_pix": 1.1040507923181866,
+   "frac_pixels_active": 0.062037760416666664
+  },
+  {
+   "k": 405,
+   "exp_us": 850,
+   "n_events": 18907,
+   "active_pix": 17338,
+   "crossings_per_active_pix": 1.0904948667666396,
+   "frac_pixels_active": 0.056438802083333336
+  },
+  {
+   "k": 406,
+   "exp_us": 877,
+   "n_events": 18649,
+   "active_pix": 17206,
+   "crossings_per_active_pix": 1.0838660932232942,
+   "frac_pixels_active": 0.05600911458333333
+  },
+  {
+   "k": 407,
+   "exp_us": 909,
+   "n_events": 18912,
+   "active_pix": 17262,
+   "crossings_per_active_pix": 1.0955856795272854,
+   "frac_pixels_active": 0.05619140625
+  },
+  {
+   "k": 408,
+   "exp_us": 941,
+   "n_events": 19720,
+   "active_pix": 17921,
+   "crossings_per_active_pix": 1.10038502315719,
+   "frac_pixels_active": 0.058336588541666665
+  },
+  {
+   "k": 409,
+   "exp_us": 973,
+   "n_events": 18932,
+   "active_pix": 17273,
+   "crossings_per_active_pix": 1.0960458519076015,
+   "frac_pixels_active": 0.05622721354166667
+  },
+  {
+   "k": 410,
+   "exp_us": 1005,
+   "n_events": 19305,
+   "active_pix": 17479,
+   "crossings_per_active_pix": 1.1044682190056638,
+   "frac_pixels_active": 0.056897786458333335
+  },
+  {
+   "k": 411,
+   "exp_us": 1026,
+   "n_events": 18708,
+   "active_pix": 17126,
+   "crossings_per_active_pix": 1.0923741679317995,
+   "frac_pixels_active": 0.055748697916666666
+  },
+  {
+   "k": 412,
+   "exp_us": 1048,
+   "n_events": 20523,
+   "active_pix": 18428,
+   "crossings_per_active_pix": 1.1136856956804861,
+   "frac_pixels_active": 0.05998697916666667
+  },
+  {
+   "k": 413,
+   "exp_us": 1069,
+   "n_events": 19786,
+   "active_pix": 17756,
+   "crossings_per_active_pix": 1.1143275512502815,
+   "frac_pixels_active": 0.05779947916666667
+  },
+  {
+   "k": 414,
+   "exp_us": 1091,
+   "n_events": 20332,
+   "active_pix": 18187,
+   "crossings_per_active_pix": 1.1179413867047892,
+   "frac_pixels_active": 0.059202473958333335
+  },
+  {
+   "k": 415,
+   "exp_us": 1117,
+   "n_events": 20698,
+   "active_pix": 18367,
+   "crossings_per_active_pix": 1.12691239723417,
+   "frac_pixels_active": 0.059788411458333336
+  },
+  {
+   "k": 416,
+   "exp_us": 1144,
+   "n_events": 19692,
+   "active_pix": 17734,
+   "crossings_per_active_pix": 1.1104093831058983,
+   "frac_pixels_active": 0.05772786458333334
+  },
+  {
+   "k": 417,
+   "exp_us": 1176,
+   "n_events": 20615,
+   "active_pix": 18386,
+   "crossings_per_active_pix": 1.1212335472642228,
+   "frac_pixels_active": 0.05985026041666667
+  },
+  {
+   "k": 418,
+   "exp_us": 1214,
+   "n_events": 21173,
+   "active_pix": 18547,
+   "crossings_per_active_pix": 1.1415862403623227,
+   "frac_pixels_active": 0.06037434895833333
+  },
+  {
+   "k": 419,
+   "exp_us": 1262,
+   "n_events": 21452,
+   "active_pix": 18374,
+   "crossings_per_active_pix": 1.1675193207793622,
+   "frac_pixels_active": 0.05981119791666667
+  },
+  {
+   "k": 420,
+   "exp_us": 1315,
+   "n_events": 19893,
+   "active_pix": 17287,
+   "crossings_per_active_pix": 1.1507491178342106,
+   "frac_pixels_active": 0.056272786458333335
+  },
+  {
+   "k": 421,
+   "exp_us": 1385,
+   "n_events": 18637,
+   "active_pix": 16504,
+   "crossings_per_active_pix": 1.129241396025206,
+   "frac_pixels_active": 0.053723958333333335
+  },
+  {
+   "k": 422,
+   "exp_us": 1454,
+   "n_events": 16511,
+   "active_pix": 15258,
+   "crossings_per_active_pix": 1.0821208546336347,
+   "frac_pixels_active": 0.04966796875
+  },
+  {
+   "k": 423,
+   "exp_us": 1534,
+   "n_events": 16180,
+   "active_pix": 14958,
+   "crossings_per_active_pix": 1.0816954138253778,
+   "frac_pixels_active": 0.04869140625
+  },
+  {
+   "k": 424,
+   "exp_us": 1609,
+   "n_events": 15908,
+   "active_pix": 14800,
+   "crossings_per_active_pix": 1.0748648648648649,
+   "frac_pixels_active": 0.048177083333333336
+  },
+  {
+   "k": 425,
+   "exp_us": 1684,
+   "n_events": 16048,
+   "active_pix": 14859,
+   "crossings_per_active_pix": 1.0800188437983713,
+   "frac_pixels_active": 0.048369140625
+  },
+  {
+   "k": 426,
+   "exp_us": 1748,
+   "n_events": 33794,
+   "active_pix": 28012,
+   "crossings_per_active_pix": 1.2064115379123233,
+   "frac_pixels_active": 0.09118489583333333
+  },
+  {
+   "k": 427,
+   "exp_us": 1807,
+   "n_events": 28644,
+   "active_pix": 24941,
+   "crossings_per_active_pix": 1.1484703901206847,
+   "frac_pixels_active": 0.08118815104166667
+  },
+  {
+   "k": 428,
+   "exp_us": 1860,
+   "n_events": 26409,
+   "active_pix": 23818,
+   "crossings_per_active_pix": 1.1087832731547569,
+   "frac_pixels_active": 0.07753255208333333
+  },
+  {
+   "k": 429,
+   "exp_us": 1909,
+   "n_events": 25977,
+   "active_pix": 24162,
+   "crossings_per_active_pix": 1.0751179538117706,
+   "frac_pixels_active": 0.07865234375
+  },
+  {
+   "k": 430,
+   "exp_us": 1957,
+   "n_events": 25821,
+   "active_pix": 23718,
+   "crossings_per_active_pix": 1.0886668353149507,
+   "frac_pixels_active": 0.07720703125
+  },
+  {
+   "k": 431,
+   "exp_us": 2005,
+   "n_events": 25702,
+   "active_pix": 23396,
+   "crossings_per_active_pix": 1.0985638570695846,
+   "frac_pixels_active": 0.07615885416666666
+  },
+  {
+   "k": 432,
+   "exp_us": 2080,
+   "n_events": 25475,
+   "active_pix": 23033,
+   "crossings_per_active_pix": 1.1060217948161333,
+   "frac_pixels_active": 0.07497721354166667
+  },
+  {
+   "k": 433,
+   "exp_us": 2154,
+   "n_events": 26047,
+   "active_pix": 23392,
+   "crossings_per_active_pix": 1.113500341997264,
+   "frac_pixels_active": 0.07614583333333333
+  },
+  {
+   "k": 434,
+   "exp_us": 2213,
+   "n_events": 25648,
+   "active_pix": 23071,
+   "crossings_per_active_pix": 1.1116986693251267,
+   "frac_pixels_active": 0.07510091145833334
+  },
+  {
+   "k": 435,
+   "exp_us": 2272,
+   "n_events": 25544,
+   "active_pix": 23224,
+   "crossings_per_active_pix": 1.0998966586290044,
+   "frac_pixels_active": 0.07559895833333333
+  },
+  {
+   "k": 436,
+   "exp_us": 2315,
+   "n_events": 25712,
+   "active_pix": 23381,
+   "crossings_per_active_pix": 1.099696334630683,
+   "frac_pixels_active": 0.07611002604166667
+  },
+  {
+   "k": 437,
+   "exp_us": 2358,
+   "n_events": 25421,
+   "active_pix": 22958,
+   "crossings_per_active_pix": 1.107282864361007,
+   "frac_pixels_active": 0.07473307291666667
+  },
+  {
+   "k": 438,
+   "exp_us": 2395,
+   "n_events": 27498,
+   "active_pix": 25087,
+   "crossings_per_active_pix": 1.0961055526766852,
+   "frac_pixels_active": 0.08166341145833333
+  },
+  {
+   "k": 439,
+   "exp_us": 2422,
+   "n_events": 26055,
+   "active_pix": 23724,
+   "crossings_per_active_pix": 1.0982549317147192,
+   "frac_pixels_active": 0.0772265625
+  },
+  {
+   "k": 440,
+   "exp_us": 2454,
+   "n_events": 23523,
+   "active_pix": 21618,
+   "crossings_per_active_pix": 1.08812101026922,
+   "frac_pixels_active": 0.07037109375
+  },
+  {
+   "k": 441,
+   "exp_us": 2486,
+   "n_events": 20733,
+   "active_pix": 19077,
+   "crossings_per_active_pix": 1.0868061015883002,
+   "frac_pixels_active": 0.062099609375
+  },
+  {
+   "k": 442,
+   "exp_us": 2518,
+   "n_events": 21755,
+   "active_pix": 19954,
+   "crossings_per_active_pix": 1.090257592462664,
+   "frac_pixels_active": 0.06495442708333334
+  },
+  {
+   "k": 443,
+   "exp_us": 2550,
+   "n_events": 22780,
+   "active_pix": 20908,
+   "crossings_per_active_pix": 1.089535106179453,
+   "frac_pixels_active": 0.06805989583333333
+  },
+  {
+   "k": 444,
+   "exp_us": 2577,
+   "n_events": 22133,
+   "active_pix": 20041,
+   "crossings_per_active_pix": 1.1043860086822015,
+   "frac_pixels_active": 0.06523763020833333
+  },
+  {
+   "k": 445,
+   "exp_us": 2593,
+   "n_events": 22539,
+   "active_pix": 20311,
+   "crossings_per_active_pix": 1.1096942543449362,
+   "frac_pixels_active": 0.06611653645833333
+  },
+  {
+   "k": 446,
+   "exp_us": 2614,
+   "n_events": 23424,
+   "active_pix": 20970,
+   "crossings_per_active_pix": 1.1170243204577968,
+   "frac_pixels_active": 0.06826171875
+  },
+  {
+   "k": 447,
+   "exp_us": 2604,
+   "n_events": 24403,
+   "active_pix": 21774,
+   "crossings_per_active_pix": 1.1207403325066594,
+   "frac_pixels_active": 0.07087890625
+  },
+  {
+   "k": 448,
+   "exp_us": 2609,
+   "n_events": 25258,
+   "active_pix": 22351,
+   "crossings_per_active_pix": 1.1300612947966533,
+   "frac_pixels_active": 0.07275716145833333
+  },
+  {
+   "k": 449,
+   "exp_us": 2609,
+   "n_events": 25180,
+   "active_pix": 21943,
+   "crossings_per_active_pix": 1.1475185708426376,
+   "frac_pixels_active": 0.07142903645833333
+  },
+  {
+   "k": 450,
+   "exp_us": 2609,
+   "n_events": 24692,
+   "active_pix": 21153,
+   "crossings_per_active_pix": 1.1673048740131424,
+   "frac_pixels_active": 0.068857421875
+  },
+  {
+   "k": 451,
+   "exp_us": 2609,
+   "n_events": 25400,
+   "active_pix": 21543,
+   "crossings_per_active_pix": 1.1790372742886321,
+   "frac_pixels_active": 0.070126953125
+  },
+  {
+   "k": 452,
+   "exp_us": 2609,
+   "n_events": 25986,
+   "active_pix": 21664,
+   "crossings_per_active_pix": 1.1995014771048744,
+   "frac_pixels_active": 0.07052083333333334
+  },
+  {
+   "k": 453,
+   "exp_us": 2609,
+   "n_events": 26467,
+   "active_pix": 21715,
+   "crossings_per_active_pix": 1.2188349067464885,
+   "frac_pixels_active": 0.07068684895833334
+  },
+  {
+   "k": 454,
+   "exp_us": 2587,
+   "n_events": 27318,
+   "active_pix": 22243,
+   "crossings_per_active_pix": 1.2281616688396348,
+   "frac_pixels_active": 0.07240559895833333
+  },
+  {
+   "k": 455,
+   "exp_us": 2566,
+   "n_events": 28689,
+   "active_pix": 22986,
+   "crossings_per_active_pix": 1.2481075437222657,
+   "frac_pixels_active": 0.07482421875
+  },
+  {
+   "k": 456,
+   "exp_us": 2545,
+   "n_events": 30295,
+   "active_pix": 23827,
+   "crossings_per_active_pix": 1.2714567507449532,
+   "frac_pixels_active": 0.07756184895833333
+  },
+  {
+   "k": 457,
+   "exp_us": 2513,
+   "n_events": 31743,
+   "active_pix": 24390,
+   "crossings_per_active_pix": 1.3014760147601476,
+   "frac_pixels_active": 0.07939453125
+  },
+  {
+   "k": 458,
+   "exp_us": 2481,
+   "n_events": 30634,
+   "active_pix": 24401,
+   "crossings_per_active_pix": 1.255440350805295,
+   "frac_pixels_active": 0.07943033854166667
+  },
+  {
+   "k": 459,
+   "exp_us": 2443,
+   "n_events": 28948,
+   "active_pix": 23581,
+   "crossings_per_active_pix": 1.2275984903099952,
+   "frac_pixels_active": 0.07676106770833334
+  },
+  {
+   "k": 460,
+   "exp_us": 2406,
+   "n_events": 29620,
+   "active_pix": 23781,
+   "crossings_per_active_pix": 1.2455321475127203,
+   "frac_pixels_active": 0.077412109375
+  },
+  {
+   "k": 461,
+   "exp_us": 2363,
+   "n_events": 31616,
+   "active_pix": 24974,
+   "crossings_per_active_pix": 1.265956594858653,
+   "frac_pixels_active": 0.08129557291666667
+  },
+  {
+   "k": 462,
+   "exp_us": 2320,
+   "n_events": 33627,
+   "active_pix": 26341,
+   "crossings_per_active_pix": 1.2766030143122888,
+   "frac_pixels_active": 0.08574544270833333
+  },
+  {
+   "k": 463,
+   "exp_us": 2277,
+   "n_events": 34065,
+   "active_pix": 26823,
+   "crossings_per_active_pix": 1.26999217089811,
+   "frac_pixels_active": 0.087314453125
+  },
+  {
+   "k": 464,
+   "exp_us": 2235,
+   "n_events": 33980,
+   "active_pix": 26645,
+   "crossings_per_active_pix": 1.2752861700131357,
+   "frac_pixels_active": 0.08673502604166666
+  },
+  {
+   "k": 465,
+   "exp_us": 2197,
+   "n_events": 34313,
+   "active_pix": 26927,
+   "crossings_per_active_pix": 1.2742971738403832,
+   "frac_pixels_active": 0.08765299479166666
+  },
+  {
+   "k": 466,
+   "exp_us": 2160,
+   "n_events": 33290,
+   "active_pix": 25555,
+   "crossings_per_active_pix": 1.3026804930541969,
+   "frac_pixels_active": 0.08318684895833334
+  },
+  {
+   "k": 467,
+   "exp_us": 2117,
+   "n_events": 31507,
+   "active_pix": 24948,
+   "crossings_per_active_pix": 1.2629068462401796,
+   "frac_pixels_active": 0.0812109375
+  },
+  {
+   "k": 468,
+   "exp_us": 2080,
+   "n_events": 28455,
+   "active_pix": 23319,
+   "crossings_per_active_pix": 1.2202495818860157,
+   "frac_pixels_active": 0.075908203125
+  },
+  {
+   "k": 469,
+   "exp_us": 2037,
+   "n_events": 28582,
+   "active_pix": 23475,
+   "crossings_per_active_pix": 1.2175505857294995,
+   "frac_pixels_active": 0.076416015625
+  },
+  {
+   "k": 470,
+   "exp_us": 2005,
+   "n_events": 29560,
+   "active_pix": 23578,
+   "crossings_per_active_pix": 1.2537110866061583,
+   "frac_pixels_active": 0.07675130208333333
+  },
+  {
+   "k": 471,
+   "exp_us": 1978,
+   "n_events": 29340,
+   "active_pix": 23305,
+   "crossings_per_active_pix": 1.258957305299292,
+   "frac_pixels_active": 0.07586263020833334
+  },
+  {
+   "k": 472,
+   "exp_us": 1957,
+   "n_events": 27614,
+   "active_pix": 22446,
+   "crossings_per_active_pix": 1.2302414684130802,
+   "frac_pixels_active": 0.07306640625
+  },
+  {
+   "k": 473,
+   "exp_us": 1935,
+   "n_events": 25348,
+   "active_pix": 21222,
+   "crossings_per_active_pix": 1.194420883988314,
+   "frac_pixels_active": 0.06908203125
+  },
+  {
+   "k": 474,
+   "exp_us": 1914,
+   "n_events": 24785,
+   "active_pix": 21383,
+   "crossings_per_active_pix": 1.1590983491558715,
+   "frac_pixels_active": 0.06960611979166667
+  },
+  {
+   "k": 475,
+   "exp_us": 1887,
+   "n_events": 25273,
+   "active_pix": 21515,
+   "crossings_per_active_pix": 1.174668835696026,
+   "frac_pixels_active": 0.07003580729166667
+  },
+  {
+   "k": 476,
+   "exp_us": 1860,
+   "n_events": 25617,
+   "active_pix": 21903,
+   "crossings_per_active_pix": 1.169565812902342,
+   "frac_pixels_active": 0.071298828125
+  },
+  {
+   "k": 477,
+   "exp_us": 1834,
+   "n_events": 25732,
+   "active_pix": 21920,
+   "crossings_per_active_pix": 1.1739051094890511,
+   "frac_pixels_active": 0.07135416666666666
+  },
+  {
+   "k": 478,
+   "exp_us": 1807,
+   "n_events": 26481,
+   "active_pix": 22495,
+   "crossings_per_active_pix": 1.177194932207157,
+   "frac_pixels_active": 0.07322591145833333
+  },
+  {
+   "k": 479,
+   "exp_us": 1791,
+   "n_events": 26459,
+   "active_pix": 22744,
+   "crossings_per_active_pix": 1.1633397819205065,
+   "frac_pixels_active": 0.07403645833333333
+  },
+  {
+   "k": 480,
+   "exp_us": 1780,
+   "n_events": 26395,
+   "active_pix": 22592,
+   "crossings_per_active_pix": 1.168333923512748,
+   "frac_pixels_active": 0.07354166666666667
+  },
+  {
+   "k": 481,
+   "exp_us": 1770,
+   "n_events": 27594,
+   "active_pix": 23002,
+   "crossings_per_active_pix": 1.1996348143639683,
+   "frac_pixels_active": 0.07487630208333333
+  },
+  {
+   "k": 482,
+   "exp_us": 1775,
+   "n_events": 29426,
+   "active_pix": 23991,
+   "crossings_per_active_pix": 1.2265432870659831,
+   "frac_pixels_active": 0.078095703125
+  },
+  {
+   "k": 483,
+   "exp_us": 1775,
+   "n_events": 31589,
+   "active_pix": 24988,
+   "crossings_per_active_pix": 1.2641668000640307,
+   "frac_pixels_active": 0.08134114583333334
+  },
+  {
+   "k": 484,
+   "exp_us": 1775,
+   "n_events": 34060,
+   "active_pix": 25624,
+   "crossings_per_active_pix": 1.3292226038089292,
+   "frac_pixels_active": 0.08341145833333333
+  },
+  {
+   "k": 485,
+   "exp_us": 1775,
+   "n_events": 33267,
+   "active_pix": 24873,
+   "crossings_per_active_pix": 1.3374743697985767,
+   "frac_pixels_active": 0.080966796875
+  },
+  {
+   "k": 486,
+   "exp_us": 1775,
+   "n_events": 26856,
+   "active_pix": 21288,
+   "crossings_per_active_pix": 1.2615558060879368,
+   "frac_pixels_active": 0.069296875
+  },
+  {
+   "k": 487,
+   "exp_us": 1786,
+   "n_events": 25455,
+   "active_pix": 20394,
+   "crossings_per_active_pix": 1.2481612238893793,
+   "frac_pixels_active": 0.06638671875
+  },
+  {
+   "k": 488,
+   "exp_us": 1802,
+   "n_events": 22812,
+   "active_pix": 18956,
+   "crossings_per_active_pix": 1.2034184427094323,
+   "frac_pixels_active": 0.06170572916666667
+  },
+  {
+   "k": 489,
+   "exp_us": 1823,
+   "n_events": 22596,
+   "active_pix": 19274,
+   "crossings_per_active_pix": 1.172356542492477,
+   "frac_pixels_active": 0.06274088541666667
+  },
+  {
+   "k": 490,
+   "exp_us": 1850,
+   "n_events": 22887,
+   "active_pix": 19609,
+   "crossings_per_active_pix": 1.1671681370799123,
+   "frac_pixels_active": 0.06383138020833333
+  },
+  {
+   "k": 491,
+   "exp_us": 1876,
+   "n_events": 23267,
+   "active_pix": 19605,
+   "crossings_per_active_pix": 1.1867890844172404,
+   "frac_pixels_active": 0.063818359375
+  },
+  {
+   "k": 492,
+   "exp_us": 1903,
+   "n_events": 24614,
+   "active_pix": 20455,
+   "crossings_per_active_pix": 1.203324370569543,
+   "frac_pixels_active": 0.06658528645833334
+  },
+  {
+   "k": 493,
+   "exp_us": 1930,
+   "n_events": 24947,
+   "active_pix": 20320,
+   "crossings_per_active_pix": 1.2277066929133857,
+   "frac_pixels_active": 0.06614583333333333
+  },
+  {
+   "k": 494,
+   "exp_us": 1957,
+   "n_events": 25069,
+   "active_pix": 19829,
+   "crossings_per_active_pix": 1.264259418024106,
+   "frac_pixels_active": 0.06454752604166666
+  },
+  {
+   "k": 495,
+   "exp_us": 1978,
+   "n_events": 25990,
+   "active_pix": 20183,
+   "crossings_per_active_pix": 1.2877173859188427,
+   "frac_pixels_active": 0.06569986979166667
+  },
+  {
+   "k": 496,
+   "exp_us": 1989,
+   "n_events": 26390,
+   "active_pix": 20019,
+   "crossings_per_active_pix": 1.3182476647185175,
+   "frac_pixels_active": 0.065166015625
+  },
+  {
+   "k": 497,
+   "exp_us": 1983,
+   "n_events": 28646,
+   "active_pix": 21444,
+   "crossings_per_active_pix": 1.3358515202387615,
+   "frac_pixels_active": 0.0698046875
+  },
+  {
+   "k": 498,
+   "exp_us": 1983,
+   "n_events": 29958,
+   "active_pix": 21323,
+   "crossings_per_active_pix": 1.404961778361394,
+   "frac_pixels_active": 0.06941080729166667
+  },
+  {
+   "k": 499,
+   "exp_us": 1983,
+   "n_events": 33727,
+   "active_pix": 21980,
+   "crossings_per_active_pix": 1.5344404003639673,
+   "frac_pixels_active": 0.07154947916666667
+  },
+  {
+   "k": 500,
+   "exp_us": 1973,
+   "n_events": 30803,
+   "active_pix": 20809,
+   "crossings_per_active_pix": 1.480272958815897,
+   "frac_pixels_active": 0.06773763020833333
+  },
+  {
+   "k": 501,
+   "exp_us": 1962,
+   "n_events": 22644,
+   "active_pix": 18925,
+   "crossings_per_active_pix": 1.1965125495376485,
+   "frac_pixels_active": 0.061604817708333336
+  },
+  {
+   "k": 502,
+   "exp_us": 1951,
+   "n_events": 21922,
+   "active_pix": 18378,
+   "crossings_per_active_pix": 1.1928392643377952,
+   "frac_pixels_active": 0.05982421875
+  },
+  {
+   "k": 503,
+   "exp_us": 1957,
+   "n_events": 21006,
+   "active_pix": 17849,
+   "crossings_per_active_pix": 1.1768726539301921,
+   "frac_pixels_active": 0.05810221354166667
+  },
+  {
+   "k": 504,
+   "exp_us": 1957,
+   "n_events": 20778,
+   "active_pix": 18106,
+   "crossings_per_active_pix": 1.1475753893736882,
+   "frac_pixels_active": 0.05893880208333333
+  },
+  {
+   "k": 505,
+   "exp_us": 1957,
+   "n_events": 19898,
+   "active_pix": 17497,
+   "crossings_per_active_pix": 1.1372235240326913,
+   "frac_pixels_active": 0.05695638020833333
+  },
+  {
+   "k": 506,
+   "exp_us": 1957,
+   "n_events": 19894,
+   "active_pix": 17447,
+   "crossings_per_active_pix": 1.1402533386828682,
+   "frac_pixels_active": 0.056793619791666666
+  },
+  {
+   "k": 507,
+   "exp_us": 1957,
+   "n_events": 19633,
+   "active_pix": 17276,
+   "crossings_per_active_pix": 1.136432044454735,
+   "frac_pixels_active": 0.056236979166666666
+  },
+  {
+   "k": 508,
+   "exp_us": 1946,
+   "n_events": 20002,
+   "active_pix": 17752,
+   "crossings_per_active_pix": 1.1267462821090581,
+   "frac_pixels_active": 0.05778645833333333
+  },
+  {
+   "k": 509,
+   "exp_us": 1930,
+   "n_events": 18630,
+   "active_pix": 16100,
+   "crossings_per_active_pix": 1.1571428571428573,
+   "frac_pixels_active": 0.052408854166666664
+  },
+  {
+   "k": 510,
+   "exp_us": 1909,
+   "n_events": 19481,
+   "active_pix": 16585,
+   "crossings_per_active_pix": 1.1746156165209527,
+   "frac_pixels_active": 0.05398763020833333
+  },
+  {
+   "k": 511,
+   "exp_us": 1887,
+   "n_events": 19090,
+   "active_pix": 15985,
+   "crossings_per_active_pix": 1.1942446043165467,
+   "frac_pixels_active": 0.05203450520833333
+  },
+  {
+   "k": 512,
+   "exp_us": 1860,
+   "n_events": 18899,
+   "active_pix": 15955,
+   "crossings_per_active_pix": 1.1845189595738013,
+   "frac_pixels_active": 0.05193684895833333
+  },
+  {
+   "k": 513,
+   "exp_us": 1823,
+   "n_events": 20173,
+   "active_pix": 17216,
+   "crossings_per_active_pix": 1.1717588289962826,
+   "frac_pixels_active": 0.05604166666666666
+  },
+  {
+   "k": 514,
+   "exp_us": 1786,
+   "n_events": 21439,
+   "active_pix": 18431,
+   "crossings_per_active_pix": 1.163203298790082,
+   "frac_pixels_active": 0.05999674479166667
+  },
+  {
+   "k": 515,
+   "exp_us": 1737,
+   "n_events": 22182,
+   "active_pix": 18865,
+   "crossings_per_active_pix": 1.1758282533792739,
+   "frac_pixels_active": 0.06140950520833333
+  },
+  {
+   "k": 516,
+   "exp_us": 1684,
+   "n_events": 11489,
+   "active_pix": 10949,
+   "crossings_per_active_pix": 1.0493195725637043,
+   "frac_pixels_active": 0.03564127604166667
+  },
+  {
+   "k": 517,
+   "exp_us": 1631,
+   "n_events": 12346,
+   "active_pix": 11672,
+   "crossings_per_active_pix": 1.0577450308430432,
+   "frac_pixels_active": 0.037994791666666666
+  },
+  {
+   "k": 518,
+   "exp_us": 1572,
+   "n_events": 12873,
+   "active_pix": 12220,
+   "crossings_per_active_pix": 1.0534369885433714,
+   "frac_pixels_active": 0.039778645833333334
+  },
+  {
+   "k": 519,
+   "exp_us": 1513,
+   "n_events": 12770,
+   "active_pix": 11948,
+   "crossings_per_active_pix": 1.06879812520924,
+   "frac_pixels_active": 0.03889322916666667
+  },
+  {
+   "k": 520,
+   "exp_us": 1449,
+   "n_events": 13553,
+   "active_pix": 12462,
+   "crossings_per_active_pix": 1.08754614026641,
+   "frac_pixels_active": 0.04056640625
+  },
+  {
+   "k": 521,
+   "exp_us": 1385,
+   "n_events": 14362,
+   "active_pix": 13377,
+   "crossings_per_active_pix": 1.0736338491440531,
+   "frac_pixels_active": 0.043544921875
+  },
+  {
+   "k": 522,
+   "exp_us": 1326,
+   "n_events": 14470,
+   "active_pix": 13620,
+   "crossings_per_active_pix": 1.0624082232011747,
+   "frac_pixels_active": 0.0443359375
+  },
+  {
+   "k": 523,
+   "exp_us": 1267,
+   "n_events": 15423,
+   "active_pix": 14425,
+   "crossings_per_active_pix": 1.0691854419410745,
+   "frac_pixels_active": 0.046956380208333336
+  },
+  {
+   "k": 524,
+   "exp_us": 1214,
+   "n_events": 17940,
+   "active_pix": 16636,
+   "crossings_per_active_pix": 1.078384226977639,
+   "frac_pixels_active": 0.05415364583333333
+  },
+  {
+   "k": 525,
+   "exp_us": 1165,
+   "n_events": 18861,
+   "active_pix": 17405,
+   "crossings_per_active_pix": 1.083654122378627,
+   "frac_pixels_active": 0.056656901041666666
+  },
+  {
+   "k": 526,
+   "exp_us": 1112,
+   "n_events": 19048,
+   "active_pix": 17678,
+   "crossings_per_active_pix": 1.0774974544631746,
+   "frac_pixels_active": 0.05754557291666667
+  },
+  {
+   "k": 527,
+   "exp_us": 1064,
+   "n_events": 15102,
+   "active_pix": 13866,
+   "crossings_per_active_pix": 1.0891389009086976,
+   "frac_pixels_active": 0.04513671875
+  },
+  {
+   "k": 528,
+   "exp_us": 1016,
+   "n_events": 13600,
+   "active_pix": 12624,
+   "crossings_per_active_pix": 1.0773130544993663,
+   "frac_pixels_active": 0.04109375
+  },
+  {
+   "k": 529,
+   "exp_us": 973,
+   "n_events": 15554,
+   "active_pix": 14778,
+   "crossings_per_active_pix": 1.0525104885640817,
+   "frac_pixels_active": 0.04810546875
+  },
+  {
+   "k": 530,
+   "exp_us": 930,
+   "n_events": 15538,
+   "active_pix": 14794,
+   "crossings_per_active_pix": 1.050290658375017,
+   "frac_pixels_active": 0.04815755208333333
+  },
+  {
+   "k": 531,
+   "exp_us": 898,
+   "n_events": 12907,
+   "active_pix": 12162,
+   "crossings_per_active_pix": 1.0612563723071864,
+   "frac_pixels_active": 0.03958984375
+  },
+  {
+   "k": 532,
+   "exp_us": 871,
+   "n_events": 12853,
+   "active_pix": 12144,
+   "crossings_per_active_pix": 1.0583827404479578,
+   "frac_pixels_active": 0.03953125
+  },
+  {
+   "k": 533,
+   "exp_us": 845,
+   "n_events": 14038,
+   "active_pix": 13239,
+   "crossings_per_active_pix": 1.060351990331596,
+   "frac_pixels_active": 0.043095703125
+  },
+  {
+   "k": 534,
+   "exp_us": 823,
+   "n_events": 15203,
+   "active_pix": 14272,
+   "crossings_per_active_pix": 1.0652326233183858,
+   "frac_pixels_active": 0.04645833333333333
+  },
+  {
+   "k": 535,
+   "exp_us": 802,
+   "n_events": 15351,
+   "active_pix": 14251,
+   "crossings_per_active_pix": 1.0771875657848573,
+   "frac_pixels_active": 0.04638997395833333
+  },
+  {
+   "k": 536,
+   "exp_us": 786,
+   "n_events": 16275,
+   "active_pix": 14937,
+   "crossings_per_active_pix": 1.089576220124523,
+   "frac_pixels_active": 0.048623046875
+  }
+ ]
+}

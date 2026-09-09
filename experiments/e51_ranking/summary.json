@@ -1,0 +1,149 @@
+{
+ "rows": [
+  {
+   "stratum": "all moving",
+   "order": [
+    "rvt-b",
+    "rvt-s",
+    "rvt-t",
+    "s5vit-base",
+    "s5vit-small"
+   ],
+   "order_aligned": [
+    "rvt-b",
+    "rvt-s",
+    "rvt-t",
+    "s5vit-base",
+    "s5vit-small"
+   ],
+   "same": true,
+   "min_gap": 0.47176110278663863,
+   "max_gain": 0.08503837303573403,
+   "ratio": 0.18025727965578792,
+   "argmax_ms": {
+    "rvt-t": -10.0,
+    "rvt-s": -5.0,
+    "rvt-b": -10.0,
+    "s5vit-small": -15.0,
+    "s5vit-base": -5.0
+   }
+  },
+  {
+   "stratum": "10-25 px/s",
+   "order": [
+    "s5vit-base",
+    "rvt-b",
+    "rvt-t",
+    "s5vit-small",
+    "rvt-s"
+   ],
+   "order_aligned": [
+    "s5vit-base",
+    "rvt-b",
+    "rvt-t",
+    "s5vit-small",
+    "rvt-s"
+   ],
+   "same": true,
+   "min_gap": 0.3313773368664563,
+   "max_gain": 0.13560775028594874,
+   "ratio": 0.40922457633425335,
+   "argmax_ms": {
+    "rvt-t": -10.0,
+    "rvt-s": -5.0,
+    "rvt-b": -10.0,
+    "s5vit-small": -15.0,
+    "s5vit-base": -5.0
+   }
+  },
+  {
+   "stratum": "25-50 px/s",
+   "order": [
+    "s5vit-base",
+    "rvt-b",
+    "s5vit-small",
+    "rvt-s",
+    "rvt-t"
+   ],
+   "order_aligned": [
+    "s5vit-base",
+    "rvt-b",
+    "s5vit-small",
+    "rvt-s",
+    "rvt-t"
+   ],
+   "same": true,
+   "min_gap": 0.11204462627189549,
+   "max_gain": 0.058324416057520256,
+   "ratio": 0.5205463037199666,
+   "argmax_ms": {
+    "rvt-t": -10.0,
+    "rvt-s": -0.0,
+    "rvt-b": -15.0,
+    "s5vit-small": -15.0,
+    "s5vit-base": -5.0
+   }
+  },
+  {
+   "stratum": ">50 px/s",
+   "order": [
+    "rvt-b",
+    "rvt-t",
+    "s5vit-small",
+    "rvt-s",
+    "s5vit-base"
+   ],
+   "order_aligned": [
+    "rvt-b",
+    "rvt-t",
+    "s5vit-small",
+    "rvt-s",
+    "s5vit-base"
+   ],
+   "same": true,
+   "min_gap": 0.20853553110167788,
+   "max_gain": 0.06522141485729993,
+   "ratio": 0.312759243054361,
+   "argmax_ms": {
+    "rvt-t": -5.0,
+    "rvt-s": -0.0,
+    "rvt-b": -10.0,
+    "s5vit-small": -15.0,
+    "s5vit-base": -15.0
+   }
+  }
+ ],
+ "worst_ratio": 0.5205463037199666,
+ "rank_by_stratum": {
+  "rvt-t": {
+   "all moving": 3,
+   "10-25 px/s": 3,
+   "25-50 px/s": 5,
+   ">50 px/s": 2
+  },
+  "rvt-s": {
+   "all moving": 2,
+   "10-25 px/s": 5,
+   "25-50 px/s": 4,
+   ">50 px/s": 4
+  },
+  "rvt-b": {
+   "all moving": 1,
+   "10-25 px/s": 2,
+   "25-50 px/s": 2,
+   ">50 px/s": 1
+  },
+  "s5vit-small": {
+   "all moving": 5,
+   "10-25 px/s": 4,
+   "25-50 px/s": 3,
+   ">50 px/s": 3
+  },
+  "s5vit-base": {
+   "all moving": 4,
+   "10-25 px/s": 1,
+   "25-50 px/s": 1,
+   ">50 px/s": 5
+  }
+ }
+}

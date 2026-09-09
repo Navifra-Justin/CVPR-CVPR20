@@ -1,0 +1,26 @@
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+zurich_city_00_a     BOX +0.2406 (n=2734, 12.6SE)   CORE +0.2417 (n=1681, 9.9SE)   RING +0.2694 (n=2269, 12.8SE)
+zurich_city_09_a     BOX +0.1518 (n=6627, 12.4SE)   CORE +0.1229 (n=5336, 9.0SE)   RING +0.0756 (n=6425, 6.1SE)
+zurich_city_10_a     BOX +0.1191 (n=3450, 7.0SE)   CORE +0.0879 (n=2055, 4.0SE)   RING +0.0453 (n=3292, 2.6SE)
+zurich_city_02_a     BOX +0.0002 (n=600, 0.0SE)   CORE +0.0106 (n=213, 0.2SE)   RING +0.0735 (n=589, 1.8SE)
+
+verdict: CORE > BOX > RING means the object carries it; RING ~ BOX means ego-motion.
+WROTE

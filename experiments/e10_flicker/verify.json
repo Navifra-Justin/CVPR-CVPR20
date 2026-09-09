@@ -1,0 +1,36 @@
+{
+ "NIGHT": {
+  "peak_over_continuum_bin500": 10840.6,
+  "top_line_Hz_bin500": 100.0,
+  "peak_over_continuum_bin200": 10843.9,
+  "top_line_Hz_bin200": 100.0,
+  "live_pixels": 114279,
+  "live_frac": 0.372,
+  "mod_median": 0.1308,
+  "mod_p90": 0.2605,
+  "mod_p99": 0.3793,
+  "pow_top0.001": 9.4,
+  "ev_top0.001": 1.1,
+  "pow_top0.01": 44.6,
+  "ev_top0.01": 8.6,
+  "pow_top0.05": 72.5,
+  "ev_top0.05": 24.9
+ },
+ "DAY": {
+  "peak_over_continuum_bin500": 6.6,
+  "top_line_Hz_bin500": 103.0,
+  "peak_over_continuum_bin200": 6.5,
+  "top_line_Hz_bin200": 103.0,
+  "live_pixels": 65159,
+  "live_frac": 0.2121,
+  "mod_median": 0.0867,
+  "mod_p90": 0.17,
+  "mod_p99": 0.2544,
+  "pow_top0.001": 2.5,
+  "ev_top0.001": 0.7,
+  "pow_top0.01": 14.1,
+  "ev_top0.01": 5.9,
+  "pow_top0.05": 38.5,
+  "ev_top0.05": 23.2
+ }
+}

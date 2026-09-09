@@ -1,0 +1,24 @@
+{
+ "frames": 1134,
+ "median_modulation": 0.46578387940866484,
+ "arms": {
+  "RAW": {
+   "sd": 206.6,
+   "null": 93.0,
+   "excess": 183.6,
+   "frac": 0.9012
+  },
+  "PHASESUB (100 Hz removed)": {
+   "sd": 328.0,
+   "null": 93.0,
+   "excess": 311.2,
+   "frac": 0.9656
+  },
+  "SHAMSUB (137 Hz removed)": {
+   "sd": 212.1,
+   "null": 93.0,
+   "excess": 185.2,
+   "frac": 0.9109
+  }
+ }
+}

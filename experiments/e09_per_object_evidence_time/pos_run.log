@@ -1,0 +1,40 @@
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+{
+ "seq": "zurich_city_09_a",
+ "frames_with_labels": 1557,
+ "frames_matched": 1555,
+ "frames_used": 1133,
+ "exposure_us_med": 14996.0,
+ "objects_per_frame_med": 6.0,
+ "mean_tbar_us_med": -862.2544809977213,
+ "sd_tbar_us_med": 229.51496471892347,
+ "sd_tbar_us_p90": 333.47727255704876,
+ "sd_null_us_med": 93.35989474431943,
+ "sd_null_us_p90": 145.7244190281627,
+ "ptp_us_med": 601.5890502929688,
+ "ptp_us_p90": 955.9712203979494,
+ "frac_frames_excess_positive": 0.9179170344218888,
+ "sd_rand_us_med": 338.35591512895337,
+ "sd_rand_null_us_med": 134.3574485209947,
+ "n_frames_with_rand": 1120,
+ "excess_sd_us_from_median_var": 208.80835650743626,
+ "excess_sd_us_from_mean_var": 227.29774953391774
+}

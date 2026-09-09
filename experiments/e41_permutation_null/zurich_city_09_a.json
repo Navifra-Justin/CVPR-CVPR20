@@ -1,0 +1,14 @@
+{
+ "seq": "zurich_city_09_a",
+ "frames": 1134,
+ "nperm": 200,
+ "obs": 206.629843825323,
+ "analytic": 92.96996341244287,
+ "permutation": 78.63330030893569,
+ "excess_analytic": 184.5331359468169,
+ "excess_permutation": 191.08295696320516,
+ "inflation": 0.8457925272068205,
+ "frac_above_perm": 0.9409171075837742,
+ "rand_obs": 339.42784317173545,
+ "rand_perm": 113.32746239156806
+}

@@ -1,0 +1,23 @@
+specification                                       tau (ms)        placebo (ms)
+  per-sequence bias only                             +9.91+- 5.73     -6.43+- 1.73
+  reported: h,row on y; col,w on x                   -2.40+- 7.12     -2.66+- 1.70
+  saturated: all four on BOTH axes                   -3.62+- 7.41     -1.59+- 1.62
+  all four projected on the travel direction         +8.64+- 6.05     -6.24+- 1.73
+  saturated + all four along travel                  -1.47+- 7.30     -1.61+- 1.62
+
+drop one control at a time from the reported set
+  without height on y                                -2.40+- 7.10     -4.31+- 1.54
+  without row on y                                   -2.67+- 7.06     -4.06+- 1.69
+  without column on x                               +11.10+- 5.91     -6.42+- 2.17
+  without width on x                                 -2.36+- 7.02     -2.66+- 1.69
+
+the saturated set under subsets of the data
+  saturated, IoU >= 0.5  (n=21877)                   -2.02+- 6.23     -0.48+- 1.51
+  saturated, IoU >= 0.7  (n=19629)                   +0.49+- 4.67     -1.79+- 1.34
+  saturated, |v| >= 5 px/s  (n=11881)                -4.72+- 8.95     -0.41+- 1.50
+  saturated, |v| >= 15 px/s  (n=5005)                -9.78+-12.34     +0.35+- 1.55
+  saturated, box side >= 40 px  (n=11998)            +4.36+- 8.95     -1.25+- 1.97
+
+spread of tau across every specification with geometric controls: -9.78 to +11.10 ms
+the influence centroid to be excluded is +24.94 ms; the largest value here is +11.10
+WROTE experiments/e27_rows/saturate.json

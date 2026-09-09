@@ -1,0 +1,28 @@
+rows 22534  sequences 376  median |v| 5.4 px/s
+
+ARM 1 - inject a lag of tau_inj by adding -tau_inj*v to the observed residual
+        recovery = (tau_hat with injection) - (tau_hat without)
+   tau_inj         minimal: tau_hat   recovered     full controls: tau_hat   recovered
+     +0.0      +14.62+- 5.47         +0.00 (  nan)       -2.40+- 7.18         +0.00 (  nan)
+    +10.0      +24.62+- 5.47        +10.00 (1.000)       +7.60+- 7.18        +10.00 (1.000)
+    +25.0      +39.62+- 5.47        +25.00 (1.000)      +22.60+- 7.18        +25.00 (1.000)
+    +50.0      +64.62+- 5.47        +50.00 (1.000)      +47.60+- 7.18        +50.00 (1.000)
+   +100.0     +114.62+- 5.47       +100.00 (1.000)      +97.60+- 7.18       +100.00 (1.000)
+
+ARM 2 - inject a purely geometric displacement, gamma * height along image y
+        the controls exist to absorb this; tau must not move
+  gamma=0.00   minimal tau   +14.62   full-control tau    -2.40   minimal placebo    -7.75   full placebo    -2.66
+  gamma=0.02   minimal tau   +14.87   full-control tau    -2.40   minimal placebo    -7.70   full placebo    -2.66
+  gamma=0.05   minimal tau   +15.25   full-control tau    -2.40   minimal placebo    -7.64   full placebo    -2.66
+
+ARM 3 - the sign-flip control under the full control set
+  velocity = fwd       tau =   -20.60 +-  6.36 ms   placebo =    -1.99 +-  1.39 ms
+  velocity = back      tau =   +14.38 +-  5.97 ms   placebo =    -2.10 +-  1.50 ms
+  velocity = centered  tau =    -2.40 +-  7.18 ms   placebo =    -2.66 +-  1.71 ms
+
+ARM 4 - the hypothesis that the output sits at the evidence centroid
+  H: tau =  24.94 ms (evidence centroid (E17)   ) ->  3.81 SE from the measurement
+  H: tau =  25.00 ms (uniform window centroid   ) ->  3.82 SE from the measurement
+  H: tau =   0.00 ms (the label instant         ) ->  0.33 SE from the measurement
+
+WROTE experiments/e27_rows/injection.json

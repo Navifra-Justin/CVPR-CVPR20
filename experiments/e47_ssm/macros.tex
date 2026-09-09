@@ -1,0 +1,29 @@
+
+%% ===== E47/E48 measured 2026-09-08 (experiments/e47_ssm, experiments/e48_matched_frames):
+%% the newest-window bin arm on TWO architectures over the same 12 Gen1 validation
+%% sequences and the same frames. SSM-ViT (Zubic et al., CVPR 2024) is a fork of the RVT
+%% repository in which each stage's ConvLSTM is replaced by an S5 state space layer; it
+%% distributes RVT's own preprocessed Gen1 and builds its window boundaries with the same
+%% line of the same script. Both released checkpoints load with 0 missing and 0 unexpected
+%% keys. E48 re-runs RVT's three capacities on E47's frames so the two families are
+%% measured on identical samples; its rvt-t agrees with E45. SSM-ViT is driven the way its
+%% released evaluation drives it, a chunk of windows at a time with the detection head
+%% applied per position, and measured at positions carrying half a chunk of history or more
+%% (E47b); the one-window-at-a-time convention is withdrawn, see withdrawn_L1/WHY.md.
+\newcommand{\archCkpts}{5}            %% released checkpoints measured
+\newcommand{\archOther}{4}            %% the ones Fig. 2a draws besides rvt-t
+\newcommand{\archSpan}{0.96}       %% ms, range of all their centroids
+\newcommand{\archLo}{\ensuremath{-24.72}}   \newcommand{\archHi}{\ensuremath{-23.76}}
+\newcommand{\ssmParamsS}{9.68}  \newcommand{\ssmParamsB}{18.19}
+\newcommand{\ssmBinS}{\ensuremath{-23.76}}
+\newcommand{\ssmBinB}{\ensuremath{-24.72}}
+\newcommand{\mfBinT}{\ensuremath{-23.81}}
+\newcommand{\mfBinS}{\ensuremath{-23.98}}
+\newcommand{\mfBinB}{\ensuremath{-24.13}}
+\newcommand{\archSamples}{480}          %% samples per RVT checkpoint
+\newcommand{\archSamplesSsm}{288}       %% samples per SSM-ViT checkpoint:
+                                           %% fewer, because only chunk positions carrying
+                                           %% half a chunk of history or more are used
+\newcommand{\archUnifMax}{1.24}       %% ms, the largest distance of any
+                                           %% of them from the uniform-weight -25.00
+\newcommand{\archUnifPct}{25}        %% that, as a percent of one bin

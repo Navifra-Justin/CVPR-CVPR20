@@ -1,0 +1,15 @@
+%% ===== E47c measured 2026-09-08 (experiments/e47_ssm/statepos-*.json): what the
+%% recurrent state carried between evaluation chunks does to the output, by position
+%% in the chunk, as a relative L2 change in the emitted detection tensor. The control
+%% arm occludes the window one position earlier inside the same chunk, which a model
+%% that ignored its own history entirely would also return zero for.
+\newcommand{\ssmStateEffect}{0.00000}   %% largest over all positions, s5vit-small
+\newcommand{\ssmInchunkOne}{0.0276}      %% previous window, position 1
+\newcommand{\ssmInchunkLast}{0.0106}     %% the same at the last position
+\newcommand{\ssmChunkMeas}{8}          %% windows per chunk in this measurement
+\newcommand{\rvtStateEffect}{0.0304}     %% the same arm on rvt-t, last position
+\newcommand{\rvtStateEffectOne}{0.0616}  %% and at position 1
+\newcommand{\ssmEvalChunk}{21}          %% windows per chunk in the released streaming
+                                           %% evaluation: config/dataset/gen1.yaml
+                                           %% sequence_length, and sequence_for_streaming.py
+                                           %% start_indices step by exactly that

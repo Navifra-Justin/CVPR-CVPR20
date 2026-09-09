@@ -1,0 +1,38 @@
+5 models, identical ground truth: 40698 boxes over 20296 frames
+  rvt-t        all moving  mAP(0) 0.33458   argmax  -10.0 ms   mAP(argmax) 0.33463   gain +0.005 pt
+  rvt-t        10-25 px/s  mAP(0) 0.27615   argmax  -10.0 ms   mAP(argmax) 0.27625   gain +0.010 pt
+  rvt-t        25-50 px/s  mAP(0) 0.28620   argmax  -10.0 ms   mAP(argmax) 0.28651   gain +0.031 pt
+  rvt-s        all moving  mAP(0) 0.33930   argmax   -5.0 ms   mAP(argmax) 0.33941   gain +0.011 pt
+  rvt-s        10-25 px/s  mAP(0) 0.26793   argmax   -5.0 ms   mAP(argmax) 0.26803   gain +0.010 pt
+  rvt-s        25-50 px/s  mAP(0) 0.29181   argmax   -0.0 ms   mAP(argmax) 0.29181   gain +0.000 pt
+  rvt-b        all moving  mAP(0) 0.37553   argmax  -10.0 ms   mAP(argmax) 0.37578   gain +0.025 pt
+  rvt-b        10-25 px/s  mAP(0) 0.29359   argmax  -10.0 ms   mAP(argmax) 0.29402   gain +0.042 pt
+  rvt-b        25-50 px/s  mAP(0) 0.30095   argmax  -15.0 ms   mAP(argmax) 0.30136   gain +0.041 pt
+  s5vit-small  all moving  mAP(0) 0.29052   argmax  -15.0 ms   mAP(argmax) 0.29137   gain +0.085 pt
+  s5vit-small  10-25 px/s  mAP(0) 0.27283   argmax  -15.0 ms   mAP(argmax) 0.27419   gain +0.136 pt
+  s5vit-small  25-50 px/s  mAP(0) 0.29983   argmax  -15.0 ms   mAP(argmax) 0.30041   gain +0.058 pt
+  s5vit-base   all moving  mAP(0) 0.32576   argmax   -5.0 ms   mAP(argmax) 0.32590   gain +0.013 pt
+  s5vit-base   10-25 px/s  mAP(0) 0.30144   argmax   -5.0 ms   mAP(argmax) 0.30165   gain +0.021 pt
+  s5vit-base   25-50 px/s  mAP(0) 0.31104   argmax   -5.0 ms   mAP(argmax) 0.31120   gain +0.016 pt
+
+=== does the comparison change? ===
+
+all moving
+  order at delta=0        rvt-b > rvt-s > rvt-t > s5vit-base > s5vit-small
+  order at each own argmaxrvt-b > rvt-s > rvt-t > s5vit-base > s5vit-small
+  order changes: False   pairwise sign flips: 0 of 10
+  largest change in a pairwise gap: rvt-t vs s5vit-small, +4.406 -> +4.326 points
+
+10-25 px/s
+  order at delta=0        s5vit-base > rvt-b > rvt-t > s5vit-small > rvt-s
+  order at each own argmaxs5vit-base > rvt-b > rvt-t > s5vit-small > rvt-s
+  order changes: False   pairwise sign flips: 0 of 10
+  largest change in a pairwise gap: rvt-s vs s5vit-small, -0.491 -> -0.616 points
+
+25-50 px/s
+  order at delta=0        s5vit-base > rvt-b > s5vit-small > rvt-s > rvt-t
+  order at each own argmaxs5vit-base > rvt-b > s5vit-small > rvt-s > rvt-t
+  order changes: False   pairwise sign flips: 0 of 10
+  largest change in a pairwise gap: rvt-s vs s5vit-small, -0.802 -> -0.860 points
+
+WROTE experiments/e51_ranking/ranking.json

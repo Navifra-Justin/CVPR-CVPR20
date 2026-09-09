@@ -1,0 +1,34 @@
+{
+ "NIGHT": {
+  "100Hz": {
+   "live": 35990,
+   "frac_p_lt_1e3": 0.2407,
+   "frac_p_lt_1e6": 0.075,
+   "median_Z": 2.935,
+   "p95_Z": 16.52
+  },
+  "137Hz_control": {
+   "live": 35990,
+   "frac_p_lt_1e3": 0.0004,
+   "frac_p_lt_1e6": 0.0,
+   "median_Z": 0.581,
+   "p95_Z": 2.52
+  }
+ },
+ "DAY": {
+  "100Hz": {
+   "live": 17800,
+   "frac_p_lt_1e3": 0.0008,
+   "frac_p_lt_1e6": 0.0,
+   "median_Z": 0.719,
+   "p95_Z": 3.1
+  },
+  "137Hz_control": {
+   "live": 17800,
+   "frac_p_lt_1e3": 0.0011,
+   "frac_p_lt_1e6": 0.0,
+   "median_Z": 0.697,
+   "p95_Z": 3.04
+  }
+ }
+}

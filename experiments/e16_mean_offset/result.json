@@ -1,0 +1,26 @@
+{
+ "night_14996us": {
+  "seq": "zurich_city_09_a",
+  "frames": 1811,
+  "w_med": 14996.0,
+  "global_offset_med_us": -16.8,
+  "global_offset_mean_us": -8.7,
+  "global_offset_sd_us": 170.3,
+  "global_offset_frac_of_halfwidth": -0.0022,
+  "obj_offset_med_us": -102.3,
+  "obj_offset_sd_us": 151.9,
+  "n_obj_frames": 1134
+ },
+ "day_1478us": {
+  "seq": "interlaken_00_c",
+  "frames": 535,
+  "w_med": 1481.0,
+  "global_offset_med_us": -0.6,
+  "global_offset_mean_us": -0.5,
+  "global_offset_sd_us": 6.0,
+  "global_offset_frac_of_halfwidth": -0.0008,
+  "obj_offset_med_us": -1.1,
+  "obj_offset_sd_us": 19.1,
+  "n_obj_frames": 20
+ }
+}

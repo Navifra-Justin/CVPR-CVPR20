@@ -1,0 +1,44 @@
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+mean fill from 84 frames, swap pool 64
+/usr/local/lib/python3.10/dist-packages/torch/functional.py:554: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /pytorch/aten/src/ATen/native/TensorShape.cpp:4314.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+  seq 1/12, 40 samples
+  seq 2/12, 80 samples
+  seq 3/12, 120 samples
+  seq 4/12, 160 samples
+  seq 5/12, 200 samples
+  seq 6/12, 240 samples
+  seq 7/12, 280 samples
+  seq 8/12, 320 samples
+  seq 9/12, 360 samples
+  seq 10/12, 400 samples
+  seq 11/12, 440 samples
+  seq 12/12, 480 samples
+
+samples 480   (state entering the step, as it should be)
+ instrument   centroid (ms)   CV over bins   bootstrap SE   95% CI
+  zero           -23.810      0.1313        0.054      [-23.92, -23.71]
+  mean           -26.354      0.1523        0.026      [-26.41, -26.30]
+  swap           -25.007      0.0752        0.118      [-25.24, -24.78]
+  grad           -22.346      0.1907        0.006      [-22.36, -22.34]
+
+ uniform-weight reference -25.00 ms
+ spread across instruments -26.354 to -22.346  = 4.008 ms
+ E17/E34 reported -24.94 ms with the post-step state; the difference is that state.
+WROTE
+== Timing statistics ==
+exit=0

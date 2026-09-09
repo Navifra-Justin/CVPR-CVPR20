@@ -1,0 +1,111 @@
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+rvt-t: 4.41M params
+/usr/local/lib/python3.10/dist-packages/torch/functional.py:554: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /pytorch/aten/src/ATen/native/TensorShape.cpp:4314.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+  seq 1, 40 samples
+  seq 2, 80 samples
+  seq 3, 120 samples
+  seq 4, 160 samples
+  seq 5, 200 samples
+  seq 6, 240 samples
+  seq 7, 280 samples
+  seq 8, 320 samples
+  seq 9, 360 samples
+  seq 10, 400 samples
+  seq 11, 440 samples
+  seq 12, 480 samples
+
+rvt-t  samples 480
+  newest-window centroid -23.810 ms   CV 0.1313   boot SE 0.054
+  halves 48.6 / 51.4 %   max/min 1.52
+WROTE
+== Timing statistics ==
+TAG=t exit=0
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+rvt-s: 9.87M params
+/usr/local/lib/python3.10/dist-packages/torch/functional.py:554: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /pytorch/aten/src/ATen/native/TensorShape.cpp:4314.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+  seq 1, 40 samples
+  seq 2, 80 samples
+  seq 3, 120 samples
+  seq 4, 160 samples
+  seq 5, 200 samples
+  seq 6, 240 samples
+  seq 7, 280 samples
+  seq 8, 320 samples
+  seq 9, 360 samples
+  seq 10, 400 samples
+  seq 11, 440 samples
+  seq 12, 480 samples
+
+rvt-s  samples 480
+  newest-window centroid -23.981 ms   CV 0.1144   boot SE 0.043
+  halves 48.8 / 51.2 %   max/min 1.47
+WROTE
+== Timing statistics ==
+TAG=s exit=0
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+rvt-b: 18.54M params
+/usr/local/lib/python3.10/dist-packages/torch/functional.py:554: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /pytorch/aten/src/ATen/native/TensorShape.cpp:4314.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+  seq 1, 40 samples
+  seq 2, 80 samples
+  seq 3, 120 samples
+  seq 4, 160 samples
+  seq 5, 200 samples
+  seq 6, 240 samples
+  seq 7, 280 samples
+  seq 8, 320 samples
+  seq 9, 360 samples
+  seq 10, 400 samples
+  seq 11, 440 samples
+  seq 12, 480 samples
+
+rvt-b  samples 480
+  newest-window centroid -24.133 ms   CV 0.1002   boot SE 0.044
+  halves 49.2 / 50.8 %   max/min 1.40
+WROTE
+== Timing statistics ==
+TAG=b exit=0

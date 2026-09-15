@@ -29,8 +29,8 @@
    \centering\small\texttt{#1}\\[2pt]\textit{asset not yet rendered}%
    \end{minipage}}}}
 
-\title{\vspace{-1.5em}\bfseries The Temporal Support Behind One Benchmark
-Timestamp:\\ A Released Event Detector and DSEC's Ceiling Exposures}
+\title{\vspace{-1.5em}\bfseries One Timestamp Does Not Identify Temporal
+Support\\ in Event-Detection Benchmarks}
 \author{Anonymous CVPR submission\\ Paper ID ****}
 \date{}
 
@@ -39,40 +39,31 @@ Timestamp:\\ A Released Event Detector and DSEC's Ceiling Exposures}
 \thispagestyle{empty}
 
 \begin{abstract}
-A detection benchmark compares a prediction with a label at one query time and
-scores their difference as displacement. That timestamp does not uniquely specify
-the temporal support of either side of the comparison. Event-detection benchmarks
-collapse three quantities into it: a predictor's evidence support, its effective
-output time, and the exposure-conditioned support of the labels. This paper
-separates the three and measures what released artifacts identify of each. The released configuration of
-the detector examined here ends its input window at the label instant, and
-occluding each bin of the released \texttt{rvt-t} checkpoint's input puts that
-window's influence centroid at \rvtCentroidMeas\,ms. The detector is recurrent,
-so that window is not all of its evidence: occluding whole past windows leaves the
-newest carrying \histShareTwenty\,\% of the influence, with a tail the measured
-horizon does not resolve.
-Its detections, regressed on the label velocity as a vector alongside
-that velocity rotated a quarter turn as a placebo no temporal offset can reach,
-put the output time at $\ladderFullTau\,\pm\,\ladderFullTauSE$\,ms: consistent with the
-label instant, which its training objective encourages, and \outCentroidSigmas{}
-standard errors from the window's own centroid. This establishes the
-separation, not an equality with the label timestamp. That offset
-spans \satLo{} to \satHi\,ms across specifications with geometric controls, never
-reaching the $+\rvtCentroidMagMeas$\,ms the centroid would require.
-Despite that measured separation, displacing the ground truth across the
-interval moves mAP by \mapCost{} points: an unchanged score is not evidence that a
-prediction and its evidence are temporally aligned, because the score stays flat
-while the two instants it conflates are measurably apart. At the ninetieth
-percentile of label speed the interval is \outPxNinety\,px of displacement,
-the annotation dispersion of the labels themselves, and \outPxNinetynine\,px at the
-ninety-ninth, so the weak response is a property of the metric, not an absence of
-displacement. On the label side no
-per-object label time is inferred: the \dsecCeilingSeqs{} DSEC sequences pinned at
-the auto-exposure ceiling carry the harmonic series of a \flickerLineHz\,Hz mains
-flicker, undocumented in the release, and what follows is an attribution limit.
-A per-object temporal statistic measured inside one of those exposures cannot be
-attributed to object timing without separating the illumination-driven structure
-first.
+Event-detection benchmarks compare a prediction with a label at a single
+nominal timestamp, and that timestamp does not identify when the evidence
+supporting the prediction was acquired or which instant its output represents.
+This paper separates the two quantities on released artifacts. For a released
+recurrent detector, occluding each bin of the newest \rvtWindow\,ms input
+window puts that window's influence centroid \rvtCentroidMagMeas\,ms before
+the label instant, and the recurrent state extends the evidence further back:
+occluding whole past windows leaves the newest with \histShareTwenty\,\% of
+the influence. A regression of its detections on the label velocity, carrying
+a placebo term no temporal offset can reach, places the effective output at
+the label instant, $\ladderFullTau\,\pm\,\ladderFullTauSE$\,ms, and
+\outCentroidSigmas{} standard errors from that centroid; across specifications
+with geometric controls, none places the output at the newest-window centroid.
+Average precision is nearly invariant over this measured separation:
+displacing the ground truth across the interval moves mAP by \mapCost{} points
+and reorders none of \rankCkpts{} released checkpoints, while the interval is
+\outPxNinety\,px of displacement at the ninetieth percentile of label speed,
+the size of the labels' own annotation dispersion, and \outPxNinetynine\,px at
+the ninety-ninth. An unchanged score therefore does not establish temporal
+alignment; the metric is insensitive over states the predictor-side
+measurements distinguish. The same ambiguity appears on the label side:
+DSEC's \dsecCeilingSeqs{} ceiling-exposure sequences carry the harmonic series
+of a \flickerLineHz\,Hz mains flicker, undocumented in the release, and event
+timing inside one such exposure cannot be attributed to object timing until
+that illumination-driven structure is separated.
 \end{abstract}
 
 \section{Introduction}
@@ -119,7 +110,7 @@ training sequences whose exposure files resolve, the width varies by a factor of
 \dsecPinnedFrac\,\% of frames pinned at an auto-exposure ceiling of
 \dsecExpMax\,\micro s in \dsecCeilingSeqs{} sequences (Fig.~\ref{fig:exposure}).
 Those \dsecCeilingSeqs{} carry the harmonic series of a \flickerLineHz\,Hz mains
-flicker, with nothing at the odd multiples of \mainsHz\,Hz, and between
+flicker, and between
 \sixLockedLoPct\,\% and \sixLockedHiPct\,\% of labeled boxes carry more power at
 the fundamental than at an off-frequency arm on the same events
 (Sec.~\ref{sec:flicker}). A \flickerPeriodUs\,\micro s period inside a
@@ -147,13 +138,9 @@ The consequence claimed is a failure of identifiability under the metric, not a
 ranking change. Displacing the ground truth across the measured interval moves
 mAP by \mapCost{} points and reorders none of the \rankCkpts{} released
 checkpoints, while the same interval is \outPxNinety\,px of displacement at the
-ninetieth percentile of label speed, the size of the labels' own annotation
-dispersion, and \outPxNinetynine\,px at the ninety-ninth
-(Sec.~\ref{sec:outputtime}, Tab.~\ref{tab:strata}). A score that stays within
-\mapCost{} points over shifts that large cannot certify that a prediction's
-effective time and the temporal location of its evidence agree, and
-Tab.~\ref{tab:strata} locates the insensitivity in the speed composition of the
-benchmark rather than in an absence of displacement.
+ninetieth percentile of label speed and \outPxNinetynine\,px at the
+ninety-ninth; Tab.~\ref{tab:strata} locates the insensitivity in the speed
+composition of the benchmark rather than in an absence of displacement.
 
 \begin{figure*}[t]
 \centering
@@ -256,9 +243,14 @@ that forward inference favors receding objects; where inside that window the
 evidence sits is not measured there. Protocol
 work supplies the standards these measurements are held
 to~\cite{oncalibration2024,stratification2024,northcutt2021labelerrors,ercan2023evreal}:
-a repaired protocol can reverse a field's conclusion, a reported score is an
-estimate with a variance, and a label audit is judged by whether what it finds
-moves benchmark results.
+a repaired protocol can reverse a field's conclusion, and a reported score is
+an estimate with a variance. A protocol audit can expose failures in what a
+benchmark identifies even when the resulting correction reorders no existing
+method; a ranking change establishes one form of consequence, and failure to
+distinguish two measurably different states establishes another. The claim
+here is of the latter type: average precision is nearly invariant over a
+temporal interval that the released predictor's evidence and output
+measurements distinguish.
 
 \section{The interval between evidence and label}
 \label{sec:predictor}
@@ -306,7 +298,9 @@ the trained network.
 \begin{figure}[t]
 \centering
 \figasset{figs/fig_predictor.pdf}{\columnwidth}
-\caption{(a) Occlusion influence of each of the \rvtBins{} bins of the released
+\caption{The detector's evidence and output are temporally distinguishable,
+while average precision is nearly invariant over the interval between them.
+(a) Occlusion influence of each of the \rvtBins{} bins of the released
 \texttt{rvt-t} input window, over \rvtInfluenceSamples{} real Gen1 validation
 samples with the recurrent state warmed \rvtWarmSteps{} steps, with standard
 errors. The dashed line is the mean over bins, the dotted line the label
@@ -318,8 +312,8 @@ instant, with its maximum marked. The shaded band is the interval between the
 newest window's influence centroid and the label instant; its width is
 \outPxNinety\,px at the ninetieth percentile of label speed and
 \outPxNinetynine\,px at the ninety-ninth, against an annotation dispersion of
-\labelSigmaGenAnn\,px (Tab.~\ref{tab:strata}). The curves deepen with speed as
-the overlap arithmetic requires, and all of them peak between the two lines.}
+\labelSigmaGenAnn\,px (Tab.~\ref{tab:strata}). The curves deepen with speed,
+and all of them peak between the two lines.}
 \label{fig:predictor}
 \end{figure}
 
@@ -614,7 +608,7 @@ $-50$ to $+30$\,ms sweep, both in points.}
 \end{table}
 
 
-\section{A mains signature in DSEC's ceiling-exposure sequences}
+\section{A complementary label-side identifiability limit}
 \label{sec:flicker}
 
 \subsection{Exposure and labels}
@@ -635,9 +629,8 @@ across \ddSeqs{} sequences, every label sits on the frame clock, and the median
 spacing between consecutive label times is \ddSpacingMedian\,\micro s. Over
 \ddTriples{} triples of consecutive labels on a track,
 \ddInterpBelowThresh\,\% of middle box centers fall within a hundredth of a
-pixel of their neighbors' linear interpolant, where interpolated labels would
-place that fraction near unity, so no construction term from interpolation
-arises within this archive. DSEC-Det ships more than one annotation
+pixel of their neighbors' linear interpolant, where interpolation would place
+that fraction near unity, so no construction term arises within this archive. DSEC-Det ships more than one annotation
 version~\cite{beyondduality2026}; the supplement names the one measured here.
 
 The label center carries noise measurable on the labels themselves: on a
@@ -682,11 +675,11 @@ at \harmDayTwo{}, against \harmTwoMin{} for the weakest ceiling sequence.
 
 Per pixel, the Rayleigh statistic $Z=R^{2}/N$, for $R$ the resultant length of the
 event phases at the test frequency, is $\mathrm{Exp}(1)$ under independent uniform
-phases, so its null has median \flickerZnull{}, ninety-fifth percentile
-\flickerNullPninetyfive{} and a rate of \flickerNullRatePct\,\% at $p<10^{-3}$.
+phases, so its null has median \flickerZnull{} and a rate of
+\flickerNullRatePct\,\% at $p<10^{-3}$.
 Independence is checked: over
 \flickerLivePixNight{} pixels of the ceiling sequence with at least
-\flickerMinEvents{} events, the same estimator on the same events at
+\flickerMinEvents{} events, the same estimator at
 \flickerCtrlHz\,Hz returns \flickerCtrlNightZ{} with a $p<10^{-3}$ rate of
 \flickerCtrlNightRatePct\,\%, and on \flickerLivePixDay{} daytime pixels at
 \flickerLineHz\,Hz it returns \flickerCtrlDayZ{} at
@@ -696,15 +689,14 @@ ceiling sequence the median $Z$ is \flickerZmedian{} and
 \flickerFracLockedPct\,\% of those live pixels reach $p<10^{-3}$. DSEC's own
 description attributes high night event rates near street lamps to flashing
 lights~\cite{gehrig2021dsec}; neither that nor dim-light
-noise~\cite{graca2021noise} is quantified per pixel in the release.
+noise~\cite{graca2021noise} is quantified per pixel.
 
 \subsection{All six ceiling sequences, per labeled box}
 
-The per-pixel test above is one sequence against one daytime control; the same
-statistic taken per labeled box, over the events inside that box during that
-frame's own exposure window, extends to every sequence that reaches the
-ceiling, and the supplement tabulates all \dsecCeilingSeqs{} of them over
-\sixBoxes{} boxes. The median per-box Rayleigh statistic at \flickerLineHz\,Hz
+The same statistic taken per labeled box, over the events inside that box
+during that frame's own exposure window, extends to every ceiling sequence;
+the supplement tabulates all \dsecCeilingSeqs{} of them over \sixBoxes{}
+boxes. The median per-box Rayleigh statistic at \flickerLineHz\,Hz
 runs from \sixZC{} to \sixZD{} with a median over sequences of \sixZmedian{},
 against \sixZctrl{} for the same estimator at \flickerCtrlHz\,Hz on the same
 events.
@@ -739,7 +731,7 @@ The subtrahend holds for arrivals independent and uniform on $[a,b]$, which
 these are not: reassigning a frame's box events among its boxes at random,
 which leaves everything common to the frame intact and destroys only box
 identity, gives a null of \permNull\,\micro s, \permRatio{} times the analytic
-one rather than above it, and an excess of \permExcess\,\micro s; the
+one, and an excess of \permExcess\,\micro s; the
 supplement gives that construction. A box enters with at least
 \minEvents{} events and a frame with at least \minObjects{} qualifying objects,
 which \sigmaEvtFramesNight{} of \sigmaEvtFramesLabelled{} labeled frames of
@@ -747,8 +739,7 @@ which \sigmaEvtFramesNight{} of \sigmaEvtFramesLabelled{} labeled frames of
 $\bar{t}_{i}$ is \sigmaEvtNight\,\micro s against an analytic null of
 \sigmaEvtNullNight\,\micro s, the excess is \sigmaEvtExcessNight\,\micro s, and
 the standard deviation exceeds that frame's own null on
-\sigmaEvtFracNightPct\,\% of frames (one such window rendered in the
-supplement). On \texttt{interlaken\_00\_c}, where the exposure
+\sigmaEvtFracNightPct\,\% of frames. On \texttt{interlaken\_00\_c}, where the exposure
 is \sigmaEvtExpDay\,\micro s and the \minEvents{}-event floor leaves
 \sigmaEvtFramesDay{} usable frames, the standard deviation is
 \sigmaEvtDay\,\micro s against a null of \sigmaEvtNullDay\,\micro s and the
@@ -765,7 +756,7 @@ monotonically with each box's own modulation depth $m=2|C|$ at
 quartiles of $m$ over \modBoxes{} boxes, against \excessShamQone{} to
 \excessShamQfour\,\micro s for the same stratification at \flickerCtrlHz\,Hz, so
 part of the trend belongs to stratifying on any amplitude statistic, and no
-unmodulated stratum exists to separate the two: $m$ has a tenth percentile of
+unmodulated stratum separates the two: $m$ has a tenth percentile of
 \modPten{} against a floor of \modFloor{}. The dispersion is therefore a
 property of the event stream inside the published window that this data does
 not resolve into scene and illumination components; until they are separated, a
@@ -777,11 +768,11 @@ instant: \sigmaEvtExcessNight\,\micro s, whatever its source, displaces a box
 center by \pxAtMedian\,px at the median object and \pxAtPninetynine\,px at the
 ninety-ninth percentile, \pxFracMedian{}--\pxFracPninetynine\,\% of
 $\sigma_{c}$, and the frame-common offsets are smaller, \offsetAllEvents{} and
-\offsetInBoxes\,\micro s from the mid-exposure instant over all events and the
-labeled subset. Against the dispersion, the largest of the
-three label-side terms, the newest window's influence centroid of
-Sec.~\ref{sec:influence}, measured on a different dataset, is larger by a factor
-of \termRatio{}, and it is the one a declared timestamp would remove.
+\offsetInBoxes\,\micro s from mid-exposure over all events and the labeled
+subset. The newest window's influence centroid of
+Sec.~\ref{sec:influence}, measured on a different dataset, is larger than the
+dispersion by a factor of \termRatio{}, and it is the one term a declared
+timestamp would remove.
 
 \section{Limitations}
 
@@ -795,25 +786,30 @@ width and illumination move together in it; a denoiser ablation is not run.
 
 On the predictor side, everything is one dataset and \archCkpts{} checkpoints
 of two architectures sharing a repository, and occlusion reports a sensitivity
-that equals a linear weight only for a predictor linear in its bins. The support measurement weights windows by the norm of a difference and neither
+that equals a linear weight only for a predictor linear in its bins. The support measurement weights windows by a difference norm and neither
 fill is the training distribution, so its shares are a ranking and its centroid is
 horizon-dependent. The output-time measurement is a null bounded by
 its precision: it excludes an offset as large as the newest window's centroid at
-\outCentroidSigmas{} standard errors, says nothing about one of a few
+\outCentroidSigmas{} standard errors, says nothing about a few
 milliseconds, and assumes constant velocity over the label
 neighbourhood; the specification was chosen by a coefficient
 orthogonal to $v^{*}$, though the step returning it to null also moved $\tau$.
 
 \section{Conclusion}
 
-A detector's newest input window is centered \rvtCentroidMagMeas\,ms before the
-instant it is scored at, within \archUnifMax\,ms across \archCkpts{}
-checkpoints of two architectures; most of its influence lies further back; and its
-output time is bounded away from that window at \outCentroidSigmas{} standard
-errors under geometric controls, a separation average precision registers as
-\mapCost{} points and no reordering; and DSEC's
-\dsecCeilingSeqs{} ceiling exposures bound what a per-object statistic inside
-one can be attributed to.
+A nominal benchmark timestamp is not a temporal specification. In the released
+detector studied here, the evidence supporting a prediction extends before the
+instant its output represents: the newest window is centered
+\rvtCentroidMagMeas\,ms before the label instant, within \archUnifMax\,ms
+across \archCkpts{} checkpoints, and the output is bounded away from that
+window at \outCentroidSigmas{} standard errors under geometric
+controls. Average precision is nearly invariant over that separation, \mapCost{} points
+and no reordering, so an unchanged score does not establish temporal
+alignment. DSEC supplies the label-side case: exposure-conditioned temporal
+structure bounds what event timing inside one exposure can be attributed to
+object timing. Predictor support, output time and label support are three
+quantities to declare or measure separately when temporal interpretation
+matters.
 
 {\footnotesize
 \setlength{\itemsep}{0.4pt}

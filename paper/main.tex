@@ -143,9 +143,17 @@ ninetieth percentile of label speed and \outPxNinetynine\,px at the
 ninety-ninth; Tab.~\ref{tab:strata} locates the insensitivity in the speed
 composition of the benchmark rather than in an absence of displacement.
 
+This work makes three contributions. First, we separate evidence support from
+effective output time in released event detectors and show that the two are
+measurably distinct. Second, we show that standard average precision is nearly
+invariant over that measured separation, so benchmark agreement does not
+establish temporal alignment. Third, we identify a complementary label-side
+limit in DSEC, where exposure-conditioned temporal structure prevents
+within-exposure event timing from being uniquely attributed to object timing.
+
 \begin{figure*}[t]
 \centering
-\figasset{figs/fig1_dsec_exposure.pdf}{\textwidth}
+\figasset{figs/fig1_dsec_exposure.pdf}{0.95\textwidth}
 \caption{Published per-frame exposure width across the \dsecSeqCount{} DSEC
 training sequences whose exposure files resolve: per sequence (left, log axis,
 median, interquartile range and \pctBandLo--\pctBandHi\,\% band, against the
@@ -298,7 +306,7 @@ the trained network.
 
 \begin{figure}[t]
 \centering
-\figasset{figs/fig_predictor.pdf}{\columnwidth}
+\figasset{figs/fig_predictor.pdf}{0.95\columnwidth}
 \caption{The detector's evidence and output are temporally distinguishable,
 while average precision is nearly invariant over the interval between them.
 (a) Occlusion influence of each of the \rvtBins{} bins of the released
@@ -537,7 +545,7 @@ are both measurable from released artifacts alone.
 
 \begin{figure}[t]
 \centering
-\figasset{figs/fig6_sweep_real.pdf}{\columnwidth}
+\figasset{figs/fig6_sweep_real.pdf}{0.95\columnwidth}
 \caption{One validation frame of the sweep of Fig.~\ref{fig:predictor}b:
 released detections (solid), ground truth at its label instant (dashed) and
 displaced to the newest window's influence centroid (dotted). The frame is
@@ -648,7 +656,7 @@ from $k=4$ upward and extrapolate to $\sigma_{c}=\sigmaCtotal$\,px, of which the
 
 \begin{figure}[t]
 \centering
-\figasset{figs/fig7_ceiling_vs_day.pdf}{\columnwidth}
+\figasset{figs/fig7_ceiling_vs_day.pdf}{0.95\columnwidth}
 \caption{One 350\,\micro s slice of the ceiling-exposure sequence
 \texttt{zurich\_city\_09\_a} and of the daytime control at the instants the
 ceiling sequence's own event rate peaks and bottoms inside its densest

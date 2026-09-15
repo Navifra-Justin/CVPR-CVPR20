@@ -49,9 +49,10 @@ the label instant, and the recurrent state extends the evidence further back:
 occluding whole past windows leaves the newest with \histShareTwenty\,\% of
 the influence. A regression of its detections on the label velocity, carrying
 a placebo term no temporal offset can reach, places the effective output at
-the label instant, $\ladderFullTau\,\pm\,\ladderFullTauSE$\,ms, and
-\outCentroidSigmas{} standard errors from that centroid; across specifications
-with geometric controls, none places the output at the newest-window centroid.
+$\ladderFullTau\,\pm\,\ladderFullTauSE$\,ms, consistent with the label instant
+and \outCentroidSigmas{} standard errors from the newest-window centroid;
+across specifications with geometric controls, none places the output at the
+newest-window centroid.
 Average precision is nearly invariant over this measured separation:
 displacing the ground truth across the interval moves mAP by \mapCost{} points
 and reorders none of \rankCkpts{} released checkpoints, while the interval is

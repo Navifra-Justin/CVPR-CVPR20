@@ -1,22 +1,15 @@
 \documentclass[10pt,twocolumn,letterpaper]{article}
 
-% Self-contained CVPR-like layout (compiles with a standard TeX distribution).
-\usepackage[top=1in,bottom=1in,left=0.86in,right=0.86in,columnsep=0.33in]{geometry}
-\usepackage{times}
-\usepackage{graphicx}
-\usepackage{amsmath,amssymb}
-\usepackage{booktabs}
-\usepackage{multirow}
-\usepackage{xcolor}
-\usepackage[colorlinks,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
-\usepackage[numbers,sort&compress]{natbib}
-\usepackage{caption}
+\usepackage[review]{cvpr}
+\usepackage{amssymb}
 \captionsetup{font=footnotesize}
-\setlength{\parindent}{1em}
-\pagestyle{empty}
-\raggedbottom
 
 \input{numbers}
+\definecolor{cvprblue}{rgb}{0.21,0.49,0.74}
+\usepackage[pagebackref,breaklinks,colorlinks,allcolors=cvprblue]{hyperref}
+\def\paperID{*****}
+\def\confName{CVPR}
+\def\confYear{2027}
 
 \newcommand{\micro}{\ensuremath{\mu}}
 \newcommand{\eff}{\ensuremath{\hat{\tau}}}
@@ -29,14 +22,12 @@
    \centering\small\texttt{#1}\\[2pt]\textit{asset not yet rendered}%
    \end{minipage}}}}
 
-\title{\vspace{-1.5em}\bfseries One Timestamp Does Not Identify Temporal
-Support\\ in Event-Detection Benchmarks}
-\author{Anonymous CVPR submission\\ Paper ID ****}
-\date{}
+\title{One Timestamp Does Not Identify Temporal Support\\
+in Event-Detection Benchmarks}
+\author{Anonymous CVPR submission}
 
 \begin{document}
 \maketitle
-\thispagestyle{empty}
 
 \begin{abstract}
 Event-detection benchmarks compare a prediction with a label at a single
@@ -236,7 +227,7 @@ DSEC-Det~\cite{gehrig2024lowlatency} labels by tracking~\cite{pang2021qdtrack} o
 rectified frames and warps into the event view, and
 Ev-3DOD~\cite{cho2025ev3dod} interpolates lower-rate annotations into high-rate
 3D labels. That a frame's exposure is long relative to event timing has been
-stated: REFID~\cite{sun2023refid} argues that accumulating events from a single
+stated: Event-based deblurring~\cite{sun2023refid} argues that accumulating events from a single
 frame timestamp loses information, deblurring work names auto-exposure as why the
 width is unknown~\cite{kim2022unknownexposure}, and RENet~\cite{zhou2022renet}
 uses a DSEC exposure interval as its event window while describing it as short;
@@ -843,9 +834,12 @@ P. Sun et~al.
 (CVPR)}, 2020.
 
 \bibitem{nunez2026annotations}
-Correcting and quantifying systematic errors in 3D box annotations for
+A.~J.~Miro, L.~af Klinteberg, B.~Timus, A.~Asefaw, A.~Khoche, T.~Gustafsson,
+S.~S.~Mansouri, and M.~Daneshtalab.
+\newblock Correcting and quantifying systematic errors in 3D box annotations for
 autonomous driving.
-\newblock {\em arXiv:2601.14038}, 2026. Unrefereed preprint.
+\newblock In {\em IEEE/CVF Winter Conference on Applications of Computer Vision
+(WACV)}, 2026.
 
 \bibitem{qin2018temporal}
 T. Qin and S. Shen.
@@ -999,11 +993,13 @@ R. Graca and T. Delbruck.
 \newblock {\em arXiv:2109.08640}, 2021.
 
 \bibitem{oncalibration2024}
-On calibration of object detectors: Pitfalls, evaluation and baselines.
+S.~Kuzucu, K.~Oksuz, J.~Sadeghi, and P.~K.~Dokania.
+\newblock On calibration of object detectors: Pitfalls, evaluation and baselines.
 \newblock In {\em European Conference on Computer Vision (ECCV)}, 2024.
 
 \bibitem{stratification2024}
-A framework for efficient model evaluation through stratification, sampling, and
+R.~Fogliato, P.~Patil, M.~Monfort, and P.~Perona.
+\newblock A framework for efficient model evaluation through stratification, sampling, and
 estimation.
 \newblock In {\em European Conference on Computer Vision (ECCV)}, 2024.
 

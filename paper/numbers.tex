@@ -637,6 +637,35 @@
 \newcommand{\mapTopMap}{0.139}    %% the fastest stratum's mAP, against 0.286 below it
 \newcommand{\mapHighMap}{0.286}
 
+%% ===== E55 measured 2026-09-15 (experiments/e37_map/stratum_table.json): the speed
+%% strata evaluated EXACTLY at the corrected centroid of -23.81 ms (E37c's per-stratum
+%% costs sat at the superseded -24.94 ms and on the 5 ms grid), with each stratum's
+%% share of the moving boxes, its median speed, and what 23.81 ms of that speed is in
+%% pixels. Spans are E37c's, whose grid did not change. The all-moving row reproduces
+%% at_centroid.json to inside 5e-5, asserted in the script.
+\newcommand{\stShareSlow}{72.1}\newcommand{\stShareMid}{19.2}
+\newcommand{\stShareHigh}{7.5}\newcommand{\stShareTop}{1.2}
+\newcommand{\stSpdSlow}{2.1}\newcommand{\stSpdMid}{15.0}
+\newcommand{\stSpdHigh}{32.3}\newcommand{\stSpdTop}{57.4}
+\newcommand{\stPxSlow}{0.05}\newcommand{\stPxMid}{0.36}
+\newcommand{\stPxHigh}{0.77}\newcommand{\stPxTop}{1.37}
+\newcommand{\stCostSlow}{0.02}\newcommand{\stCostMid}{0.01}
+\newcommand{\stCostHigh}{0.08}\newcommand{\stCostTop}{0.00}
+\newcommand{\stSpanAll}{0.37}     %% the all-moving span on the -50..+30 ms grid; the
+                                  %% 0.9 of \mapSweepSpan is the +-60 ms sweep of E37b
+\newcommand{\stNmoving}{27\,943}  %% ground-truth boxes carrying a centered velocity
+
+%% ===== Real-image figures rendered 2026-09-15 (src/make_fig_real.py). fig6: the frame is
+%% chosen by rule (>=3 velocity boxes, >=2 at >=20 px/s, largest median speed) from E37's
+%% own iteration order, so the drawn boxes are the ones the sweep scored; stats in
+%% experiments/e37_map/fig6_stats.json. fig7: densest published ceiling exposure window vs
+%% the same instants of the daytime control; stats in
+%% experiments/e00_exposure_survey/fig7_stats.json.
+\newcommand{\sweepRealFast}{45.2}   %% px/s, the fastest label on the drawn frame
+\newcommand{\sweepRealPx}{1.08}     %% px, that speed over the 23.81 ms interval
+\newcommand{\ceilVarNight}{3.0}     %% max/min of the 350 us rate, ceiling sequence
+\newcommand{\ceilVarDay}{1.1}       %% the same on the daytime control
+
 %% ===== E40 measured 2026-09-07 (experiments/e40_harmonics/result.json): which frequency
 %% carries the signature, with no band chosen in advance. E10's "strongest line between 90
 %% and 110 Hz" could only ever have found a line in that band. A 20-450 Hz sweep on each

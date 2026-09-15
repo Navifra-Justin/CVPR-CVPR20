@@ -67,7 +67,7 @@ def fig1_exposure():
     allw = np.concatenate([w for _, w in seqs])
     gap = ((allw > 4207) & (allw < 14996)).sum()
 
-    fig, (axl, axr) = plt.subplots(1, 2, figsize=(FULL, 2.25),
+    fig, (axl, axr) = plt.subplots(1, 2, figsize=(FULL, 1.92),
                                    gridspec_kw={'width_ratios': [2.5, 1]})
     for i, (name, w) in enumerate(seqs):
         q = np.percentile(w, [5, 25, 50, 75, 95])
@@ -286,7 +286,7 @@ def fig_predictor():
     e = np.array(d['zero']['sem'], dtype=float)
     cen = d['zero']['centroid_ms']
 
-    fig, (axa, axb) = plt.subplots(2, 1, figsize=(COL, 2.72),
+    fig, (axa, axb) = plt.subplots(2, 1, figsize=(COL, 2.50),
                                   gridspec_kw={'height_ratios': [1.0, 1.12]})
 
     axa.bar(c, a, width=4.2, color='0.72', edgecolor='black', lw=0.5, zorder=2)

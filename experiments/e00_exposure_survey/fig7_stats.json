@@ -1,0 +1,14 @@
+{
+ "zurich_city_09_a": {
+  "events": 382861,
+  "span_us": 15000,
+  "slice_us": 350,
+  "rate_max_over_min": 3.0452517527087317
+ },
+ "interlaken_00_c": {
+  "events": 377007,
+  "span_us": 15000,
+  "slice_us": 350,
+  "rate_max_over_min": 1.066147859922179
+ }
+}

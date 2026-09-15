@@ -308,6 +308,47 @@ boxes fall in it, so those frame counts do not partition the first row's.}
 \section{The DSEC measurements}
 \label{sup:evidencetime}
 
+\begin{figure}[t]
+\centering
+\figasset{figs/fig5_qualitative.pdf}{0.50\columnwidth}
+\caption{Every event inside one published \dsecExpMax\,\micro s exposure window
+of \texttt{zurich\_city\_09\_a}, colored by its position within that window, with
+that frame's released boxes numbered left to right. The frame is the
+median-dispersion one of \figFiveCands{} candidates, not the largest.}
+\label{fig:qualitative}
+\end{figure}
+
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3.6pt}\renewcommand{\arraystretch}{0.95}
+\begin{tabular}{lrrrrr}
+\toprule
+Sequence & boxes & $m$ & $Z_{\flickerLineHz}$ & $Z_{\flickerCtrlHz}$ & locked \\
+\midrule
+\texttt{zurich\_city\_00\_a} & \sixBoxesA & \sixModA & \sixZA & \sixZcA & \sixLockA\,\% \\
+\texttt{zurich\_city\_01\_a} & \sixBoxesB & \sixModB & \sixZB & \sixZcB & \sixLockB\,\% \\
+\texttt{zurich\_city\_02\_a} & \sixBoxesC & \sixModC & \sixZC & \sixZcC & \sixLockC\,\% \\
+\texttt{zurich\_city\_03\_a} & \sixBoxesD & \sixModD & \sixZD & \sixZcD & \sixLockD\,\% \\
+\texttt{zurich\_city\_09\_a} & \sixBoxesE & \sixModE & \sixZE & \sixZcE & \sixLockE\,\% \\
+\texttt{zurich\_city\_10\_a} & \sixBoxesF & \sixModF & \sixZF & \sixZcF & \sixLockF\,\% \\
+\bottomrule
+\end{tabular}
+\caption{Every DSEC training sequence whose exposure is pinned at
+\dsecExpMax\,\micro s, measured per labeled box over the events inside that box
+during that frame's own published exposure window, with at least
+\sixMinEvents{} events per box. $m$ is the median over boxes of the modulation
+depth $m=2|C|$ at \flickerLineHz\,Hz, against a floor of \modFloorSix{} for
+\sixMinEvents{} events drawn at random phase. $Z_{\flickerLineHz}$ and
+$Z_{\flickerCtrlHz}$ are the median
+over boxes of the Rayleigh statistic at \flickerLineHz\,Hz and at the
+off-frequency control on the same events. The analytic $\mathrm{Exp}(1)$ median of
+\flickerZnull{} does not describe either column, which is why the two are compared
+with each other; \emph{locked} is the fraction of boxes whose local excess at
+\flickerLineHz\,Hz exceeds the ninety-ninth percentile of the same quantity at
+\flickerCtrlHz\,Hz.}
+\label{tab:sixseq}
+\end{table}
+
 \paragraph{Data path.} For each labeled frame of a sequence, the frame's own
 exposure interval $[a,b]$ is read from the dataset's published
 \texttt{image\_exposure\_timestamps\_left} file, the event stream is sliced to
@@ -320,8 +361,8 @@ calibration step enters. For the dispersion of main Sec.~4.4 a box contributes
 only if it carries at least \minEvents{} events in the window, and a frame only
 if at least \minObjects{} boxes qualify; the reported statistics are medians over
 frames of a within-frame quantity, so no frame is weighted by its object count.
-For the per-box statistics of main Table~2 a box contributes with at least
-\sixMinEvents{} events and no frame-level requirement applies.
+For the per-box statistics of Table~\ref{tab:sixseq} a box contributes with at
+least \sixMinEvents{} events and no frame-level requirement applies.
 
 \paragraph{The stereo exposures.} The left and right exposures open at the same microsecond
 in \dsecCotriggerPct\,\% of the \dsecCotriggerFrames{} frames checked and differ only in
@@ -342,7 +383,7 @@ adjacent label times, at which \outLinkPct\,\% of boxes link.
 variance $w^{2}/12N_{i}$ with $w=b-a$. Each frame therefore carries its own null,
 formed from the published width and the observed counts, and the excess of main
 Eq.~3 is summarized over frames rather than formed from the medians of the two
-summaries. That is why the excess column of main Table~3 is not
+summaries. That is why the excess column of Table~\ref{tab:controls} is not
 $(\mathrm{sd}^{2}-\mathrm{null}^{2})^{1/2}$ of the two columns beside it.
 
 \paragraph{Phase test.} The per-pixel test at frequency $f$ takes the event phases
@@ -358,21 +399,22 @@ The fraction of locked pixels is quoted of live pixels in main Sec.~4.2 and
 separately of the sensor; the two denominators differ and each statement names
 its own.
 
-\paragraph{The per-box statistics of main Table~2.} The same estimator is applied
+\paragraph{The per-box statistics of Table~\ref{tab:sixseq}.} The same estimator is applied
 to the events inside one released box during one published exposure window rather
 than to the events of one pixel over a long slice. For box $i$ the depth is
 $m=2|C|$ and the statistic is $Z=N_{i}|C|^{2}$ with
 $C=N_{i}^{-1}\sum_{k\in i}e^{-\mathrm{i}\omega t_{k}}$, phases referred to that
 frame's mid-exposure instant. The null is unchanged, since $Z$ is
 $\mathrm{Exp}(1)$ under uniform phase whatever the count. The floor
-\modFloorSix{} quoted against the depths of main Table~2 is the expected depth of
+\modFloorSix{} quoted against the depths of Table~\ref{tab:sixseq} is the expected depth of
 \sixMinEvents{} events at random phase; main Sec.~4.4's \modFloor{} is the same
 expression at its \minEvents{}-event floor. Boxes are matched to exposure windows by nearest mid-exposure
 instant within half a frame period. The off-frequency arm at
 \flickerCtrlHz\,Hz is run on exactly the same events.
 
-\paragraph{Pixel exclusion and modulation strata.} The exclusion mask of main
-Table~3 is the set of pixels reaching $p<10^{-3}$ in the per-pixel test, and the
+\paragraph{Pixel exclusion and modulation strata.} The exclusion mask of
+Table~\ref{tab:controls} is the set of pixels reaching $p<10^{-3}$ in the
+per-pixel test, and the
 matched control draws a random pixel set of exactly the same size, so the two
 arms remove the same number of pixels. The mask is built from a six-second slice
 at every fourth event. The stratification uses no mask: the quartiles of $m$ are

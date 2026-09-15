@@ -187,6 +187,33 @@ if os.path.exists('experiments/e51_ranking/summary.json'):
     _ams=sorted({v for r in _rows for v in r['argmax_ms'].values()})
     CHECKS += [('rankArgLo', min(_ams), 0.5), ('rankArgHi', max(_ams), 0.5)]
 
+if os.path.exists('experiments/e37_map/stratum_table.json'):
+    _E55=L('experiments/e37_map/stratum_table.json')
+    _sl=_E55['slow, |v| < 10']; _md=_E55['10 <= |v| < 25']
+    _hg=_E55['25 <= |v| < 50']; _tp=_E55['fast, |v| >= 50']; _am=_E55['all moving']
+    CHECKS += [
+     ('stShareSlow', _sl['share_pct'],      0.05), ('stShareMid', _md['share_pct'],  0.05),
+     ('stShareHigh', _hg['share_pct'],      0.05), ('stShareTop', _tp['share_pct'],  0.05),
+     ('stSpdSlow',   _sl['speed_median'],   0.05), ('stSpdMid',   _md['speed_median'],0.05),
+     ('stSpdHigh',   _hg['speed_median'],   0.05), ('stSpdTop',   _tp['speed_median'],0.05),
+     ('stPxSlow',    _sl['disp_px_median'], 0.005),('stPxMid',    _md['disp_px_median'],0.005),
+     ('stPxHigh',    _hg['disp_px_median'], 0.005),('stPxTop',    _tp['disp_px_median'],0.005),
+     ('stCostSlow',  _sl['cost_points'],    0.005),('stCostMid',  _md['cost_points'], 0.005),
+     ('stCostHigh',  _hg['cost_points'],    0.005),('stCostTop',  _tp['cost_points'], 0.005),
+     ('stSpanAll',   _am['span_points'],    0.005),
+     ('stNmoving',   _am['n'],              0),
+    ]
+
+# ---- the real-image figures, added when they entered the paper
+if os.path.exists('experiments/e37_map/fig6_stats.json'):
+    _F6=L('experiments/e37_map/fig6_stats.json')
+    CHECKS += [('sweepRealFast', _F6['fastest_px_s'], 0.05),
+               ('sweepRealPx',   _F6['disp_px'],      0.005)]
+if os.path.exists('experiments/e00_exposure_survey/fig7_stats.json'):
+    _F7=L('experiments/e00_exposure_survey/fig7_stats.json')
+    CHECKS += [('ceilVarNight', _F7['zurich_city_09_a']['rate_max_over_min'], 0.05),
+               ('ceilVarDay',   _F7['interlaken_00_c']['rate_max_over_min'],  0.05)]
+
 bad=0
 
 # A macro whose artifact has gone is worse than one that disagrees: it drops out of the
@@ -197,7 +224,13 @@ DERIVABLE={'archCkpts','archSpan','archLo','archHi','archSamples','archUnifMax',
            'ssmStateEffect','ssmInchunkOne','ssmInchunkLast','ssmChunkMeas',
            'rvtStateEffect','rvtStateEffectOne','archOther','archSamplesSsm',
            'rankCkpts','rankFlips','rankMaxGain','rankMinGap','rankRatio',
-           'rankArgLo','rankArgHi','rankMoverBest','rankMoverWorst'}
+           'rankArgLo','rankArgHi','rankMoverBest','rankMoverWorst',
+           'stShareSlow','stShareMid','stShareHigh','stShareTop',
+           'stSpdSlow','stSpdMid','stSpdHigh','stSpdTop',
+           'stPxSlow','stPxMid','stPxHigh','stPxTop',
+           'stCostSlow','stCostMid','stCostHigh','stCostTop',
+           'stSpanAll','stNmoving',
+           'sweepRealFast','sweepRealPx','ceilVarNight','ceilVarDay'}
 _checked={c[0] for c in CHECKS}
 for name in sorted(DERIVABLE - _checked):
     if name in NUM:

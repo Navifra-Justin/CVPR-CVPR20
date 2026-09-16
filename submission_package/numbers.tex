@@ -1,0 +1,837 @@
+% ============================================================================
+% numbers.tex -- every number that appears in the paper, with its source.
+% RULE: no numeral enters main.tex directly. It is defined here, and the
+% comment above it names the experiment directory that produced it. A number
+% with no experiment behind it is written as \TODOnum so it cannot be mistaken
+% for a measurement.
+% ============================================================================
+
+\newcommand{\TODOnum}{\textcolor{red}{\textbf{[unmeasured]}}}
+
+% --- E00: DSEC exposure survey (experiments/e00_exposure_survey) -------------
+% 18 train sequences, 21142 frames, measured from the published
+% <seq>_image_exposure_timestamps_left.txt files.
+\newcommand{\dsecExpMin}{118}              % us, zurich_city_06_a
+\newcommand{\dsecExpMax}{14\,996}          % us, the auto-exposure ceiling
+\newcommand{\dsecExpRatio}{127}            % max/min, rounded
+\newcommand{\dsecFramePeriod}{50}          % ms, every sequence
+\newcommand{\dsecPinnedFrac}{32.5}         % percent of frames at the ceiling
+\newcommand{\dsecPinnedCount}{6866}
+\newcommand{\dsecFrameCount}{21\,142}
+\newcommand{\dsecCeilingSeqs}{six}         % sequences pinned at the ceiling
+\newcommand{\dsecOtherCeilingSeqs}{five}   % the ceiling sequences not measured here
+\newcommand{\dsecWithinSeqMin}{337}        % us, interlaken_00_d
+\newcommand{\dsecWithinSeqMax}{4207}       % us, interlaken_00_d
+\newcommand{\dsecWithinSeqRatio}{12.5}
+\newcommand{\dsecCotriggerFrames}{7080}    % frames checked, L/R start identical
+\newcommand{\dsecCotriggerPct}{100.00}
+\newcommand{\dsecMidDiffMax}{190}          % us, max |mid_L - mid_R|
+\newcommand{\dsecWidthDiffMax}{380}        % us, max |w_L - w_R|
+\newcommand{\dsecTsResidual}{1}            % us, |image_ts - avg(mid_L,mid_R)|
+
+% --- E01: events inside one exposure (experiments/e01_intra_exposure_change) -
+\newcommand{\dayExpUs}{1478}               % interlaken_00_c, median
+\newcommand{\dayEvents}{20\,616}
+\newcommand{\dayPixFrac}{6.0}              % percent
+\newcommand{\dayCrossings}{1.10}
+\newcommand{\dayFrames}{536}
+\newcommand{\nightExpUs}{14\,996}          % zurich_city_09_a
+\newcommand{\nightEvents}{310\,320}
+\newcommand{\nightPixFrac}{38.2}           % percent
+\newcommand{\nightCrossings}{2.60}
+\newcommand{\nightFrames}{452}
+\newcommand{\nightDayEventRatio}{15.1}
+
+% --- E02: RVT window alignment (experiments/e02_rvt_window_alignment) --------
+% Read from the released source, not from the paper's description of it.
+\newcommand{\rvtWindow}{50}                % ms, stacked_histogram_dt=50
+\newcommand{\rvtBins}{ten}                 % bins per window
+\newcommand{\rvtBinWidth}{5}               % ms per bin
+\newcommand{\rvtUniformCentroid}{-25}      % ms, uniform-weight reference point,
+                                           % superseded as a claim by E17.
+
+% --- E04: RVT loads under torch 2.7.1 (experiments/e04_rvt_port_risk) --------
+\newcommand{\rvtParams}{4.41}              % M, rvt-t
+\newcommand{\rvtMissingKeys}{0}
+\newcommand{\rvtUnexpectedKeys}{0}
+
+% --- E06: DSEC-Det label forensics (experiments/e06_dsec_det_label_forensics)-
+\newcommand{\ddBoxes}{390\,118}
+\newcommand{\ddTracks}{6693}
+\newcommand{\ddSeqs}{60}
+\newcommand{\ddSpacingMedian}{50\,001}     % us
+\newcommand{\ddSubFrameFrac}{0.0000}       % fraction of spacings below 40 ms
+\newcommand{\ddSubFrameFracPct}{0.00}      % the same, as a percentage
+\newcommand{\ddInterpResidual}{0.707}      % px, median second-difference
+\newcommand{\ddInterpResidualPninety}{1.819}
+\newcommand{\ddInterpBelowThresh}{7.1}     % percent below 0.01 px
+\newcommand{\ddTriples}{361\,628}
+
+% --- E07: LET-3D-AP citation graph (experiments/e07_let3dap_citation_graph) --
+\newcommand{\letCitations}{40}             % returned by the API, coverage unknown
+\newcommand{\letTemporalHits}{6}
+\newcommand{\letAxisHits}{0}               % none apply the decomposition to time
+
+% --- Removed 2026-09-05: quantities awaiting detection runs this paper does not
+% contain. No detection score is computed anywhere in the paper or the
+% supplement, so the tolerant-metric and re-anchoring macros below have no text
+% that could use them and are left undefined rather than rendering a placeholder.
+% \newcommand{\tauHatCI}{\TODOnum}
+% \newcommand{\sigmaTau}{\TODOnum}
+% \newcommand{\panelCSlope}{\TODOnum}
+% \newcommand{\panelCIntercept}{\TODOnum}
+% \newcommand{\apSyncDelta}{\TODOnum}
+% \newcommand{\apBiasDelta}{\TODOnum}
+
+%% ===== MEASURED 2026-09-02, CORRECTED 2026-09-03 ============================
+%% E09+E11 per-object event-centroid dispersion inside one exposure. (E12 was
+%% retracted on 2026-09-05, every value in this block is E11's.)
+%% No detector, no checkpoint, no velocity denominator, no assumed center noise.
+%% The values below are E11's exact-window re-run (result_exact.json), which
+%% restricts events to [a,b] in microseconds. The first run sliced to
+%% whole-millisecond boundaries and is superseded, it produced 208.8 us.
+\newcommand{\sigmaEvtNight}{206.6}   %% us within-frame sd, night, all pixels
+\newcommand{\sigmaEvtNullNight}{93.0}   %% us analytic uniform null
+\newcommand{\sigmaEvtExcessNight}{183.6}   %% us excess over the null
+\newcommand{\sigmaEvtFramesNight}{1134}   %% frames measured
+\newcommand{\sigmaEvtFracNight}{0.9012}   %% fraction of frames sd>null
+%% E11 flicker controls, exact window (result_exact.json)
+\newcommand{\excessClean}{180.6}   %% us phase-locked pixels excluded
+\newcommand{\excessRandCtl}{182.9}   %% us matched random exclusion
+\newcommand{\lockedSensorPct}{4.67}   %% percent OF THE SENSOR, not of live pixels
+%% E12 RETRACTED 2026-09-03 and removed from the paper 2026-09-04. An integer
+%% window cancels a periodic source's zeroth moment, not its first: the centroid
+%% contribution is -(A/lambda_0) sin(phi)/omega. The widths below were measured
+%% correctly, the cancellation argument they were reported under was false, so
+%% the macros are left undefined and no width appears in the paper.
+%% \newcommand{\excessHalfPeriod}{212.6}   %% us w=5000 (0.5 periods)
+%% \newcommand{\excessOnePeriod}{195.2}   %% us w=10000 (1.0 periods)
+%% \newcommand{\excessFullExp}{183.6}   %% us w=14996 (1.4996 periods)
+%% \newcommand{\excessTwoPeriod}{246.8}   %% us w=20000 (2.0 periods)
+%% E08 label noise whiteness
+\newcommand{\labelAcfMeasured}{-0.3566}   %% D3 acf lag1 measured on real labels
+\newcommand{\labelAcfWhite}{-0.740}   %% same code on white noise
+\newcommand{\labelAcfTheory}{-0.75}   %% analytic white-noise value
+\newcommand{\ntracksNoise}{5250}
+\newcommand{\nthirdDiff}{629\,442}
+%% E10 mains flicker
+\newcommand{\flickerLineHz}{100.00}   %% Hz, strongest night line
+\newcommand{\flickerZmedian}{2.935}   %% night 100Hz Rayleigh Z, null 0.693
+\newcommand{\flickerZnull}{0.693}
+\newcommand{\flickerFracLocked}{0.2407}   %% fraction of LIVE pixels p<1e-3
+\newcommand{\flickerCtrlNightZ}{0.581}   %% night 137Hz off-frequency control
+\newcommand{\flickerCtrlDayZ}{0.719}   %% day 100Hz control
+
+%% --- E00, shape of the exposure distribution (21142 train frames) ----------
+\newcommand{\dsecExpGapLo}{4207}           % us, largest non-ceiling exposure
+\newcommand{\dsecExpGapHi}{14\,996}        % us, the ceiling
+\newcommand{\dsecExpGapCount}{zero}        % frames strictly between the two
+\newcommand{\pctSixtySix}{66}              % the percentile index itself
+\newcommand{\pctSixtyEight}{68}
+\newcommand{\pctBandLo}{5}                 % Fig. 1's whisker band
+\newcommand{\pctBandHi}{95}
+\newcommand{\dsecExpPsixtysix}{2999}       % us, percentile 66
+\newcommand{\dsecExpPsixtyeight}{14\,996}  % us, percentile 68
+
+%% --- E06, the per-box time field of the released labels --------------------
+\newcommand{\ddDistinctT}{70\,379}         % distinct values of t, summed within sequence
+\newcommand{\ddBoxesPerT}{5.54}            % boxes per distinct value
+
+%% --- E09, the measurement and its strata -----------------------------------
+\newcommand{\sigmaEvtObjNight}{6}          % median qualifying objects per frame
+\newcommand{\sigmaEvtSdPninetyNight}{344.5}% us, p90 of the within-frame sd (exact window)
+\newcommand{\sigmaEvtPtpNight}{563.9}      % us, median within-frame peak to peak
+\newcommand{\sigmaEvtDay}{18.0}            % us, interlaken_00_c within-frame sd
+\newcommand{\sigmaEvtNullDay}{21.6}        % us, its analytic null
+\newcommand{\sigmaEvtFramesDay}{20}        % usable frames, day
+\newcommand{\sigmaEvtFracDay}{0.35}        % fraction of day frames sd>null
+\newcommand{\excessDay}{0}                 % us, the day excess: sd is below the null
+\newcommand{\sigmaEvtExpDay}{1556}         % us, median exposure of the day frames used
+\newcommand{\sdRandBoxes}{338.2}           % us, random-position boxes, same shapes
+\newcommand{\nullRandBoxes}{134.5}         % us, their analytic null
+\newcommand{\excessRandBoxes}{306.3}       % us, their excess -- larger than the labels'
+\newcommand{\framesRandBoxes}{1123}        % zurich_city_09_a.json, n_frames_with_rand
+\newcommand{\minEvents}{200}               % events per box required
+\newcommand{\minObjects}{3}                % qualifying objects per frame required
+
+%% --- E09, the per-track structure of the frame-centered residual ------------
+%% experiments/e09_per_object_evidence_time/per_track.py, re-run 2026-09-03 on
+%% the corrected exposure window.  Computed after removing each frame's own
+%% mean, so the frame-level component that a declared scalar timestamp would
+%% cancel is removed by construction.
+\newcommand{\evtTracks}{103}               % tracks with at least five observations
+\newcommand{\betweenTrackSd}{149.2}        % us, between-track sd of the residual
+\newcommand{\betweenTrackNull}{39.3}       % us, expected with no track effect
+\newcommand{\trackVarRatio}{14.4}          % observed / no-effect variance ratio
+\newcommand{\trackVarRatioCell}{8.6}       % same ratio after removing 32x32 cell means
+\newcommand{\trackAcf}{0.721}              % lag-1 autocorrelation along a track
+\newcommand{\acfLowDisp}{0.611}            % tracks below the displacement median
+\newcommand{\acfHighDisp}{0.773}           % tracks above it
+\newcommand{\dispSplit}{278}               % px, the median path length
+
+%% --- E10, the mains line ---------------------------------------------------
+\newcommand{\flickerPeriodUs}{10\,000}     % us, one 100 Hz period
+\newcommand{\flickerPeakRatio}{10\,841}    % night peak over the 60-160 Hz continuum
+\newcommand{\flickerLivePixNight}{35\,990} % live night pixels tested
+\newcommand{\flickerLivePixDay}{17\,800}   % live day pixels tested
+\newcommand{\flickerZpNinetyfive}{16.52}   % night 100 Hz p95 of Z
+\newcommand{\flickerNullPninetyfive}{3.00} % Exp(1) p95
+\newcommand{\flickerNullRate}{0.001}       % Exp(1) rate at p<1e-3
+\newcommand{\flickerFracLockedSix}{0.0750} % fraction of live night pixels, p<1e-6
+\newcommand{\flickerFracLockedDay}{0.0008} % day 100 Hz, same test
+
+%% --- E11, the three pixel sets (result_exact.json) -------------------------
+\newcommand{\excessMaskPix}{14\,334}       % phase-locked pixels excluded
+\newcommand{\sdAll}{206.6}
+\newcommand{\nullAll}{93.0}
+\newcommand{\fracAll}{0.9012}
+\newcommand{\sdClean}{205.1}
+\newcommand{\nullClean}{97.1}
+\newcommand{\fracClean}{0.8942}
+\newcommand{\sdRandCtl}{206.3}
+\newcommand{\nullRandCtl}{94.8}
+\newcommand{\fracRandCtl}{0.8967}
+\newcommand{\framesEleven}{1134}           % ALL and CLEAN arms
+\newcommand{\framesRandCtl}{1133}          % matched random exclusion
+
+%% --- E12, four analysis-window widths, RETRACTED with the block above -------
+%% \newcommand{\wHalfPeriod}{5000}      %% \sdHalfPeriod 218.1  \nullHalfPeriod 46.5
+%% \newcommand{\wOnePeriod}{10\,000}    %% \sdOnePeriod  211.5  \nullOnePeriod  74.4
+%% \newcommand{\wFullExp}{14\,996}      %% \sdFullExp    206.6  \nullFullExp    93.0
+%% \newcommand{\wTwoPeriod}{20\,000}    %% \sdTwoPeriod  271.2  \nullTwoPeriod 108.0
+%% frames 1085 / 1118 / 1134 / 1137, frac over null 0.988 / 0.961 / 0.901 / 0.945
+
+%% --- E08, object speed on DSEC-Det -----------------------------------------
+\newcommand{\labelSpeedMedian}{40}         % px/s, median box-center speed
+\newcommand{\labelSpeedPninety}{150}       % px/s, p90
+\newcommand{\labelSpeedPninetynine}{360}   % px/s, p99
+\newcommand{\offsetAtMedian}{1.0}          % px, 25 ms at the median speed
+\newcommand{\offsetAtPninetynine}{9.0}     % px, 25 ms at p99
+
+%% --- E13, the label center noise, solved rather than bounded ---------------
+%% Difference-order ladder plus a two-rate elimination, the ladder is still
+%% decreasing at k=7, so the total is a geometric extrapolation.
+\newcommand{\sigmaCtotal}{0.4974}          % px, total center noise
+\newcommand{\sigmaCquant}{0.1443}          % px, the integer-lattice component
+\newcommand{\sigmaCannot}{0.476}           % px, the annotation component
+\newcommand{\sigmaClattice}{0.5}           % px, the lattice step DSEC-Det stores on
+\newcommand{\sigmaCmillis}{11.9}           % ms, sigmaCannot at the median speed
+\newcommand{\ladderK}{7}                   % highest difference order taken
+
+%% --- E14, the dispersion on the pixel scale --------------------------------
+%% One multiplication: displacement = dispersion x object speed.
+\newcommand{\pxAtMedian}{0.0073}           % px, at the median object speed
+\newcommand{\pxAtPninety}{0.0275}          % px, at p90
+\newcommand{\pxAtPninetynine}{0.0661}      % px, at p99
+\newcommand{\pxFracMedian}{1.5}            % percent of sigmaCtotal
+\newcommand{\pxFracPninetynine}{13.3}      % percent of sigmaCtotal
+\newcommand{\speedToQuant}{786}            % px/s, speed at which it reaches sigmaCquant
+\newcommand{\speedToNoise}{2709}           % px/s, speed at which it reaches sigmaCtotal
+
+%% --- E16, the common offset from mid-exposure ------------------------------
+\newcommand{\offsetAllEvents}{\ensuremath{-16.8}}    % us, night, all events
+\newcommand{\offsetInBoxes}{\ensuremath{-102.3}}     % us, night, inside labeled boxes
+\newcommand{\offsetDayBound}{2}            % us, both day figures fall below this
+\newcommand{\offsetFramesSixteen}{1811}    % night frames surveyed
+\newcommand{\pxOffsetPninetynine}{0.037}   % px, offsetInBoxes at p99 speed
+
+%% --- macros for quantities that were still inline numerals ------------------
+\newcommand{\dsecSeqCount}{eighteen}       % E00, sequences whose exposure file resolves
+\newcommand{\dsecFrameRate}{20}            % Hz, label and frame rate
+\newcommand{\ddArchiveBytes}{4\,655\,023}  % bytes, dsec-det_left_object_detections.zip
+\newcommand{\ddArchiveDate}{2026-09-01}    % retrieval date
+\newcommand{\sigmaEvtFramesLabelled}{1557} % E09, labelled frames in the night sequence
+\newcommand{\mainsHz}{50}                  % Hz, Swiss mains
+\newcommand{\flickerBandLo}{90}            % Hz, search band for the strongest line
+\newcommand{\flickerBandHi}{110}
+\newcommand{\flickerContLo}{60}            % Hz, continuum band
+\newcommand{\flickerContHi}{160}
+\newcommand{\flickerPeakRatioDay}{6.6}     % day peak over the same continuum
+\newcommand{\flickerMinEvents}{100}        % events per pixel required
+\newcommand{\flickerCtrlNightRate}{0.0004} % off-frequency arm, rate at p<1e-3
+\newcommand{\periodsFullExp}{1.4996}   % E10, mains periods inside the ceiling exposure
+\newcommand{\rvtCentroidMag}{25}           % ms, |rvtUniformCentroid|
+\newcommand{\rvtTwoBranchScale}{7.2}       % ms, rvtCentroidMag/sqrt(12)
+
+%% ===== E17 measured 2026-09-03: the network's temporal influence profile ====
+%% 480 samples of real gen1 val, released rvt-t, recurrent state warmed eight
+%% steps, each of the ten bins occluded in turn. This converts E02's
+%% uniform-weight REFERENCE POINT into a MEASUREMENT.
+\newcommand{\rvtCentroidMeas}{\ensuremath{-23.81}}   %% ms, influence-weighted centroid,
+                                           %% E45. E17 and E34 reported -24.94 because the
+                                           %% occluded pass received the recurrent state the
+                                           %% reference pass RETURNED, not the one entering
+                                           %% the step, E45 repeats them with the entering
+                                           %% state and supersedes both.
+\newcommand{\rvtCentroidMagMeas}{23.81}    %% ms, its magnitude, for "before"
+\newcommand{\rvtCentroidUnif}{\ensuremath{-25.00}}   %% ms, uniform-weight reference
+\newcommand{\rvtCentroidDiff}{\ensuremath{+1.19}}    %% ms, measured minus uniform
+\newcommand{\rvtCentroidDiffPct}{23.8}     %% percent of one 5 ms bin: 1.190/5.0
+\newcommand{\rvtInfluenceSamples}{480}
+\newcommand{\rvtWarmSteps}{eight}          %% recurrent warm-up steps
+\newcommand{\rvtInfluenceCV}{0.131}   %% coefficient of variation across the ten bins
+\newcommand{\rvtInfluenceMaxMin}{1.52} %% heaviest bin over lightest
+\newcommand{\rvtHalfOlder}{48.6}       %% percent of influence in the five older bins
+\newcommand{\rvtHalfNewer}{51.4}       %% percent in the five newer bins
+\newcommand{\tauHatRVT}{\rvtCentroidMeas}  %% E17, no longer a placeholder
+
+%% --- proportions, written as percentages everywhere in the paper -----------
+%% Same measurements as the fractions above, one format is used throughout so
+%% that adjacent proportions are comparable by eye.
+\newcommand{\sigmaEvtFracNightPct}{90.1}   % E11 exact, ALL arm
+\newcommand{\sigmaEvtFracDayPct}{35}       % E09 day arm
+\newcommand{\fracAllPct}{90.1}
+\newcommand{\fracCleanPct}{89.4}
+\newcommand{\fracRandCtlPct}{89.7}
+\newcommand{\flickerFracLockedPct}{24.07}      % E10, of LIVE pixels
+\newcommand{\flickerFracLockedDayPct}{0.08}    % E10, day arm
+\newcommand{\flickerFracLockedSixPct}{7.50}    % E10, p<1e-6
+\newcommand{\flickerCtrlNightRatePct}{0.04}    % E10, off-frequency arm
+\newcommand{\flickerNullRatePct}{0.1}          % Exp(1) rate at p<1e-3
+\newcommand{\cellGrid}{32\,$\times$\,32}       % E09, image-cell granularity
+
+%% --- the ratio of the two temporal terms (E17 over E11) -------------------
+\newcommand{\termRatio}{130}               % 23.81 ms / 183.6 us
+\newcommand{\pxPredMedian}{1.0}            % px, tauHatRVT at the median speed
+\newcommand{\pxPredPninetynine}{9.0}       % px, tauHatRVT at p99
+
+%% ===== E19 measured 2026-09-03: the scalar dispersion against each box's own
+%% mains modulation (experiments/e19_modulation_strata). For each box the
+%% modulation depth at 100 Hz is m = 2|C| with C = (1/N) sum exp(-i w t_k) over
+%% its own events, the within-frame dispersion is then recomputed inside
+%% quartiles of m. This is what demotes the scalar dispersion to a bounded
+%% statement: it rises monotonically with m and no unmodulated stratum exists.
+\newcommand{\modFrames}{1134}              %% E19, frames entering the strata
+\newcommand{\modBoxes}{6841}               %% E19, boxes entering the strata
+\newcommand{\modPten}{0.355}               %% E19, p10 of m at 100 Hz
+\newcommand{\modMedian}{0.467}             %% E19, median of m at 100 Hz
+\newcommand{\modPninety}{0.609}            %% E19, p90 of m at 100 Hz
+\newcommand{\modFloor}{0.125}              %% E19, m for 200 events at random phase
+\newcommand{\excessModQone}{93.1}          %% us, E19, lowest 100 Hz quartile
+\newcommand{\excessModQtwo}{128.1}         %% us, E19, second quartile
+\newcommand{\excessModQthree}{131.5}       %% us, E19, third quartile
+\newcommand{\excessModQfour}{208.0}        %% us, E19, highest quartile
+\newcommand{\sdModQone}{119.3}             %% us, E19, sd of the lowest quartile
+\newcommand{\sdModQtwo}{149.1}
+\newcommand{\sdModQthree}{156.6}
+\newcommand{\sdModQfour}{227.2}
+\newcommand{\nullModQone}{74.6}            %% us, E19, its analytic null
+\newcommand{\nullModQtwo}{76.2}
+\newcommand{\nullModQthree}{85.1}
+\newcommand{\nullModQfour}{91.5}
+\newcommand{\framesModQone}{270}           %% E19, frames per stratum
+\newcommand{\framesModQtwo}{243}
+\newcommand{\framesModQthree}{207}
+\newcommand{\framesModQfour}{265}
+\newcommand{\modQoneLo}{0.122}             %% E19, the quartile edges of m
+\newcommand{\modQoneHi}{0.410}
+\newcommand{\modQtwoHi}{0.467}
+\newcommand{\modQthreeHi}{0.534}
+\newcommand{\modQfourHi}{1.050}
+\newcommand{\modExcessRatio}{2.2}          %% E19, Q4 over Q1 at 100 Hz
+\newcommand{\excessShamQone}{150.3}        %% us, E19, 137 Hz control, lowest quartile
+\newcommand{\excessShamQfour}{187.6}       %% us, E19, 137 Hz control, highest quartile
+\newcommand{\shamExcessRatio}{1.25}        %% E19, its Q4 over Q1
+\newcommand{\flickerCtrlHz}{137}           %% Hz, the off-frequency of E10 and E19
+
+%% ===== E20 RETRACTED 2026-09-05 ==============================================
+%% The spatial gradient of evidence time. Five controlled passes, E25 generalized
+%% the measurement to all six ceiling sequences and found the alignment STRONGER
+%% where objects move slower, which a per-object motion gradient cannot produce,
+%% and E26 compared each box against an equal-area annulus of its own surrounding
+%% background: in four of six sequences the background aligns better than the
+%% object, and eroding the box to its object-dominated core makes it worse in five
+%% of six. The signal is ego-motion. Every macro of this block is left undefined so
+%% that no sentence of the paper can use one. See experiments/e20_spatial_gradient
+%% and docs/PROTOCOL_LEDGER.md entry 6.
+%% \newcommand{\gradBoxes}{6627}              %% E20, qualifying boxes
+%% \newcommand{\gradMinEvents}{400}           %% E20, events per box required
+%% \newcommand{\gradSpeedFloor}{5}            %% px/s, E20, label-speed floor
+%% \newcommand{\gradSpeedMedian}{58.3}        %% px/s, E20, median label speed
+%% \newcommand{\gradCos}{\ensuremath{+0.152}} %% E20, mean cos(grad t, v)
+%% \newcommand{\gradCosMedian}{\ensuremath{+0.304}}   %% E20, its median
+%% \newcommand{\gradCosNullVel}{\ensuremath{+0.028}}  %% E20, shuffled-velocity null
+%% \newcommand{\gradCosNullTime}{\ensuremath{+0.020}} %% E20, time-shuffled null
+%% \newcommand{\gradSE}{0.012}                %% E20, 1/sqrt(n), a bound on the SE
+%% \newcommand{\gradSigmas}{12.4}             %% E20, measured value in those units
+%% \newcommand{\gradNullSigmas}{two}          %% E20, both nulls lie within this many
+%% \newcommand{\gradMag}{11.23}               %% us/px, E20, median |grad t|
+%% \newcommand{\gradMagShuffle}{5.47}         %% us/px, E20, its time-shuffled floor
+%% \newcommand{\gradMagRatio}{2.05}           %% E20, measured over floor
+%% \newcommand{\gradTranslatePx}{0.87}        %% px, gradSpeedMedian over dsecExpMax
+%% \newcommand{\gradBoxSide}{42}              %% px, median sqrt(wh) of the released
+
+%% --- the frame drawn in the qualitative figure -----------------------------
+%% src/make_fig_qualitative.py, which ranks the sequence's candidate frames by
+%% their within-frame dispersion and draws the MEDIAN one.
+\newcommand{\figFiveCands}{602}            %% candidate frames ranked
+\newcommand{\figFiveBoxes}{six}            %% qualifying boxes in the drawn frame
+\newcommand{\figFiveEvents}{407\,942}      %% events inside its exposure window
+\newcommand{\figFiveSd}{220.3}             %% us, its within-frame sd
+
+%% ===== RETRACTED 2026-09-07: the E21, E23 and E24 blocks.
+%% E24 fitted |e_par| and |e_perp|, E[|eps+tau v|] is not E[|eps|]+tau v, so its
+%% coefficient difference does not identify a temporal offset (external review #3,
+%% Critical 1, and the internal checklist audit of the same day). E23's acceleration
+%% regressor was |dv|/dt, a magnitude entered where a signed a_par is required, and it
+%% correlates with speed at +0.36. E21 and E24 both took the velocity from a FORWARD
+%% difference, which shares the label-center noise with the residual and manufactures
+%% a lag of tens of milliseconds when none is present (E29). All three are replaced by
+%% E27/E30/E31/E32 below. The macros are removed rather than commented out so that no
+%% text can reach a withdrawn number, see docs/REVIEW3_RESPONSE.md and
+%% docs/PROTOCOL_LEDGER.md case 7.
+
+%% ===== E27/E30/E31/E32 measured 2026-09-07: the effective OUTPUT time of the
+%% released checkpoint, re-measured after three defects were found in E21 and E24.
+%% Raw rows: experiments/e27_rows/rows.npz (35 523 matches, 406 sequences), one
+%% GPU pass, every fit below is a CPU re-analysis of that one table.
+%%   fit.log            the specification ladder and the sign-flip control
+%%   placebo_diag.log   what the rotated-velocity coefficient is
+%%   injection.log      recovery of an injected lag, and the hypothesis tests
+%% Convention, stated once and used everywhere from here: p - g = -tau v, so a
+%% POSITIVE tau means the output describes an EARLIER state than the label instant.
+\newcommand{\outMatches}{22\,534}          %% E27, matched boxes with a centered velocity
+\newcommand{\outRowsTotal}{35\,523}        %% E27, matches before requiring both neighbors
+\newcommand{\outSeqs}{376}                 %% E27, sequences contributing to the fit
+\newcommand{\outSeqsScanned}{406}          %% E27, sequences with at least one match
+\newcommand{\outIoUfloor}{0.3}             %% E27, overlap required to match
+\newcommand{\outIoUmedian}{0.873}          %% E27, median overlap of the matches
+\newcommand{\outSpeedMedian}{5.4}          %% px/s, E27, median label speed, no floor
+\newcommand{\outLinkPct}{79.0}             %% percent of Gen1 val boxes with a successor
+                                           %% at IoU>=0.3, E36 (e27_rows/split_stats.log).
+                                           %% The 81.5 here before was E21's floored subset.
+\newcommand{\outLinkIoU}{0.3}              %% the overlap at which they link
+\newcommand{\outSpeedSizeCorr}{\ensuremath{+0.139}} %% corr(|v|,sqrt(A)) on the E27 fit
+                                           %% sample, E36. E21's +0.349 came from a
+                                           %% different sample and does not apply here.
+
+%% the specification ladder, centered velocity throughout (fit.log, placebo_diag.log)
+\newcommand{\ladderMinTau}{\ensuremath{+14.62}}   \newcommand{\ladderMinTauSE}{5.47}
+\newcommand{\ladderMinPl}{\ensuremath{-7.75}}     \newcommand{\ladderMinPlSE}{1.91}
+\newcommand{\ladderMinPlSigmas}{4.0}
+\newcommand{\ladderGeoTau}{\ensuremath{-7.62}}    \newcommand{\ladderGeoTauSE}{7.01}
+\newcommand{\ladderGeoPl}{\ensuremath{-4.12}}     \newcommand{\ladderGeoPlSE}{1.90}
+\newcommand{\ladderFullTau}{\ensuremath{-2.40}}   \newcommand{\ladderFullTauSE}{7.18}
+\newcommand{\ladderFullPl}{\ensuremath{-2.66}}    \newcommand{\ladderFullPlSE}{1.71}
+\newcommand{\ladderFullPlSigmas}{1.6}
+\newcommand{\outTauSigmas}{0.33}           %% E31, tau in standard errors from zero
+\newcommand{\outCentroidSigmas}{3.65}      %% E31, standard errors from tau = 23.81 ms
+\newcommand{\outInterval}{26.2}            %% ms, evidence centroid minus output time
+\newcommand{\outIntervalSE}{7.2}           %% ms, its standard error
+
+%% the sign-flip control: the same fit under three velocity estimators (fit.log arm 1,
+%% injection.log arm 3). A forward difference shares the label-center noise with the
+%% residual, a backward one carries it with the opposite sign, a centered one omits it.
+\newcommand{\sfMinFwd}{\ensuremath{-14.68}}   \newcommand{\sfMinFwdSE}{4.99}
+\newcommand{\sfMinBack}{\ensuremath{+45.65}}  \newcommand{\sfMinBackSE}{5.59}
+\newcommand{\sfMinCen}{\ensuremath{+17.51}}   \newcommand{\sfMinCenSE}{5.06}
+\newcommand{\sfMinPlFwd}{\ensuremath{-6.53}} \newcommand{\sfMinPlFwdSE}{1.68}
+\newcommand{\sfMinPlBack}{\ensuremath{-6.15}}\newcommand{\sfMinPlBackSE}{1.71}
+\newcommand{\sfMinPlCen}{\ensuremath{-7.76}} \newcommand{\sfMinPlCenSE}{1.92}
+\newcommand{\sfFullFwd}{\ensuremath{-20.60}}  \newcommand{\sfFullFwdSE}{6.36}
+\newcommand{\sfFullBack}{\ensuremath{+14.38}} \newcommand{\sfFullBackSE}{5.97}
+\newcommand{\sfFullPlFwd}{\ensuremath{-1.99}} \newcommand{\sfFullPlFwdSE}{1.39}
+\newcommand{\sfFullPlBack}{\ensuremath{-2.10}}\newcommand{\sfFullPlBackSE}{1.50}
+\newcommand{\sfSpread}{35.0}               %% ms, forward to backward under full controls
+\newcommand{\sfMidpoint}{\ensuremath{-3.11}}  %% ms, their midpoint, against -2.40 centered
+
+%% the placebo diagnosis (placebo_diag.log): splitting by the sign of the horizontal
+%% velocity flips the rotated-velocity coefficient, which a rotational term cannot do.
+\newcommand{\plRight}{\ensuremath{-27.99}} \newcommand{\plRightSE}{3.82}
+\newcommand{\plRightSigmas}{7.3}
+\newcommand{\plLeft}{\ensuremath{+21.84}}  \newcommand{\plLeftSE}{5.47}
+\newcommand{\plLeftSigmas}{4.0}
+
+%% injection (injection.log arms 1 and 2): the controls do not absorb a lag.
+\newcommand{\injRecovery}{1.000}           %% recovered fraction at 10, 25, 50, 100 ms
+\newcommand{\injGeoGamma}{0.05}            %% px per px, the geometric displacement injected
+\newcommand{\injGeoMin}{\ensuremath{+0.63}}%% ms, how far it moves the minimal specification
+\newcommand{\injGeoFull}{0.01}             %% ms, how far it moves the full one, below this
+
+%% the speed-floor arm (placebo_diag.log section 6), full controls throughout
+\newcommand{\floorFiveTau}{\ensuremath{-2.92}}    \newcommand{\floorFiveTauSE}{9.05}
+\newcommand{\floorTwentyTau}{\ensuremath{-20.24}} \newcommand{\floorTwentyTauSE}{14.78}
+
+%% ===== E28 measured 2026-09-07 (experiments/e28_gen1_label_noise): the label-center
+%% noise of Gen1, measured on Gen1 by E13's difference ladder. E13's 0.4974 px is
+%% DSEC-Det's and does not transfer.
+\newcommand{\labelSigmaGen}{0.6515}        %% px per axis, E28, sigma_total
+\newcommand{\labelSigmaGenAnn}{0.6353}     %% px, its annotation part
+\newcommand{\labelSigmaGenQuant}{0.1443}   %% px, its quantization part, 0.5 px lattice
+\newcommand{\labelTracksGen}{691}          %% E28, tracks of >= 12 labels on uniform 250/500/1000-ms grids
+
+%% ===== E29 measured 2026-09-07 (experiments/e29_synthetic_signflip): the
+%% forward-difference artefact, calibrated on synthetic tracks with tau_true = 0.
+\newcommand{\synFwd}{\ensuremath{-5.64}}   %% ms, forward estimator, no lag present
+\newcommand{\synBack}{\ensuremath{+5.84}}  %% ms, backward estimator, no lag present
+\newcommand{\synCen}{\ensuremath{+0.00}}   %% ms, centered estimator, no lag present
+\newcommand{\synSum}{\ensuremath{+0.20}}   %% ms, forward plus backward
+\newcommand{\synPred}{\ensuremath{-5.63}}  %% ms, -Var(delta)/dt / Var(v), closed form
+\newcommand{\synZero}{\ensuremath{+0.02}}  %% ms, all three with the label noise removed
+\newcommand{\synRecover}{0.92}             %% fraction of an injected lag recovered
+\newcommand{\synLambda}{0.933}             %% the errors-in-variables prediction
+\newcommand{\synTracks}{2000}              %% synthetic tracks
+
+%% displacement the interval amounts to, at speeds that occur in the split (E32)
+\newcommand{\outSideMedian}{41.7}          %% px, median box side of the matches
+\newcommand{\outSpeedNinety}{25.7}         %% px/s, 90th percentile label speed
+\newcommand{\outSpeedNinetynine}{54.2}     %% px/s, 99th percentile label speed
+\newcommand{\outPxNinety}{0.61}            %% px, displacement over 23.81 ms at p90
+\newcommand{\outPxNinetynine}{1.29}        %% px, the same at p99
+\newcommand{\outStaticPct}{22}             %% percent of matches below 2 px/s
+
+%% ===== E25 measured 2026-09-04 (experiments/e25_six_sequences): the mains
+%% signature on ALL SIX DSEC train sequences whose exposure is pinned at 14996 us.
+%% Per labelled box, the modulation depth m = 2|C| and the Rayleigh statistic
+%% Z = N|C|^2 at 100 Hz, with an off-frequency arm at 137 Hz. For these finite
+%% exposure windows the per-box analytic phase null is not used; E38 supplies
+%% an empirical off-frequency reference.
+\newcommand{\sixSeqs}{six}                 %% E25, ceiling sequences measured
+\newcommand{\sixBoxes}{16\,516}            %% E25, labelled boxes over the six
+\newcommand{\sixZmedian}{114.58}           %% E25, median over sequences of the median box Z at 100 Hz
+\newcommand{\sixZctrl}{4.01}               %% E25, the same at 137 Hz
+\newcommand{\sixLockedLoPct}{95.4}         %% percent, E38b: the LOWEST per-sequence fraction of boxes whose local excess
+                                           %% at 100 Hz exceeds the 99th percentile of the
+                                           %% same quantity at 137 Hz. This replaces E25's
+                                           %% p<1e-3 fraction, withdrawn with the analytic
+                                           %% per-box null (experiments/e38_empirical_null).
+\newcommand{\sixLockedHiPct}{100.0}        %% percent, E38b, highest (same construction)
+\newcommand{\sixModLo}{0.428}              %% E25, lowest per-sequence median modulation depth
+\newcommand{\sixModHi}{0.489}              %% E25, highest
+%% per-sequence rows of Table 2, in the order printed
+\newcommand{\sixBoxesA}{2914}   \newcommand{\sixModA}{0.428}
+\newcommand{\sixZA}{117.6}      \newcommand{\sixZcA}{3.15}  \newcommand{\sixLockA}{100.00}
+\newcommand{\sixBoxesB}{2134}   \newcommand{\sixModB}{0.440}
+\newcommand{\sixZB}{99.1}       \newcommand{\sixZcB}{4.69}  \newcommand{\sixLockB}{99.63}
+\newcommand{\sixBoxesC}{619}    \newcommand{\sixModC}{0.445}
+\newcommand{\sixZC}{68.4}       \newcommand{\sixZcC}{2.75}  \newcommand{\sixLockC}{99.68}
+\newcommand{\sixBoxesD}{241}    \newcommand{\sixModD}{0.489}
+\newcommand{\sixZD}{310.9}      \newcommand{\sixZcD}{25.85} \newcommand{\sixLockD}{95.44}
+\newcommand{\sixBoxesE}{6997}   \newcommand{\sixModE}{0.466}
+\newcommand{\sixZE}{251.5}      \newcommand{\sixZcE}{7.82}  \newcommand{\sixLockE}{99.23}
+\newcommand{\sixBoxesF}{3611}   \newcommand{\sixModF}{0.438}
+\newcommand{\sixZF}{111.6}      \newcommand{\sixZcF}{3.33}  \newcommand{\sixLockF}{100.00}
+\newcommand{\sixMinEvents}{400}            %% E25, events per box required
+
+%% ===== E26 measured 2026-09-04 (experiments/e26_egomotion, paired.json): the
+%% control that retracted E20. Each box's fitted gradient is compared against the
+%% gradient of an equal-area annulus of its own surrounding background, aligned
+%% with the same label velocity, and the difference is taken per box so that a
+%% cause common to the box and its surroundings cancels.
+\newcommand{\egoRingBetter}{four}          %% E26, sequences where the ring aligns better
+\newcommand{\egoCoreNeg}{five}             %% E26, sequences where the eroded core goes negative
+\newcommand{\egoCoreWorst}{\ensuremath{-0.178}}  %% E26, paired core minus ring, zurich_city_01_a
+\newcommand{\egoCoreWorstSigmas}{6.2}      %% E26, that difference in standard errors
+
+%% --- E02, provenance of the window facts (src/e02_verify_window.py) ---------
+\newcommand{\rvtSourceLine}{405}           %% line of preprocess_dataset.py that builds
+                                           %% ev_repr_timestamps_us_end backwards from labels
+
+%% --- the two temporal terms on the pixel scale of the split they were measured on
+
+%% ===== E32b measured 2026-09-07 (experiments/e27_rows/bootstrap.log): a cluster
+%% bootstrap over sequences for the reported specification, fitted by
+%% Frisch-Waugh-Lovell (the group dummies are absorbed by within-cell demeaning,
+%% which reproduces the full design's tau to 0.007 ms).
+\newcommand{\outBootLo}{\ensuremath{-17.0}}   %% ms, 2.5th percentile
+\newcommand{\outBootHi}{\ensuremath{+11.5}}   %% ms, 97.5th percentile
+\newcommand{\outBootDraws}{4000}              %% resamples
+\newcommand{\outBootBeyond}{3}                %% draws at or beyond 23.81 ms, of 4000
+
+%% ===== E33 measured 2026-09-07 (experiments/e27_rows/saturate.log): the reported
+%% specification pairs each geometric control with one image axis. This enters all
+%% four on BOTH axes, drops each in turn, and restricts the sample, so that the
+%% spread of tau across specifications is reported rather than one of them chosen.
+\newcommand{\satTau}{\ensuremath{-3.62}}   \newcommand{\satTauSE}{7.41}
+\newcommand{\satPl}{\ensuremath{-1.59}}    \newcommand{\satPlSE}{1.62}
+\newcommand{\satLo}{\ensuremath{-20.2}}    %% ms, lowest tau over EVERY specification
+                                           %% carrying geometric controls, including the
+                                           %% 20 px/s floor of placebo_diag.log, the
+                                           %% saturate.log sweep alone gives -9.8.
+\newcommand{\satHi}{\ensuremath{+11.1}}    %% ms, highest
+\newcommand{\satTight}{\ensuremath{+0.49}} \newcommand{\satTightSE}{4.67}
+\newcommand{\satTightIoU}{0.7}             %% the overlap floor giving the tightest fit
+
+%% ===== E34 measured 2026-09-07 (experiments/e34_influence_robust/result.json): is the
+%% influence centroid an artefact of occluding a bin with zeros? Three fills and one
+%% instrument that does not occlude at all. The recurrent state is held fixed within
+%% every sample, so none of these measures state perturbation.
+\newcommand{\occZero}{\ensuremath{-23.81}}   %% ms, zeros, what E17 did
+\newcommand{\occMean}{\ensuremath{-26.35}}   %% ms, the bin set to its dataset mean
+\newcommand{\occSwap}{\ensuremath{-25.01}}   %% ms, the bin taken from an unrelated sample
+\newcommand{\occGrad}{\ensuremath{-22.35}}   %% ms, d||out||/d(bin), no occlusion at all
+\newcommand{\occSpread}{4.01}                 %% ms, the range across all four instruments
+\newcommand{\occBootSE}{0.054}                %% ms, bootstrap SE of the zero-fill centroid
+\newcommand{\occGradCV}{0.191}               %% CV over bins of the gradient instrument
+
+%% ===== E35 measured 2026-09-07 (experiments/e27_rows/ratio.log): the nearest prior
+%% estimator, the per-object ratio, fitted on exactly the rows the regression uses.
+\newcommand{\ratioMean}{\ensuremath{+24.22}} \newcommand{\ratioMeanSE}{27.73}
+\newcommand{\ratioIQR}{430}                  %% ms, its interquartile range over all rows
+\newcommand{\ratioSD}{4170}                  %% ms, its sample standard deviation
+\newcommand{\ratioFloor}{\ensuremath{+13.34}}\newcommand{\ratioFloorSE}{6.17}
+\newcommand{\ratioFloorSpeed}{15}            %% px/s, the floor that arm imposes
+
+%% plot and procedure constants, so that no numeral appears in prose
+\newcommand{\bootCI}{95}                     %% percent, the bootstrap interval reported
+\newcommand{\injLevels}{10, 25, 50 and 100}  %% ms, the injected lags of injection.log
+\newcommand{\flickerDayPeakHz}{103.0}        %% Hz, where the day sequence's in-band peak sits
+                                             %% (e10_flicker/verify.json, DAY top_line_Hz)
+
+%% errors-in-variables on the reported rows (experiments/e27_rows/fit.log, section 5,
+%% re-run with SIGMA_C from E28 rather than the E13 default)
+\newcommand{\eivVarObs}{110.6}             %% px^2/s^2, Var of the centered velocity
+\newcommand{\eivVarNoise}{1.0}             %% px^2/s^2, row-wise mean 2 sigma^2 / (dt_f+dt_b)^2
+\newcommand{\eivLambda}{0.991}             %% the attenuation factor on these rows
+\newcommand{\eivShift}{0.2}                %% ms, conservative rounded upper bound on correction shift
+
+%% ===== E38 measured 2026-09-07 (experiments/e38_empirical_null): the per-box Rayleigh
+%% null, measured rather than assumed. RETRACTION: the per-box p-values and the
+%% "99.0-100.0 % of boxes locked at p<1e-3" figure are withdrawn. Pooled over the six
+%% ceiling sequences the OFF-FREQUENCY per-box Z has a median of 38.39 against the
+%% analytic 0.693, an inflation of 55, because event times inside one box during a 15 ms
+%% exposure arrive in bursts. The per-PIXEL arm is unaffected: there the 137 Hz control
+%% returns 0.581 against 0.693, so the analytic null holds where it was verified.
+\newcommand{\nullOffMed}{38.4}             %% pooled per-box Z at off frequencies
+\newcommand{\nullInflation}{55}            %% times the analytic median
+\newcommand{\nullOffFreqs}{eight}             %% off-frequencies swept
+
+%% arm 2 (local_excess.log): R = Z(100 Hz) / the same box's own local background, which
+%% needs no null at all. Grid 60-300 Hz at 1 Hz, the background band is |f-100| in [6,30]
+%% excluding 20 Hz and 100 Hz harmonics.
+\newcommand{\localBoxes}{16\,516}          %% boxes pooled over the six sequences
+\newcommand{\localLine}{1.87}              %% median R at the line
+\newcommand{\localLinePten}{1.62}          %% its tenth percentile
+\newcommand{\localLinePninety}{2.18}       %% its ninetieth
+\newcommand{\localSham}{0.11}              %% median R at the off-frequency arm
+\newcommand{\localShamPninetynine}{1.00}   %% its 99th percentile
+\newcommand{\localRatio}{17.5}             %% ratio of the two medians
+\newcommand{\localAbovePct}{99.63}         %% percent of boxes above the sham's 99th pct
+\newcommand{\localPeakHz}{96}              %% Hz, where the pooled median spectrum peaks
+\newcommand{\localPeakOverHigh}{8.5}       %% peak over the 200-300 Hz median
+\newcommand{\localPeakWidth}{35}           %% Hz, its half-maximum width
+\newcommand{\localTransformLimit}{67}      %% Hz, 1/14996 us, what one window can resolve
+\newcommand{\localGridLo}{60}\newcommand{\localGridHi}{300}
+
+%% ===== E37 measured 2026-09-07 (experiments/e37_map): average precision as a function
+%% of the instant the ground truth describes. One GPU pass dumps every detection and every
+%% ground-truth box of the Gen1 validation split, the sweep displaces the ground truth by
+%% delta*v and recomputes mAP. Ground truth without a centered velocity is marked ignore.
+\newcommand{\mapFrames}{20\,296}           %% frames evaluated
+\newcommand{\mapDets}{86\,788}             %% detections dumped
+\newcommand{\mapGT}{40\,698}               %% ground-truth boxes
+\newcommand{\mapGTvelPct}{68.7}            %% percent carrying a centered velocity
+\newcommand{\mapArgmax}{\ensuremath{-10}}  %% ms, where mAP is maximised
+\newcommand{\mapZero}{0.3346}              %% mAP at the label instant
+\newcommand{\mapCentroid}{0.3342}          %% mAP with the gt displaced to the centroid
+\newcommand{\mapCost}{0.04}                %% mAP points between those two
+\newcommand{\mapCostAbs}{0.0004}           %% absolute mAP change
+\newcommand{\mapCostPct}{0.12}             %% and as a percentage
+\newcommand{\mapSweepSpan}{0.9}            %% mAP points over the whole +-60 ms sweep
+\newcommand{\mapSpeedMedian}{4.0}          %% px/s, median label speed of this set
+\newcommand{\mapSideMedian}{41.5}          %% px, median box side
+\newcommand{\mapPxMedian}{0.10}            %% px, 23.81 ms at that median speed
+%% the speed strata (strata.log): span over +-50 ms, and n
+\newcommand{\mapSpanSlow}{0.11}   \newcommand{\mapNslow}{20\,154}
+\newcommand{\mapSpanMid}{0.33}    \newcommand{\mapNmid}{5\,356}
+\newcommand{\mapSpanHigh}{0.78}   \newcommand{\mapNhigh}{2\,096}
+\newcommand{\mapSpanTop}{0.37}    \newcommand{\mapNtop}{337}
+\newcommand{\mapTopMap}{0.139}    %% the fastest stratum's mAP, against 0.286 below it
+\newcommand{\mapHighMap}{0.286}
+
+%% ===== E55 measured 2026-09-15 (experiments/e37_map/stratum_table.json): the speed
+%% strata evaluated EXACTLY at the corrected centroid of -23.81 ms (E37c's per-stratum
+%% costs sat at the superseded -24.94 ms and on the 5 ms grid), with each stratum's
+%% share of the moving boxes, its median speed, and what 23.81 ms of that speed is in
+%% pixels. Spans are E37c's, whose grid did not change. The all-moving row reproduces
+%% at_centroid.json to inside 5e-5, asserted in the script.
+\newcommand{\stShareSlow}{72.1}\newcommand{\stShareMid}{19.2}
+\newcommand{\stShareHigh}{7.5}\newcommand{\stShareTop}{1.2}
+\newcommand{\stSpdSlow}{2.1}\newcommand{\stSpdMid}{15.0}
+\newcommand{\stSpdHigh}{32.3}\newcommand{\stSpdTop}{57.4}
+\newcommand{\stPxSlow}{0.05}\newcommand{\stPxMid}{0.36}
+\newcommand{\stPxHigh}{0.77}\newcommand{\stPxTop}{1.37}
+\newcommand{\stCostSlow}{0.02}\newcommand{\stCostMid}{0.01}
+\newcommand{\stCostHigh}{0.08}\newcommand{\stCostTop}{0.00}
+\newcommand{\stSpanAll}{0.37}     %% the all-moving span on the -50..+30 ms grid, the
+                                  %% 0.9 of \mapSweepSpan is the +-60 ms sweep of E37b
+\newcommand{\stNmoving}{27\,943}  %% ground-truth boxes carrying a centered velocity
+
+%% ===== Real-image figures rendered 2026-09-15 (src/make_fig_real.py). fig6: the frame is
+%% chosen by rule (>=3 velocity boxes, >=2 at >=20 px/s, largest median speed) from E37's
+%% own iteration order, so the drawn boxes are the ones the sweep scored, stats in
+%% experiments/e37_map/fig6_stats.json. fig7: densest published ceiling exposure window vs
+%% the same instants of the daytime control, stats in
+%% experiments/e00_exposure_survey/fig7_stats.json.
+\newcommand{\sweepRealFast}{45.2}   %% px/s, the fastest label on the drawn frame
+\newcommand{\sweepRealPx}{1.08}     %% px, that speed over the 23.81 ms interval
+\newcommand{\ceilVarNight}{3.0}     %% max/min of the 350 us rate, ceiling sequence
+\newcommand{\ceilVarDay}{1.1}       %% the same on the daytime control
+
+%% ===== E40 measured 2026-09-07 (experiments/e40_harmonics/result.json): which frequency
+%% carries the signature, with no band chosen in advance. E10's "strongest line between 90
+%% and 110 Hz" could only ever have found a line in that band. A 20-450 Hz sweep on each
+%% whole recording shows the HARMONIC SERIES of a 100 Hz fundamental, strongest at the
+%% second harmonic, with nothing at the odd multiples of 50 Hz and nothing in daylight.
+\newcommand{\harmOne}{30}                  %% ceiling median, 100 Hz over its own continuum
+\newcommand{\harmTwo}{125}                 %% the same at 200 Hz
+\newcommand{\harmThree}{15}                %% at 300 Hz
+\newcommand{\harmFifty}{1.8}               %% at 50 Hz: no line
+\newcommand{\harmOneFifty}{4.5}            %% at 150 Hz: no line
+\newcommand{\harmTwoFifty}{1.6}            %% at 250 Hz: no line
+\newcommand{\harmDayOne}{0.5}              %% daytime sequence at 100 Hz
+\newcommand{\harmDayTwo}{6.2}              %% daytime sequence at 200 Hz
+\newcommand{\harmTwoMax}{2518}             %% the strongest, zurich_city_09_a at 200 Hz
+\newcommand{\harmTwoMin}{14.7}             %% the weakest ceiling sequence at 200 Hz
+\newcommand{\harmSecondStrongest}{four}    %% sequences where 200 Hz is the strongest line
+\newcommand{\harmGridLo}{20}\newcommand{\harmGridHi}{450}
+\newcommand{\harmSecondHz}{200}\newcommand{\harmThirdHz}{300}
+\newcommand{\harmBoxTwo}{0.76}             %% E38b at 200 Hz: the per-box local excess there
+                                           %% is WEAKER than at 100 Hz (1.87), because one
+                                           %% 14996 us window resolves only 67 Hz
+
+%% ===== E41 measured 2026-09-07 (experiments/e41_permutation_null): the within-frame
+%% dispersion against a null that assumes nothing about arrival statistics. Events of all
+%% qualifying boxes of a frame are pooled and reassigned at random to boxes, preserving
+%% counts, so every temporal structure common to the frame survives and only box identity
+%% is destroyed. The analytic null's independence assumption is thereby removed.
+\newcommand{\permNull}{78.6}               %% us, the permutation null, median over frames
+\newcommand{\permExcess}{191.1}            %% us, the excess over it
+\newcommand{\permDraws}{200}               %% draws per frame
+\newcommand{\permFrames}{1134}             %% qualifying frames
+\newcommand{\permAbovePct}{94.1}           %% percent of frames exceeding their own null
+\newcommand{\permRatio}{0.85}              %% permutation over analytic: it is SMALLER
+\newcommand{\permRandObs}{339.4}           %% us, random-position boxes, observed
+\newcommand{\permRandNull}{113.3}          %% us, their permutation null
+\newcommand{\permRandExcess}{320.0}        %% us, their excess
+
+%% retained for provenance only; the finite-window per-box table reports depth
+%% descriptively and does not use a random-phase floor.
+\newcommand{\modFloorSix}{0.089}           %% sqrt(pi/400)
+\newcommand{\fwlAgree}{0.007}              %% ms, FWL against the full design (bootstrap.log)
+\newcommand{\mapArgmaxTau}{\ensuremath{+10}}  %% ms, \mapArgmax read on the p-g=-tau v axis
+\newcommand{\localRatioSweep}{4.0}         %% the pooled 100 Hz to off-frequency ratio of
+                                           %% medians over all eight off frequencies (E38
+                                           %% run.log), against 28.6 for the 137 Hz arm alone
+\newcommand{\mapVsFit}{1.7}                %% the mAP argmax against the regression, in SEs
+                                           %% of the regression: (10-(-2.40))/7.18 = 1.73
+
+%% ===== E42 measured 2026-09-07 (experiments/e42_recurrent_support): the temporal support
+%% of a RECURRENT detector, including its history. E17 and E34 hold the recurrent state
+%% fixed and perturb the current window only, so their centroid is the CURRENT WINDOW's
+%% influence centroid conditional on that state, not the support of the emitted state as
+%% Sec. 3.1 defines it. This occludes whole past windows and lets the state propagate.
+\newcommand{\histShareTen}{30.0}           %% percent of influence in the current window,
+                                           %% 500 ms horizon
+\newcommand{\histShareTwenty}{22.7}        %% the same over a 1000 ms horizon
+\newcommand{\histCentroidTen}{\ensuremath{-161}}    %% ms, over the FIRST TEN windows of the k=19
+                                           %% run, so both horizons come from one sample,
+                                           %% the k=9 run began at a different frame and its
+                                           %% -166 is not mixed in
+\newcommand{\histCentroidTwenty}{\ensuremath{-299}} %% ms, the same over 1000 ms
+\newcommand{\histHalfLag}{\ensuremath{-175}}        %% ms, where half the influence is reached
+\newcommand{\histResetChange}{0.0867}      %% relative change when the state is zeroed
+\newcommand{\histCurrentChange}{0.0231}    %% the same for occluding the whole current window
+\newcommand{\histResetRatio}{3.8}          %% the ratio of those two
+\newcommand{\histSamples}{576}             %% samples
+\newcommand{\histHorizonA}{500}\newcommand{\histHorizonB}{1000}  %% ms
+%% the fill control (fill_control.log): the plateau is not an artefact of zero filling
+\newcommand{\histDecayZero}{10.3}          %% decay from lag 0 to lag 19, zero fill
+\newcommand{\histDecaySwap}{2.2}           %% the same under a swap fill
+\newcommand{\histTailSwapPct}{46}          %% percent of lag-0 influence still at lag 19
+
+%% stratum edges and band frequencies, so that no numeral enters prose (E37 strata.log,
+%% E40 result.json). The p<1e-3 level is a chosen significance and is written as a power.
+\newcommand{\mapCutLo}{10}\newcommand{\mapCutMid}{25}\newcommand{\mapCutHi}{50}
+\newcommand{\harmOddOneHz}{150}\newcommand{\harmOddTwoHz}{250}
+\newcommand{\ladderTrimPct}{5}             %% percent trimmed per tail in E28's ladder
+
+%% ===== E37d measured 2026-09-07 (experiments/e37_map/argmax_bootstrap.log): a frame
+%% bootstrap of the mAP sweep's argmax. The argmax does not identify a value, and in no
+%% resample does it reach the newest window's centroid.
+\newcommand{\mapArgLo}{\ensuremath{-20}}   %% ms, 2.5th percentile of the argmax
+\newcommand{\mapArgHi}{\ensuremath{0}}     %% ms, 97.5th percentile
+\newcommand{\mapArgBoot}{1000}             %% frame resamples
+\newcommand{\mapArgNever}{none}            %% resamples whose argmax reaches -23.81 ms
+
+%% ===== E44 measured 2026-09-07 (experiments/e44_capacity/rvt-{t,s,b}.json): the same
+%% predictor-side measurement on the three released Gen1 capacities, which differ only in
+%% embed_dim, attention dim_head and FPN depth. Same sequences, representation, warm-up and
+%% code for all three, all three load with 0 missing and 0 unexpected keys (E43). The
+%% newest-window centroids here use the state entering the step, as E45 does, which is why
+%% rvt-t agrees with E45 and not with the superseded E17.
+\newcommand{\capSamples}{576}            %% samples per capacity
+\newcommand{\capParamsT}{4.41}        \newcommand{\capParamsS}{9.87}
+\newcommand{\capParamsB}{18.54}
+\newcommand{\capBinT}{\ensuremath{-23.84}}   \newcommand{\capBinS}{\ensuremath{-23.89}}
+\newcommand{\capBinB}{\ensuremath{-24.11}}
+\newcommand{\capBinSpread}{0.27}   %% ms, range of the three
+\newcommand{\capShareT}{22.7}   \newcommand{\capShareS}{20.6}
+\newcommand{\capShareB}{19.0}
+\newcommand{\capSuppT}{\ensuremath{-299}}  \newcommand{\capSuppS}{\ensuremath{-337}}
+\newcommand{\capSuppB}{\ensuremath{-339}}
+\newcommand{\capResetT}{3.8}   \newcommand{\capResetB}{3.0}
+\newcommand{\capHorizon}{1000}          %% ms, the horizon these are quoted over
+
+%% ===== E47/E48 measured 2026-09-08 (experiments/e47_ssm, experiments/e48_matched_frames):
+%% the newest-window bin arm on TWO architectures over the same 12 Gen1 validation
+%% sequences and the same frames. SSM-ViT (Zubic et al., CVPR 2024) is a fork of the RVT
+%% repository in which each stage's ConvLSTM is replaced by an S5 state space layer, it
+%% distributes RVT's own preprocessed Gen1 and builds its window boundaries with the same
+%% line of the same script. Both released checkpoints load with 0 missing and 0 unexpected
+%% keys. E48 re-runs RVT's three capacities on E47's frames so the two families are
+%% measured on identical samples, its rvt-t agrees with E45. SSM-ViT is driven the way its
+%% released evaluation drives it, a chunk of windows at a time with the detection head
+%% applied per position, and measured at positions carrying half a chunk of history or more
+%% (E47b), the one-window-at-a-time convention is withdrawn, see withdrawn_L1/WHY.md.
+\newcommand{\archCkpts}{5}            %% released checkpoints measured
+\newcommand{\archOther}{4}            %% the ones Fig. 2a draws besides rvt-t
+\newcommand{\archSpan}{0.96}       %% ms, range of all their centroids
+\newcommand{\archLo}{\ensuremath{-24.72}}   \newcommand{\archHi}{\ensuremath{-23.76}}
+\newcommand{\ssmParamsS}{9.68}  \newcommand{\ssmParamsB}{18.19}
+\newcommand{\ssmBinS}{\ensuremath{-23.76}}
+\newcommand{\ssmBinB}{\ensuremath{-24.72}}
+\newcommand{\mfBinT}{\ensuremath{-23.81}}
+\newcommand{\mfBinS}{\ensuremath{-23.98}}
+\newcommand{\mfBinB}{\ensuremath{-24.13}}
+\newcommand{\archSamples}{480}          %% samples per RVT checkpoint
+\newcommand{\archSamplesSsm}{288}       %% samples per SSM-ViT checkpoint:
+                                           %% fewer, because only chunk positions carrying
+                                           %% half a chunk of history or more are used
+\newcommand{\archUnifMax}{1.24}       %% ms, the largest distance of any
+                                           %% of them from the uniform-weight -25.00
+\newcommand{\archUnifPct}{25}        %% that, as a percent of one bin
+%% ===== E47c measured 2026-09-08 (experiments/e47_ssm/statepos-*.json): what the
+%% recurrent state carried between evaluation chunks does to the output, by position
+%% in the chunk, as a relative L2 change in the emitted detection tensor. The control
+%% arm occludes the window one position earlier inside the same chunk, which a model
+%% that ignored its own history entirely would also return zero for.
+\newcommand{\ssmStateEffect}{0.00000}   %% largest over all positions, s5vit-small
+\newcommand{\ssmInchunkOne}{0.0276}      %% previous window, position 1
+\newcommand{\ssmInchunkLast}{0.0106}     %% the same at the last position
+\newcommand{\ssmChunkMeas}{8}          %% windows per chunk in this measurement
+\newcommand{\rvtStateEffect}{0.0304}     %% the same arm on rvt-t, last position
+\newcommand{\rvtStateEffectOne}{0.0616}  %% and at position 1
+\newcommand{\ssmEvalChunk}{21}          %% windows per chunk in the released streaming
+                                           %% evaluation: config/dataset/gen1.yaml
+                                           %% sequence_length, and sequence_for_streaming.py
+                                           %% start_indices step by exactly that
+
+%% ===== E51-E53 measured 2026-09-08 (experiments/e51_ranking): does the interval change a
+%% benchmark COMPARISON? Detections for all five released checkpoints were dumped under one
+%% protocol (same frames, same confidence, same NMS, ground truth identical across models and
+%% identical to E37's), then each model was scored at delta = 0 and again at its own best
+%% displacement, in four speed strata. The ordering never changes, and it cannot: in every
+%% stratum the largest gain any model draws from alignment is a fraction of the smallest gap
+%% between adjacent models, so no refinement of the grid can reorder them.
+\newcommand{\rankCkpts}{5}            %% released checkpoints scored
+\newcommand{\rankStrata}{four}          %% speed strata examined
+\newcommand{\rankFlips}{0}              %% pairwise sign flips, of 10 per stratum
+\newcommand{\rankMaxGain}{0.14}      %% mAP points, the largest alignment gain seen
+\newcommand{\rankMinGap}{0.11}       %% mAP points, the smallest adjacent gap seen
+\newcommand{\rankRatio}{52}          %% percent: worst-case gain over gap within a stratum
+\newcommand{\rankArgLo}{\ensuremath{-15}}   %% ms, earliest per-model argmax
+\newcommand{\rankArgHi}{\ensuremath{0}}    %% ms, latest per-model argmax
+\newcommand{\rankMover}{\texttt{s5vit-base}}  %% the checkpoint whose rank moves most
+\newcommand{\rankMoverBest}{1}          %% its best rank across strata
+\newcommand{\rankMoverWorst}{5}         %% and its worst

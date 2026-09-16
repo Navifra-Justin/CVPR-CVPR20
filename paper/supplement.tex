@@ -30,46 +30,49 @@ in Event-Detection Benchmarks\\[0.3em]
 \noindent
 This document holds the material referred to from the main paper: the
 errors-in-variables treatment of the velocity regressor, the protocol behind the
-occlusion measurement, the construction and the standard error of the anisotropic
-decomposition, the data paths of the DSEC measurements, and the prior-art search
-record. Section numbers below refer to this document; references of the form
-``main Sec.~$n$'' refer to the paper.
+occlusion measurement, the data paths of the DSEC measurements, and additional
+implementation and control analyses. The RVT source revision is
+\texttt{b80f5683a6e2d5de65d4bde8105d796ccb50dbb1}, and the SSM-ViT source revision is
+\texttt{7c871b55a0c5f00673c2c3975f6b6a1c5adbab88}. Section numbers below refer to this document. References labeled
+main Sec.~$n$ refer to the main paper.
 
 \section{The velocity regressor}
 \label{sup:denominator}
 
-The regression of main Eq.~1 takes the residual vector against a label velocity
-that is finite differenced from labels rather than observed. Write the observed
-velocity as $v=v^{*}+\eta$. Three error mechanisms enter, and they behave
-differently. The third of them is the one that decided the measurement.
+The regression of main Eq.~2 uses the finite-differenced label velocity
+$\tilde v=v+\eta$, where $v$ is latent true velocity and $\eta$ is label noise.
+Three error mechanisms enter, and they behave differently. The shared-noise term
+determines the estimator choice.
 
 \paragraph{Classical dilution.} Let the label center carry noise of standard
 deviation $\sigma_{c}$ per frame and let the speed be formed by a central
-difference over $\pm\Delta$. The differenced speed then carries noise of standard
-deviation
+difference over $\pm\Delta$. The differenced speed then carries noise with variance
 
 \begin{equation}
-\sigma_{\eta}=\frac{\sigma_{c}}{\sqrt{2}\,\Delta},
+\sigma_{\eta}^{2}=\frac{2\sigma_{c}^{2}}{(\Delta_f+\Delta_b)^{2}},
 \label{eq:dilution}
 \end{equation}
 
 and $\tau$ is attenuated toward zero by
-$\lambda_{\mathrm{att}}=\mathrm{Var}(v^{*})/(\mathrm{Var}(v^{*})+\sigma_{\eta}^{2})$.
+$\lambda_{\mathrm{att}}=\mathrm{Var}(v)/(\mathrm{Var}(v)+\sigma_{\eta}^{2})$.
 The noise is the label noise of the dataset the fit runs on, so it is measured
 there: Sec.~\ref{sup:labelnoise} solves for $\sigma_{c}=\labelSigmaGen$\,px on
-Gen1 itself, and Eq.~\ref{eq:dilution} is evaluated rather than assumed. On the
+Gen1 itself, and Eq.~\ref{eq:dilution} is evaluated row by row rather than
+assuming a fixed cadence. On the
 reported rows $\mathrm{Var}(\eta)$ is \eivVarNoise{} against a
-$\mathrm{Var}(v)$ of \eivVarObs{} in px$^{2}$/s$^{2}$, so
+$\mathrm{Var}(\tilde v)$ of \eivVarObs{} in px$^{2}$/s$^{2}$, so
 $\lambda_{\mathrm{att}}=\eivLambda{}$ and the correction moves $\tau$ by less
-than \eivShift\,ms. The synthetic arm of Sec.~\ref{sup:signflip} injects a known
+than \eivShift\,ms. This marginal errors-in-variables calculation indicates
+small attenuation. The synthetic arm of Sec.~\ref{sup:signflip} injects a known
 lag under a much larger noise and recovers \synRecover{} of it against a
-predicted \synLambda{}, so the correction is calibrated as well as small. The
-attenuation is toward zero, so it cannot manufacture the null that is
-reported.
+predicted \synLambda{}, so the correction is calibrated as well as small.
+The estimated attenuation is only 0.9\%, moving $\tau$ by less than 0.2\,ms,
+and therefore cannot explain the near-zero coefficient reported here.
 
-\paragraph{Smoothing bias.} A central difference returns the mean velocity over
-$2\Delta$ rather than the instantaneous velocity. Expanding the trajectory about
-the query instant,
+\paragraph{Smoothing bias.} On the uniform grid used for the label-noise
+calibration, a central difference returns the mean velocity over $2\Delta$
+rather than the instantaneous velocity. Expanding the trajectory about the
+query instant,
 
 \begin{equation}
 \frac{x(t+\Delta)-x(t-\Delta)}{2\Delta}
@@ -80,6 +83,12 @@ so the regressor carries a systematic term of order $\Delta^{2}\dddot{x}/6$. Tha
 is a bias in the regressor, not noise in it, and no errors-in-variables
 correction removes it. It is made small by making $\Delta$ small, which
 Eq.~\ref{eq:dilution} says makes the dilution worse.
+The reported regression rows use the local secant
+$[x(t+\Delta_f)-x(t-\Delta_b)]/(\Delta_f+\Delta_b)$. Their median
+$|\Delta_f-\Delta_b|$ is zero, so the first-order acceleration term is absent
+in the typical row. The general expansion includes
+$(\Delta_f-\Delta_b)\ddot{x}/2$ and is covered by the stated local-secant
+interpretation.
 
 \paragraph{The shared-noise term.} The first two mechanisms are properties of the
 regressor alone. The third couples the regressor to the response. A forward
@@ -88,41 +97,45 @@ the current center with weight $-1/\Delta$, and the residual
 $\hat{c}-c^{*}_{k}$ carries the same $\delta_{k}$ with weight $-1$, so
 
 \begin{equation}
-\operatorname{Cov}\!\left(\hat{c}-c^{*}_{k},\;v_{f}\right)=\frac{\operatorname{Var}(\delta)}{\Delta}
+\operatorname{Cov}\!\left(\hat{c}-c^{*}_{k},\,v_{f}\right)=\frac{\operatorname{Var}(\delta)}{\Delta}
 \label{eq:shared}
 \end{equation}
 
 \noindent even at $\tau=0$, and the induced slope is
 $\operatorname{Var}(\delta)/\Delta\operatorname{Var}(v)$. A backward difference
 carries $\delta_{k}$ with the opposite sign. The centered difference omits
-$c^{*}_{k}$ and is free of the term, which is why main Eq.~1 is fitted on it and
-why the forward and backward fits are reported beside it as a control.
+$c^{*}_{k}$ and removes the direct same-frame shared-noise term. Residual bias
+from temporally correlated annotation errors is not identified by this
+construction, which is why the forward and backward fits are reported beside it
+as a control.
 
-\paragraph{An instrument that does not hold on this data.} An instrumented
+\paragraph{Instrumental-Variable Alternative.} An instrumented
 estimate would replace the current speed by a velocity finite differenced from a
 strictly disjoint earlier label pair, on the argument that disjointness implies
-independent errors. The label errors of this family are not white, so that
-argument does not hold. The third-difference kernel $(1,-3,3,-1)$ forces
-$\rho(1)=\labelAcfTheory$ for white noise; the same code returns
+independent errors. DSEC provides a counterexample to assuming that disjoint
+label errors are generally independent. The third-difference kernel $(1,-3,3,-1)$ forces
+$\rho(1)=\labelAcfTheory$ for white noise, the same code returns
 $\labelAcfWhite$ on white noise and $\labelAcfMeasured$ on the DSEC-Det labels,
 and pooled-ratio bias, heteroscedastic segments and heavy tails each returned the
 white-noise value through the identical pooling code, so the departure is a
 property of the labels. That measurement does not identify what the correlation
-structure is, beyond excluding a first-order autoregressive form. No instrumented
-estimate is reported in the paper.
+structure is, beyond excluding a first-order autoregressive form. The paper does
+not report an instrumental estimate.
 
 \paragraph{The construction term.} A benchmark whose high-rate labels are
-constructed between anchors adds a term to $e_{\parallel}$ that has nothing to do
+constructed between anchors adds a term to $e_{\parallel}$, where
+$e_{\parallel}=\langle\hat c-c^{*},\hat u\rangle$, that has nothing to do
 with the predictor. The chord of a curved image trajectory runs ahead of the
 truth throughout the interval and meets it at the anchors, which produces a
 signed, frame-locked, resetting residual for a predictor with no lag. Main
-Sec.~4.1 shows that no such term arises inside the DSEC-Det archive used here,
+Sec.~4.1 shows that exact adjacent-frame linear interpolation is inconsistent
+with the observed DSEC-Det label trajectories as the sole construction mechanism,
 and the Gen1 measurements of main Sec.~3 are taken at label times.
 
 \section{The influence profile}
 \label{sup:influence}
 
-Main Sec.~3.3 measures the temporal influence profile of the released
+Main Sec.~3.3 measures the occlusion-sensitivity profile of the released
 \texttt{rvt-t} checkpoint. The stored input is a stacked histogram of
 \rvtBins{} bins of \rvtBinWidth\,ms covering the \rvtWindow\,ms preceding the
 query time. For each sample the recurrent state is advanced over
@@ -131,55 +144,79 @@ state, the reference output is recorded, and then each bin in turn is zeroed and
 the output recorded again. A bin's influence is the magnitude of the change its
 occlusion produces in the emitted detection tensor, relative to its norm,
 averaged over
-\rvtInfluenceSamples{} samples drawn from the released Gen1 validation
-sequences. The influence-weighted centroid is $\sum_{k}a_{k}c_{k}/\sum_{k}a_{k}$
-over the ten bin centers $c_{k}$. The occluded pass starts from the recurrent
-state \emph{entering} the step, not from the state the reference pass returned,
-so the two share one history and differ only in the occluded bin; from the
-returned state they run one step out of phase and the centroid moves
-\rvtCentroidDiff\,ms.
+\rvtInfluenceSamples{} samples drawn from the first twelve lexicographically
+ordered released Gen1 validation sequences, using the first forty post-warm-up
+samples from each sequence. This deterministic rule gives 480 samples. The
+measured occlusion-sensitivity centroid is the weighted average
+$\sum_{k}s_{k}c_{k}/\sum_{k}s_{k}$ over the ten bin centers $c_{k}$, where
+$s_k$ denotes the measured non-negative bin-ablation sensitivity. The occluded pass starts from the recurrent
+state \emph{entering} the step, not from the state the reference pass returned. The two
+passes therefore share one history and differ only in the occluded bin. If the
+returned state is used instead, the passes are one step out of phase and the centroid
+moves by \rvtCentroidDiff\,ms.
+
+For the recurrent-history measurement, the same deterministic sampling rule uses
+\histSamples{} samples, the first forty-eight post-warm-up samples from each of the
+same twelve validation sequences. The current window and the preceding nine windows
+form the \histHorizonA\,ms horizon, and the current window and preceding nineteen windows
+form the \histHorizonB\,ms horizon. For each lag, the corresponding whole input window
+is zeroed while the saved reference history before that lag is restored, and the state
+is propagated through the intervening windows to the target step. The relative $L_{2}$
+change in the target detection tensor is averaged over samples to give a non-negative
+window sensitivity $q_{\ell}$. The horizon centroid is
+\[
+c_{q,H}=\frac{\sum_{\ell=0}^{L_H-1}q_{\ell}[-(25+50\ell)\,\mathrm{ms}]}
+{\sum_{\ell=0}^{L_H-1}q_{\ell}},
+\]
+where $L_H$ is the number of windows in horizon $H$, and the newest-window share is
+$q_{0}/\sum_{\ell}q_{\ell}$. The same saved reference
+history is used for the reference and ablated passes at each lag.
 
 Two properties of that measurement bound it. Occlusion reports the sensitivity of
-the output to a bin, and sensitivity equals the linear weight $a_{k}$ of main
-Sec.~3.1 only for a predictor linear in its bins; for a non-linear predictor the
-profile is a local rather than a global description. And a single-bin occlusion
+the output to a bin. The ablation profile is an operational input-sensitivity
+measure and is not, in general, a decomposition of temporal weights. For a
+nonlinear predictor it is a local rather than a global description. And a single-bin occlusion
 leaves the remaining bins in place, so the measurement is a partial derivative
 rather than a decomposition of the output.
 
 Masking the leading bins of the stored input is not a route to the same quantity
 at a shorter support. For a fixed network of influence weights $a_{k}$ on bin
-centers $c_{k}$, the conditional expectation after masking the leading $j$ bins
+centers $c_{k}$, let a constant-velocity trajectory be
+$p(t)=p_{0}+vt$. The conditional expectation after masking the leading $j$ bins
 is $A_{j}p_{0}+C_{j}v$ with $A_{j}=\sum_{S}a_{k}$ and $C_{j}=\sum_{S}a_{k}c_{k}$
 over the retained set $S$. Reading a time off that requires the normalization
 $C_{j}/A_{j}$, which the network need not perform, and the result equals the
-retained-mass centroid only for non-negative weights. No masked measurement
-enters the paper.
+retained-mass centroid only for non-negative weights.
 
-\section{The label-centre noise of Gen1}
+\section{The label-center noise of Gen1}
 \label{sup:labelnoise}
 
-The errors-in-variables treatment of Sec.~2 and the calibration of the velocity
-estimator both need the dispersion of the Gen1 label centre about a smooth
+The errors-in-variables treatment of Sec.~1 and the calibration of the velocity
+estimator both need the dispersion of the Gen1 label center about a smooth
 trajectory. The value solved for elsewhere in this work, \sigmaCtotal\,px, is
 DSEC-Det's, and does not transfer to a different annotation effort on a different
 sensor, so it is solved again on Gen1.
 
-For a track centre series $x_i=f(t_i)+e_i$ on a uniform grid, the $k$-th
+For a track center series $x_i=f(t_i)+e_i$ on a uniform grid, the $k$-th
 difference has $\operatorname{Var}(D_k)=\binom{2k}{k}\sigma^{2}$ plus a motion
 term of order $k$, so $\operatorname{Var}(D_k)/\binom{2k}{k}$ falls toward
 $\sigma^{2}$ from above. Halving the sampling rate multiplies the motion term by
 $4^{k}$ and leaves $\sigma^{2}$ untouched, giving a second equation in the same
 two unknowns, $\sigma^{2}=(4^{k}V_{\text{full}}-V_{\text{half}})/(4^{k}-1)$.
-Tracks are rebuilt by the same same-class overlap linking the output-time
-measurement uses, giving \labelTracksGen{} tracks of at least twelve labels on a
-uniform grid. Variances are trimmed at \ladderTrimPct\,\%, because all four Gen1 box
+Tracks are rebuilt by the same-class overlap linking the output-time
+measurement uses, giving \labelTracksGen{} tracks of at least twelve labels on
+uniform annotation grids with cadences of 250, 500, or 1000\,ms, corresponding
+to 4, 2, or 1\,Hz. The reported regression rows instead use the two adjacent
+label neighbors with variable intervals. Their row-wise noise variance is
+$2\sigma_c^2/(\Delta_f+\Delta_b)^2$, rather than a fixed-cadence approximation.
+Variances are trimmed at \ladderTrimPct\,\%, because all four Gen1 box
 coordinates are stored as integers and a median absolute deviation on
 lattice-valued data locks onto discrete values.
 
 The two-rate elimination agrees with the full-rate ladder to four decimals from
-$k=5$ onward, which is the check that the motion term has died rather than been
+$k=5$ onward, which is the check that the motion term is negligible rather than
 assumed away. The ladder extrapolates to $\sigma=\labelSigmaGen$\,px, of which
-\labelSigmaGenQuant\,px is the quantization of a \sigmaClattice\,px centre lattice, leaving
+\labelSigmaGenQuant\,px is the quantization of a \sigmaClattice\,px center lattice, leaving
 \labelSigmaGenAnn\,px of annotation dispersion.
 
 \section{The sign-flip calibration}
@@ -188,32 +225,33 @@ assumed away. The ladder extrapolates to $\sigma=\labelSigmaGen$\,px, of which
 Equation~\ref{eq:shared} predicts an artifact whose size is set by the label noise
 and the observed velocity variance, so it is calibrated before the estimator is
 used. \synTracks{} synthetic tracks of fourteen labels on the Gen1 grid are
-generated with quadratic motion; the simulated detector reports the true position
+generated with quadratic motion. The synthetic experiment calibrates the
+shared-noise artifact and attenuation under quadratic motion. The simulated detector reports the true position
 at $t-\tau_{\text{true}}$ with its own independent error, and the label centers
 are corrupted at \labelSigmaGen\,px.
 
 With $\tau_{\text{true}}=0$ the forward estimator returns \synFwd\,ms and the
 backward one \synBack\,ms, summing to \synSum\,ms, against the closed form
-\synPred\,ms; the centered estimator returns \synCen\,ms. Setting the label
+\synPred\,ms, the centered estimator returns \synCen\,ms. Setting the label
 noise to zero returns all three to \synZero\,ms, and the placebo stays at its
 null throughout, so it does not absorb the artifact and remains usable on real
-rows. With a lag injected, the centered estimator recovers \synRecover{} of it,
-the attenuation Eq.~\ref{eq:dilution} predicts at \synLambda{} for this noise.
+rows. In the synthetic physical-lag experiment, the centered estimator recovers
+\synRecover{} of the injected lag, consistent with the predicted attenuation of
+\synLambda{} for this noise.
 
 \section{The output-time specification sweeps}
 \label{sup:sweeps}
 
-\paragraph{Do the controls absorb a lag?} A detector lagging by $\tau$ displaces
-its prediction by $-\tau v^{*}$, so adding exactly that to the observed residual
-builds a dataset with a known extra lag and every real confound left in place.
-Under the full control set the injected offset comes back at \injRecovery{} of
-its size at \injLevels\,ms, which also shows $v^{*}$ is not in the span of the
-controls. Injecting instead a purely geometric displacement of \injGeoGamma{} px
-per px of box height moves the minimal specification's $\tau$ by \injGeoMin\,ms
-and the reported one's by less than \injGeoFull\,ms, which is what the controls
-are for.
+\paragraph{Lag Recovery under the Full Control Set.} Adding
+$-\tau_{\mathrm{inj}}\tilde v$ to the observed residual creates a known
+perturbation along the fitted temporal regressor. The coefficient is recovered
+at \injRecovery{} of its injected value at \injLevels\,ms, showing that the
+geometric controls do not absorb this regressor. Injecting instead a purely
+geometric displacement of \injGeoGamma{} px per px of box height moves the
+minimal specification's $\tau$ by \injGeoMin\,ms and the reported one's by less
+than \injGeoFull\,ms.
 
-\paragraph{Does the axis pairing make the answer?} The reported specification
+\paragraph{Sensitivity to Axis Pairing.} The reported specification
 pairs box height and image row with $\hat{y}$ and box width and image column with
 $\hat{x}$. Entering all four on both axes gives
 $\satTau\,\pm\,\satTauSE$\,ms. Dropping each in turn moves $\tau$ by under
@@ -222,7 +260,7 @@ inflated value. Raising the overlap floor to \satTightIoU{} gives
 $\satTight\,\pm\,\satTightSE$\,ms, the tightest of the sweep. Across every
 specification carrying geometric controls, including speed floors from 5 to
 20\,px/s, $\tau$ spans \satLo{} to \satHi\,ms, and none of them reaches the
-influence centroid.
+occlusion-sensitivity centroid.
 
 \paragraph{The bootstrap.} Resampling sequences with replacement,
 \outBootDraws{} times, gives a \bootCI\,\% interval of
@@ -233,16 +271,17 @@ demeaning, which reproduces the full design’s coefficient to \fwlAgree\,ms.
 \section{The per-object ratio}
 \label{sup:ratio}
 
-The estimator main Eq.~1 replaces is the per-object ratio
-$-\langle\hat{c}-c^{*},\hat{u}\rangle/\lVert v^{*}\rVert$. Fitted on the same
-\outMatches{} rows it has a sample standard deviation of \ratioSD\,ms and an
+For comparison with the estimator in main Eq.~2, we evaluate the per-object ratio
+$-\langle\hat{\mathbf c}-\mathbf c^{*},\hat{\mathbf u}\rangle/\lVert \tilde{\mathbf v}\rVert$
+on the same \outMatches{} rows. Across these rows, it has a sample standard deviation
+of \ratioSD\,ms and an
 interquartile range of \ratioIQR\,ms. Its mean over all rows is
-$\ratioMean\,\pm\,\ratioMeanSE$\,ms, which lies on the influence centroid of
-main Sec.~3.3 and would have been read as confirming the hypothesis that main
-Sec.~3.5 excludes. Above a \ratioFloorSpeed\,px/s floor it gives
+$\ratioMean\,\pm\,\ratioMeanSE$\,ms, close to the $+\rvtCentroidMagMeas$\,ms coefficient
+corresponding to the newest-window occlusion-sensitivity centroid under the convention
+of main Eq.~2. Above a \ratioFloorSpeed\,px/s floor it gives
 $\ratioFloor\,\pm\,\ratioFloorSE$\,ms, significant at more than two standard
 errors, which is a fixed spatial bias divided by a speed: the ratio has no
-intercept and main Eq.~1 does.
+intercept and main Eq.~2 does.
 
 \section{The port of the released checkpoint}
 \label{sup:port}
@@ -257,9 +296,11 @@ from. Both predictor measurements run on that port.
 \centering
 \figasset{figs/fig3_day_night.pdf}{\columnwidth}
 \caption{Left: within-frame dispersion of $\bar{t}_{i}$ against its analytic null
-in the two exposure strata, \sigmaEvtFramesNight{} frames of the ceiling sequence
-at \dsecExpMax\,\micro s and \sigmaEvtFramesDay{} day frames at
-\sigmaEvtExpDay\,\micro s. Right: per-pixel Rayleigh statistic $Z=R^{2}/N$ at
+in the two exposure strata, \sigmaEvtFramesNight{} frames of
+\texttt{zurich\_city\_09\_a} at \dsecExpMax\,\micro s and
+\sigmaEvtFramesDay{} frames of \texttt{interlaken\_00\_c} at
+\sigmaEvtExpDay\,\micro s. The daytime frames are selected by retaining frames
+with at least three qualifying boxes. Right: per-pixel Rayleigh statistic $Z=R^{2}/N$ at
 \flickerLineHz\,Hz and at \flickerCtrlHz\,Hz for the same two sequences, median
 with a whisker to the ninety-fifth percentile, against the $\mathrm{Exp}(1)$
 null. Both contrasts run in the same direction, and
@@ -290,9 +331,9 @@ $m\in[\modQthreeHi,\modQfourHi]$ & \framesModQfour & \sdModQfour & \nullModQfour
 \caption{Per-object event centroid inside one published exposure window of
 \texttt{zurich\_city\_09\_a}, in \micro s, each entry the median over frames of a
 within-frame statistic against that frame's own null $w^{2}/12N_{i}$. The first
-block's excess follows main Eq.~3 summarized over frames. Rows two and
+block's excess follows the main Sec.~4.4 statistic summarized over frames. Rows two and
 three remove the \excessMaskPix{} pixels phase-locked at \flickerLineHz\,Hz and a
-random subset of that size; row four places boxes of the same shapes at random
+random subset of that size, row four places boxes of the same shapes at random
 positions. In the lower block a frame enters a stratum when \minObjects{} of its
 boxes fall in it, so those frame counts do not partition the first row's.}
 \label{tab:controls}
@@ -308,7 +349,8 @@ boxes fall in it, so those frame counts do not partition the first row's.}
 \caption{Every event inside one published \dsecExpMax\,\micro s exposure window
 of \texttt{zurich\_city\_09\_a}, colored by its position within that window, with
 that frame's released boxes numbered left to right. The frame is the
-median-dispersion one of \figFiveCands{} candidates, not the largest.}
+median-dispersion one of \figFiveCands{} eligible candidate frames with at least
+six qualifying boxes, not the largest.}
 \label{fig:qualitative}
 \end{figure}
 
@@ -331,13 +373,12 @@ Sequence & boxes & $m$ & $Z_{\flickerLineHz}$ & $Z_{\flickerCtrlHz}$ & locked \\
 \dsecExpMax\,\micro s, measured per labeled box over the events inside that box
 during that frame's own published exposure window, with at least
 \sixMinEvents{} events per box. $m$ is the median over boxes of the modulation
-depth $m=2|C|$ at \flickerLineHz\,Hz, against a floor of \modFloorSix{} for
-\sixMinEvents{} events drawn at random phase. $Z_{\flickerLineHz}$ and
+depth $m=2|C|$ at \flickerLineHz\,Hz. $Z_{\flickerLineHz}$ and
 $Z_{\flickerCtrlHz}$ are the median
 over boxes of the Rayleigh statistic at \flickerLineHz\,Hz and at the
 off-frequency control on the same events. The analytic $\mathrm{Exp}(1)$ median of
 \flickerZnull{} does not describe either column, which is why the two are compared
-with each other; \emph{locked} is the fraction of boxes whose local excess at
+with each other. The locked fraction denotes the fraction of boxes whose local excess at
 \flickerLineHz\,Hz exceeds the ninety-ninth percentile of the same quantity at
 \flickerCtrlHz\,Hz.}
 \label{tab:sixseq}
@@ -353,17 +394,35 @@ microseconds before any statistic is formed, and the analytic null is computed f
 the same interval. Events and frames share one clock in this dataset, so no
 calibration step enters. For the dispersion of main Sec.~4.4 a box contributes
 only if it carries at least \minEvents{} events in the window, and a frame only
-if at least \minObjects{} boxes qualify; the reported statistics are medians over
+if at least \minObjects{} boxes qualify, the reported statistics are medians over
 frames of a within-frame quantity, so no frame is weighted by its object count.
 For the per-box statistics of Table~\ref{tab:sixseq} a box contributes with at
-least \sixMinEvents{} events and no frame-level requirement applies.
+least \sixMinEvents{} events and no frame-level requirement applies. The selected
+qualitative frame is shown in Supplement Fig.~\ref{fig:qualitative}, and the paired
+daytime control is shown in Supplement Fig.~\ref{fig:daynight}.
+
+For frame $f$, let $I_f$ be the qualifying boxes, let $N_{fi}$ be the event count
+inside box $i$, and let $\bar t_{fi}=N_{fi}^{-1}\sum_{k\in i}t_k$ be its event-time
+centroid relative to the frame's mid-exposure. The observed within-frame dispersion
+and its frame-specific analytic null are
+\[
+\begin{aligned}
+d_f&=\left[\frac{1}{|I_f|-1}\sum_{i\in I_f}
+ (\bar t_{fi}-\bar t_f)^2\right]^{1/2},\\
+n_f&=\left[\frac{1}{|I_f|}\sum_{i\in I_f}
+ \frac{w_f^2}{12N_{fi}}\right]^{1/2}.
+\end{aligned}
+\]
+where $\bar t_f=|I_f|^{-1}\sum_{i\in I_f}\bar t_{fi}$ and $w_f=b_f-a_f$.
+The frame-level excess is $e_f=[\max(d_f^2-n_f^2,0)]^{1/2}$, and the reported
+entries are the medians of $d_f$, $n_f$, and $e_f$ over eligible frames.
 
 \paragraph{The stereo exposures.} The left and right exposures open at the same microsecond
 in \dsecCotriggerPct\,\% of the \dsecCotriggerFrames{} frames checked and differ only in
 when they close, and the published image timestamp equals the mean of the two
 mid-exposures to within \dsecTsResidual\,\micro s.
 
-\paragraph{Which archive, and how tracks are associated.} DSEC-Det ships more than
+\paragraph{Archive version and track association.} DSEC-Det ships more than
 one annotation version. The numbers in main Sec.~4.1 describe the archive
 \texttt{dsec-det\_left\_object\_detections.zip}, \ddArchiveBytes{} bytes,
 retrieved \ddArchiveDate{}. Whether those labels are tracker output on the RGB
@@ -376,7 +435,7 @@ adjacent label times, at which \outLinkPct\,\% of boxes link.
 \paragraph{Null.} For events uniform on $[a,b]$ the mean of $N_{i}$ times has
 variance $w^{2}/12N_{i}$ with $w=b-a$. Each frame therefore carries its own null,
 formed from the published width and the observed counts, and the excess of main
-Eq.~3 is summarized over frames rather than formed from the medians of the two
+Sec.~4.4 is summarized over frames rather than formed from the medians of the two
 summaries. That is why the excess column of Table~\ref{tab:controls} is not
 $(\mathrm{sd}^{2}-\mathrm{null}^{2})^{1/2}$ of the two columns beside it.
 
@@ -386,23 +445,22 @@ reports $Z=R^{2}/N$, which is $\mathrm{Exp}(1)$ under uniform phase. Raw
 modulation depth is not usable at these counts, because for $N$ events at random
 phase the resultant is already of the size of the effect. Pixels enter with at
 least \flickerMinEvents{} events over the tested slice, and every fourth event is
-used, which preserves phase statistics and reduces power, so reported locked
-fractions are conservative. Two arms hold the estimator to its null, an
+used to reduce sample size. The off-frequency and daytime controls remain close
+to their nominal reference under the same procedure. Two arms hold the estimator to its null, an
 off-frequency arm on the same events and the same frequency on daytime events.
-The fraction of locked pixels is quoted of live pixels in main Sec.~4.2 and
-separately of the sensor; the two denominators differ and each statement names
-its own.
+The fraction of locked pixels is reported relative to live pixels in main Sec.~4.2 and
+separately relative to the full sensor. The two denominators differ, and each statement
+identifies its denominator.
 
 \paragraph{The per-box statistics of Table~\ref{tab:sixseq}.} The same estimator is applied
 to the events inside one released box during one published exposure window rather
 than to the events of one pixel over a long slice. For box $i$ the depth is
 $m=2|C|$ and the statistic is $Z=N_{i}|C|^{2}$ with
-$C=N_{i}^{-1}\sum_{k\in i}e^{-\mathrm{i}\omega t_{k}}$, phases referred to that
-frame's mid-exposure instant. The null is unchanged, since $Z$ is
-$\mathrm{Exp}(1)$ under uniform phase whatever the count. The floor
-\modFloorSix{} quoted against the depths of Table~\ref{tab:sixseq} is the expected depth of
-\sixMinEvents{} events at random phase; main Sec.~4.4's \modFloor{} is the same
-expression at its \minEvents{}-event floor. Boxes are matched to exposure windows by nearest mid-exposure
+$\omega=2\pi f$ and $C=N_{i}^{-1}\sum_{k\in i}e^{-\mathrm{i}\omega t_{k}}$, phases referred to that
+frame's mid-exposure instant. A finite exposure does not produce uniform phase
+at a tested frequency, so the pixel-level $\mathrm{Exp}(1)$ null is not assumed
+for these per-box values. The depth is reported descriptively, without a
+random-phase floor. Boxes are matched to exposure windows by nearest mid-exposure
 instant within half a frame period. The off-frequency arm at
 \flickerCtrlHz\,Hz is run on exactly the same events.
 
@@ -419,47 +477,23 @@ counts of that block are not a partition of the first row's.
 \section{The permutation null}
 \label{sup:perm}
 
-The analytic null $w^{2}/12N_{i}$ of main Eq.~3 is the variance of a mean of
+The analytic null $w^{2}/12N_{i}$ for the main Sec.~4.4 statistic is the variance of a mean of
 $N_{i}$ draws uniform on the exposure, so it assumes the events of a box arrive
-independently and uniformly. They arrive in bursts, and for a different statistic
-that burstiness inflates the reference distribution by a factor of
-\nullInflation{} (main Sec.~4.3).
+independently and uniformly.
 
-The null used instead assumes nothing about arrival statistics. For each frame the
-events of all qualifying boxes are pooled and reassigned to boxes at random,
-preserving each box's count. The exposure, the flicker and the scene's burstiness
-all survive that reassignment; only which box an event belongs to is destroyed.
+The permutation null does not assume independent or uniform event arrivals. Instead,
+it conditions on the pooled frame-level event times and each box's event count while
+randomizing box assignment. For each frame the events of all qualifying boxes are pooled
+and reassigned to boxes at random, preserving each box's count. The exposure, the flicker and the scene's burstiness
+all survive that reassignment, only which box an event belongs to is destroyed.
 Over \permFrames{} frames and \permDraws{} draws each it returns
 \permNull\,\micro s, \permRatio{} times the analytic null rather than above it,
-and \permAbovePct\,\% of frames exceed their own. A burst common to the frame
+and \permAbovePct\,\% of frames exceed their own permutation null. A burst common to the frame
 displaces every $\bar{t}_{i}$ in the same direction and cancels in their
-dispersion, which is why the statistic was already insensitive to it. Boxes of the
-same shapes at random positions give \permRandObs\,\micro s against a
-permutation null of \permRandNull\,\micro s, the same conclusion the analytic
-null gives.
-
-\section{Prior-art search record}
-\label{sup:priorart}
-
-The searches behind the coverage statement in the main paper were: the citation
-graph of the longitudinal-decomposition paper, queried through a citation graph
-API within one call, which returned \letCitations{} citing papers; and keyword
-sweeps of a preprint server over streaming perception, temporal tolerance,
-effective latency, and aggregation windows. Of the returned citing papers,
-\letTemporalHits{} mention time, latency, streaming or event sensing in their
-title or the opening of their abstract, and \letAxisHits{} apply the
-decomposition to a temporal axis or to an event camera. The one returned title
-whose framing could have concerned latency rather than multi-frame feature
-aggregation has since been retrieved and read, and the main paper states what it
-does: it scores compute latency on named hardware and evaluates on nuPlan.
-
-Two limits are carried wherever that count is cited. A follow-up request for the
-total citation count was rate limited, so the returned set is a sample of unknown
-coverage rather than a census, and keyword filtering on a title and the opening of
-an abstract will miss a paper that does the relevant thing without saying so
-early. We did not sweep the engineering-society digital libraries, where the
-closest ancestor of our estimator was published; the claim is that we searched and
-did not find, in the places named, not that the work does not exist.
+dispersion, which is why the statistic was already insensitive to it. For a separate
+random-position draw evaluated against the permutation null, boxes of the same shapes give
+\permRandObs\,\micro s against \permRandNull\,\micro s. Thus the dispersion is not specific
+to annotated object regions, although object regions may still affect it.
 
 \section{The carried state of the SSM release}
 
@@ -467,18 +501,19 @@ did not find, in the places named, not that the work does not exist.
 Main Sec.~3.3 measures five released checkpoints of two architectures. The second is
 SSM-ViT (Zubic et al., CVPR 2024), a fork of the RVT repository in which each stage's
 ConvLSTM is
-replaced by an S5 layer; it distributes RVT's own preprocessed Gen1 and builds its window
+replaced by an S5 layer. It distributes RVT's own preprocessed Gen1 and builds its window
 boundaries with the same statement of the same script, so the window convention of main
 Sec.~3.2 holds there unchanged.
 
-Its recurrent state does not. That release injects the state carried into a chunk as
+Its recurrent state does not. Let $s$ denote the carried state entering the first
+step of a chunk. That release injects it as
 $\bar{\Lambda}_{0}\leftarrow\bar{\Lambda}_{0}\odot s$ before an associative scan whose
 binary operator is $(a_{i},b_{i})\circ(a_{j},b_{j})=(a_{j}a_{i},\,a_{j}b_{i}+b_{j})$. The
 scan's outputs are the $b$ components, and $b_{p}$ is built from $a_{1},\dots,a_{p}$ and
-$b_{0},\dots,b_{p}$; $\bar{\Lambda}_{0}$ enters only the $a$ component of the first element
+$b_{0},\dots,b_{p}$, $\bar{\Lambda}_{0}$ enters only the $a$ component of the first element
 and therefore no output. The carried state is inert.
 
-That is a statement about code, so it is measured. Driving each model the way its own release
+We verify this code-level property empirically. Driving each model the way its own release
 drives it and zeroing the state entering a chunk of \ssmChunkMeas{} windows, the relative
 $L_{2}$ change in the emitted detection tensor is \ssmStateEffect{} at every position for
 SSM-ViT, and \rvtStateEffectOne{} at position one falling to \rvtStateEffect{} at the last
@@ -487,14 +522,14 @@ both arms, so the control occludes the window one position earlier inside the sa
 SSM-ViT answers \ssmInchunkOne{} there, falling to \ssmInchunkLast{}, so it is recurrent
 within a chunk and only across chunks is the state lost.
 
-\section{Does the interval change a comparison?}
+\section{Effect of Temporal Displacement on Checkpoint Ordering}
 
-Main Sec.~3.6 reports that displacing the ground truth to the newest window's centroid costs
+Main Sec.~3.5 reports that displacing the ground truth to the newest window's occlusion-sensitivity centroid costs
 \mapCost{} points on one checkpoint. Whether the interval changes a \emph{comparison} needs
 more than one detector, so all \rankCkpts{} released checkpoints of main Sec.~3.3 were run
 over the Gen1 validation split under one protocol: the same frames, the same confidence
 threshold and non-maximum suppression, and ground truth that is identical across the five and
-identical to the dump main Sec.~3.6 already uses. Each was then scored at the label instant
+identical to the dump main Sec.~3.5 already uses. Each was then scored at the label instant
 and again at the displacement it prefers, which ranges from \rankArgLo{} to \rankArgHi\,ms
 across the five.
 
@@ -508,36 +543,29 @@ stratum & ordering at the label instant \\
 all moving       & b $>$ s $>$ t $>$ S5-B $>$ S5-S \\
 $10$--$25$\,px/s & S5-B $>$ b $>$ t $>$ S5-S $>$ s \\
 $25$--$50$\,px/s & S5-B $>$ b $>$ S5-S $>$ s $>$ t \\
-$>50$\,px/s      & b $>$ t $>$ S5-S $>$ s $>$ S5-B \\
+$\geq 50$\,px/s      & b $>$ t $>$ S5-S $>$ s $>$ S5-B \\
 \bottomrule
 \end{tabular}
 \caption{Ordering of the \rankCkpts{} released checkpoints at the label instant, by object
-speed; \texttt{t}, \texttt{s}, \texttt{b} are the RVT capacities and S5-S, S5-B the SSM ones. Scoring each at its own preferred displacement instead leaves every one of these
-orderings unchanged and reverses no pair. Speed does what alignment does not: \rankMover{}
+speed, \texttt{t}, \texttt{s}, \texttt{b} are the RVT capacities and S5-S, S5-B the SSM ones. Scoring each at its own preferred displacement leaves every one of these
+orderings unchanged. A common displacement sweep reveals one localized inversion
+between \texttt{rvt-b} and S5-S in the 25--50\,px/s stratum. Ranking varies across
+speed strata, and the common sweep produces no other pairwise inversion. \rankMover{}
 is first in the middle two strata and last in the fastest, and \texttt{rvt-t} is third
 overall, last between \mapCutMid{} and \mapCutHi\,px/s and second above \mapCutHi{}.}
 \end{table}
 
-The ordering cannot change under alignment, and that is arithmetic rather than a failure to
-find an effect: in every stratum the largest gain any model draws from displacement is
-\rankRatio\,\% of the smallest gap between adjacent models, at most \rankMaxGain{} points
-against \rankMinGap{}. No refinement of the displacement grid reorders them. The aggregate
-number and the fast-object number do name different winners, which is a reason to report the
-strata, but the cause is object speed and not the temporal support this paper measures.
-
-\paragraph{The withdrawn spatial statistic.}
-Main Sec.~6 records that the one spatial statistic chosen for its immunity to a spatially
-uniform source does not survive its own background control. The two measurements behind that
-sentence are here. An equal-area annulus of each box's surroundings aligns with the direction
-of travel at least as well as the object itself in \egoRingBetter{} of the boxes, and eroding
-each box to its object-dominated core drives the paired object-minus-annulus difference to
-\egoCoreWorst{} at \egoCoreWorstSigmas{} standard errors, the wrong sign for an
-object-borne effect. No spatial per-object timing statistic is reported in the paper.
+The own-preferred-offset scores preserve the reported ordering in each speed
+stratum. Under a common displacement sweep, the $25$--$50$\,px/s stratum
+contains a localized ranking inversion between \texttt{rvt-b} and S5-S. The
+other evaluated strata contain no sign-changing pair. The aggregate ranking and
+the fast-object ranking have different leaders, so the strata are reported
+separately.
 
 The released streaming evaluation steps through the split in non-overlapping chunks of
-\ssmEvalChunk{} windows (\texttt{sequence\_length} in \texttt{config/dataset/gen1.yaml};
+\ssmEvalChunk{} windows (\texttt{sequence\_length} in \texttt{config/dataset/gen1.yaml},
 \texttt{start\_indices} in \texttt{sequence\_for\_streaming.py} steps by exactly that). The
-temporal support of a released detection therefore depends on where its frame falls inside
+evaluated input sensitivity of a released detection therefore depends on where its frame falls inside
 that chunk, from a full \ssmEvalChunk{} windows at the last position to the current window
 alone at the first. This is reported as a property of the release that its documentation does
 not state, which is the same class of undeclared quantity the rest of this paper measures,

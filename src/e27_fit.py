@@ -142,7 +142,7 @@ print(f"   label-centre noise, E28 measured on Gen1: sigma = {SIGMA_C:.4f} px pe
 vx,vy=velocities('centered')
 m=np.isfinite(vx)&np.isfinite(vy)
 dsum=(dtf+dtb)[m]
-var_noise=2*SIGMA_C**2/np.mean(dsum)**2      # centered difference of two independent centres
+var_noise=np.mean(2*SIGMA_C**2/dsum**2)     # row-wise centered difference of independent centres
 var_obs=0.5*(np.var(vx[m])+np.var(vy[m]))
 lam=max(var_obs-var_noise,1e-9)/var_obs
 print(f"   Var(v_observed) = {var_obs:8.1f} (px/s)^2   Var(v_noise) = {var_noise:8.1f}   "

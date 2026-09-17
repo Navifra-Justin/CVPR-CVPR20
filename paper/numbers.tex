@@ -24,7 +24,7 @@
 \newcommand{\dsecWithinSeqMax}{4207}       % us, interlaken_00_d
 \newcommand{\dsecWithinSeqRatio}{12.5}
 \newcommand{\dsecCotriggerFrames}{7080}    % frames checked, L/R start identical
-\newcommand{\dsecCotriggerPct}{100.00}
+\newcommand{\dsecCotriggerPct}{100}
 \newcommand{\dsecMidDiffMax}{190}          % us, max |mid_L - mid_R|
 \newcommand{\dsecWidthDiffMax}{380}        % us, max |w_L - w_R|
 \newcommand{\dsecTsResidual}{1}            % us, |image_ts - avg(mid_L,mid_R)|
@@ -115,7 +115,7 @@
 \newcommand{\ntracksNoise}{5250}
 \newcommand{\nthirdDiff}{629\,442}
 %% E10 mains flicker
-\newcommand{\flickerLineHz}{100.00}   %% Hz, strongest night line
+\newcommand{\flickerLineHz}{100}   %% Hz, strongest night line
 \newcommand{\flickerZmedian}{2.935}   %% night 100Hz Rayleigh Z, null 0.693
 \newcommand{\flickerZnull}{0.693}
 \newcommand{\flickerFracLocked}{0.2407}   %% fraction of LIVE pixels p<1e-3
@@ -738,6 +738,8 @@
 %% the fill control (fill_control.log): the plateau is not an artefact of zero filling
 \newcommand{\histDecayZero}{10.3}          %% decay from lag 0 to lag 19, zero fill
 \newcommand{\histDecaySwap}{2.2}           %% the same under a swap fill
+\newcommand{\histSwapRatioLo}{2.43}       %% swap/zero sensitivity ratio at lag 0
+\newcommand{\histSwapRatioHi}{11.47}      %% the same at lag 19
 \newcommand{\histTailSwapPct}{46}          %% percent of lag-0 influence still at lag 19
 
 %% stratum edges and band frequencies, so that no numeral enters prose (E37 strata.log,
@@ -835,3 +837,218 @@
 \newcommand{\rankMover}{\texttt{s5vit-base}}  %% the checkpoint whose rank moves most
 \newcommand{\rankMoverBest}{1}          %% its best rank across strata
 \newcommand{\rankMoverWorst}{5}         %% and its worst
+
+%% ---------------------------------------------------------------------------
+%% Resolving power of the metric (E56). What size of timing difference the mAP
+%% can separate from its own cluster-resampling noise, over 406 sequences.
+%% Emitted by src/e61_macros.py from experiments/e56_resolving/resolving.json.
+\newcommand{\seDmapLo}{0.035}
+\newcommand{\seDmapHi}{0.058}
+\newcommand{\seMapLo}{2.19}
+\newcommand{\seMapHi}{2.82}
+\newcommand{\resPairedLo}{13.7}
+\newcommand{\resPairedHi}{19.8}
+\newcommand{\effTauLo}{0.041}
+\newcommand{\effTauHi}{0.081}
+\newcommand{\twoSeDmapLo}{0.070}
+\newcommand{\twoSeDmapHi}{0.116}
+\newcommand{\effTauResolved}{1}
+\newcommand{\resAbsLo}{153}
+\newcommand{\resAbsHi}{174}
+\newcommand{\dstarAll}{43.7}
+\newcommand{\dstarAllTau}{1.83}
+\newcommand{\dstarMid}{11.2}
+\newcommand{\dstarMidTau}{0.47}
+
+%% Stability of the published ordering under the benchmark's own noise (E56d),
+%% from experiments/e56_resolving/rankse.json.
+\newcommand{\rankHoldBox}{42.5}
+\newcommand{\rankHoldMov}{80.5}
+\newcommand{\rankFlipMax}{0.48}
+\newcommand{\rankGapMin}{0.050}
+\newcommand{\rankGapMinSE}{0.53}
+
+%% Chunk position in the released SSM-ViT streaming evaluation (E58), from
+%% experiments/e58_chunkpos/{allbox,invariant}.json.
+\newcommand{\chunkDidBase}{5.32}
+\newcommand{\chunkDidBaseSE}{0.53}
+\newcommand{\chunkDidBaseZ}{10.0}
+\newcommand{\chunkDidSmall}{4.37}
+\newcommand{\chunkDidSmallSE}{0.61}
+\newcommand{\chunkDidSmallZ}{7.2}
+%% Raw full-minus-short mAP difference per checkpoint (E58, all labeled boxes), the
+%% quantity main Fig.~2 plots, kept separate from the control-adjusted difference below.
+\newcommand{\chunkRawT}{0.01}
+\newcommand{\chunkRawS}{0.80}
+\newcommand{\chunkRawB}{0.56}
+%% The same raw difference net of the placebo trend: for an RVT row the mean of the other
+%% two RVT rows, for an SSM row the mean of all three. Positive means history helped.
+\newcommand{\chunkNetT}{-0.67}
+\newcommand{\chunkNetS}{0.51}
+\newcommand{\chunkNetB}{0.16}
+\newcommand{\chunkPlaceboMax}{0.67}
+\newcommand{\chunkPlaceboZ}{1.56}
+\newcommand{\chunkGapBase}{1.75}
+\newcommand{\chunkGapSmall}{1.33}
+\newcommand{\chunkShortBase}{34.445}
+\newcommand{\chunkFullBase}{40.226}
+\newcommand{\chunkRelBase}{38.9}
+\newcommand{\chunkConfOne}{0.463}
+\newcommand{\chunkConfFull}{0.574}
+\newcommand{\chunkConfPct}{23.8}
+
+%% Which summary of the label composition sets the resolution, and what buying it
+%% costs (E56e), from experiments/e56_resolving/collapse.json and composition.json.
+\newcommand{\collapseCVraw}{0.20}
+\newcommand{\collapseCVmed}{0.60}
+\newcommand{\collapseQbest}{85}
+\newcommand{\collapseCVbest}{0.29}
+\newcommand{\collapseCV}{0.042}
+\newcommand{\collapseD}{0.0628}
+\newcommand{\collapseDsd}{0.0029}
+\newcommand{\collapseIoU}{0.882}
+\newcommand{\collapseCVten}{0.10}
+\newcommand{\collapseCVqtr}{0.28}
+\newcommand{\tailGainTop}{2.46}
+\newcommand{\tailSeTop}{9.11}
+\newcommand{\tailNetTop}{0.27}
+\newcommand{\tailNetMid}{0.42}
+\newcommand{\stNtop}{337}
+\newcommand{\rGenAll}{0.095}
+\newcommand{\rDsecTrain}{1.31}
+\newcommand{\ddRatioMed}{13.9}
+\newcommand{\ddBoxesTrain}{290\,163}
+\newcommand{\qGenAll}{0.70}
+\newcommand{\qDsecTrain}{5.59}
+\newcommand{\qDsecRatio}{7.97}
+\newcommand{\qDsecNet}{25.7}
+
+%% The recurrent influence tail (E59), from experiments/e42_recurrent_support/tail.json.
+\newcommand{\tailExp}{0.645}
+\newcommand{\tailExpSE}{0.005}
+\newcommand{\tailExpLo}{0.636}
+\newcommand{\tailExpHi}{0.655}
+\newcommand{\tailRatio}{1.864}
+\newcommand{\tailRatioLo}{1.851}
+\newcommand{\tailRatioHi}{1.876}
+\newcommand{\tailOutside}{77.3}
+\newcommand{\tailRmsPower}{2.5}
+\newcommand{\tailRmsExp}{23.8}
+\newcommand{\tailRmsRatio}{9.4}
+
+%% Per-model cells of the supplement's chunk-position table (E58, all labelled boxes).
+%% Three decimals: the smallest difference the table reports is 0.014 pt, so at one
+%% decimal the short and full columns would not reproduce the raw column they are
+%% differenced into. At three they close against the printed 2-decimal raw values.
+\newcommand{\chunkShortSmall}{31.578}
+\newcommand{\chunkFullSmall}{36.410}
+\newcommand{\chunkRelSmall}{35.6}
+\newcommand{\chunkShortT}{38.180}
+\newcommand{\chunkFullT}{38.194}
+\newcommand{\chunkShortS}{38.371}
+\newcommand{\chunkFullS}{39.167}
+\newcommand{\chunkShortB}{41.561}
+\newcommand{\chunkFullB}{42.126}
+\newcommand{\chunkDidT}{0.67}
+\newcommand{\chunkSeT}{0.43}
+\newcommand{\chunkDidS}{-0.51}
+\newcommand{\chunkSeS}{0.48}
+\newcommand{\chunkDidB}{-0.16}
+\newcommand{\chunkSeB}{0.55}
+\newcommand{\aFitShort}{0.628}
+% E58e chunk-position curve (src/e58e_curve.py, src/e58f_fig.py)
+\newcommand{\chunkRiseBase}{5.78}
+\newcommand{\chunkRiseSmall}{4.83}
+\newcommand{\chunkRiseRvt}{0.80}
+% E58g position-permutation null (src/e58g_perm.py)
+\newcommand{\chunkPermSd}{0.55}
+\newcommand{\chunkPermZBase}{9.8}
+\newcommand{\chunkPermZSmall}{7.6}
+\newcommand{\chunkPermPlaceboZ}{1.52}
+\newcommand{\chunkPermP}{0.005}
+\newcommand{\chunkPermB}{200}
+% E62 association-rule sweep (src/e62_association.py)
+\newcommand{\assocRules}{14}
+\newcommand{\assocLo}{-8.96}
+\newcommand{\assocHi}{-0.90}
+\newcommand{\assocSpread}{8.06}
+\newcommand{\assocSE}{7.12}
+\newcommand{\assocGate}{-2.96}
+\newcommand{\assocGateSE}{7.12}
+\newcommand{\assocFree}{-5.58}
+\newcommand{\assocFreeSE}{7.86}
+\newcommand{\assocFreeN}{22\,895}
+\newcommand{\assocGateN}{22\,518}
+%% the rebuild's own gate against the reported table: |(-2.963)-(-2.40)|/7.123
+\newcommand{\assocGateVsTable}{0.08}
+\newcommand{\assocDelta}{0.37}
+\newcommand{\assocMinLo}{12.01}
+\newcommand{\assocMinHi}{16.35}
+% E63 checkpoint-port parity (src/e63_port_parity.py)
+\newcommand{\portEvalGap}{0.101}
+\newcommand{\portParamDev}{0.051}
+\newcommand{\portSeqs}{429}
+\newcommand{\portApT}{38.95}
+\newcommand{\portApOwnT}{38.90}
+\newcommand{\portApFifty}{69.7}
+% E64 sequence-clustered bootstrap of the newest-window profile (src/e64_seqboot.py)
+\newcommand{\occSeqs}{12}
+\newcommand{\occSeqCiLo}{-24.07}
+\newcommand{\occSeqCiHi}{-23.56}
+\newcommand{\occSeqSE}{0.13}
+\newcommand{\occSeqWidest}{0.51}
+\newcommand{\occSeqLoo}{0.08}
+\newcommand{\occPerSeqLo}{-24.63}
+\newcommand{\occPerSeqHi}{-23.20}
+
+%% E60, the same-frame chunk-boundary intervention: every chunk boundary moved
+%% \ssmPairedShift{} windows later, so the frames the release gave one to four windows of
+%% history are re-scored with seventeen to twenty. Within model, within frame, identical
+%% ground truth and weights; no control model and no parallel-trends assumption.
+%% Cluster bootstrap over the same 406 sequences E56 and E58 use.
+%% Both released SSM checkpoints are shifted. Suffixes follow \chunkDid*: Small is
+%% s5vit-small, Base is s5vit-base, the checkpoint the differenced headline is quoted on.
+\newcommand{\ssmPairedN}{3\,574}
+\newcommand{\ssmPairedShift}{5}
+\newcommand{\ssmPairedMapVelBase}{5.23}
+\newcommand{\ssmPairedMapVelBaseSE}{0.49}
+\newcommand{\ssmPairedMapVelSmall}{4.81}
+\newcommand{\ssmPairedMapVelSmallSE}{0.52}
+\newcommand{\ssmPairedMapAllBase}{4.20}
+\newcommand{\ssmPairedMapAllSmall}{4.10}
+\newcommand{\ssmPairedConfBase}{0.0579}
+\newcommand{\ssmPairedConfBaseSE}{0.0048}
+\newcommand{\ssmPairedConfSmall}{0.0509}
+\newcommand{\ssmPairedConfSmallSE}{0.0035}
+\newcommand{\ssmPairedDpfBase}{3.49}
+\newcommand{\ssmPairedDpfSmall}{5.09}
+
+%% Remaining E60 rows, for the supplement's paired table. Both channels move: the boxes
+%% that match a label are scored higher, and far fewer boxes are emitted in total.
+\newcommand{\ssmPairedB}{300}
+\newcommand{\ssmPairedMapAllBaseSE}{0.36}
+\newcommand{\ssmPairedMapAllSmallSE}{0.32}
+\newcommand{\ssmPairedConfTpBase}{0.0409}
+\newcommand{\ssmPairedConfTpBaseSE}{0.0040}
+\newcommand{\ssmPairedConfTpSmall}{0.0519}
+\newcommand{\ssmPairedConfTpSmallSE}{0.0043}
+\newcommand{\ssmPairedDpfBaseSE}{0.25}
+\newcommand{\ssmPairedDpfSmallSE}{0.26}
+\newcommand{\ssmPairedMapVelBaseZ}{10.7}
+\newcommand{\ssmPairedMapVelSmallZ}{9.3}
+\newcommand{\ssmPairedConfBaseZ}{12.0}
+\newcommand{\ssmPairedConfSmallZ}{14.6}
+%% The qualitative pair in Fig. 2, and the population it was chosen from. The four
+%% count macros record what the panels themselves draw, so the drawn text and this
+%% file are checked against one source. The frame is the
+%% clearest single instance, so the per-frame averages are quoted beside it in the caption.
+\newcommand{\pairedFigLabels}{4}
+\newcommand{\pairedFigMatchShort}{0}
+\newcommand{\pairedFigMatchFull}{3}
+\newcommand{\pairedFigUnmatchShort}{2}
+\newcommand{\pairedFigUnmatchFull}{0}
+\newcommand{\pairedFigShow}{0.3}
+\newcommand{\pairedFigMeanMatchShort}{1.40}
+\newcommand{\pairedFigMeanMatchFull}{1.53}
+\newcommand{\pairedFigMoreMatched}{13.1}
+\newcommand{\pairedFigFewerMatched}{2.7}

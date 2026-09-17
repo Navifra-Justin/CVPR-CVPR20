@@ -36,18 +36,16 @@ supporting the prediction was acquired, which instant its output represents, and
 interval the label was acquired. Released artifacts partially specify temporal semantics,
 but a nominal benchmark timestamp does not by itself encode the effective predictor timing,
 the recurrent context represented by a pooled score, or the attribution of within-exposure
-event timing. We distinguish quantities recoverable from released artifacts from quantities
-explicitly represented by the reported benchmark score. A temporal descriptor may be reconstructable
-from released artifacts while remaining
-unreported or heterogeneous within a pooled benchmark score.
-We formulate this ambiguity as benchmark temporal-support identifiability: whether the released
-protocol and artifacts uniquely determine the temporal quantities represented by a reported score.
+event timing.
 
-For SSM-ViT, recurrent history is reconstructable from the released implementation but varies
-from one to twenty-one windows within a single pooled score. A paired within-frame
-chunk-boundary intervention changes S5-B by \ssmPairedMapVelBase{} mAP points on the
-velocity-evaluable subset and \ssmPairedMapAllBase{} points over all labeled boxes while
-keeping the target frame, weights, labels, and evaluator fixed. On the predictor side, the
+A single reported event-detection score can pool predictions made with materially different
+temporal support. In the released SSM-ViT evaluation pipeline, recurrent history varies from
+one to twenty-one windows within the same pooled score. A paired intervention that changes only
+the chunk boundary evaluates the same frames with short versus long recurrent history and changes
+S5-B by 4.20 mAP over all labeled boxes and 5.23 mAP on the velocity-evaluable subset, while
+keeping the frames, weights, labels, and evaluator fixed. We call the resulting ambiguity
+temporal-support identifiability: whether the released protocol and artifacts uniquely determine
+the temporal quantities represented by a reported score. On the predictor side, the
 newest RVT input window has an ablation-sensitivity centroid \rvtCentroidMagMeas\,ms before
 the label instant, whereas the regression-based temporal coefficient is
 \ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms under the reported specification and is not
@@ -139,13 +137,14 @@ improves what is measured against it: sensor latency is calibrated away~\cite{ya
 liu2024nighttime}, compute latency is folded into average
 precision~\cite{li2020streaming,yang2022streamyolo,chu2026stare}, and the temporal window is
 redesigned~\cite{gehrig2023rvt,zubic2024ssm}. We formalize the remaining question as
-benchmark temporal-support identifiability: from the released protocol and artifacts alone,
-which temporal quantities behind a score are uniquely determined and which remain ambiguous under
-the released protocol?
-Across all three audits, the nominal timestamp fails to encode the relevant temporal quantity.
-In the streaming-evaluation case, the unresolved pooled context changes mAP by 4--5 points,
-while the predictor- and label-side analyses separately bound input support, output-time
-interpretation, and label-acquisition attribution.
+benchmark temporal-support identifiability: whether the released protocol and artifacts uniquely
+determine the temporal quantities represented by a reported score. The clearest failure occurs in
+streaming evaluation. In the released SSM-ViT pipeline, one pooled score combines detections
+with one to twenty-one windows of recurrent history, and changing only the chunk boundary shifts
+S5-B by 4.20 mAP on the same labeled frames. The predictor- and label-side audits then show two
+additional distinctions hidden by the nominal timestamp: input sensitivity is not equivalent to
+an output-time coefficient, and within-exposure event timing cannot be attributed uniquely to
+object motion without separating illumination-locked structure.
 
 \section{Related work}
 \label{sec:related}
@@ -801,9 +800,10 @@ released checkpoints.
 
 \section{Conclusion}
 
-Released artifacts only partially specify a nominal timestamp's temporal semantics. In SSM-ViT,
-one-to-twenty-one recurrent windows vary within the released evaluator, and a same-frame boundary
-intervention increases S5-B by 4.20 mAP points over all labeled boxes. RVT's input sensitivity
+Released artifacts only partially specify a nominal timestamp's temporal semantics. In the released
+SSM-ViT pipeline, predictions with one to twenty-one recurrent windows are pooled into one score,
+and a same-frame intervention that changes only chunk position shifts S5-B by 4.20 mAP while
+keeping the frames, weights, labels, and evaluator fixed. RVT's input sensitivity
 and regression-based output-time coefficient are distinct descriptors, while DSEC's
 within-exposure timing contains illumination-locked structure requiring separation before
 attribution to object motion. These results motivate reporting predictor support and label

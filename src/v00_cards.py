@@ -18,6 +18,9 @@ def card(path,lines,sizes,colors,n,ys=None):
 
 AB = json.load(open('experiments/e58_chunkpos/allbox.json'))
 DID = -AB['did']['s5vit-base']
+PAIRED = json.load(open('experiments/e60_shift/paired.json'))['models']['base']
+ALL = PAIRED['map_all_boot']['obs']
+VEL = PAIRED['map_vel_boot']['obs']
 
 card('video/frames/v00',
      ['Temporal-Support Identifiability',
@@ -28,9 +31,9 @@ card('video/frames/v00',
 
 card('video/frames/v06',
      ['A nominal benchmark timestamp is not a temporal specification.',
-      'Under one released streaming evaluation, detections carrying 1 to 4 windows',
-      'of recurrent history and detections carrying 17 to 21',
-      f'differ by {DID:.2f} mAP points, after an RVT control.', '',
+      'Moving only the chunk boundary, at the same frames, weights,',
+      'labels and evaluator, changes S5-ViT-B by',
+      f'{ALL:.2f} mAP points, and {VEL:.2f} on the velocity-evaluable subset.', '',
       'Every number here is read from released files alone.'],
      [22, 20, 20, 22, 10, 14],
      ['white', 'white', 'white', '#ffd24a', 'white', '0.6'],

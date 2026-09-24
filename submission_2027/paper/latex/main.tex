@@ -30,118 +30,113 @@ in Event-Detection Evaluation Pipelines}
 \maketitle
 
 \begin{abstract}
-Event-detection benchmarks compare a prediction with a label at one nominal timestamp, and
-released artifacts only partially specify its temporal semantics. That timestamp does not
-encode the effective predictor timing, the recurrent context represented by a pooled
-score, or the label's acquisition interval, so one reported score can pool
-predictions with materially different temporal support, and work that improves the predictor at a
-fixed benchmark index leaves this unmeasured. We name the protocol property at
-issue temporal-support identifiability: whether the released protocol and artifacts uniquely
-determine the temporal quantities represented by a reported score.
+An event-detection benchmark defines a sample by one nominal timestamp and scores a prediction
+against the label carried at that instant. A recurrent detector forms that prediction from a
+history much wider than the instant names, and the released protocol records no variable for
+it. A nominal timestamp may therefore fail to identify the temporal evidence that a reported
+score represents. We name that protocol property temporal-support identifiability and examine
+it with a controlled intervention.
 
-In the released SSM-ViT evaluation pipeline, recurrent history varies from
-one to twenty-one windows within the same pooled score. A paired intervention changing only
-the chunk boundary contrasts short against long recurrent history and changes S5-B by 4.20 mAP over
-all labeled boxes and 5.23 mAP on the velocity-evaluable subset, at fixed frames, weights, labels
-and evaluator. On the predictor side, the
-newest RVT input window of the ported released checkpoint has an ablation-sensitivity centroid \rvtCentroidMagMeas\,ms before
-the label instant on a deterministic 12-sequence subset, whereas the regression-based temporal coefficient is
-\ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms under the reported specification and is not
-interpreted as a direct estimate of the network's recurrent-support centroid. On the label
-side, within-exposure event timing contains an illumination-locked component, so attributing it
-uniquely to object motion requires separating that component.
-These audits separate recoverable artifact facts from temporal quantities the reported
-scores leave implicit, so such a score alone does not license a timing comparison.
+In the released SSM-ViT evaluation pipeline the recurrent history available to a prediction is
+a deterministic function of chunk position and ranges from one to twenty-one windows inside a
+single pooled score. Moving only the chunk boundary---same frames, same weights, same labels,
+same evaluator, and the evaluated timestamp unchanged---changes S5-B by \ssmPairedMapAllBase{}
+mAP over all labeled boxes and \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBaseSE{} mAP on the
+velocity-evaluable subset. The evidence behind the score moved while every quantity the
+protocol records stayed fixed.
+
+Two audits delimit that result on either side of the pipeline. On the predictor side, the
+newest RVT input window of the ported released checkpoint carries an ablation-sensitivity
+centroid \rvtCentroidMagMeas\,ms before the label instant, alongside a regression-based
+temporal coefficient of \ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms that we read as an
+association measured on nominal-time-matched detections and not as an estimator of recurrent
+support. On the label side, within-exposure event timing carries an illumination-locked
+component, so label-acquisition support is not attributable to object motion alone. A benchmark
+timestamp is thus not by itself an identifiable description of the evidence supporting a
+recurrent prediction, and a score reported under one does not license a timing comparison.
 \end{abstract}
 
 \section{Introduction}
 
-A benchmark timestamp does not identify the temporal support behind the
-prediction or the label it compares. An object detection benchmark evaluates a
-prediction $\hat{s}$ against a ground
-truth $s^{*}$ through a function $\rho(\hat{s},s^{*})$ of position, shape and
-class, indexed by a query time $t$. Beyond selecting the label at $t$, the
-scoring function contains no variable representing temporal support or effective state
-time, so a temporal discrepancy is scored as displacement. A predictor computes $\hat{s}$ from a
-window of sensor data, and a label comes from an exposure, an annotator or
-tracker working on the exposed image, and a geometric transfer into another
-sensor's frame.
+An event-detection benchmark defines a sample by a nominal timestamp. A prediction $\hat{s}$
+is scored against the ground truth $s^{*}$ carried at a query time $t$ through a function
+$\rho(\hat{s},s^{*})$ of position, shape and class. Beyond selecting the label at $t$, that
+function contains no variable representing the temporal evidence behind either argument, so a
+temporal discrepancy enters the score as displacement.
 
-Accepted work on event-detection timing takes the benchmark's temporal index as given and
-improves what is measured against it: sensor latency is calibrated away~\cite{yang2024latency,
-liu2024nighttime}, compute latency is folded into average
-precision~\cite{li2020streaming,yang2022streamyolo,chu2026stare}, and the temporal window is
-redesigned~\cite{gehrig2023rvt,zubic2024ssm}. None of these subsumes the question asked here:
-each changes what the predictor does at a fixed benchmark index, whereas the object measured
-below is that index itself and the temporal support a score reported under it pools.
+A recurrent detector does not read only the instant the benchmark names. It computes $\hat{s}$
+from an input window and from state carried across earlier windows, and the label it is
+compared against comes from an exposure of finite width, an annotator or tracker working on the
+exposed image, and a geometric transfer into another sensor's frame. The evidence on both sides
+is an interval, while the protocol records an instant.
 
-The
-detector configuration fixes an input window, the repository's preprocessing script places
-that window's end on the label it is scored against, and the published
-exposure files fix an acquisition interval, while the scoring function uses none of them.
-Nominal support is the interval of frames supplied as model input; effective
-support is the past that can influence the prediction, including carried recurrent state;
-attribution support is the interval over which a prediction can be attributed to a temporal
-event. A nominal timestamp determines none of the three uniquely. Input and exposure
-intervals are reconstructable from released artifacts, whereas effective
-predictor timing, recurrent context represented by a pooled score, and within-exposure
-attribution are not, and a temporal descriptor may be
-reconstructable yet remain unreported or heterogeneous within a pooled score.
-We formulate this ambiguity as benchmark temporal-support identifiability: whether the released
-protocol and artifacts uniquely determine the temporal quantities represented by a reported score.
+The benchmark timestamp may therefore fail to identify the temporal evidence that a reported
+score represents. Three terms carry this throughout. The \emph{nominal timestamp} is the instant
+at which the protocol pairs a prediction with a label. The \emph{effective temporal support} is
+the past that can influence the prediction, including state carried by recurrence. The
+\emph{label-acquisition support} is the interval over which the label's evidence was acquired.
+A nominal timestamp determines neither of the other two uniquely, and a temporal descriptor may
+be reconstructable from released artifacts yet remain unreported or heterogeneous within one
+pooled score. We formulate the resulting protocol property as temporal-support identifiability:
+whether the released protocol and artifacts uniquely determine the temporal quantities a
+reported score represents.
 
-One counterexample is direct: in the released SSM-ViT pipeline one
-pooled score combines detections with one to twenty-one windows of recurrent history, and
-changing only the chunk boundary, which leaves the evaluated timestamp unchanged, shifts
-S5-B by 4.20 mAP on the same labeled frames.
-The three audits below test one claim, that the released protocol
-does not uniquely determine the temporal support behind a reported score, each from released
-artifacts alone. The two datasets
-instantiate this protocol condition; how often it holds elsewhere is not measured.
+We examine it with a paired intervention on the released SSM-ViT evaluation pipeline. In that
+implementation the nominally carried state is inert across evaluation chunks, so the recurrent
+history available to a prediction is a deterministic function of chunk position and ranges from
+one to twenty-one windows inside one pooled score. Moving every chunk boundary
+\ssmPairedShift{} windows later re-scores the same frames under a longer history while frames,
+weights, ground truth, evaluator and the evaluated timestamp are held fixed
+(\ssmPairedN{} paired boxes, cluster bootstrap over \outSeqsScanned{} sequences).
 
-\textbf{Predictor input and carried support.} The event branch of the detector examined
-here~\cite{gehrig2023rvt} consumes a window of \rvtWindow\,ms in \rvtBins{} bins whose end
-sits on the label instant (Sec.~\ref{sec:window}), so under uniform weighting its evidence
-is centered \rvtCentroidMag\,ms earlier. The trained network's bin sensitivities are not
-uniform, and ablating each bin in turn on real validation samples puts the
-ablation-sensitivity centroid at \rvtCentroidMeas\,ms (Sec.~\ref{sec:influence}).
-Over a 1000\,ms horizon the newest window accounts for 22.7\% of the summed
-window-ablation sensitivity and the remaining 77.3\% lies in preceding windows. Its
-regression-based temporal coefficient, estimated on
-nominal-time-matched detections under Eq.~2 with a vector regression, a placebo term and a
-sign-flip control on the velocity estimator, is
-\ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms, compatible with zero and not precise enough to
-support a timing interpretation, and sits
-\outInterval\,ms from that centroid under the reported specification. Input sensitivity and the Eq.~2 coefficient are distinct operational quantities the nominal
-timestamp does not encode (Secs.~\ref{sec:window}--\ref{sec:extrapolation}).
+Effective temporal support alone changes S5-B by \ssmPairedMapAllBase{} mAP over all labeled
+boxes and \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBaseSE{} mAP on the velocity-evaluable
+subset (Sec.~\ref{sec:chunk}); the second released checkpoint moves by
+\ssmPairedMapAllSmall{} and \ssmPairedMapVelSmall{} points. Every quantity the protocol records
+stayed fixed, and the score moved. A benchmark timestamp is thus not by itself an identifiable
+description of the evidence supporting a recurrent prediction.
 
-\textbf{Evaluation support.} For the released SSM-ViT implementation, the nominally carried
-state is inert across evaluation chunks, so the available recurrent history is a deterministic
-function of chunk position and the score moves with it: on all labeled
-boxes the 1--4 versus 17--21 window contrast is \chunkDidBase{} mAP points net of the RVT
-control, while the same-frame chunk-boundary intervention changes S5-B by
-\ssmPairedMapAllBase{} points (\ssmPairedMapVelBase{} points on the velocity-evaluable subset;
-Sec.~\ref{sec:influence}).
+Work on event-detection timing takes that index as given and improves what is measured against
+it: sensor latency is calibrated away~\cite{yang2024latency, liu2024nighttime}, compute latency
+is folded into average precision~\cite{li2020streaming,yang2022streamyolo,chu2026stare}, and the
+temporal window is redesigned~\cite{gehrig2023rvt,zubic2024ssm}. Each changes what the predictor
+does at a fixed benchmark index, whereas the object measured here is that index itself and the
+support a score reported under it pools. The two datasets below instantiate this protocol
+condition; how often it holds elsewhere is not measured.
 
-\textbf{Label acquisition support.} Across the \dsecSeqCount{} DSEC training sequences whose
-exposure files resolve, the published exposure width varies by a factor of \dsecExpRatio{}
-against a frame period fixed at \dsecFramePeriod\,ms, with \dsecPinnedFrac\,\% of frames
-pinned at an auto-exposure ceiling in \dsecCeilingSeqs{} sequences
-(Fig.~\ref{fig:exposure}). Those sequences carry the harmonic series of a
-\flickerLineHz\,Hz mains flicker, and between \sixLockedLoPct\,\% and \sixLockedHiPct\,\% of
-labeled boxes exceed the ninety-ninth percentile of the off-frequency local excess measured on
-the same events. Thus within-exposure event timing contains illumination-locked structure and
-cannot be uniquely attributed to object timing without separating it
-(Secs.~\ref{sec:flicker}--\ref{sec:cost}).
+\textbf{Supporting audit: predictor-side support.} The event branch of the detector examined
+here~\cite{gehrig2023rvt} consumes a window of \rvtWindow\,ms in \rvtBins{} bins whose end sits
+on the label instant (Sec.~\ref{sec:window}), so under uniform weighting its evidence is
+centered \rvtCentroidMag\,ms earlier. The trained network's bin sensitivities are not uniform,
+and ablating each bin in turn on real validation samples puts the ablation-sensitivity centroid
+at \rvtCentroidMeas\,ms (Sec.~\ref{sec:influence}). Over a 1000\,ms horizon the newest window
+accounts for 22.7\% of the summed window-ablation sensitivity and the remaining 77.3\% lies in
+preceding windows. The regression-based temporal coefficient, estimated on nominal-time-matched
+detections under Eq.~2 with a vector regression, a placebo term and a sign-flip control on the
+velocity estimator, is \ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms and sits \outInterval\,ms
+from that centroid under the reported specification. It is compatible with zero and is reported
+as a regression association between nominal-time-matched detections, not as an estimate of the
+network's recurrent support; the two are distinct operational quantities the nominal timestamp
+does not encode (Secs.~\ref{sec:window}--\ref{sec:extrapolation}).
+
+\textbf{Supporting audit: label-acquisition support.} Across the \dsecSeqCount{} DSEC training
+sequences whose exposure files resolve, the published exposure width varies by a factor of
+\dsecExpRatio{} against a frame period fixed at \dsecFramePeriod\,ms, with \dsecPinnedFrac\,\%
+of frames pinned at an auto-exposure ceiling in \dsecCeilingSeqs{} sequences
+(Fig.~\ref{fig:exposure}). Those sequences carry the harmonic series of a \flickerLineHz\,Hz
+mains flicker, and between \sixLockedLoPct\,\% and \sixLockedHiPct\,\% of labeled boxes exceed
+the ninety-ninth percentile of the off-frequency local excess measured on the same events.
+Within-exposure event timing therefore contains illumination-locked structure and is not
+attributable to object timing without separating it (Secs.~\ref{sec:flicker}--\ref{sec:cost}).
 
 Identifiability under the metric is then read in the metric's own units. On the
 velocity-evaluable subset, displacing ground-truth centers across the measured label-to-centroid
 interval changes mAP by \mapCost{} points, and at that displacement the five released
-checkpoints are not reordered.
-Separately, over all labeled boxes the nominal validation-split ordering is reproduced in only
-\rankHoldBox\,\% of sequence-bootstrap replicates. These results place the observed displacement
-effect at the benchmark's sampling-resolution floor. Table~\ref{tab:strata} relates this
-resolution to the benchmark's speed composition (Supplement Secs.~11--12).
+checkpoints are not reordered. Separately, over all labeled boxes the nominal validation-split
+ordering is reproduced in only \rankHoldBox\,\% of sequence-bootstrap replicates. These results
+place the observed displacement effect at the benchmark's sampling-resolution floor.
+Table~\ref{tab:strata} relates this resolution to the benchmark's speed composition (Supplement
+Secs.~11--12).
 
 \section{Related work}
 \label{sec:related}
@@ -278,7 +273,76 @@ an estimate with a variance. In this benchmark, the streaming intervention chang
 reported score even though the model and evaluated frames are held fixed.
 
 \fi
-\section{Predictor-side temporal descriptors: input sensitivity and temporal coefficient}
+\section{Effective temporal support under a released streaming evaluation}
+\label{sec:chunk}
+
+The state the SSM-ViT release carries between evaluation chunks does not affect any of its
+outputs: it enters as a multiplicative factor on the first coefficient of an associative scan
+on which the outputs do not depend. Under the released streaming evaluation this bounds the
+recurrent history available to a detection to the current \ssmEvalChunk{}-window chunk, so that
+history ranges from one window to \ssmEvalChunk{} with the detection's position in the chunk,
+and the reported number averages over all \ssmEvalChunk{} positions. Chunk position is a
+deterministic function of the release's own index files and is recorded nowhere in the
+evaluation protocol.
+
+\paragraph{The same-frame intervention.}
+The intervention moves every chunk boundary \ssmPairedShift{} windows later and changes nothing
+else: the same frames, the same weights, the same labels, the same evaluator, and the evaluated
+timestamp of each frame unchanged. \ssmPairedN{} labeled boxes are scored twice under this
+shift, once with one to four windows of recurrent history and once with seventeen to twenty,
+and are compared paired within frame with a cluster bootstrap over the \outSeqsScanned{}
+sequences. The long-history arm gains
+\ssmPairedMapVelBase$\pm$\ssmPairedMapVelBaseSE{} mAP points for S5-B and
+\ssmPairedMapVelSmall$\pm$\ssmPairedMapVelSmallSE{} for S5-S on the velocity-evaluable subset,
+and over every labeled box the S5-B gain is
+\ssmPairedMapAllBase$\pm$\ssmPairedMapAllBaseSE{} points. Mean detection confidence, which uses
+no labels, moves with it by \ssmPairedConfBase$\pm$\ssmPairedConfBaseSE{} and
+\ssmPairedConfSmall$\pm$\ssmPairedConfSmallSE{}. Fig.~\ref{fig:chunkpos} (bottom) draws one such
+pair. No quantity the protocol records distinguishes the two arms.
+
+\paragraph{The observational contrast across chunk positions.}
+Reconstructing chunk position over \mapFrames{} labeled frames of the released evaluation and
+scoring every labeled box, S5-B reaches \chunkShortBase{} mAP on the frames given one to four
+windows and \chunkFullBase{} on those given seventeen to \ssmEvalChunk{}
+(Fig.~\ref{fig:chunkpos}, top). This contrast compares different frames, so it is differenced
+against the three RVT checkpoints, evaluated on the same frames with a state that crosses chunk
+boundaries; that controls for frame-position effects shared with them and leaves
+\chunkDidBase$\pm$\chunkDidBaseSE{} points for S5-B ($z=\chunkDidBaseZ$) and
+\chunkDidSmall$\pm$\chunkDidSmallSE{} for S5-S ($z=\chunkDidSmallZ$), against placebo
+differences among the RVT checkpoints of at most \chunkPlaceboMax{} points
+($z=\chunkPlaceboZ$). Permuting chunk position within each sequence puts both SSM values at
+least \chunkPermZSmall{} standard deviations outside their own null and every placebo inside
+it. The two readings agree in sign and magnitude, and the paired intervention carries the claim
+because it holds the frames fixed (Supplement Sec.~13).
+
+\paragraph{What the pooled score reports.}
+One released number therefore pools detections whose recurrent history differs by a factor of
+\ssmEvalChunk{}. Restricting evaluation to the frames receiving 17--21 windows yields an S5-B
+score \chunkGapBase{} points above the pooled released-evaluation score. Two systems compared
+under this protocol at the same nominal timestamps need not have been given the same temporal
+evidence, and the protocol records no variable by which a reader could tell.
+
+\begin{figure}[t]
+\centering
+\figasset{figs/chunkpos.pdf}{\columnwidth}
+\\[1.5pt]
+\figasset{figs/paired_frame.pdf}{\columnwidth}
+\caption{\textbf{Top:} benchmark score against the recurrent history the released streaming
+evaluation made available, at each of the \ssmEvalChunk{} chunk positions, over every
+labeled Gen1 box, no displacement applied. Shaded: the one-to-four-window block the
+release scores together with the rest. Between that block and the frames given seventeen
+windows or more, the two SSM checkpoints rise by \chunkRiseBase{} and \chunkRiseSmall{}
+points and the three RVT checkpoints, scored on the same frames with state that crosses
+chunk boundaries, by at most \chunkRiseRvt{}.
+\textbf{Bottom:} one frame of the same-frame intervention, S5-B. Both panels share the
+frame, the labels (dashed) and the weights, and only the chunk boundary moves. Solid: a
+detection matched to a label of its class at IoU $\ge 0.5$. Dotted: unmatched. Drawn above
+confidence \pairedFigShow{} and scored at every confidence. The example is illustrative only.
+All paired quantitative estimates use all \ssmPairedN{} frames. Supplement Sec.~13.}
+\label{fig:chunkpos}
+\end{figure}
+
+\section{Supporting audit: predictor-side temporal descriptors}
 \label{sec:predictor}
 
 \subsection{Identifiability and the timing estimands}
@@ -408,40 +472,8 @@ with each driven as its own release specifies, all \archCkpts{} checkpoints put 
 newest window's ablation-sensitivity centroid between \archHi{} and \archLo\,ms, none further than
 \archUnifMax\,ms, or \archUnifPct\,\% of one bin, from the uniform-weight value.
 
-\paragraph{Recurrent history under the released streaming evaluation.}
-The state the SSM release carries between evaluation chunks does not affect any of its
-outputs: it enters as a multiplicative factor on the first coefficient of an
-associative scan on which the outputs do not depend. Under the released
-streaming evaluation this bounds the available recurrent history to the current
-\ssmEvalChunk{}-window chunk, so the history behind a detection ranges from one window
-to \ssmEvalChunk{} with its position in the chunk and the reported number averages over
-all \ssmEvalChunk{}. Reconstructing that position from the release's own index files
-over \mapFrames{} labeled frames and scoring every labeled box, S5-B reaches
-\chunkShortBase{} mAP on the frames given one to four windows and \chunkFullBase{} on
-those given seventeen to \ssmEvalChunk{} (Fig.~\ref{fig:chunkpos}). Differencing against the three RVT
-checkpoints, evaluated on the same frames with a state that crosses chunk boundaries,
-controls for frame-position effects shared with the RVT checkpoints and leaves
-\chunkDidBase$\pm$\chunkDidBaseSE{} points for S5-B
-($z=\chunkDidBaseZ$) and \chunkDidSmall$\pm$\chunkDidSmallSE{} for S5-S
-($z=\chunkDidSmallZ$), against placebo differences among the RVT checkpoints of at most
-\chunkPlaceboMax{} points ($z=\chunkPlaceboZ$). Permuting chunk position within each
-sequence puts both SSM values at least \chunkPermZSmall{} standard deviations outside
-their own null and every placebo inside it. A label-free statistic, mean detection
-confidence, separates the same two groups in the same direction (Supplement
-Sec.~13). A paired within-frame chunk-boundary intervention keeps the target frame, weights,
-labels, and evaluator fixed. Shifting every chunk boundary \ssmPairedShift{} windows later moves the affected frames to later chunk
-positions, so the \ssmPairedN{} affected frames are scored twice, under one to four
-windows of history and under seventeen to twenty, with the same weights and labels.
-Paired within frame, the long-history arm gains
-\ssmPairedMapVelBase$\pm$\ssmPairedMapVelBaseSE{} mAP points for S5-B and
-\ssmPairedMapVelSmall$\pm$\ssmPairedMapVelSmallSE{} for S5-S on the velocity-evaluable subset,
-with \ssmPairedConfBase$\pm$\ssmPairedConfBaseSE{} and
-\ssmPairedConfSmall$\pm$\ssmPairedConfSmallSE{} of mean detection confidence. Over every labeled
-box the S5-B gain is \ssmPairedMapAllBase$\pm$\ssmPairedMapAllBaseSE{} points.
-Fig.~\ref{fig:chunkpos} draws one
-such pair. Restricting evaluation to frames receiving 17--21 windows yields an S5-B score
-\chunkGapBase{} points above the pooled released-evaluation score. The support behind that
-window is not fixed in the same way either: over \capSamples{} samples of the
+The support within the newest window
+is not fixed across capacities: over \capSamples{} samples of the
 three RVT capacities, the newest window's share of a \capHorizon\,ms horizon
 falls from \capShareT\,\% to \capShareB\,\% and the sensitivity centroid moves
 from \capSuppT{} to \capSuppB\,ms.
@@ -587,25 +619,6 @@ annotation dispersion of the labels themselves (\labelSigmaGenAnn\,px), and at t
 ninety-ninth it is \outPxNinetynine\,px. That ablation-sensitivity centroid and
 the regression-based temporal coefficient are measured from released artifacts alone.
 
-\begin{figure}[t]
-\centering
-\figasset{figs/chunkpos.pdf}{\columnwidth}
-\\[1.5pt]
-\figasset{figs/paired_frame.pdf}{\columnwidth}
-\caption{\textbf{Top:} benchmark score against the recurrent history the released streaming
-evaluation made available, at each of the \ssmEvalChunk{} chunk positions, over every
-labeled Gen1 box, no displacement applied. Shaded: the one-to-four-window block the
-release scores together with the rest. Between that block and the frames given seventeen
-windows or more, the two SSM checkpoints rise by \chunkRiseBase{} and \chunkRiseSmall{}
-points and the three RVT checkpoints, scored on the same frames with state that crosses
-chunk boundaries, by at most \chunkRiseRvt{}.
-\textbf{Bottom:} one frame of the same-frame intervention, S5-B. Both panels share the
-frame, the labels (dashed) and the weights, and only the chunk boundary moves. Solid: a
-detection matched to a label of its class at IoU $\ge 0.5$. Dotted: unmatched. Drawn above
-confidence \pairedFigShow{} and scored at every confidence. The example is illustrative only.
-All paired quantitative estimates use all \ssmPairedN{} frames. Supplement Sec.~13.}
-\label{fig:chunkpos}
-\end{figure}
 
 \paragraph{Effect on benchmark mAP.}
 This experiment is not a test of whether temporal support matters in general. It asks whether
@@ -675,7 +688,7 @@ range over the $-50$ to $+30$\,ms sweep. Both values are reported in points.}
 \end{table}
 
 
-\section{A complementary within-exposure attribution limit}
+\section{Supporting audit: label-acquisition timing within one exposure}
 \label{sec:flicker}
 
 \begin{figure*}[t]
@@ -789,17 +802,24 @@ claims use the 406 sequences represented in the stored-detection evaluation.
 
 \section{Conclusion}
 
-Released artifacts only partially specify a nominal timestamp's temporal semantics. In the released
-SSM-ViT pipeline, one score pools predictions with one to twenty-one recurrent windows,
-and a same-frame intervention changing only chunk position shifts S5-B by 4.20 mAP over all
-labeled validation boxes at fixed frames, weights, labels and evaluator. RVT's input sensitivity
-and regression-based temporal coefficient are distinct descriptors; DSEC's
-within-exposure timing contains illumination-locked structure requiring separation before
-attribution to object motion. Two scores at the same nominal timestamp are therefore not performance at the same effective time
-when the recurrent support behind them differs; reporting predictor initialization, reset policy, chunk
-boundaries, effective history and label acquisition intervals alongside the score makes
-these quantities protocol-identifiable.
+In the released SSM-ViT pipeline one pooled score combines predictions with one to twenty-one
+windows of recurrent history, and moving only the chunk boundary shifts S5-B by
+\ssmPairedMapAllBase{} mAP over all labeled validation boxes and \ssmPairedMapVelBase{} mAP on
+the velocity-evaluable subset, at fixed frames, weights, labels and evaluator. Effective
+temporal support is therefore a free variable of the reported score.
 
+The result does not single out a canonical temporal-support statistic for recurrent event
+models, nor attribute the shift to one stage of the pipeline. RVT's input sensitivity and its
+regression-based temporal coefficient remain distinct descriptors rather than estimates of
+recurrent support, and DSEC's within-exposure timing carries illumination-locked structure that
+must be separated before attribution to object motion.
+
+Two scores at the same nominal timestamp are thus not performance at the same effective time
+when the recurrent support behind them differs. Comparisons across recurrent architectures
+should report or control the temporal support induced by preprocessing and recurrence---
+predictor initialization, reset policy, chunk boundaries, effective history and
+label-acquisition intervals---alongside the score, which makes these quantities
+protocol-identifiable.
 {\footnotesize
 \setlength{\itemsep}{0.4pt}
 \clearpage

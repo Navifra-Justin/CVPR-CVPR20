@@ -6,8 +6,9 @@ reads its numbers from the experiment artifacts at render time.
 
 ## The one thing a reviewer should remember
 
-**Under one released streaming evaluation, detections carrying 1 to 4 windows of recurrent
-history and detections carrying 17 to 21 differ by 5.32 mAP points after an RVT control, so a
+**Moving only the chunk boundary of one released streaming evaluation --- same frames, same
+weights, same labels, same evaluator, and the evaluated timestamp unchanged --- shifts S5-ViT-B
+by 4.20 mAP points over all labeled boxes and 5.23 on the velocity-evaluable subset, so a
 nominal benchmark timestamp does not identify the temporal support behind the score.**
 
 ## What this video cannot do, and does not fake
@@ -36,12 +37,12 @@ a measured curve arriving over time rather than asserted:
 | 0 | `v00_title` | 2.2 s | the paper title | — (item 0: 1.5–2.5 s) |
 | 1 | `v02_support` | 17.0 s | **predictor-side temporal support.** Real Gen1 input windows on a time axis; the measured per-bin window-ablation influence fills in and the centroid lands 23.81 ms before the label; the axis opens to a second and the past windows appear with their measured influence, the running centroid sliding to −299 ms; the regression-based temporal coefficient is marked near the label instant | E45 (`e45_influence_fixed/result.json`), E42 (`e42_recurrent_support/result_k19.json`), E27 (`e27_rows/placebo_diag.json`) |
 | 2 | `v04_map` | 12.5 s | **the consequence, on one real frame.** The released detections stay fixed while the ground truth slides to the state each object occupied δ later, with the measured mAP(δ) curve tracing beneath | E37 (`e37_map/dets.npz`, `strata.json`), E46b (`e37_map/at_centroid.json`) |
-| 3 | `v08_chunkpos` | 10.4 s | **the headline.** mAP against the position of the detection inside the released evaluation chunk, one curve per released checkpoint, arriving position by position. The first four positions and the last five are shaded as they are named, then the difference-in-differences readout appears: S5-ViT-B +5.32 ± 0.53 points, S5-ViT-S +4.37 ± 0.61, RVT placebo largest of three 0.67 | E58 (`e58_chunkpos/curve.json`, `allbox.json`) |
+| 3 | `v08_chunkpos` | 10.4 s | **the observational contrast.** mAP against the position of the detection inside the released evaluation chunk, one curve per released checkpoint, arriving position by position. The first four positions and the last five are shaded as they are named, then the difference-in-differences readout appears: S5-ViT-B +5.32 ± 0.53 points, S5-ViT-S +4.37 ± 0.61, RVT placebo largest of three 0.67 | E58 (`e58_chunkpos/curve.json`, `allbox.json`) |
 | 4 | `v01_exposure` | 11.4 s | **real playback** (item 21). Every event inside one published 14996 µs DSEC exposure, at ~3000× slow motion, beside the same events as a rate. The rate peaks twice per 100 Hz intensity period, which is why the strongest line is at 200 Hz | E00 (`e00_exposure_survey/e_zurich_city_09_a.txt`), DSEC-Det labels, E40 |
 | 5 | `v07_ceiling_vs_day` | 18.0 s | **the only controlled visual contrast this paper has.** The same 15 ms of raw event stream from a ceiling-exposure night recording and from the daytime control, the same 350 µs slices, the same slow motion, nearly the same event count (382 861 against 377 007) stated on screen. The rate varies **3.0×** on the left and **1.1×** on the right | `video/v07_stats.json`, DSEC events, E00 exposure metadata; the same contrast E10/E40 measure spectrally |
 | 6 | `v05_harmonics` | 7.0 s | the identification: a whole recording's spectrum, lines at 100, 200 and 300 Hz and nothing at 50, 150 or 250; then the line-to-continuum ratios, six ceiling sequences against the daytime one | E39 (`e39_which_frequency/sequence_spectrum.json`), E40 (`e40_harmonics/result.json`) |
 | 7 | `v03_generality` | 6.0 s | generalization as evidence: the measured profile of each released checkpoint on one axis, each with its own measured centroid, and the 1.24 ms band they occupy | E48 (`e48_matched_frames/rvt-*.json`), E47b (`e47_ssm/s5vit-*-chunked.json`) |
-| 8 | `v06_closing` | 3.6 s | the scoped takeaway, with the 5.32-point chunk-position difference read from `allbox.json` at render time | E58 |
+| 8 | `v06_closing` | 3.6 s | the scoped takeaway, with the 4.20-point all-box and 5.23-point velocity-subset shifts of the same-frame chunk-boundary intervention read from `paired.json` at render time | E60 (`e60_shift/paired.json`) |
 
 Every rendered number is read from the artifact at render time, not typed into the plotting
 code, including both cards in `src/v00_cards.py`.
@@ -89,8 +90,10 @@ output rather than to a summary plot.
   contrast that the label-side bound rests on.
 - **interpretability** — one claim per screen; the numbers that carry each scene are on screen
   with their semantic label ("rate varies 3.0×", "1 to 4 windows of history").
-- **reviewer memory** — the closing sentence repeats the one thing, and its number is the
-  same 5.32 the headline scene ends on.
+- **reviewer memory** — the closing sentence repeats the one thing, and its numbers are the
+  4.20 and 5.23 the manuscript's abstract, introduction and conclusion lead with; the 5.32 the
+  chunk-position scene ends on is the observational contrast the same section of the paper
+  reports alongside them.
 
 ## The §30 test
 

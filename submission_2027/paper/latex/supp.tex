@@ -129,7 +129,7 @@ truth throughout the interval and meets it at the anchors, which produces a
 signed, frame-locked, resetting residual for a predictor with no lag. Main
 Sec.~4.1 shows that exact adjacent-frame linear interpolation is inconsistent
 with the observed DSEC-Det label trajectories as the sole construction mechanism,
-and the Gen1 measurements of main Sec.~3 are taken at label times.
+and the Gen1 measurements of main Sec.~4 are taken at label times.
 
 \section{The influence profile}
 \label{sup:influence}
@@ -428,7 +428,7 @@ $m\in[\modQthreeHi,\modQfourHi]$ & \framesModQfour & \sdModQfour & \nullModQfour
 \caption{Per-object event centroid inside one published exposure window of
 \texttt{zurich\_city\_09\_a}, in \micro s, each entry the median over frames of a
 within-frame statistic against that frame's own null $w^{2}/12N_{i}$. The first
-block's excess follows the main Sec.~4.4 statistic summarized over frames. Rows two and
+block's excess follows the main Sec.~5.4 statistic summarized over frames. Rows two and
 three remove the \excessMaskPix{} pixels phase-locked at \flickerLineHz\,Hz and a
 random subset of that size, row four places boxes of the same shapes at random
 positions. In the lower block a frame enters a stratum when \minObjects{} of its
@@ -489,7 +489,7 @@ inside each released box are collected. The \texttt{ms\_to\_idx} index resolves 
 whole milliseconds, so the slice it returns is filtered to $a\le t<b$ in
 microseconds before any statistic is formed, and the analytic null is computed for
 the same interval. Events and frames share one clock in this dataset, so no
-calibration step enters. For the dispersion of main Sec.~4.4 a box contributes
+calibration step enters. For the dispersion of main Sec.~5.4 a box contributes
 only if it carries at least \minEvents{} events in the window, and a frame only
 if at least \minObjects{} boxes qualify, the reported statistics are medians over
 frames of a within-frame quantity, so no frame is weighted by its object count.
@@ -520,7 +520,7 @@ when they close, and the published image timestamp equals the mean of the two
 mid-exposures to within \dsecTsResidual\,\micro s.
 
 \paragraph{Archive version and track association.} DSEC-Det ships more than
-one annotation version. The numbers in main Sec.~4.1 describe the archive
+one annotation version. The numbers in main Sec.~5.1 describe the archive
 \texttt{dsec-det\_left\_object\_detections.zip}, \ddArchiveBytes{} bytes,
 retrieved \ddArchiveDate{}. Whether those labels are tracker output on the RGB
 frames, which the dataset's own description states, is not distinguishable from
@@ -545,7 +545,7 @@ least \flickerMinEvents{} events over the tested slice, and every fourth event i
 used to reduce sample size. The off-frequency and daytime controls remain close
 to their nominal reference under the same procedure. Two arms hold the estimator to its null, an
 off-frequency arm on the same events and the same frequency on daytime events.
-The fraction of locked pixels is reported relative to live pixels in main Sec.~4.2 and
+The fraction of locked pixels is reported relative to live pixels in main Sec.~5.2 and
 separately relative to the full sensor. The two denominators differ, and each statement
 identifies its denominator.
 
@@ -577,7 +577,7 @@ counts of that block are not a partition of the first row's.
 \section{The permutation null}
 \label{sup:perm}
 
-The analytic null $w^{2}/12N_{i}$ for the main Sec.~4.4 statistic is the variance of a mean of
+The analytic null $w^{2}/12N_{i}$ for the main Sec.~5.4 statistic is the variance of a mean of
 $N_{i}$ draws uniform on the exposure, so it assumes the events of a box arrive
 independently and uniformly.
 
@@ -626,10 +626,10 @@ within a chunk and only across chunks is the state lost.
 
 Main Sec.~3.5 reports that displacing the ground truth to the newest window's ablation-sensitivity centroid costs
 \mapCost{} points on one checkpoint. Whether the interval changes a \emph{comparison} needs
-more than one detector, so all \rankCkpts{} released checkpoints of main Sec.~3.3 were run
+more than one detector, so all \rankCkpts{} released checkpoints of main Sec.~4.3 were run
 over the Gen1 validation split under one protocol: the same frames, the same confidence
 floor of 0.01 and non-maximum-suppression overlap of 0.65, and ground truth that is identical
-across the five and identical to the dump main Sec.~3.5 already uses. Each was then scored at the label instant
+across the five and identical to the dump main Sec.~4.5 already uses. Each was then scored at the label instant
 and again at the displacement it prefers, which ranges from \rankArgLo{} to \rankArgHi\,ms
 across the five.
 
@@ -813,7 +813,7 @@ S5-B & \chunkShortBase & \chunkFullBase & $\chunkRiseBase$ & $\chunkDidBase\pm\c
 \end{tabular}
 \caption{mAP over every labeled box, by the amount of recurrent history the released
 streaming evaluation gives the frame. Raw $\Delta$mAP is the full column minus the short
-one, the quantity main Fig.~2 plots, so positive means longer history scored higher. The last
+one, the quantity main Fig.~1 plots, so positive means longer history scored higher. The last
 column subtracts the placebo trend from it, using the mean of the other two RVT rows for an
 RVT row and the mean of all three for an SSM row. The RVT rows are the placebos: their
 state crosses chunk boundaries, so position carries no support for them. Net of that

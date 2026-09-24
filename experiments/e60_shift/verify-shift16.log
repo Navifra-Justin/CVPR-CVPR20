@@ -1,0 +1,49 @@
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+406 sequences, 20296 labelled frames, CHUNK=21 SHIFT=16
+
+1. SHIFT=0 replay vs the positions the released protocol actually recorded
+  [PASS] frame count  replay 20296  recorded 20296
+  [PASS] every position identical  0 differ
+
+2. new position == (old - 16) mod 21
+  [PASS] every covered frame rotates  0 of 19979 do not
+
+3. frames covered by a chunk
+  [PASS] uncovered frames under 3 % of the split  317 of 20296 (1.56 %), old 0
+
+4. short(0, 4) / full(16, 21) block exchange
+     old-short -> new-full :      0 /   3672
+     old-full  -> new-short:   3949 /   5069
+  [FAIL] one direction carries its whole block  best 77.9%
+  [FAIL] e60_paired.py direction (short -> full) populated  SHIFT=5 is the value that produces it
+     unchanged position     :      0 /  20296
+
+   for comparison, the shift that was actually run first (boundaries earlier):
+     old-short -> new-full :    774 /   3672
+     old-full  -> new-short:     18 /   5069
+     unchanged position     :  14927 /  20296
+
+   (old - new) mod 21 histogram, fixed shift wants a single bar at 16:
+      16   19979
+
+WROTE experiments/e60_shift/positions-shift16.npz
+
+BLOCKED - do not run

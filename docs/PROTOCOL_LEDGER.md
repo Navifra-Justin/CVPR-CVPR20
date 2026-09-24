@@ -423,3 +423,66 @@ paper's mechanism would have been the easy overclaim and it is not made.
 **And the run found a defect in itself first.** The rewritten dump disagreed with E37 on 193
 ground-truth velocities before any of the above was computed; had that not been checked, five
 models would have been compared against a ground truth the paper does not use. Case 11.
+
+---
+
+## Case 13 — the experiment that ran to completion without applying its treatment (2026-09-16)
+
+**What E60 is for.** E58 found that the chunk position of a released SSM-ViT detection — one
+window of recurrent history at position 0, twenty-one at position 20 — is worth 4.4 and 5.3 mAP
+points on the population a released Gen1 number is reported over. Position groups hold different
+frames, so that estimate leans on RVT as a scene-content control and on parallel trends. E60
+removes the assumption by re-running the same checkpoints with the chunk boundaries moved, so
+the *same frames* are scored with and without their history.
+
+**The defect.** The shift was implemented as `start = max(o2r[0] - 21 + 1 - SHIFT, 0)` — every
+boundary moved SHIFT windows *earlier*. The release's own start is `max(o2r[0] - 20, 0)`, and
+Gen1 labels begin early enough in most sequences that this is **already clamped at 0**.
+Subtracting from a clamped value changes nothing. The treatment was applied only to the
+minority of sequences whose first label sits past index 20.
+
+**Everything an exit-code check would look at was correct.** The run exited 0. It wrote 20 296
+frames, exactly matching E58. Its ground truth was byte-identical to the baseline dump, which is
+the precondition `e60_paired.py` asserts. It printed plausible progress the whole way. What was
+wrong was the only thing nobody had looked at: whether the positions actually moved.
+
+| | old-short → new-full | old-full → new-short | position unchanged |
+|---|---:|---:|---:|
+| boundaries 16 earlier (ran, ~45 min of GPU 1) | 774 / 3672 | **18 / 5069** | 14 927 / 20 296 |
+| boundaries 5 later (the design) | **3574 / 3672** | 0 / 5069 | 0 / 20 296 |
+
+**The tell was the asymmetry, not the totals.** 774 frames moved one way and 18 the other. A
+rotation is a bijection; it cannot move 21 % of a block in one direction and 0.4 % in the other.
+The `(old - new) mod 21` histogram said the same thing more directly: five bars where a fixed
+shift permits one.
+
+**The second attempt was also wrong, and cost nothing.** The repair clamped the start at the
+first labelled frame so that no frame could fall outside a chunk:
+`start = min(max(o2r[0]-20, 0) + SHIFT, o2r[0])`. **216 of the 406 validation sequences** have
+their first label below index 16, so the clamp pinned their start at the label itself and gave
+them a rotation of `o2r[0]`, not `SHIFT`. Six bars in the histogram instead of one. This one was
+caught by `src/e60_verify_shift.py` in ninety seconds on a CPU, before any card was claimed.
+
+**What the check is.** Chunk positions depend only on `objframe_idx_2_repr_idx`, the label
+timestamps and the number of representation frames. None of that needs a model, CUDA, or the
+event data. So the dumper's frame enumeration is replayed from the index files alone and four
+things are asserted: that the replay reproduces `positions.npy` exactly at SHIFT = 0, which is
+what licenses the rest; that the modified start expression is inert at SHIFT = 0; that every
+covered frame's new position is `(old - SHIFT) mod 21`; and that the block the paired analysis
+scores is actually populated. It also reads the dumper's own `start = ...` line and fails if it
+is not the expression the replay assumes, so the two cannot drift apart by hand.
+`run_e60.sh` now runs it first and refuses to claim GPU 1 unless it exits 0.
+
+**Two things this changed in the design, both for the better.** The shift is now **5 later**
+rather than 16 earlier. Later is never clamped from below. And 5 is the rotation that carries
+positions 0–3 onto 16–19, so the experiment takes the frames the released protocol *starved*
+and hands them the history the release already intends to carry — a gain, on the frames that
+lost the most, rather than a loss on the frames that lost the least. A single shift cannot do
+both directions: a rotation by S swaps two blocks only if `S ≡ -S (mod 21)`, which holds only
+for S = 0.
+
+**The rule this adds.** Case 11 established that a checker's cheerful summary line is not
+evidence. This adds the case where there is no checker at all because the job's own exit code
+looks like one: *verify that the intervention happened, not that the run finished.* An
+experiment whose treatment is a change of indexing can be checked on indices, and indexing is
+free. The check belongs before the GPU, not after it.

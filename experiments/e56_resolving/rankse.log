@@ -1,0 +1,47 @@
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+  25/200
+  50/200
+  75/200
+  100/200
+  125/200
+  150/200
+  175/200
+  200/200
+
+=== moving subset ===
+  published order: rvt-b > rvt-s > rvt-t > s5vit-base > s5vit-small
+  pair                           gap pt   SE(gap)      z   P(flip)   SE(mAP)
+  rvt-b > rvt-s                   3.623     0.556   6.52     0.000     2.770
+  rvt-s > rvt-t                   0.472     0.424   1.11     0.130     2.374
+  rvt-t > s5vit-base              0.882     0.620   1.42     0.065     2.168
+  s5vit-base > s5vit-small        3.524     0.555   6.35     0.000     2.382
+  the full published ordering is reproduced in 80.5 % of 200 resamples
+
+=== every labelled box ===
+  published order: rvt-b > rvt-s > s5vit-base > rvt-t > s5vit-small
+  pair                           gap pt   SE(gap)      z   P(flip)   SE(mAP)
+  rvt-b > rvt-s                   2.636     0.328   8.03     0.000     1.008
+  rvt-s > s5vit-base              0.734     0.514   1.43     0.095     1.042
+  s5vit-base > rvt-t              0.050     0.529   0.09     0.480     0.973
+  rvt-t > s5vit-small             3.346     0.431   7.77     0.000     0.956
+  the full published ordering is reproduced in 42.5 % of 200 resamples
+
+WROTE experiments/e56_resolving/rankse.json

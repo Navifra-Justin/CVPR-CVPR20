@@ -8,7 +8,7 @@ spectrum, because it can only be checked by watching it.
 
 Both panels are rendered identically. The same 15 ms of raw event stream, taken from inside
 a published exposure of each recording, in the same 350 us slices, at the same slow motion.
-Each rate curve is normalised to its own mean, which is stated on screen: the two recordings
+Each rate curve is normalized to its own mean, which is stated on screen: the two recordings
 differ in event count by more than an order of magnitude and the claim is about the shape of
 the rate, not its height.
 """
@@ -82,7 +82,7 @@ def frame(i):
                  transform=axr.transAxes,ha='right',va='top',
                  color=(GOLD if c==0 else BLUE),fontsize=14)
         axr.set_xlabel('time inside the window (ms)',fontsize=11)
-        if c==0: axr.set_ylabel('event rate,\nnormalised to its own mean',fontsize=10)
+        if c==0: axr.set_ylabel('event rate,\nnormalized to its own mean',fontsize=10)
         for sp in ('top','right'): axr.spines[sp].set_visible(False)
         for sp in ('left','bottom'): axr.spines[sp].set_color('0.5')
     fig.text(0.5,0.955,'the same 15 ms of raw event stream, the same 350 $\\mu$s slices, '

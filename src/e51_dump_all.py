@@ -22,6 +22,13 @@ import sys, os, glob, numpy as np, torch, h5py, hdf5plugin
 FAM=os.environ.get('FAM','rvt'); TAG=os.environ.get('TAG','t')
 DEV=os.environ.get('DEV','cuda:0'); NSEQ=int(os.environ.get('NSEQ','1000'))
 CHUNK=int(os.environ.get('CHUNK','21'))          # SSM-ViT gen1 sequence_length
+# E60: move every chunk boundary LATER by SHIFT windows. The release uses SHIFT=0. Any other
+# value rotates every labelled frame's position by -SHIFT mod CHUNK, giving it a different
+# amount of history under an otherwise identical protocol, which is what turns the
+# chunk-position comparison into a paired one on identical frames. The position each frame
+# actually received is recorded in the dump, so nothing downstream has to re-derive it, and
+# src/e60_verify_shift.py checks the re-assignment from the index files with no GPU.
+SHIFT=int(os.environ.get('SHIFT','0'))
 NAME=(f'rvt-{TAG}' if FAM=='rvt' else f's5vit-{TAG}')
 OUT=os.environ.get('OUT',f'/work/experiments/e51_ranking/dets-{NAME}.npz')
 sys.path.insert(0,'/work/src/SSMViT' if FAM=='ssm' else '/work/src/RVT')
@@ -61,7 +68,7 @@ def iou1(a,B):
     w=np.clip(x2-x1,0,None); h=np.clip(y2-y1,0,None); it=w*h
     return it/np.maximum((a[2]-a[0])*(a[3]-a[1])+(B[:,2]-B[:,0])*(B[:,3]-B[:,1])-it,1e-9)
 
-DET=[]; GT=[]; fid=0
+DET=[]; GT=[]; POS=[]; fid=0
 for si,sd in enumerate(sorted(glob.glob('/work/data/gen1x/gen1/val/*'))[:NSEQ]):
     rd=os.path.join(sd,'event_representations_v2','stacked_histogram_dt=50_nbins=10')
     try:
@@ -69,6 +76,7 @@ for si,sd in enumerate(sorted(glob.glob('/work/data/gen1x/gen1/val/*'))[:NSEQ]):
         o2r=np.load(os.path.join(rd,'objframe_idx_2_repr_idx.npy'))
     except Exception: continue
     if len(o2r)<3: continue
+    posmap={}
     ts=np.sort(np.unique(L['t'])); B=[];C=[];CL=[]
     for t in ts:
         G=L[L['t']==t]
@@ -104,9 +112,18 @@ for si,sd in enumerate(sorted(glob.glob('/work/data/gen1x/gen1/val/*'))[:NSEQ]):
                 with torch.no_grad(): o,_,states=mdl.forward(x,previous_states=states)
                 if ri in want: outs[ri]=o
         else:
-            # chunk starts exactly where the released streaming dataset puts them
-            start=max(int(o2r[0])-CHUNK+1,0)
-            outs={}; states=None
+            # chunk starts exactly where the released streaming dataset puts them, then
+            # moved LATER by SHIFT. Later, not earlier: the release's own start is already
+            # max(o2r[0]-20,0) and Gen1 labels begin early enough in most sequences that it
+            # is pinned at 0, so subtracting SHIFT there would be a no-op. And not clamped
+            # at o2r[0] either: 216 of the 406 validation sequences have their first label
+            # below index SHIFT, and a clamp there would give those sequences a rotation of
+            # o2r[0] instead of SHIFT. The price is the handful of labelled frames that then
+            # sit before the first chunk; they get position -1 and no detections, and the
+            # paired analysis drops them from both arms. src/e60_verify_shift.py checks all
+            # of this from the index files before any GPU is claimed.
+            start=max(int(o2r[0])-CHUNK+1,0)+SHIFT
+            outs={}; states=None; posmap={}
             for c0 in range(start,stop,CHUNK):
                 idx=list(range(c0,min(c0+CHUNK,stop)))
                 if not idx: break
@@ -116,6 +133,7 @@ for si,sd in enumerate(sorted(glob.glob('/work/data/gen1x/gen1/val/*'))[:NSEQ]):
                     for p_,ri in enumerate(idx):
                         if ri in want:
                             outs[ri]=mdl.forward_detect({k:v[p_] for k,v in feats.items()})[0]
+                            posmap[ri]=p_
         for ri in sorted(want):
             k=want[ri]
             o=outs.get(ri)
@@ -132,9 +150,11 @@ for si,sd in enumerate(sorted(glob.glob('/work/data/gen1x/gen1/val/*'))[:NSEQ]):
                     vx,vy=(C[k+1][jf]-C[k-1][jb])/dt
                 else: vx=vy=np.nan
                 GT.append((fid,B[k][gi,0],B[k][gi,1],B[k][gi,2],B[k][gi,3],CL[k][gi],vx,vy))
+            POS.append(posmap.get(ri,-1))
             fid+=1
     if (si+1)%25==0: print(f"  {si+1} seqs, {fid} frames, {len(DET)} dets",flush=True)
 
 os.makedirs(os.path.dirname(OUT),exist_ok=True)
-np.savez_compressed(OUT,det=np.array(DET,dtype=np.float32),gt=np.array(GT,dtype=np.float32))
-print(f"\nWROTE {OUT}  frames {fid}  dets {len(DET)}  gt {len(GT)}")
+np.savez_compressed(OUT,det=np.array(DET,dtype=np.float32),gt=np.array(GT,dtype=np.float32),
+                    pos=np.array(POS,dtype=np.int16))
+print(f"\nWROTE {OUT}  frames {fid}  dets {len(DET)}  gt {len(GT)}  shift {SHIFT}")

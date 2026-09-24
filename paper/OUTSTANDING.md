@@ -109,7 +109,9 @@ classified by the review as broadening rather than required, and is the leading 
   force one.
 - The predictor half is Gen1 and the label half is DSEC. The thesis that binds them is
   stated, but they are not the same system.
-- The full recurrent support has no centroid the measured horizon identifies. This is
+- The full recurrent centroid is not identified from the measured horizons. Two finite
+  horizons cannot separate a slowly converging tail from a divergent one, so the divergence
+  the observed a<1 tail would imply is stated conditionally, never asserted. This is
   reported rather than resolved; a longer horizon moves the number rather than converging it.
 - The zero-fill and mean-fill instruments disagree by 2.5 ms and the gradient by 4.0 ms. The
   spread is reported as the instrument dependence it is, not averaged away.

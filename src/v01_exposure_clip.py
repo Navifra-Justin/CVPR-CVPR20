@@ -79,7 +79,7 @@ for i in range(NFRAME):
         ax.add_patch(Rectangle((x0,y0),x1-x0,y1-y0,fill=False,ec='#4ad2ff',lw=1.1))
     ax.set_xlim(0,W); ax.set_ylim(H,0); ax.set_xticks([]); ax.set_yticks([])
     for sp in ax.spines.values(): sp.set_color('0.35')
-    ax.set_title(f'DSEC {SEQ.replace("_"," ")} — events inside one published '
+    ax.set_title(f'DSEC {SEQ.replace("_"," ")}, events inside one published '
                  f'{w}\\,µs exposure'.replace('\\,',' '),
                  fontsize=13,color='white',pad=10)
     ax.text(0.015,0.03,f'{t0/1000:6.2f} ms into the exposure',transform=ax.transAxes,
@@ -99,7 +99,7 @@ for i in range(NFRAME):
         ax2.axvline((2*k-1)*5.0,color='#ff9d4a',lw=0.8,ls='--')
     ax2.text(0.985,0.955,'dotted: one 100 Hz intensity period',transform=ax2.transAxes,
              fontsize=10,color='#4ad2ff',ha='right')
-    ax2.text(0.985,0.895,'dashed: its midpoint — the rate peaks on both edges,',
+    ax2.text(0.985,0.895,'dashed: its midpoint. The rate peaks on both edges,',
              transform=ax2.transAxes,fontsize=10,color='#ff9d4a',ha='right')
     ax2.text(0.985,0.840,'so the strongest line in the event stream is at 200 Hz',
              transform=ax2.transAxes,fontsize=10,color='#ff9d4a',ha='right')

@@ -115,3 +115,51 @@ the identical treatment, so the comparison across lags is fair while the compari
 E17's per-bin numbers is not. Whether the non-decaying tail is dependence or an artefact of
 the zero fill is a separate question, answered by the fill control in
 `fill_control.log`. One checkpoint, one architecture, one dataset.
+
+---
+
+## E59 — the centroid is not unidentified. It does not exist. (2026-09-16)
+
+Review #8's third objection was that the full recurrent centroid is "unidentified". The section
+above conceded exactly that: the centroid moved with the horizon instead of converging, −161 ms
+at 500 ms and −299 ms at 1000 ms, and the manuscript recorded it as a limit of what had been
+measured. `src/e59_tail.py` shows it is not a limit of measurement. It is a property of the
+tail, and it is a stronger result than the one it replaces.
+
+**The argument.** If `I(L) = A * L^(-a)` with `a < 1`, then over a horizon `H`
+
+    sum_L I(L)      ~ H^(1-a) / (1-a)         diverges
+    sum_L L*I(L)    ~ H^(2-a) / (2-a)         diverges faster
+
+so the normalised first moment is `c(H) = -w*H*(1-a)/(2-a)` — **linear in the horizon**. A
+quantity linear in the window you measure it over has no limit, so the centroid does not exist,
+and extending the horizon displaces the measurement rather than resolving it.
+
+**The exponent.** Fitted on E42's 576 samples over lags 0–19: `a = 0.6454 ± 0.0049`, which is
+**72.7 SE below the a = 1** a finite first moment requires, `P(a >= 1) = 0.000`. A fit restricted
+to lags 1–9 gives 0.6281, so the estimate is not an artefact of the far tail.
+
+**Power law against exponential**, which would have a centroid: RMS z of 2.54 for the power law
+against **23.80** for an exponential with the best-fit scale (318 ms). A distribution-free
+version of the same statement is the doubling ratio — influence over lags `[L, 2L)` against
+`[2L, 4L)` — which for a power law is constant and for any exponential falls to zero:
+**1.8635, 95 % CI [1.851, 1.876]**, i.e. 137 SE above 1.
+
+**The prediction, out of sample.** `c(H) = -w*H*(1-a)/(2-a)` with the fitted `a` and no free
+parameter:
+
+| horizon | measured centroid | predicted |
+|---:|---:|---:|
+| 250 ms | −89.5 ms | −65.4 ms |
+| 500 ms | −160.6 ms | −130.9 ms |
+| 750 ms | −228.7 ms | −196.3 ms |
+| 1000 ms | −299.4 ms | −261.8 ms |
+
+Linear in `H`, as predicted, with the measured values consistently a little earlier than the
+asymptotic form — the fit is asymptotic and the horizons are short.
+
+**And a number that does not depend on any of it.** **77.3 %** of the measured influence lies
+outside the current 50 ms input window. That is a statement about where the evidence is, not
+about where its centre is, and it survives whether or not the tail is a power law.
+
+- `e59_tail.py` → `tail.json`

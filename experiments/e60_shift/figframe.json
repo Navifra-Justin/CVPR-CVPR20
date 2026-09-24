@@ -1,0 +1,44 @@
+{
+ "frame": 14910,
+ "seq": "17-10-12_16-20-27_122500000_182500000",
+ "local": 54,
+ "repr": 1094,
+ "population": {
+  "n": 3574,
+  "gt_per_frame": 2.06323447118075,
+  "matched": [
+   1.4037493005036374,
+   1.529099048684947
+  ],
+  "unmatched": [
+   0.44152210408505876,
+   0.39255735870173475
+  ],
+  "frac_more_matched": 0.13122551762730833,
+  "frac_fewer_matched": 0.026580861779518745,
+  "frac_fewer_unmatched": 0.1365416899832121
+ },
+ "pos_release": 2,
+ "pos_shift": 18,
+ "n_gt": 4,
+ "show": 0.3,
+ "tag": "base",
+ "shift": 5,
+ "crop": [
+  24,
+  72,
+  304,
+  146
+ ],
+ "event_pixels": 424,
+ "short": {
+  "shown": 2,
+  "matched": 0,
+  "unmatched": 2
+ },
+ "full": {
+  "shown": 3,
+  "matched": 3,
+  "unmatched": 0
+ }
+}

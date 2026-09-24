@@ -286,26 +286,37 @@ def fig_predictor():
     e = np.array(d['zero']['sem'], dtype=float)
     cen = d['zero']['centroid_ms']
 
-    fig, (axa, axb) = plt.subplots(2, 1, figsize=(COL, 2.50),
-                                  gridspec_kw={'height_ratios': [1.0, 1.12]})
+    # the regression-based temporal coefficient of Sec. 3.4, placed on this same axis as
+    # the effective timestamp tau_P = -tau, so panel (a) carries both timing quantities
+    R = json.load(open(os.path.join(EXP, 'e27_rows', 'placebo_diag.json')))['perseq4']
+    tp, tpse = -R['tau'], R['tau_se']
+
+    fig, (axa, axb) = plt.subplots(2, 1, figsize=(COL, 2.76),
+                                  gridspec_kw={'height_ratios': [1.0, 1.10]})
 
     axa.bar(c, a, width=4.2, color='0.72', edgecolor='black', lw=0.5, zorder=2)
     axa.errorbar(c, a, yerr=e, fmt='none', ecolor='black', elinewidth=0.8,
                  capsize=1.6, zorder=3)
     axa.axhline(a.mean(), color='0.1', lw=0.7, ls='--', zorder=4)
-    axa.axvline(cen, color='black', lw=1.0, zorder=5)
+    axa.axvline(cen, color='black', lw=1.1, zorder=5)
     axa.axvline(0.0, color='0.1', lw=1.0, ls=':', zorder=5)
-    top = a.max() * 1.42
+    axa.axvline(tp, color='0.1', lw=1.1, ls=(0, (5, 1.4, 1, 1.4)), zorder=5)
+    top = a.max() * 1.72
     axa.set_ylim(0, top)
-    axa.set_xlim(-52, 8)
-    axa.annotate('influence-weighted\ncentroid \u2212%.2f ms' % abs(cen),
-                 xy=(cen, top * 0.845), xytext=(-51.0, top * 0.995),
-                 fontsize=5.8, va='top', ha='left',
-                 arrowprops=dict(arrowstyle='->', lw=0.6, color='0.25',
-                                 shrinkA=3.0, shrinkB=1.0,
-                                 connectionstyle='arc3,rad=-0.2'))
-    axa.text(1.0, top * 0.34, 'label instant', fontsize=5.8, va='center',
-             ha='left', rotation=90)
+    axa.set_xlim(-54, 19)
+    axa.text(-53.0, top * 0.985, 'newest-window\nsensitivity centroid\n\u2212%.2f ms' % abs(cen),
+             fontsize=6.6, va='top', ha='left')
+    axa.text(18.0, top * 0.985, 'regression\n$\\tau_P\\!=\\!%+.2f$ ms' % tp,
+             fontsize=6.6, va='top', ha='right')
+    axa.errorbar([tp], [top * 0.615], xerr=[[tpse], [tpse]], fmt='D', ms=2.4,
+                 color='0.1', elinewidth=0.9, capsize=2.2, zorder=7)
+    axa.annotate('', xy=(cen, top * 0.27), xytext=(tp, top * 0.27),
+                 arrowprops=dict(arrowstyle='<->', lw=0.7, color='0.1'))
+    axa.text((cen + tp) / 2.0, top * 0.27, '%.1f ms' % abs(tp - cen),
+             fontsize=6.6, ha='center', va='center',
+             bbox=dict(fc='white', ec='none', pad=0.9))
+    axa.text(-1.6, top * 0.735, 'label instant', fontsize=6.0, va='center',
+             ha='right', color='0.15')
     # the other released checkpoints, each rescaled to its own mean so the shapes are
     # comparable on one axis (E48 for RVT's three, E47 for SSM-ViT's two). Drawn thin and
     # grey: the claim they carry is that the centroid does not move, not their detail.
@@ -321,8 +332,8 @@ def fig_predictor():
     for prof, lab in others:
         axa.plot(c, prof / prof.mean() * a.mean(), color='0.35', lw=0.6,
                  marker='o', ms=1.3, zorder=6, alpha=0.85)
-    axa.set_xlabel('bin center, relative to the label time (ms)')
-    axa.set_ylabel('occlusion influence')
+    axa.set_xlabel('bin center, relative to the label time (ms)', fontsize=8)
+    axa.set_ylabel('window-ablation\ninfluence', fontsize=8)
     nospine(axa)
 
     # (b) average precision as a function of the instant the ground truth describes
@@ -342,27 +353,30 @@ def fig_predictor():
         axb.plot(d, 100.0 * (m - m[z]), ls, color=col, lw=lw, zorder=3, label=lab)
         k = int(np.argmax(m))
         axb.plot([d[k]], [100.0 * (m[k] - m[z])], 'o', ms=2.8, color=col, zorder=4)
-    axb.set_xlim(-52, 32)
-    axb.set_xlabel('the instant the ground truth describes, $\\delta$ (ms)')
-    axb.set_ylabel('mAP relative to $\\delta=0$ (points)')
+    axb.set_xlim(-54, 32)
+    axb.set_xlabel('the instant the ground truth describes, $\\delta$ (ms)', fontsize=8)
+    axb.set_ylabel('mAP relative to $\\delta=0$ (points)', fontsize=8)
     lo, hi = axb.get_ylim()
-    axb.set_ylim(lo, hi + 0.34 * (hi - lo))
+    axb.set_ylim(lo, hi + 0.78 * (hi - lo))
     lo, hi = axb.get_ylim()
     # the term "evidence centroid" was withdrawn: this line is the newest window's
     # centroid, not the centroid of the whole support, and the label must say so
-    axb.text(cen + 0.8, lo + 0.02 * (hi - lo), "newest window's centroid",
-             fontsize=5.2, rotation=90, va='bottom', ha='left', color='0.35')
-    axb.text(1.2, lo + 0.02 * (hi - lo), 'label instant', fontsize=5.2,
+    axb.text(cen + 0.9, lo + 0.02 * (hi - lo), 'newest-window centroid',
+             fontsize=6.3, rotation=90, va='bottom', ha='left', color='0.35')
+    axb.text(1.3, lo + 0.02 * (hi - lo), 'label instant', fontsize=6.3,
              rotation=90, va='bottom', ha='left', color='0.35')
-    axb.legend(fontsize=5.2, loc='upper left', frameon=False, ncol=1,
-               handlelength=1.7, handletextpad=0.4,
-               borderaxespad=0.2, labelspacing=0.22)
+    axb.legend(fontsize=6.3, loc='upper center', frameon=False, ncol=4,
+               handlelength=1.5, handletextpad=0.35, columnspacing=0.75,
+               borderaxespad=0.1, labelspacing=0.22)
     nospine(axb)
 
-    fig.tight_layout(pad=0.30, h_pad=1.2)
+    for ax in (axa, axb):
+        ax.tick_params(labelsize=7.4)
+    fig.tight_layout(pad=0.30, h_pad=1.1)
     fig.savefig(os.path.join(FIGS, 'fig_predictor.pdf'), bbox_inches='tight')
     plt.close(fig)
-    print('fig_predictor centroid %.3f ms, CV %.4f' % (cen, a.std(ddof=0) / a.mean()))
+    print('fig_predictor centroid %.3f ms, CV %.4f, tau_P %+.3f +- %.3f, gap %.2f ms'
+          % (cen, a.std(ddof=0) / a.mean(), tp, tpse, abs(tp - cen)))
 
 
 if __name__ == '__main__':

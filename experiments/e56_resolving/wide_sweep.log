@@ -1,0 +1,64 @@
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+5 checkpoints: rvt-t, rvt-s, rvt-b, s5vit-small, s5vit-base
+ground truth identical across dumps: 40698 boxes
+820 evaluations on 64 workers
+  50/820
+  100/820
+  150/820
+  200/820
+  250/820
+  300/820
+  350/820
+  400/820
+  450/820
+  500/820
+  550/820
+  600/820
+  650/820
+  700/820
+  750/820
+  800/820
+
+mAP at delta = k * 23.81 ms, all moving
+     k  delta ms        rvt-t        rvt-s        rvt-b  s5vit-small   s5vit-base
+ -0.00     -0.00      0.33458      0.33930      0.37553      0.29052      0.32576
+  0.10      2.50      0.33442      0.33921      0.37533      0.29033      0.32559
+  0.21      5.00      0.33430      0.33898      0.37537      0.29006      0.32561
+  0.31      7.50      0.33419      0.33889      0.37526      0.28981      0.32558
+  0.42     10.00      0.33418      0.33871      0.37503      0.28953      0.32555
+  0.63     15.00      0.33368      0.33847      0.37450      0.28910      0.32513
+  0.84     20.00      0.33319      0.33818      0.37410      0.28855      0.32444
+  1.00     23.81      0.33292      0.33775      0.37353      0.28811      0.32392
+  1.26     30.00      0.33203      0.33698      0.37245      0.28686      0.32287
+  1.68     40.00      0.33036      0.33545      0.37031      0.28465      0.32133
+  2.10     50.00      0.32846      0.33346      0.36757      0.28229      0.31878
+  2.52     60.00      0.32600      0.33100      0.36497      0.27916      0.31615
+  3.36     80.00      0.32022      0.32584      0.35831      0.27266      0.30924
+  4.20    100.00      0.31379      0.31896      0.34975      0.26555      0.30103
+  5.25    125.00      0.30426      0.30924      0.33828      0.25542      0.28993
+  6.30    150.00      0.29412      0.29852      0.32590      0.24484      0.27820
+  8.40    200.00      0.27243      0.27772      0.30070      0.22425      0.25420
+ 10.50    250.00      0.25310      0.25849      0.27776      0.20664      0.23274
+ 12.60    300.00      0.23477      0.24052      0.25749      0.19056      0.21306
+ 16.80    400.00      0.20438      0.20965      0.22366      0.16180      0.18097
+ 21.00    500.00      0.17996      0.18443      0.19654      0.13941      0.15557
+
+WROTE experiments/e56_resolving/wide_sweep.json

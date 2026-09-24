@@ -90,13 +90,15 @@ for i,dl in enumerate(DEL):
                                fill=False,ec=RED,lw=1.6,ls='--'))
     ax.set_xlim(CX0,CX1); ax.set_ylim(CY1,CY0); ax.set_xticks([]); ax.set_yticks([])
     for sp in ax.spines.values(): sp.set_color('0.3')
-    ax.set_title('detections fixed; ground truth moved to the state each object '
-                 'occupied $\\delta$ later',color='white',fontsize=15,pad=18)
-    ax.text(0.012,0.06,'released detections',transform=ax.transAxes,color=GOLD,fontsize=12)
-    ax.text(0.012,0.02,'ground truth at $\\delta$ = %+6.1f ms'%dl,
-            transform=ax.transAxes,color=RED,fontsize=12)
-    ax.text(0.988,0.03,'fastest box moves %.1f px over 50 ms'%(fast*0.050),
-            transform=ax.transAxes,color='0.75',fontsize=11,ha='right')
+    ax.set_title('the detections stay fixed while the ground truth moves to the state '
+                 'each object occupied $\\delta$ later',color='white',fontsize=15,pad=18)
+    BB=dict(facecolor='black',alpha=0.6,edgecolor='none',pad=1.8)
+    ax.text(0.014,0.075,'released detections',transform=ax.transAxes,color=GOLD,
+            fontsize=12,bbox=BB)
+    ax.text(0.014,0.025,'ground truth at $\\delta$ = %+6.1f ms'%dl,
+            transform=ax.transAxes,color=RED,fontsize=12,bbox=BB)
+    ax.text(0.978,0.045,'fastest box moves %.1f px over 50 ms'%(fast*0.050),
+            transform=ax.transAxes,color='0.8',fontsize=11,ha='right',bbox=BB)
     ax2=fig.add_subplot(gs[1,0]); ax2.set_facecolor('black')
     ax2.plot(cdel,100*(curve-curve[np.argmin(abs(cdel))]),color=GOLD,lw=2.0)
     ax2.axvline(0,color='white',lw=1.0,ls=':')
@@ -104,7 +106,7 @@ for i,dl in enumerate(DEL):
     ax2.axvline(dl,color=RED,lw=1.6)
     ax2.set_xlim(-52,32); ax2.set_xlabel('$\\delta$ (ms)',fontsize=12)
     ax2.set_ylabel('mAP relative to $\\delta=0$\n(points)',fontsize=11)
-    ax2.text(CEN+0.9,ax2.get_ylim()[0]*0.90,"newest window's centroid",
+    ax2.text(CEN+0.9,ax2.get_ylim()[0]*0.90,"ablation-sensitivity centroid",
              color=BLUE,fontsize=10,rotation=90,va='bottom')
     ax2.text(0.985,0.14,'over %+.0f to %+.0f ms the curve moves %.2f points'%(DLO,DHI,SPAN),
              transform=ax2.transAxes,color='white',fontsize=12,ha='right')

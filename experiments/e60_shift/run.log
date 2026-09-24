@@ -1,0 +1,134 @@
+=== verifying the shift re-assignment (no GPU) 11:06:44Z
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+406 sequences, 20296 labelled frames, CHUNK=21 SHIFT=5
+
+0. the replay places chunk starts by the dumper's own expression
+  [PASS] e51_dump_all.py still reads start=max(int(o2r[0])-CHUNK+1,0)+SHIFT  found 1 times in /work/src/e51_dump_all.py
+
+1. SHIFT=0 replay vs the positions the released protocol actually recorded
+  [PASS] the shifted start is inert at SHIFT=0  asserted per sequence above
+  [PASS] frame count  replay 20296  recorded 20296
+  [PASS] every position identical  0 differ
+
+2. new position == (old - 5) mod 21
+  [PASS] every covered frame rotates  0 of 20189 do not
+
+3. frames covered by a chunk
+  [PASS] uncovered frames under 3 % of the split  107 of 20296 (0.53 %), old 0
+
+4. short(0, 4) / full(16, 21) block exchange
+     old-short -> new-full :   3574 /   3672
+     old-full  -> new-short:      0 /   5069
+  [PASS] one direction carries its whole block  best 97.3%
+  [PASS] e60_paired.py direction (short -> full) populated  3574 frames, which is the set that experiment scores
+     unchanged position     :      0 /  20296
+
+   for comparison, boundaries 5 windows EARLIER instead - the variant that
+   ran first, whose subtraction from an already-clamped start is a no-op:
+     old-short -> new-full :      0 /   3672
+     old-full  -> new-short:   1094 /   5069
+     unchanged position     :  14927 /  20296
+
+   (old - new) mod 21 histogram, fixed shift wants a single bar at 5:
+       5   20189
+
+WROTE experiments/e60_shift/positions-shift5.npz
+
+VERIFIED - safe to claim GPU 1
+=== s5vit-small shift=5 on GPU1 (gpu free 12600 MiB, host free 229168 MiB) 12:16:46Z
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+s5vit-small: 9.68M params, chunks of 21
+/usr/local/lib/python3.10/dist-packages/torch/functional.py:554: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /pytorch/aten/src/ATen/native/TensorShape.cpp:4314.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+  25 seqs, 1100 frames, 8581 dets
+  50 seqs, 2432 frames, 19584 dets
+  75 seqs, 4006 frames, 35930 dets
+  100 seqs, 4497 frames, 39707 dets
+  150 seqs, 5352 frames, 47648 dets
+  175 seqs, 5774 frames, 50799 dets
+  200 seqs, 6191 frames, 54063 dets
+  225 seqs, 7172 frames, 59910 dets
+  250 seqs, 9648 frames, 80517 dets
+  275 seqs, 10832 frames, 98676 dets
+  300 seqs, 13196 frames, 121713 dets
+  325 seqs, 14486 frames, 136604 dets
+  350 seqs, 15858 frames, 169391 dets
+  375 seqs, 16730 frames, 179373 dets
+  400 seqs, 17321 frames, 184986 dets
+  425 seqs, 19364 frames, 213186 dets
+
+WROTE /work/experiments/e60_shift/dets-s5vit-small-shift5.npz  frames 20296  dets 230866  gt 40698  shift 5
+== Timing statistics ==
+TAG=small exit=0 12:57:42Z
+=== s5vit-base shift=5 on GPU1 (gpu free 22476 MiB, host free 234128 MiB) 00:23:52Z
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+s5vit-base: 18.19M params, chunks of 21
+/usr/local/lib/python3.10/dist-packages/torch/functional.py:554: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /pytorch/aten/src/ATen/native/TensorShape.cpp:4314.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+  25 seqs, 1100 frames, 4754 dets
+  50 seqs, 2432 frames, 10618 dets
+  75 seqs, 4006 frames, 21257 dets
+  100 seqs, 4497 frames, 22695 dets
+  150 seqs, 5352 frames, 25983 dets
+  175 seqs, 5774 frames, 27490 dets
+  200 seqs, 6191 frames, 28990 dets
+  225 seqs, 7172 frames, 31738 dets
+  250 seqs, 9648 frames, 46641 dets
+  275 seqs, 10832 frames, 66683 dets
+  300 seqs, 13196 frames, 85805 dets
+  325 seqs, 14486 frames, 98671 dets
+  350 seqs, 15858 frames, 133440 dets
+  375 seqs, 16730 frames, 144025 dets
+  400 seqs, 17321 frames, 147562 dets
+  425 seqs, 19364 frames, 168610 dets
+
+WROTE /work/experiments/e60_shift/dets-s5vit-base-shift5.npz  frames 20296  dets 184185  gt 40698  shift 5
+== Timing statistics ==
+TAG=base exit=0 01:00:47Z
+E60 dumps complete 01:00:47Z

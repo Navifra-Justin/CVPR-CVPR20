@@ -1,0 +1,34 @@
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+arms present: ['small']
+  s5vit-small: n=3574 paired frames
+      pt mAP, velocity-evaluable             1-4 win  24.4307   17-20 win  29.2449   paired  +4.8142
+      pt mAP, all boxes                      1-4 win  31.5013   17-20 win  35.5998   paired  +4.0985
+      mean confidence                        1-4 win   0.1142   17-20 win   0.1651   paired  +0.0509
+      mean confidence, IoU>=0.5 matched      1-4 win   0.7907   17-20 win   0.8051   paired  +0.0144
+      detections per frame                   1-4 win  15.5179   17-20 win  10.4273   paired  -5.0907
+cluster bootstrap B=300 over 406 sequences
+  s5vit-small map_vel :  +4.8142 +- 0.5179  95% CI [ +3.7719,  +5.7266]  z= +9.30
+  s5vit-small map_all :  +4.0985 +- 0.3227  95% CI [ +3.4595,  +4.7165]  z=+12.70
+  s5vit-small conf    :  +0.0509 +- 0.0035  95% CI [ +0.0443,  +0.0580]  z=+14.60
+  s5vit-small conf_tp :  +0.0144 +- 0.0072  95% CI [ +0.0029,  +0.0223]  z= +1.99
+  s5vit-small dpf     :  -5.0907 +- 0.2611  95% CI [ -5.6470,  -4.5843]  z=-19.50
+WROTE experiments/e60_shift/paired.json
+exit=0

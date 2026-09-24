@@ -67,7 +67,7 @@ def frame(i):
     ax.set_ylim(allv.min()*0.94, allv.max()*1.62)
     ax.set_xlim(-54,6)
     ax.set_xlabel('bin center, relative to the label instant (ms)',fontsize=13)
-    ax.set_ylabel('occlusion influence, rescaled to each\nmodel\'s own mean',fontsize=12)
+    ax.set_ylabel('window-ablation influence, rescaled to each\nmodel\'s own mean',fontsize=12)
     fig.text(0.5,0.93,'one instrument, five released checkpoints, two temporal operators',
              ha='center',color='white',fontsize=17)
     for sp in ('top','right'): ax.spines[sp].set_visible(False)

@@ -47,7 +47,7 @@ def visible(text: str) -> str:
 def source_chunks():
     chunks = []
     for path in sorted(ROOT.rglob("*.tex")):
-        if any(part in {".git", ".ai-audit", "build"} for part in path.parts):
+        if any(part in {".git", ".ai-audit", "build", "submission_package"} for part in path.parts):
             continue
         lines = path.read_text(errors="replace").splitlines()
         section = "Preamble"
@@ -117,15 +117,17 @@ def report(chunks, gz):
             classification = "REWRITE" if strong else "REVIEW"
             findings.append({"classification": classification, "file": c["file"], "start": c["start"], "end": c["end"], "section": c["section"], "sentence": s, "reasons": flags})
     findings.sort(key=lambda x: (x["classification"] != "REWRITE", -len(x["sentence"])))
-    residue = []
+    residue, residue_repo = [], []
     for p in [ROOT / "paper", ROOT / "src", ROOT / "docs"]:
         if not p.exists(): continue
         for f in p.rglob("*"):
             if not f.is_file() or f.suffix in {".pdf", ".json", ".npz", ".log"}: continue
             try: t = f.read_text(errors="ignore")
             except Exception: continue
+            ships = f.parent == PAPER and f.suffix == ".tex"
             for term in RESIDUE:
-                if re.search(re.escape(term), t, re.I): residue.append((str(f.relative_to(ROOT)), term))
+                if re.search(re.escape(term), t, re.I):
+                    (residue if ships else residue_repo).append((str(f.relative_to(ROOT)), term))
     flagged = {(x["file"], x["sentence"]) for x in findings}
     total_sentences = sum(len(sentences(c)) for c in chunks)
     counts = {"SAFE": max(0, total_sentences - len(flagged)),
@@ -140,10 +142,15 @@ def report(chunks, gz):
     out += ["## Highest-priority passages", ""]
     for i, f in enumerate(findings[:20], 1):
         out += [f"### {i}. {f['classification']} — {f['section']}", f"- Source: `{f['file']}:{f['start']}-{f['end']}`", f"- Reasons: {', '.join(f['reasons'])}", f"- Exact sentence: {f['sentence']}", "- GPTZero signal: unavailable in this run", "- Claude independent assessment: unavailable; local assessment requires human confirmation", ""]
-    out += ["## Repository residue scan", ""]
+    out += ["## Residue scan", "",
+            "### Manuscript sources (`paper/*.tex`, the files that ship)", ""]
     if residue:
         for f, t in residue[:100]: out.append(f"- `{t}` in `{f}`")
-    else: out.append("No requested residue terms found in scanned source directories.")
+    else: out.append("No requested residue terms found in the manuscript sources.")
+    out += ["", "### Other scanned directories (`src/`, `docs/`; tooling and internal notes, not submitted)", ""]
+    if residue_repo:
+        for f, t in residue_repo[:100]: out.append(f"- `{t}` in `{f}`")
+    else: out.append("No requested residue terms found.")
     out += ["", "## GPTZero raw-response location", "", f"`{RAW.relative_to(ROOT)}`", ""]
     REPORT.write_text("\n".join(out) + "\n")
     return findings, counts

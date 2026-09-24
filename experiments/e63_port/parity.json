@@ -1,0 +1,83 @@
+{
+ "rows": {
+  "rvt-t": {
+   "coco_ap": 38.953226717273935,
+   "coco_ap50": 69.7394079141408,
+   "own_ap": 38.89990964781019,
+   "gap": 0.053317069463744815,
+   "params_m": 4.411324,
+   "tensors": 376,
+   "published_test": 44.1,
+   "published_params_m": 4.4,
+   "params_dev": 0.011323999999999224,
+   "n_det": 86788
+  },
+  "rvt-s": {
+   "coco_ap": 39.68235451924967,
+   "coco_ap50": 69.42888367300803,
+   "own_ap": 39.68360276779443,
+   "gap": 0.0012482485447620206,
+   "params_m": 9.87942,
+   "tensors": 376,
+   "published_test": 46.5,
+   "published_params_m": 9.9,
+   "params_dev": 0.02058000000000071,
+   "n_det": 101591
+  },
+  "rvt-b": {
+   "coco_ap": 42.352503780899006,
+   "coco_ap50": 73.31679535347241,
+   "own_ap": 42.31980533287758,
+   "gap": 0.03269844802142785,
+   "params_m": 18.551108,
+   "tensors": 424,
+   "published_test": 47.2,
+   "published_params_m": 18.5,
+   "params_dev": 0.051107999999999265,
+   "n_det": 74805
+  },
+  "s5vit-small": {
+   "coco_ap": 35.654983744088995,
+   "coco_ap50": 65.4086826246939,
+   "own_ap": 35.55431900190542,
+   "gap": 0.10066474218357513,
+   "params_m": 9.68646,
+   "tensors": 412,
+   "published_test": 46.6,
+   "published_params_m": 9.7,
+   "params_dev": 0.013539999999998997,
+   "n_det": 232901
+  },
+  "s5vit-base": {
+   "coco_ap": 39.02545616233514,
+   "coco_ap50": 69.76366572451366,
+   "own_ap": 38.94984073173144,
+   "gap": 0.07561543060369758,
+   "params_m": 18.206788,
+   "tensors": 460,
+   "published_test": 47.7,
+   "published_params_m": 18.2,
+   "params_dev": 0.006788000000000238,
+   "n_det": 185597
+  }
+ },
+ "max_gap": 0.10066474218357513,
+ "max_params_dev": 0.051107999999999265,
+ "order": [
+  "rvt-b",
+  "rvt-s",
+  "s5vit-base",
+  "rvt-t",
+  "s5vit-small"
+ ],
+ "order_published": [
+  "s5vit-base",
+  "rvt-b",
+  "s5vit-small",
+  "rvt-s",
+  "rvt-t"
+ ],
+ "rvt_order_agrees": true,
+ "val_sequences": 429,
+ "test_split_present": false
+}

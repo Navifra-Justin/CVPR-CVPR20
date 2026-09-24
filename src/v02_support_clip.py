@@ -2,7 +2,7 @@
 
 Three beats on one axis, so the viewer never has to re-orient:
   (a) the released window. Ten bins of real Gen1 input, drawn as event images, ending at
-      the label instant. The per-bin occlusion influence (E45) fills in and the centroid
+      the label instant. The per-bin window-ablation influence (E45) fills in and the centroid
       lands at -23.81 ms. E17 measured this with the wrong recurrent state; E45 supersedes
       it, so the clip and the paper carry the same number.
   (b) the history. The axis zooms out to a second and the past windows appear with their
@@ -87,11 +87,11 @@ def frame(i):
     if i<NA:
         ax.bar(binc[:nb],binf[:nb],width=4.4,color=GOLD,edgecolor='none',zorder=3)
         ax.set_ylim(0,binf.max()*1.45)
-        ax.set_ylabel('occlusion influence',fontsize=11)
+        ax.set_ylabel('window-ablation influence',fontsize=11)
         if nb==10:
             ax.axvline(E45['zero']['centroid_ms'],color=BLUE,lw=1.8,zorder=4)
             ax.text(E45['zero']['centroid_ms']-2,binf.max()*1.30,
-                    'this window is centred\n%.2f ms before the label'%E45['zero']['centroid_ms'],
+                    'this window is centered\n%.2f ms before the label'%abs(E45['zero']['centroid_ms']),
                     color=BLUE,fontsize=11,ha='right',va='top')
     else:
         nl=1+int(round(min(1.0,(i-NA)/(NB*0.72))*19)) if i<NA+NB else 20
@@ -101,7 +101,7 @@ def frame(i):
         ax.set_ylabel('influence of each 50 ms window',fontsize=11)
         w=linf[:nl]/linf[:nl].sum(); cen=float((w*lag[:nl]).sum())
         ax.axvline(cen,color=BLUE,lw=1.8,zorder=4)
-        ax.text(cen+14,linf.max()*1.36,'influence centroid %.0f ms'%cen,
+        ax.text(cen+14,linf.max()*1.36,'ablation-sensitivity centroid %.0f ms'%cen,
                 color=BLUE,fontsize=12,ha='left',va='top')
         share=100*linf[0]/linf[:nl].sum()
         ax.text(0.015,0.86,'newest window carries %.1f %% of it'%share,

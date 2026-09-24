@@ -16,6 +16,8 @@ print("sequences", len(seqs), "frames", len(allw),
       "pinned", int((allw == 14996).sum()), "%.1f%%" % (100*(allw == 14996).mean()))
 
 plt.rcParams.update({'font.size': 7, 'font.family': 'serif',
+                     'font.serif': ['Nimbus Roman', 'Times New Roman', 'Times', 'DejaVu Serif'],
+                     'mathtext.fontset': 'stix', 'pdf.fonttype': 42,
                      'axes.linewidth': 0.6, 'xtick.major.width': 0.6,
                      'ytick.major.width': 0.6})
 fig, (axl, axr) = plt.subplots(1, 2, figsize=(7.0, 2.5),

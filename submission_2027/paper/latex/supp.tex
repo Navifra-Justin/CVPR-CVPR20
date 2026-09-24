@@ -106,7 +106,7 @@ carries $\delta_{k}$ with the opposite sign. The centered difference omits
 $c^{*}_{k}$ and removes the direct same-frame shared-noise term. Residual bias
 from temporally correlated annotation errors is not identified by this
 construction, which is why the forward and backward fits are reported beside it
-as a control.
+as a control and calibrated in Sec.~\ref{sup:signflip}.
 
 \paragraph{Instrumental-variable alternative.} An instrumented
 estimate would replace the current speed by a velocity finite differenced from a
@@ -336,8 +336,8 @@ placements sit \sweepRealPx\,px apart.}
 
 \paragraph{The bootstrap.} Resampling sequences with replacement,
 \outBootDraws{} times, gives a \bootCI\,\% interval of
-[\outBootLo,\,\outBootHi]\,ms with \outBootBeyond{} draws reaching the influence
-centroid. The fit absorbs the per-sequence constant vectors by within-cell
+[\outBootLo,\,\outBootHi]\,ms with \outBootBeyond{} draws reaching the
+ablation-sensitivity centroid. The fit absorbs the per-sequence constant vectors by within-cell
 demeaning, which reproduces the full design’s coefficient to \fwlAgree\,ms.
 
 \section{The per-object ratio}
@@ -666,8 +666,8 @@ separately.
 The released streaming evaluation steps through the split in non-overlapping chunks of
 \ssmEvalChunk{} windows (\texttt{sequence\_length} in \texttt{config/dataset/gen1.yaml},
 \texttt{start\_indices} in \texttt{sequence\_for\_streaming.py} steps by exactly that). The
-evaluated input sensitivity of a released detection therefore depends on where its frame falls inside
-that chunk, from a full \ssmEvalChunk{} windows at the last position to the current window
+available recurrent history of a released detection therefore depends on where its frame falls
+inside that chunk, from a full \ssmEvalChunk{} windows at the last position to the current window
 alone at the first. This is reported as a property of the release that its documentation does
 not state, which is the same class of undeclared quantity the rest of this paper measures,
 and not as a claim about what the architecture could support if the state were carried.
@@ -754,7 +754,7 @@ outlier at every loss level, with $d^{\star}$ approximately $1.8\times$ larger t
 value. Its lower mAP$(0)$ may leave less high-IoU headroom for displacement, but no downstream
 claim depends on this interpretation.
 
-These results show that timing resolution is governed by the upper tail of $r$. Stratification
+Under this caricature, timing resolution is governed by the upper tail of $r$. Stratification
 increases the relevant quantile but also increases the standard error of $\Delta$mAP as
 $1/\sqrt{n}$. The 25--50 px/s and $\geq 50$ px/s strata yield net resolution factors of
 0.42$\times$ and 0.27$\times$, respectively. Neither resolves the interval better than the

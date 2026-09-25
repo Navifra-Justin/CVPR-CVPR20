@@ -816,8 +816,8 @@ claims use the 406 sequences represented in the stored-detection evaluation.
 In the released SSM-ViT pipeline one pooled score combines predictions with one to twenty-one
 windows of recurrent history, and moving only the chunk boundary shifts S5-B by
 \ssmPairedMapAllBase{} mAP over all labeled validation boxes and \ssmPairedMapVelBase{} mAP on
-the velocity-evaluable subset, at fixed frames, weights, labels and evaluator. Effective
-temporal support is therefore a free variable of the reported score.
+the velocity-evaluable subset, at fixed frames, weights, labels and evaluator. The chunk boundary is therefore an unreported degree of freedom in the evaluation protocol: it changes the recurrent
+support behind the reported score while every recorded evaluation quantity is held fixed.
 
 The result does not single out a canonical temporal-support statistic for recurrent event
 models, nor attribute the shift to one stage of the pipeline. RVT's input sensitivity and its

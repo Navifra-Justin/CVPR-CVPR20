@@ -24,3 +24,16 @@ src/SSMViT/
 
 __pycache__/
 *.pyc
+*.aux
+*.log
+*.blg
+*.brf
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+.frames/
+.preview/
+paper/latex/main.pdf
+paper/latex/supp.pdf

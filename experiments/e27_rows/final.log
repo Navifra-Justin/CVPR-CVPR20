@@ -1,6 +1,0 @@
-rows 22534  sequences 376  regressors 759
-tau      = -2.40 +- 7.18 ms   (0.33 SE from zero)
-placebo  = -2.66 +- 1.71 ms   (1.55 SE from zero)
-H tau=0      : 0.33 SE
-H tau=24.94  : 3.81 SE
-interval evidence->output = +27.34 +- 7.18 ms

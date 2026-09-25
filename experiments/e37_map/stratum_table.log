@@ -1,7 +1,0 @@
-all moving         n  27943 (100.0 %)  med |v|   4.00 px/s  23.81 ms = 0.095 px  mAP(0) 0.3346  mAP(-23.81) 0.3342  cost 0.04  span 0.37
-slow, |v| < 10     n  20154 ( 72.1 %)  med |v|   2.12 px/s  23.81 ms = 0.051 px  mAP(0) 0.2660  mAP(-23.81) 0.2658  cost 0.02  span 0.11
-10 <= |v| < 25     n   5356 ( 19.2 %)  med |v|  15.01 px/s  23.81 ms = 0.357 px  mAP(0) 0.2761  mAP(-23.81) 0.2760  cost 0.01  span 0.33
-25 <= |v| < 50     n   2096 (  7.5 %)  med |v|  32.31 px/s  23.81 ms = 0.769 px  mAP(0) 0.2862  mAP(-23.81) 0.2854  cost 0.08  span 0.78
-fast, |v| >= 50    n    337 (  1.2 %)  med |v|  57.43 px/s  23.81 ms = 1.367 px  mAP(0) 0.1390  mAP(-23.81) 0.1390  cost 0.00  span 0.37
-cross-check against at_centroid.json: agree
-WROTE experiments/e37_map/stratum_table.json

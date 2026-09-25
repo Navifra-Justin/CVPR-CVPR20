@@ -1,6 +1,0 @@
-fit sample n=22534
-  corr(|v|, sqrt(A))            +0.1386   (E21 reported +0.349 on 2235 floored rows)
-  the same above 15 px/s (n=5005) +0.2865
-
-  boxes with a successor at IoU >= 0.3: 31683/40084 = 79.0 %   (E21's comment said 81.5 %)
-WROTE experiments/e27_rows/split_stats.json

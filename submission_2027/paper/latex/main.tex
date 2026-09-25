@@ -48,9 +48,8 @@ protocol records stayed fixed.
 Two audits delimit that result on either side of the pipeline. On the predictor side, the
 newest RVT input window of the ported released checkpoint carries an ablation-sensitivity
 centroid \rvtCentroidMagMeas\,ms before the label instant, alongside a regression-based
-temporal coefficient of \ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms that we read as an
-association measured on nominal-time-matched detections and not as an estimator of recurrent
-support. On the label side, within-exposure event timing carries an illumination-locked
+temporal coefficient of \ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms, read as an association on
+nominal-time-matched detections rather than as an estimator of recurrent support. On the label side, within-exposure event timing carries an illumination-locked
 component, so label-acquisition support is not attributable to object motion alone. A benchmark
 timestamp is thus not by itself an identifiable description of the evidence supporting a
 recurrent prediction, and a score reported under one does not license a timing comparison.
@@ -81,7 +80,7 @@ pooled score. We formulate the resulting protocol property as temporal-support i
 whether the released protocol and artifacts uniquely determine the temporal quantities a
 reported score represents.
 
-We examine it with a paired intervention on the released SSM-ViT evaluation pipeline. In that
+We test it with a paired intervention on the released SSM-ViT evaluation pipeline. In that
 implementation the nominally carried state is inert across evaluation chunks, so the recurrent
 history available to a prediction is a deterministic function of chunk position and ranges from
 one to twenty-one windows inside one pooled score. Moving every chunk boundary
@@ -349,7 +348,9 @@ chunk boundaries, by at most \chunkRiseRvt{}.
 frame, the labels (dashed) and the weights, and only the chunk boundary moves. Solid: a
 detection matched to a label of its class at IoU $\ge 0.5$. Dotted: unmatched. Drawn above
 confidence \pairedFigShow{} and scored at every confidence. The example is illustrative only.
-All paired quantitative estimates use all \ssmPairedN{} frames. Supplement Sec.~13.}
+Over all \ssmPairedN{} frames the same intervention changes S5-B by \ssmPairedMapAllBase{} mAP
+over all labeled boxes and \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBaseSE{} mAP on the
+velocity-evaluable subset. Supplement Sec.~13.}
 \label{fig:chunkpos}
 \end{figure}
 

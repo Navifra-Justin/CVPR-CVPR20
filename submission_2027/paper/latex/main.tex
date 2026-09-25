@@ -96,6 +96,19 @@ subset (Sec.~\ref{sec:chunk}); the second released checkpoint moves by
 stayed fixed, and the score moved. A benchmark timestamp is thus not by itself an identifiable
 description of the evidence supporting a recurrent prediction.
 
+\paragraph{Contributions.}
+\begin{itemize}
+\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}\setlength{\topsep}{2pt}
+\item \emph{Temporal-support identifiability}: an evaluation property separating the nominal
+timestamp a protocol records from the effective temporal support and label-acquisition support a
+reported score represents.
+\item A controlled intervention isolating it: same frames, same weights, same labels, same
+evaluator, same evaluated timestamp, only the recurrent history changed.
+\item Its measured consequence: support the protocol does not record moves a pooled
+leaderboard-style score by \ssmPairedMapAllBase{} mAP overall and \ssmPairedMapVelBase{} mAP on
+the velocity-evaluable subset, with predictor-side and label-side audits delimiting the result.
+\end{itemize}
+
 Work on event-detection timing takes that index as given and improves what is measured against
 it: sensor latency is calibrated away~\cite{yang2024latency, liu2024nighttime}, compute latency
 is folded into average precision~\cite{li2020streaming,yang2022streamyolo,chu2026stare}, and the
@@ -104,30 +117,28 @@ does at a fixed benchmark index, whereas the object measured here is that index 
 support a score reported under it pools. The two datasets below instantiate this protocol
 condition; how often it holds elsewhere is not measured.
 
-\textbf{Supporting audit: predictor-side support.} The event branch of the detector examined
-here~\cite{gehrig2023rvt} consumes a window of \rvtWindow\,ms in \rvtBins{} bins whose end sits
-on the label instant (Sec.~\ref{sec:window}), so under uniform weighting its evidence is
-centered \rvtCentroidMag\,ms earlier. The trained network's bin sensitivities are not uniform,
-and ablating each bin in turn on real validation samples puts the ablation-sensitivity centroid
-at \rvtCentroidMeas\,ms (Sec.~\ref{sec:influence}). Over a 1000\,ms horizon the newest window
-accounts for 22.7\% of the summed window-ablation sensitivity and the remaining 77.3\% lies in
-preceding windows. The regression-based temporal coefficient, estimated on nominal-time-matched
-detections under Eq.~2 with a vector regression, a placebo term and a sign-flip control on the
-velocity estimator, is \ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms and sits \outInterval\,ms
-from that centroid under the reported specification. It is compatible with zero and is reported
-as a regression association between nominal-time-matched detections, not as an estimate of the
-network's recurrent support; the two are distinct operational quantities the nominal timestamp
-does not encode (Secs.~\ref{sec:window}--\ref{sec:extrapolation}).
+\textbf{Supporting audit: predictor-side support.} The event branch examined
+here~\cite{gehrig2023rvt} consumes a window of \rvtWindow\,ms in \rvtBins{} bins ending on the
+label instant (Sec.~\ref{sec:window}), so under uniform weighting its evidence is centered
+\rvtCentroidMag\,ms earlier; ablating each bin on real validation samples puts the
+ablation-sensitivity centroid at \rvtCentroidMeas\,ms (Sec.~\ref{sec:influence}), the newest
+window carrying 22.7\% of the summed window-ablation sensitivity over a 1000\,ms horizon and
+preceding windows 77.3\%. The regression-based temporal coefficient, estimated on
+nominal-time-matched detections under Eq.~2 with a placebo term and a sign-flip control, is
+\ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms, sits \outInterval\,ms from that centroid and is
+compatible with zero: it is an association between nominal-time-matched detections, not an
+estimate of recurrent support, and the nominal timestamp encodes neither
+(Secs.~\ref{sec:window}--\ref{sec:extrapolation}).
 
 \textbf{Supporting audit: label-acquisition support.} Across the \dsecSeqCount{} DSEC training
-sequences whose exposure files resolve, the published exposure width varies by a factor of
-\dsecExpRatio{} against a frame period fixed at \dsecFramePeriod\,ms, with \dsecPinnedFrac\,\%
-of frames pinned at an auto-exposure ceiling in \dsecCeilingSeqs{} sequences
-(Fig.~\ref{fig:exposure}). Those sequences carry the harmonic series of a \flickerLineHz\,Hz
-mains flicker, and between \sixLockedLoPct\,\% and \sixLockedHiPct\,\% of labeled boxes exceed
-the ninety-ninth percentile of the off-frequency local excess measured on the same events.
-Within-exposure event timing therefore contains illumination-locked structure and is not
-attributable to object timing without separating it (Secs.~\ref{sec:flicker}--\ref{sec:cost}).
+sequences whose exposure files resolve, published exposure width varies by a factor of
+\dsecExpRatio{} against a frame period fixed at \dsecFramePeriod\,ms, with \dsecPinnedFrac\,\% of
+frames pinned at an auto-exposure ceiling in \dsecCeilingSeqs{} sequences
+(Fig.~\ref{fig:exposure}). Those sequences carry the harmonic series of a \flickerLineHz\,Hz mains
+flicker, and between \sixLockedLoPct\,\% and \sixLockedHiPct\,\% of labeled boxes exceed the
+ninety-ninth percentile of the off-frequency local excess measured on the same events, so
+within-exposure event timing is not attributable to object timing without separating that
+component (Secs.~\ref{sec:flicker}--\ref{sec:cost}).
 
 Identifiability under the metric is then read in the metric's own units. On the
 velocity-evaluable subset, displacing ground-truth centers across the measured label-to-centroid

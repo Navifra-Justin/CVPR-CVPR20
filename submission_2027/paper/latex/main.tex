@@ -34,8 +34,9 @@ An event-detection benchmark defines a sample by one nominal timestamp and score
 against the label carried at that instant. A recurrent detector forms that prediction from a
 history much wider than the instant names, and the released protocol records no variable for
 it. A nominal timestamp may therefore fail to identify the temporal evidence that a reported
-score represents. We name that protocol property temporal-support identifiability and examine
-it with a controlled intervention.
+score represents. We name that protocol property temporal-support identifiability and establish
+it with one controlled intervention: at a fixed evaluated timestamp we change the chunk boundary
+and nothing else.
 
 In the released SSM-ViT evaluation pipeline the recurrent history available to a prediction is
 a deterministic function of chunk position and ranges from one to twenty-one windows inside a
@@ -45,7 +46,8 @@ mAP over all labeled boxes and \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBase
 velocity-evaluable subset. The evidence behind the score moved while every quantity the
 protocol records stayed fixed.
 
-Two audits delimit that result on either side of the pipeline. On the predictor side, the
+Two supporting diagnostics delimit that result on either side of the pipeline; neither is an
+independent measurement of recurrent support. On the predictor side, the
 newest RVT input window of the ported released checkpoint carries an ablation-sensitivity
 centroid \rvtCentroidMagMeas\,ms before the label instant, alongside a regression-based
 temporal coefficient of \ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms, read as an association on

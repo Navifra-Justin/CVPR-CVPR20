@@ -34,9 +34,9 @@ An event-detection benchmark defines a sample by one nominal timestamp and score
 against the label carried at that instant. A recurrent detector forms that prediction from a
 history much wider than the instant names, and the released protocol records no variable for
 it. A nominal timestamp may therefore fail to identify the temporal evidence that a reported
-score represents. We name that protocol property temporal-support identifiability and establish
-it with one controlled intervention: at a fixed evaluated timestamp we change the chunk boundary
-and nothing else.
+score represents. We name that protocol property temporal-support identifiability. It is a property of protocols, not of
+one implementation, and one released pipeline supplies the counterexample: at a fixed evaluated
+timestamp we change the chunk boundary and nothing else.
 
 In the released SSM-ViT evaluation pipeline the recurrent history available to a prediction is
 a deterministic function of chunk position and ranges from one to twenty-one windows inside a
@@ -54,7 +54,8 @@ temporal coefficient of \ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms, read as an 
 nominal-time-matched detections rather than as an estimator of recurrent support. On the label side, within-exposure event timing carries an illumination-locked
 component, so label-acquisition support is not attributable to object motion alone. A benchmark
 timestamp is thus not by itself an identifiable description of the evidence supporting a
-recurrent prediction, and a score reported under one does not license a timing comparison.
+recurrent prediction, and a score reported under one does not license a timing comparison unless the
+support each score was formed from is stated and equalized.
 \end{abstract}
 
 \section{Introduction}

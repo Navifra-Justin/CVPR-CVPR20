@@ -347,8 +347,9 @@ release scores together with the rest. Between that block and the frames given s
 windows or more, the two SSM checkpoints rise by \chunkRiseBase{} and \chunkRiseSmall{}
 points and the three RVT checkpoints, scored on the same frames with state that crosses
 chunk boundaries, by at most \chunkRiseRvt{}.
-\textbf{Bottom:} one frame of the same-frame intervention, S5-B. Both panels share the
-frame, the labels (dashed) and the weights, and only the chunk boundary moves. Solid: a
+\textbf{Bottom:} one frame of the same-frame intervention, S5-B. Changed between the panels:
+the chunk boundary, and with it the recurrent history the detection is formed from. Fixed: the
+frame, the weights, the labels (dashed), the evaluator and the evaluated timestamp. Solid: a
 detection matched to a label of its class at IoU $\ge 0.5$. Dotted: unmatched. Drawn above
 confidence \pairedFigShow{} and scored at every confidence. The example is illustrative only.
 Over all \ssmPairedN{} frames the same intervention changes S5-B by \ssmPairedMapAllBase{} mAP

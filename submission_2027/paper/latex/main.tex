@@ -35,6 +35,10 @@ Event-detection benchmarks often identify a scored sample by one nominal timesta
 
 \section{Introduction}
 
+A timestamp identifies when a prediction is scored, not necessarily what temporal evidence produced
+it. Two recurrent detectors evaluated at the same nominal timestamp therefore need not be temporally
+comparable unless their effective support is also identified.
+
 An event-detection benchmark defines a sample by a nominal timestamp. A prediction $\hat{s}$
 is scored against the ground truth $s^{*}$ carried at a query time $t$ through a function
 $\rho(\hat{s},s^{*})$ of position, shape and class. Beyond selecting the label at $t$, that
@@ -47,14 +51,13 @@ compared against comes from an exposure of finite width, an annotator or tracker
 exposed image, and a geometric transfer into another sensor's frame. The evidence on both sides
 is an interval, while the protocol records an instant.
 
-The benchmark timestamp may therefore fail to identify the temporal evidence that a reported
-score represents. Three terms carry this throughout. The \emph{nominal timestamp} is the instant
+Three terms carry this throughout. The \emph{nominal timestamp} is the instant
 at which the protocol pairs a prediction with a label. The \emph{effective temporal support} is
 the past that can influence the prediction, including state carried by recurrence. The
 \emph{label-acquisition support} is the interval over which the label's evidence was acquired.
 A nominal timestamp determines neither of the other two uniquely, and a temporal descriptor may
 be reconstructable from released artifacts yet remain unreported or heterogeneous within one
-pooled score. We formulate the resulting protocol property as temporal-support identifiability:
+pooled score. We call this protocol property temporal-support identifiability:
 whether the released protocol and artifacts uniquely determine the temporal quantities a
 reported score represents.
 
@@ -70,8 +73,7 @@ Effective temporal support alone changes S5-B by \ssmPairedMapAllBase{} mAP over
 boxes and \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBaseSE{} mAP on the velocity-evaluable
 subset (Sec.~\ref{sec:chunk}); the second released checkpoint moves by
 \ssmPairedMapAllSmall{} and \ssmPairedMapVelSmall{} points. Every quantity the protocol records
-stayed fixed, and the score moved. A benchmark timestamp is thus not by itself an identifiable
-description of the evidence supporting a recurrent prediction.
+stayed fixed, and the score moved.
 
 \paragraph{Contributions.}
 \begin{itemize}

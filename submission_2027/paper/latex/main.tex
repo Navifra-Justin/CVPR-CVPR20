@@ -79,8 +79,9 @@ description of the evidence supporting a recurrent prediction.
 \item \emph{Temporal-support identifiability}: an evaluation property separating the nominal
 timestamp a protocol records from the effective temporal support and label-acquisition support a
 reported score represents.
-\item A controlled intervention isolating it: same frames, same weights, same labels, same
-evaluator, same evaluated timestamp, only the recurrent history changed.
+\item The paper's single primary experiment isolating it: same frames, same weights, same
+labels, same evaluator, same evaluated timestamp, only the recurrent history changed. The two
+audits below support the interpretation and are not second primary results.
 \item Its measured consequence: support the protocol does not record moves a pooled
 leaderboard-style score by \ssmPairedMapAllBase{} mAP overall and \ssmPairedMapVelBase{} mAP on
 the velocity-evaluable subset, with predictor-side and label-side audits delimiting the result.
@@ -261,7 +262,7 @@ an estimate with a variance. In this benchmark, the streaming intervention chang
 reported score even though the model and evaluated frames are held fixed.
 
 \fi
-\section{Effective temporal support under a released streaming evaluation}
+\section{Primary evidence: the same-frame chunk-boundary intervention}
 \label{sec:chunk}
 
 The state the SSM-ViT release carries between evaluation chunks does not affect any of its

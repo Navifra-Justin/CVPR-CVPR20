@@ -189,8 +189,8 @@ instrument-dependent.
 Two properties of that measurement bound it. Ablation reports the sensitivity of
 the output to a bin. The ablation profile is an operational input-sensitivity
 measure and is not, in general, a decomposition of temporal weights. For a
-nonlinear predictor it is a local rather than a global description. A single-bin ablation also leaves the remaining bins in place, so the measurement is a partial derivative
-rather than a decomposition of the output.
+nonlinear predictor it is a local rather than a global description. A single-bin ablation also leaves the remaining bins in place, so the measurement is a partial
+derivative of the output, not a decomposition of it.
 
 Because the profile is defined by an intervention, the centroid is reported under four
 instruments rather than one. Zeroing a bin gives \occZero\,ms, setting it to its dataset
@@ -209,8 +209,8 @@ error of \occSeqSE\,ms, and no interval wider than \occSeqWidest\,ms under any o
 instruments. Dropping any one sequence moves the estimate by at most \occSeqLoo\,ms, and the
 individual sequence centroids run from \occPerSeqLo{} to \occPerSeqHi\,ms. The choice of
 instrument therefore moves this centroid by \occSpread\,ms while the choice of sequences moves
-it by well under one. The instrument spread is the binding uncertainty rather than the sampling
-error. Sequences outside the twelve are a separate
+it by well under one. The instrument spread is the binding uncertainty here, and the sampling error is
+negligible beside it. Sequences outside the twelve are a separate
 question, answered only by measuring them.
 
 Masking the leading bins of the stored input is not a route to the same quantity
@@ -740,7 +740,7 @@ caricature, in which a box loses its match once displaced past $d^{\star}$ box-w
 untouched before, the fraction of boxes lost at displacement $\delta$ is
 $P(r > d^{\star}/\delta)$, so the displacement at which a loss level $p$ is reached is
 $D(p) = d^{\star} / Q_{1-p}(r)$. The scale-setter is the quantile \emph{matched to the loss
-level being read off}, rather than the median or any fixed quantile. Scaled that way the strata
+level being read off}, not the median or any fixed quantile. Scaled that way the strata
 do collapse, to a coefficient of variation of \collapseCV{} at the $5\,\%$ level over three
 strata and \rankCkpts{} checkpoints, with $d^{\star} = \collapseD \pm \collapseDsd$
 box-widths. That constant also follows from the matching geometry. Displacing a square box by a

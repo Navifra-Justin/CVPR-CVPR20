@@ -30,32 +30,7 @@ in Event-Detection Evaluation Pipelines}
 \maketitle
 
 \begin{abstract}
-An event-detection benchmark defines a sample by one nominal timestamp and scores a prediction
-against the label carried at that instant. A recurrent detector forms that prediction from a
-history much wider than the instant names, and the released protocol records no variable for
-it. A nominal timestamp may therefore fail to identify the temporal evidence that a reported
-score represents. We name that protocol property temporal-support identifiability. It is a property of protocols, not of
-one implementation, and one released pipeline supplies the counterexample: at a fixed evaluated
-timestamp we change the chunk boundary and nothing else.
-
-In the released SSM-ViT evaluation pipeline the recurrent history available to a prediction is
-a deterministic function of chunk position and ranges from one to twenty-one windows inside a
-single pooled score. Moving only the chunk boundary---same frames, same weights, same labels,
-same evaluator, and the evaluated timestamp unchanged---changes S5-B by \ssmPairedMapAllBase{}
-mAP over all labeled boxes and \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBaseSE{} mAP on the
-velocity-evaluable subset. The evidence behind the score moved while every quantity the
-protocol records stayed fixed.
-
-Two supporting diagnostics delimit that result on either side of the pipeline; neither is an
-independent measurement of recurrent support. On the predictor side, the
-newest RVT input window of the ported released checkpoint carries an ablation-sensitivity
-centroid \rvtCentroidMagMeas\,ms before the label instant, alongside a regression-based
-temporal coefficient of \ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms, read as an association on
-nominal-time-matched detections rather than as an estimator of recurrent support. On the label side, within-exposure event timing carries an illumination-locked
-component, so label-acquisition support is not attributable to object motion alone. A benchmark
-timestamp is thus not by itself an identifiable description of the evidence supporting a
-recurrent prediction, and a score reported under one does not license a timing comparison unless the
-support each score was formed from is stated and equalized.
+Event-detection benchmarks often identify a scored sample by one nominal timestamp, while recurrent detectors form each prediction from a longer history that the protocol may not record. We call the resulting property \emph{temporal-support identifiability}: whether the benchmark variables uniquely determine the temporal evidence supporting a reported prediction. A released SSM-ViT evaluation pipeline provides a direct counterexample. At the same evaluated timestamp, with frames, weights, labels, and evaluator fixed, moving only the chunk boundary changes the recurrent history from one to twenty-one windows within the pooled score. This intervention changes S5-B by \ssmPairedMapAllBase{} mAP over all labeled boxes and by \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBaseSE{} mAP on the velocity-evaluable subset. Thus the evidence behind the score changes while every temporal quantity recorded by the nominal protocol remains unchanged. Two supporting diagnostics bound the interpretation without being used as recurrent-support estimators: on the predictor side, the newest RVT input window has an ablation-sensitivity centroid \rvtCentroidMagMeas\,ms before the label instant and a nominal-time-matched regression coefficient of \ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms; on the label side, within-exposure event timing contains an illumination-locked component. A benchmark timestamp therefore does not by itself identify the temporal support of a recurrent prediction. Timing comparisons require the support that produced each score to be stated and equalized.
 \end{abstract}
 
 \section{Introduction}
@@ -847,6 +822,21 @@ W.-C. Hung, V. Casser, H. Kretzschmar, J.-J. Hwang, and D. Anguelov.
 camera-only 3D detection.
 \newblock {\em arXiv:2206.07705}, 2022. Waymo Open Dataset 3D camera-only
 detection challenge metric.
+
+\bibitem{rethink3d2025}
+S. Tanaka, K. Minoda, F. Watanabe, and T. Horibe.
+\newblock Rethink 3D object detection from physical world.
+\newblock {\em arXiv:2507.00190}, 2025.
+
+\bibitem{kugele2023howmany}
+A. Kugele, T. Pfeil, M. Pfeiffer, and E. Chicca.
+\newblock How many events make an object? Improving single-frame object detection on the 1 Mpx dataset.
+\newblock In {\em IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW)}, 2023, pages 3913--3922.
+
+\bibitem{zhou2022renet}
+Z. Zhou, Z. Wu, R. Boutteau, F. Yang, C. Demonceaux, and D. Ginhac.
+\newblock RGB-Event fusion for moving object detection in autonomous driving.
+\newblock {\em arXiv:2209.08323}, 2022.
 
 \bibitem{waymolabelproto}
 Waymo Open Dataset.

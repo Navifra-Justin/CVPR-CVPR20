@@ -1,6 +1,5 @@
 {
  "tag": "small",
- "fam": "ssm",
  "arch": "S5-ViT",
  "n": 288,
  "params_M": 9.677205,

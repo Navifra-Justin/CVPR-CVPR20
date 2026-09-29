@@ -7,8 +7,8 @@ have scored like the frames that land late, up to a model-independent offset.
 
 This removes the assumption. The same SSM checkpoints are re-run with every chunk boundary
 moved SHIFT windows LATER, so a frame the release gave position p now sits at (p - SHIFT)
-mod 21. SHIFT = 5 is the value that carries the release's starved block, positions 0-3, onto
-16-19: the frames the protocol gave one to four windows of history are scored again with
+mod 21. SHIFT is read from the environment and the headline value is 5, the amount that
+carries the release's starved block, positions 0-3, onto 16-19: the frames the protocol gave one to four windows of history are scored again with
 seventeen to twenty. The comparison is then within model and within frame: the identical
 frame, the identical ground truth, the identical weights, differing only in how much
 history the streaming protocol handed it. No control model is needed and no parallel-trends
@@ -31,13 +31,23 @@ sys.path.insert(0, 'src')
 from e56_eval import Scorer, iou_mat
 from multiprocessing import Pool
 
-SHIFT = 5
+# SHIFT is read from the environment so the sweep over {0, 5, 10, 15} writes one record
+# per amount instead of overwriting a single file. SHIFT = 5 remains the default and the
+# headline value: it is the amount that carries the starved block onto 16-19.
+SHIFT = int(os.environ.get('SHIFT', '5'))
 B = 300
 NPROC = 8
 IOU_TP = 0.5
-OUT = 'experiments/e60_shift/paired.json'
+OUT = os.environ.get('OUT', f'experiments/e60_shift/paired-shift{SHIFT}.json')
 BOUNDS = json.load(open('experiments/e56_resolving/seqmap.json'))
-SHORT, FULL = (0, 4), (16, 21)
+CHUNK = 21
+SHORT = (0, 4)
+# The block the starved frames land in is the image of SHORT under the rotation the shift
+# applies, (p - SHIFT) mod CHUNK, rather than a fixed block: at SHIFT = 5 that image is
+# 16-19, which is what the stored run selected, and at other amounts it is elsewhere, so a
+# fixed 16-20 window would silently select nothing. SHIFT = 0 maps the block onto itself
+# and is the null arm: the two dumps are the same protocol, so the paired delta must be 0.
+GAIN = frozenset((p - SHIFT) % CHUNK for p in range(*SHORT))
 
 
 def frames_at(pos, lo, hi):
@@ -49,7 +59,16 @@ def load(tag):
     a = np.load(f'experiments/e51_ranking/dets-s5vit-{tag}.npz')
     b = np.load(f'experiments/e60_shift/dets-s5vit-{tag}-shift{SHIFT}.npz')
     pa = np.load('experiments/e58_chunkpos/positions.npy')
-    pb = b['pos']
+    # The SHIFT=0 arm is the release's own dump, hardlinked under the shift0 name, so it
+    # carries no `pos` array of its own: its positions are by definition the released ones.
+    # The fallback is allowed only there, so a shifted dump missing its positions raises
+    # instead of being silently scored against the released placement.
+    if 'pos' in b:
+        pb = b['pos']
+    elif SHIFT == 0:
+        pb = pa
+    else:
+        raise KeyError(f'{tag}: shifted dump has no position array (keys {list(b)})')
     # equal_nan: the velocity columns are NaN for boxes with no finite-difference
     # neighbour, and NaN != NaN would make an identical label set compare unequal.
     assert np.array_equal(a['gt'], b['gt'], equal_nan=True), \
@@ -138,12 +157,12 @@ if __name__ == '__main__':
     rows = {}
     for tag in tags:
         a, b, pa, pb = load(tag)
-        # The frames the RELEASE starved: positions 0..3. Under SHIFT they sit at 16..19.
+        # The frames the RELEASE starved: positions 0..3. Under SHIFT they sit at GAIN.
         f = frames_at(pa, *SHORT)
         # A start moved later than a sequence's first label leaves that label before the
-        # first chunk; the dump records -1 for it. Requiring FULL in the shifted arm already
+        # first chunk; the dump records -1 for it. Requiring GAIN in the shifted arm already
         # excludes those, so the pairing is on frames covered in both arms by construction.
-        gained = f[(pb[f] >= FULL[0]) & (pb[f] < FULL[1])]
+        gained = f[np.isin(pb[f], list(GAIN))]
         TARGET[tag] = gained
         sa = Scorer(a['det'].astype(np.float64), a['gt'].astype(np.float64))
         sb = Scorer(b['det'].astype(np.float64), b['gt'].astype(np.float64))
@@ -181,6 +200,6 @@ if __name__ == '__main__':
                   f"  95% CI [{st['ci'][0]:+8.4f}, {st['ci'][1]:+8.4f}]"
                   f"  z={d[k + '_boot']['z']:+6.2f}", flush=True)
         res[tag] = d
-    json.dump(dict(shift=SHIFT, B=B, short=SHORT, full=FULL, iou_tp=IOU_TP, models=res),
+    json.dump(dict(shift=SHIFT, B=B, short=SHORT, gain=sorted(GAIN), iou_tp=IOU_TP, models=res),
               open(OUT, 'w'), indent=1)
     print('WROTE', OUT)

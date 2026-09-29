@@ -18,7 +18,10 @@
 # taking whichever card is free.
 cd /media/hdd8/justin/my_project/CVPR20
 NEED=12000; HOSTNEED=16000; G=1
-SHIFT=5
+# SHIFT is a parameter of the run, not of this file: run_e60_sweep.sh walks it over
+# 0, 5, 10 and 15 so the rotation is read at four amounts rather than one. 5 remains
+# the default, which is the value the paired analysis was written against.
+SHIFT=${SHIFT:-5}
 
 # Verify the treatment before spending the card on it. This reads only the index files, needs
 # no GPU, and exits non-zero unless every covered frame's position rotates by exactly SHIFT.

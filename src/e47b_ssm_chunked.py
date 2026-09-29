@@ -22,29 +22,48 @@ that this returns exactly zero for this release at every position and a non-zero
 RVT, so the number it prints here is a statement about the release rather than a pass or fail
 for the run; the history these samples do carry is the in-chunk recurrence, which E47c
 measures separately by occluding the window one position earlier.
+
+FAM selects the family. Both are driven through this one measurement so the two bin profiles
+are not produced by two instruments: FAM=ssm passes the chunk to the backbone in one call,
+FAM=rvt steps the chunk one window at a time carrying the state, which is each release's own
+convention, and everything downstream of run_chunk is shared. The model construction and the
+driver are E47c's, unchanged. With FAM=rvt the state entering the chunk is live, so the
+instrument check is a real control rather than a statement about a release.
 """
 import sys, os, glob, json, numpy as np, torch, h5py, hdf5plugin
-sys.path.insert(0,'/work/src/SSMViT')
-from omegaconf import OmegaConf, open_dict
-from models.detection.yolox_extension.models.detector import YoloXDetector
-
+FAM=os.environ.get('FAM','ssm')
 TAG=os.environ.get('TAG','small'); DEV=os.environ.get('DEV','cuda:0')
 NSEQ=int(os.environ.get('NSEQ','12')); NCHUNK=int(os.environ.get('NCHUNK','6'))
 CHUNK=int(os.environ.get('CHUNK','8')); PMIN=CHUNK//2
-R='/work/src/SSMViT/config/model'
+sys.path.insert(0,'/work/src/SSMViT' if FAM=='ssm' else '/work/src/RVT')
+from omegaconf import OmegaConf, open_dict
+from models.detection.yolox_extension.models.detector import YoloXDetector
+
+R='/work/src/SSMViT/config/model' if FAM=='ssm' else '/work/src/RVT/config/model'
 base=OmegaConf.load(f'{R}/base.yaml'); rnn=OmegaConf.load(f'{R}/rnndet.yaml')
 mx  =OmegaConf.load(f'{R}/maxvit_yolox/default.yaml')['model']
 cfg =OmegaConf.merge(base.get('model',base),rnn,mx)
-cfg =OmegaConf.merge(cfg,OmegaConf.load(f'/work/src/SSMViT/config/experiment/gen1/{TAG}.yaml')['model'])
+if FAM=='ssm':
+    cfg=OmegaConf.merge(cfg,OmegaConf.load(
+        f'/work/src/SSMViT/config/experiment/gen1/{TAG}.yaml')['model'])
+    CK=f'/work/data/ckpt/s5vit-{TAG}-gen1.ckpt'
+else:
+    C={'t':(32,32,0.33),'s':(48,24,0.33),'b':(64,32,0.67)}[TAG]
+    with open_dict(cfg):
+        cfg.backbone.embed_dim=C[0]; cfg.backbone.stage.attention.dim_head=C[1]
+        cfg.fpn.depth=C[2]
+    CK=f'/work/data/ckpt/rvt-{TAG}-gen1.ckpt'
 with open_dict(cfg):
     cfg.backbone.in_res_hw=[256,320]; cfg.backbone.stage.attention.partition_size=[4,5]
     cfg.head.num_classes=2
 mdl=YoloXDetector(cfg)
-ck=torch.load(f'/work/data/ckpt/s5vit-{TAG}-gen1.ckpt',map_location='cpu',weights_only=False)
-mdl.load_state_dict({k[4:]:v for k,v in ck['state_dict'].items() if k.startswith('mdl.')},strict=True)
+sd_=torch.load(CK,map_location='cpu',weights_only=False)['state_dict']
+mdl.load_state_dict({k[4:]:v for k,v in sd_.items() if k.startswith('mdl.')},strict=True)
 mdl.eval().to(DEV)
+NAME=(f's5vit-{TAG}' if FAM=='ssm' else f'rvt-{TAG}')
+ARCH=('S5-ViT' if FAM=='ssm' else 'RVT')
 NP=sum(p.numel() for p in mdl.parameters())/1e6
-print(f"s5vit-{TAG}: {NP:.2f}M params, chunk {CHUNK}, positions {PMIN}..{CHUNK-1}",flush=True)
+print(f"{NAME}: {NP:.2f}M params, chunk {CHUNK}, positions {PMIN}..{CHUNK-1}",flush=True)
 
 def clone_states(st):
     if st is None: return None
@@ -53,11 +72,19 @@ def clone_states(st):
     return st
 def pad(t): return torch.nn.functional.pad(t,(0,320-t.shape[-1],0,256-t.shape[-2]))
 def run_chunk(xs,states):
-    """xs is (L,1,C,H,W); returns the detection tensor per position and the new state."""
+    """xs is (L,1,C,H,W); returns the detection tensor per position and the new state.
+    Each release is called the way it calls itself: SSM-ViT takes the chunk in one call,
+    RVT one window at a time with the state carried between them."""
+    outs=[]
     with torch.no_grad():
-        feats,st=mdl.forward_backbone(xs,previous_states=states,train_step=False)
-        outs=[mdl.forward_detect({k:v[p] for k,v in feats.items()})[0]
-              for p in range(xs.shape[0])]
+        if FAM=='ssm':
+            feats,st=mdl.forward_backbone(xs,previous_states=states,train_step=False)
+            outs=[mdl.forward_detect({k:v[p] for k,v in feats.items()})[0]
+                  for p in range(xs.shape[0])]
+        else:
+            st=states
+            for p in range(xs.shape[0]):
+                o,_,st=mdl.forward(xs[p],previous_states=st); outs.append(o)
     return outs,st
 
 BIN=[[] for _ in range(10)]; STATECHK=[]
@@ -99,12 +126,12 @@ bcen=float(((bm/bm.sum())*bc).sum()); bcv=float(bm.std()/bm.mean())
 rr=np.random.default_rng(1); bs=[]
 for _ in range(4000):
     ii=rr.integers(0,len(P),len(P)); m=P[ii].mean(0); bs.append(((m/m.sum())*bc).sum())
-print(f"s5vit-{TAG}  samples {len(P)}")
+print(f"{NAME}  samples {len(P)}")
 print(f"  newest-window centroid {bcen:+.3f} ms   CV {bcv:.4f}   boot SE {np.std(bs):.3f}")
 print(f"  halves {100*bm[:5].sum()/bm.sum():.1f} / {100*bm[5:].sum()/bm.sum():.1f} %"
       f"   max/min {bm.max()/bm.min():.2f}")
 os.makedirs('/work/experiments/e47_ssm',exist_ok=True)
-json.dump(dict(tag=TAG,arch='S5-ViT',n=int(len(P)),params_M=float(NP),chunk=CHUNK,
+json.dump(dict(tag=TAG,fam=FAM,arch=ARCH,n=int(len(P)),params_M=float(NP),chunk=CHUNK,
                positions=[PMIN,CHUNK-1],state_effect=sc,
                bin_centres=[float(v) for v in bc],bin_influence=[float(v) for v in bm],
                bin_sem=[float(v) for v in P.std(0,ddof=1)/np.sqrt(len(P))],
@@ -112,5 +139,5 @@ json.dump(dict(tag=TAG,arch='S5-ViT',n=int(len(P)),params_M=float(NP),chunk=CHUN
                half_older=float(100*bm[:5].sum()/bm.sum()),
                half_newer=float(100*bm[5:].sum()/bm.sum()),
                max_over_min=float(bm.max()/bm.min())),
-          open(f'/work/experiments/e47_ssm/s5vit-{TAG}-chunked.json','w'),indent=1,allow_nan=False)
+          open(f'/work/experiments/e47_ssm/{NAME}-chunked.json','w'),indent=1,allow_nan=False)
 print("WROTE")

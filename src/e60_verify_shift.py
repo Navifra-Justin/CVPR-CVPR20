@@ -16,7 +16,8 @@ under SHIFT=0 and under the requested SHIFT, and asserts four things:
      what licenses the rest of the comparison,
   2. every frame's new position is (old position - SHIFT) mod CHUNK,
   3. no labelled frame falls outside a chunk that was inside one before,
-  4. the short-block/full-block exchange is two-sided.
+  4. the starved block 0-3 lands, essentially whole, in the block the rotation sends
+     it to, which is what the paired analysis then scores.
 
 No model, no CUDA, no event data is read - only objframe_idx_2_repr_idx.npy, labels.npz and
 the representation timestamps, whose length is the number of representation frames.
@@ -27,7 +28,7 @@ from collections import Counter
 ROOT = os.environ.get('ROOT', '/work/data/gen1x/gen1/val')
 CHUNK = int(os.environ.get('CHUNK', '21'))
 SHIFT = int(os.environ.get('SHIFT', '16'))
-SHORT, FULL = (0, 4), (16, 21)
+SHORT = (0, 4)   # the block the released protocol starved; FULL is now derived per SHIFT
 
 
 # The replay is only evidence about the dump if it places chunk starts by the same expression
@@ -146,28 +147,31 @@ check('uncovered frames under 3 % of the split', lost <= 0.03 * len(NEW),
       f"{lost} of {len(NEW)} ({lost/len(NEW)*100:.2f} %), old {int((OLD<0).sum())}")
 
 # 4. the paired contrast the analysis needs
-print(f"\n4. short{SHORT} / full{FULL} block exchange")
-os_, of = (OLD >= SHORT[0]) & (OLD < SHORT[1]), (OLD >= FULL[0]) & (OLD < FULL[1])
-ns, nf = (NEW >= SHORT[0]) & (NEW < SHORT[1]), (NEW >= FULL[0]) & (NEW < FULL[1])
-a, b = int((os_ & nf).sum()), int((of & ns).sum())
-print(f"     old-short -> new-full : {a:6d} / {int(os_.sum()):6d}")
-print(f"     old-full  -> new-short: {b:6d} / {int(of.sum()):6d}")
-# A rotation is a bijection, so one SHIFT can only move one of the two blocks onto the other:
-# (p-S) mod 21 carries FULL onto SHORT at S=16 and SHORT onto FULL at S=5, never both, since
-# S == -S has no solution mod 21 other than 0. The check is therefore that ONE direction is
-# achieved and that it takes essentially the whole source block with it - not that both are.
-conv = max(a / max(int(os_.sum()), 1), b / max(int(of.sum()), 1))
-check('one direction carries its whole block', conv >= 0.95, f"best {conv*100:.1f}%")
-check('e60_paired.py direction (short -> full) populated', a > 0,
+#
+# The block the starved frames land in is the image of SHORT under the rotation the shift
+# applies, not a fixed 16-20 window: at SHIFT=5 that image is 16-19, which is the set the
+# first E60 run scored, and at 10 and 15 it is 11-14 and 6-9. Checking a fixed window here
+# would have failed the sweep's other amounts for selecting the wrong block rather than
+# for anything wrong with the shift, which is what it did before this was generalised.
+# SHIFT=0 maps the block onto itself: that is the null arm, and it is allowed.
+GAIN = sorted((p - SHIFT) % CHUNK for p in range(*SHORT))
+print(f"\n4. short{SHORT} -> gained block {GAIN} under a rotation of -{SHIFT} mod {CHUNK}")
+os_ = (OLD >= SHORT[0]) & (OLD < SHORT[1])
+a = int((os_ & np.isin(NEW, GAIN)).sum())
+print(f"     old-short -> new-gain  : {a:6d} / {int(os_.sum()):6d}")
+conv = a / max(int(os_.sum()), 1)
+check('the starved block lands in the gained block', conv >= 0.95, f"{conv*100:.1f}%")
+check('the gained set the paired analysis scores is non-empty', a > 0,
       f"{a} frames, which is the set that experiment scores"
-      if a else "SHIFT=5 is the value that produces it")
+      if a else "no frame of the starved block is covered in the shifted arm")
+# The depth the shift buys, in windows of history, for the frames it moves. At SHIFT=0 it is
+# zero by construction and the paired delta must come out at zero; that is the null arm.
+print(f"     history depth gained   : {min(GAIN) - SHORT[0]:+d} .. {max(GAIN) - (SHORT[1]-1):+d} windows")
 print(f"     unchanged position     : {int((OLD == NEW).sum()):6d} / {len(OLD):6d}")
 
 print(f"\n   for comparison, boundaries {SHIFT} windows EARLIER instead - the variant that\n   ran first, whose subtraction from an already-clamped start is a no-op:")
-ba, bb = int((os_ & ((BRK >= FULL[0]) & (BRK < FULL[1]))).sum()), \
-         int((of & ((BRK >= SHORT[0]) & (BRK < SHORT[1]))).sum())
-print(f"     old-short -> new-full : {ba:6d} / {int(os_.sum()):6d}")
-print(f"     old-full  -> new-short: {bb:6d} / {int(of.sum()):6d}")
+ba = int((os_ & np.isin(BRK, GAIN)).sum())
+print(f"     old-short -> new-gain  : {ba:6d} / {int(os_.sum()):6d}")
 print(f"     unchanged position     : {int((OLD == BRK).sum()):6d} / {len(OLD):6d}")
 
 print(f"\n   (old - new) mod {CHUNK} histogram, fixed shift wants a single bar at {SHIFT}:")

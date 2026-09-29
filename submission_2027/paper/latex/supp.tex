@@ -37,6 +37,8 @@ implementation and control analyses. The RVT source revision is
 main Sec.~$n$ refer to the main paper.
 
 \section{The velocity regressor}
+\paragraph{Reproducibility.} Code, configuration files, data-preparation scripts and the exact evaluation scripts used for every table and figure in the main paper and this supplement will be released upon acceptance; all reported numbers were produced with the released configuration.
+
 \label{sup:denominator}
 
 The regression of main Eq.~2 uses the finite-differenced label velocity
@@ -57,8 +59,7 @@ and $\tau$ is attenuated toward zero by
 $\lambda_{\mathrm{att}}=\mathrm{Var}(v)/(\mathrm{Var}(v)+\sigma_{\eta}^{2})$.
 The noise is the label noise of the dataset the fit runs on, so it is measured
 there: Sec.~\ref{sup:labelnoise} solves for $\sigma_{c}=\labelSigmaGen$\,px on
-Gen1 itself, and Eq.~\ref{eq:dilution} is evaluated row by row rather than
-assuming a fixed cadence. On the
+Gen1 itself, and Eq.~\ref{eq:dilution} is evaluated row by row instead of assuming a fixed cadence. On the
 reported rows $\mathrm{Var}(\eta)$ is \eivVarNoise{} against a
 $\mathrm{Var}(\tilde v)$ of \eivVarObs{} in px$^{2}$/s$^{2}$, so
 $\lambda_{\mathrm{att}}=\eivLambda{}$. Because the reported Eq.~2 also includes geometric
@@ -70,7 +71,7 @@ predicted \synLambda{}.
 
 \paragraph{Smoothing bias.} On the uniform grid used for the label-noise
 calibration, a central difference returns the mean velocity over $2\Delta$
-rather than the instantaneous velocity. Expanding the trajectory about the
+instead of the instantaneous velocity. Expanding the trajectory about the
 query instant,
 
 \begin{equation}
@@ -189,11 +190,11 @@ instrument-dependent.
 Two properties of that measurement bound it. Ablation reports the sensitivity of
 the output to a bin. The ablation profile is an operational input-sensitivity
 measure and is not, in general, a decomposition of temporal weights. For a
-nonlinear predictor it is a local rather than a global description. A single-bin ablation also leaves the remaining bins in place, so the measurement is a partial
+nonlinear predictor it is a local instead of a global description. A single-bin ablation also leaves the remaining bins in place, so the measurement is a partial
 derivative of the output, not a decomposition of it.
 
 Because the profile is defined by an intervention, the centroid is reported under four
-instruments rather than one. Zeroing a bin gives \occZero\,ms, setting it to its dataset
+instruments instead of one. Zeroing a bin gives \occZero\,ms, setting it to its dataset
 mean \occMean\,ms, replacing it with the same bin of an unrelated sample \occSwap\,ms, and
 the gradient of the output norm with respect to the bin, which ablates nothing at all,
 \occGrad\,ms. The four span \occSpread\,ms. Two of them remove content, one substitutes
@@ -202,7 +203,7 @@ construction. The property the manuscript uses the centroid for, that it sits te
 before the label instant and well away from the fitted temporal coefficient, holds under
 all four.
 
-The sampling rule is deterministic rather than random, so the sequences are the resampling
+The sampling rule is deterministic, not random, so the sequences are the resampling
 unit for its uncertainty. Resampling the \occSeqs{} sequences with replacement gives a
 \bootCI\,\% interval of [\occSeqCiLo,\,\occSeqCiHi]\,ms for the zero-fill centroid, a standard
 error of \occSeqSE\,ms, and no interval wider than \occSeqWidest\,ms under any of the four
@@ -242,7 +243,7 @@ measurement uses, giving \labelTracksGen{} tracks of at least twelve labels on
 uniform annotation grids with cadences of 250, 500, or 1000\,ms, corresponding
 to 4, 2, or 1\,Hz. The reported regression rows instead use the two adjacent
 label neighbors with variable intervals. Their row-wise noise variance is
-$2\sigma_c^2/(\Delta_f+\Delta_b)^2$, rather than a fixed-cadence approximation.
+$2\sigma_c^2/(\Delta_f+\Delta_b)^2$, instead of a fixed-cadence approximation.
 Variances are trimmed at \ladderTrimPct\,\%, because all four Gen1 box
 coordinates are stored as integers and a median absolute deviation on
 lattice-valued data locks onto discrete values.
@@ -524,7 +525,7 @@ one annotation version. The numbers in main Sec.~5.1 describe the archive
 retrieved \ddArchiveDate{}. Whether those labels are tracker output on the RGB
 frames, which the dataset's own description states, is not distinguishable from
 human annotation by a second-difference residual. On the Gen1 side the
-\texttt{track\_id} field is a per-frame index rather than a persistent identifier,
+\texttt{track\_id} field is a per-frame index instead of a persistent identifier,
 so association for the output-time fit is rebuilt by same-class overlap between
 adjacent label times, at which \outLinkPct\,\% of boxes link.
 
@@ -559,7 +560,7 @@ for these per-box values. The depth is reported descriptively, without a
 random-phase floor. Boxes are matched to exposure windows by nearest mid-exposure
 instant within half a frame period. The off-frequency arm at
 \flickerCtrlHz\,Hz is run on exactly the same events. The per-box 137-Hz arm is used as a
-same-event descriptive control rather than as an independent spectral-resolution test. The
+same-event descriptive control, not as an independent spectral-resolution test. The
 illumination attribution is supported primarily by the long-slice 100-Hz harmonic structure
 and the daytime control.
 
@@ -700,7 +701,7 @@ the measured interval itself, referred to zero displacement, which is
 two-standard-error band of \twoSeDmapLo--\twoSeDmapHi{} points. The second clears its band
 for \effTauResolved{} of \rankCkpts{} checkpoints. The measured interval therefore sits at
 the paired sampling-resolution floor under sequence resampling. The identifiability conclusion
-rests on where the evidence lies rather than on that comparison. The
+rests on where the evidence lies, not on that comparison. The
 \mapCost{}-point figure measures the sensitivity of the pooled benchmark to the interval,
 which follows from the benchmark's speed composition (main Tab.~2) and places no bound on
 the interval itself.
@@ -735,7 +736,7 @@ such as its median, does not explain the observed resolution across strata. Scal
 each stratum's median $r$ increases the dispersion of the $5\,\%$-loss timescale from
 \collapseCVraw{} to \collapseCVmed{}, and no fixed quantile improves on the unscaled result.
 
-mAP thresholds each box rather than averaging over them. Under the single-threshold
+mAP thresholds each box instead of averaging over them. Under the single-threshold
 caricature, in which a box loses its match once displaced past $d^{\star}$ box-widths and is
 untouched before, the fraction of boxes lost at displacement $\delta$ is
 $P(r > d^{\star}/\delta)$, so the displacement at which a loss level $p$ is reached is
@@ -760,7 +761,7 @@ $1/\sqrt{n}$. The 25--50 px/s and $\geq 50$ px/s strata yield net resolution fac
 full moving-box population.
 
 On the DSEC-Det labels, associated by the \texttt{track\_id} the release ships
-rather than by IoU linking, $r$ has median \rDsecTrain\,s$^{-1}$ against Gen1's
+, not by IoU linking, $r$ has median \rDsecTrain\,s$^{-1}$ against Gen1's
 \rGenAll\,s$^{-1}$. On the quantity that actually governs resolution the gap is smaller:
 $Q_{95}(r)=5.59$, compared with 0.70 on Gen1, a 7.97$\times$ difference. This
 label-composition contrast shows that DSEC-Det has a substantially heavier upper tail of
@@ -919,7 +920,7 @@ the chunk position that sets them.
 \section{The recurrent influence tail}
 
 Main Sec.~3.3 reports that the window-ablation-sensitivity centroid tracks the horizon
-rather than converging. Two horizons alone cannot distinguish a slowly converging support
+instead of converging. Two horizons alone cannot distinguish a slowly converging support
 from a divergent one, so the tail is characterized directly.
 
 Let $I(L)$ be the summed sensitivity at lag $L$ windows. A weighted least-squares fit of
@@ -939,7 +940,7 @@ increases, and a
 particular finite doubling need not give exactly $1$. The measured ratio is \tailRatio{}
 $[\tailRatioLo,\tailRatioHi]$, an interval excluding $1$, and follows from
 two measured centroids without a fit, so over the horizons measured here the centroid is
-still moving with the horizon rather than settling. Two finite horizons cannot separate a
+still moving with the horizon instead of settling. Two finite horizons cannot separate a
 slowly converging tail from a divergent one, and the exponent is fitted over the observed
 lag range. The measured horizons do not determine a converged full-history centroid.
 Conditionally, if the observed

@@ -73,7 +73,7 @@
 % --- Removed 2026-09-05: quantities awaiting detection runs this paper does not
 % contain. No detection score is computed anywhere in the paper or the
 % supplement, so the tolerant-metric and re-anchoring macros below have no text
-% that could use them and are left undefined rather than rendering a placeholder.
+% that could use them and are left undefined instead of rendering a placeholder.
 
 %% ===== MEASURED 2026-09-02, CORRECTED 2026-09-03 ============================
 %% E09+E11 per-object event-centroid dispersion inside one exposure. (E12 was
@@ -533,7 +533,7 @@
 %% ===== E33 measured 2026-09-07 (experiments/e27_rows/saturate.log): the reported
 %% specification pairs each geometric control with one image axis. This enters all
 %% four on BOTH axes, drops each in turn, and restricts the sample, so that the
-%% spread of tau across specifications is reported rather than one of them chosen.
+%% spread of tau across specifications is reported instead of one of them chosen.
 \newcommand{\satTau}{\ensuremath{-3.62}}   \newcommand{\satTauSE}{7.41}
 \newcommand{\satPl}{\ensuremath{-1.59}}    \newcommand{\satPlSE}{1.62}
 \newcommand{\satLo}{\ensuremath{-20.2}}    %% ms, lowest tau over EVERY specification
@@ -571,14 +571,14 @@
                                              %% (e10_flicker/verify.json, DAY top_line_Hz)
 
 %% errors-in-variables on the reported rows (experiments/e27_rows/fit.log, section 5,
-%% re-run with SIGMA_C from E28 rather than the E13 default)
+%% re-run with SIGMA_C from E28 instead of the E13 default)
 \newcommand{\eivVarObs}{110.6}             %% px^2/s^2, Var of the centered velocity
 \newcommand{\eivVarNoise}{1.0}             %% px^2/s^2, row-wise mean 2 sigma^2 / (dt_f+dt_b)^2
 \newcommand{\eivLambda}{0.991}             %% the attenuation factor on these rows
 \newcommand{\eivShift}{0.2}                %% ms, conservative rounded upper bound on correction shift
 
 %% ===== E38 measured 2026-09-07 (experiments/e38_empirical_null): the per-box Rayleigh
-%% null, measured rather than assumed. RETRACTION: the per-box p-values and the
+%% null, measured instead of being assumed. RETRACTION: the per-box p-values and the
 %% "99.0-100.0 % of boxes locked at p<1e-3" figure are withdrawn. Pooled over the six
 %% ceiling sequences the OFF-FREQUENCY per-box Z has a median of 38.39 against the
 %% analytic 0.693, an inflation of 55, because event times inside one box during a 15 ms

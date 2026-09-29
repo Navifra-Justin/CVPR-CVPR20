@@ -7,9 +7,9 @@ Claude status: **not configured**; no external Claude assessment is claimed unle
 
 ## Summary
 
-- Extracted prose chunks: 178
-- SAFE passages: 395 (unflagged; not a proof of human authorship)
-- REVIEW passages: 178
+- Extracted prose chunks: 392
+- SAFE passages: 908 (unflagged; not a proof of human authorship)
+- REVIEW passages: 355
 - REWRITE passages: 0
 - GPTZero confidence: unavailable because the API key is not configured.
 
@@ -19,155 +19,167 @@ A GPTZero flag alone would not trigger a rewrite. In this keyless first pass, RE
 
 ## Highest-priority passages
 
-### 1. REVIEW — The window and the instant it is indexed by
-- Source: `paper/main.tex:296-314`
-- Reasons: long sentence / modifier load
-- Exact sentence: {0.95 } {The newest-window sensitivity centroid differs in point estimate from the regression-based temporal coefficient, while average precision on the velocity-evaluable subset is nearly invariant between the label instant and that centroid. (a) Window-ablation influence of each of the bins of the released input window, over Gen1 validation samples with the recurrent state warmed steps, with sample-level standard errors.
+### 1. REVIEW — Contributions.
+- Source: `submission_2027/paper/latex/main.tex:94-105`
+- Reasons: long sentence / modifier load, dense parenthetical insertion, comma-heavy sentence rhythm
+- Exact sentence: The event branch examined here~ consumes a window of \,ms in bins ending on the label instant (Sec.~ ), so under uniform weighting its evidence is centered \,ms earlier; ablating each bin on real validation samples puts the ablation-sensitivity centroid at \,ms (Sec.~ ), the newest window carrying 22.7\ preceding windows 77.3\ nominal-time-matched detections under Eq.~2 with a placebo term and a sign-flip control, is \, \, \,ms, sits \,ms from that centroid and is compatible with zero: it is an association between nominal-time-matched detections, not an estimate of recurrent support, and the nominal timestamp encodes neither (Secs.~ -- )
 - GPTZero signal: unavailable in this run
 - Claude independent assessment: unavailable; local assessment requires human confirmation
 
-### 2. REVIEW — Preamble
-- Source: `paper/main.tex:33-54`
+### 2. REVIEW — Introduction
+- Source: `paper/main.tex:90-105`
+- Reasons: long sentence / modifier load, comma-heavy sentence rhythm
+- Exact sentence: Over a 1000\,ms horizon, the newest window accounts for 22.7\ window-ablation sensitivity, while the remaining 77.3\ regression-based temporal coefficient, estimated on nominal-time-matched detections under Eq.~2 with a vector regression, a placebo term and a sign-flip control on the velocity estimator, is \, \, \,ms, statistically compatible with zero under the selected specification, and it sits \,ms from that centroid under the reported specification.
+- GPTZero signal: unavailable in this run
+- Claude independent assessment: unavailable; local assessment requires human confirmation
+
+### 3. REVIEW — The same-frame intervention.
+- Source: `submission_2027/paper/latex/main.tex:272-285`
 - Reasons: absolute wording, long sentence / modifier load, comma-heavy sentence rhythm
-- Exact sentence: Displacing ground-truth centers by that interval changes mAP by points and reorders no checkpoint, and over every labeled box a sequence bootstrap reproduces the published ordering in only \,\ SSM-ViT's released streaming evaluation, in which a detection's recurrent history is one to four windows at one chunk position and to at another, the contrast between the two is mAP points after an RVT control.
+- Exact sentence: The intervention moves every chunk boundary windows later and changes nothing else: the same frames, the same weights, the same labels, the same evaluator, and the evaluated timestamp of each frame unchanged. labeled boxes are scored twice under this shift, once with one to four windows of recurrent history and once with seventeen to twenty, and are compared paired within frame with a cluster bootstrap over the sequences.
 - GPTZero signal: unavailable in this run
 - Claude independent assessment: unavailable; local assessment requires human confirmation
 
-### 3. REVIEW — Association independent of nominal-time overlap.
-- Source: `paper/supplement.tex:301-316`
+### 4. REVIEW — Association independent of nominal-time overlap.
+- Source: `paper/supplement.tex:300-323`
 - Reasons: absolute wording, long sentence / modifier load
-- Exact sentence: The informative direction is to open the gate or to remove it. rebuilds the rows from the raw detection dump under association rules and refits the reported specification under each: greedy and Hungarian assignment at overlap floors from 0.05 to 0.50, and a rule that never tests overlap at all, admitting a detection whose center falls within a fixed multiple of the label's box scale.
+- Exact sentence: The informative direction is to open the gate or to remove it. rebuilds the rows from the five-checkpoint detection dump of Sec.~11 under association rules and refits the reported specification under each: greedy and Hungarian assignment at overlap floors from 0.05 to 0.50, and a rule that never tests overlap at all, admitting a detection whose center falls within a fixed multiple of the label's box scale.
 - GPTZero signal: unavailable in this run
 - Claude independent assessment: unavailable; local assessment requires human confirmation
 
-### 4. REVIEW — The DSEC measurements
-- Source: `paper/supplement.tex:448-460`
+### 5. REVIEW — Association independent of nominal-time overlap.
+- Source: `submission_2027/paper/latex/supp.tex:300-323`
+- Reasons: absolute wording, long sentence / modifier load
+- Exact sentence: The informative direction is to open the gate or to remove it. rebuilds the rows from the five-checkpoint detection dump of Sec.~11 under association rules and refits the reported specification under each: greedy and Hungarian assignment at overlap floors from 0.05 to 0.50, and a rule that never tests overlap at all, admitting a detection whose center falls within a fixed multiple of the label's box scale.
+- GPTZero signal: unavailable in this run
+- Claude independent assessment: unavailable; local assessment requires human confirmation
+
+### 6. REVIEW — Conclusion
+- Source: `submission_2027/paper/latex/main.tex:778-1004`
+- Reasons: long sentence / modifier load, comma-heavy sentence rhythm
+- Exact sentence: Two scores at the same nominal timestamp are not performance at the same effective time when the recurrent support behind them differs, so comparisons across recurrent architectures should report or control predictor initialization, reset policy, chunk boundaries, effective history and label-acquisition intervals alongside the score, which makes these quantities protocol-identifiable. { {0.4pt}
+- GPTZero signal: unavailable in this run
+- Claude independent assessment: unavailable; local assessment requires human confirmation
+
+### 7. REVIEW — Preamble
+- Source: `submission_2027/paper/latex/main.tex:33-33`
+- Reasons: long sentence / modifier load, comma-heavy sentence rhythm
+- Exact sentence: Two supporting diagnostics bound the interpretation without being used as recurrent-support estimators: on the predictor side, the newest RVT input window has an ablation-sensitivity centroid \,ms before the label instant and a nominal-time-matched regression coefficient of \, \, \,ms; on the label side, within-exposure event timing contains an illumination-locked component.
+- GPTZero signal: unavailable in this run
+- Claude independent assessment: unavailable; local assessment requires human confirmation
+
+### 8. REVIEW — The DSEC measurements
+- Source: `paper/supplement.tex:469-481`
 - Reasons: absolute wording, long sentence / modifier load, comma-heavy sentence rhythm
 - Exact sentence: {Every DSEC training sequence whose exposure is pinned at \, s, measured per labeled box over the events inside that box during that frame's own published exposure window, with at least events per box. is the median over boxes of the modulation depth at \,Hz. and are the median over boxes of the Rayleigh statistic at \,Hz and at the off-frequency control on the same events.
 - GPTZero signal: unavailable in this run
 - Claude independent assessment: unavailable; local assessment requires human confirmation
 
-### 5. REVIEW — Effect of temporal displacement on checkpoint ordering
-- Source: `paper/supplement.tex:603-610`
-- Reasons: absolute wording, long sentence / modifier load
-- Exact sentence: Whether the interval changes a needs more than one detector, so all released checkpoints of main Sec.~3.3 were run over the Gen1 validation split under one protocol: the same frames, the same confidence threshold and non-maximum suppression, and ground truth that is identical across the five and identical to the dump main Sec.~3.5 already uses.
+### 9. REVIEW — The DSEC measurements
+- Source: `submission_2027/paper/latex/supp.tex:469-481`
+- Reasons: absolute wording, long sentence / modifier load, comma-heavy sentence rhythm
+- Exact sentence: {Every DSEC training sequence whose exposure is pinned at \, s, measured per labeled box over the events inside that box during that frame's own published exposure window, with at least events per box. is the median over boxes of the modulation depth at \,Hz. and are the median over boxes of the Rayleigh statistic at \,Hz and at the off-frequency control on the same events.
 - GPTZero signal: unavailable in this run
 - Claude independent assessment: unavailable; local assessment requires human confirmation
 
-### 6. REVIEW — Event benchmarks and their exposures.
-- Source: `paper/main.tex:223-255`
+### 10. REVIEW — Effect of temporal displacement on checkpoint ordering
+- Source: `paper/supplement.tex:627-634`
+- Reasons: absolute wording, long sentence / modifier load
+- Exact sentence: Whether the interval changes a needs more than one detector, so all released checkpoints of main Sec.~3.3 were run over the Gen1 validation split under one protocol: the same frames, the same confidence floor of 0.01 and non-maximum-suppression overlap of 0.65, and ground truth that is identical across the five and identical to the dump main Sec.~3.5 already uses.
+- GPTZero signal: unavailable in this run
+- Claude independent assessment: unavailable; local assessment requires human confirmation
+
+### 11. REVIEW — Effect of temporal displacement on checkpoint ordering
+- Source: `submission_2027/paper/latex/supp.tex:627-634`
+- Reasons: absolute wording, long sentence / modifier load
+- Exact sentence: Whether the interval changes a needs more than one detector, so all released checkpoints of main Sec.~4.3 were run over the Gen1 validation split under one protocol: the same frames, the same confidence floor of 0.01 and non-maximum-suppression overlap of 0.65, and ground truth that is identical across the five and identical to the dump main Sec.~4.5 already uses.
+- GPTZero signal: unavailable in this run
+- Claude independent assessment: unavailable; local assessment requires human confirmation
+
+### 12. REVIEW — Introduction
+- Source: `paper/main.tex:107-114`
+- Reasons: absolute wording, long sentence / modifier load
+- Exact sentence: Chunk position assigns detections between one and twenty-one windows of recurrent history under a single reported score, and the score moves with it: on all labeled boxes, the 1--4 versus 17--21 window contrast is mAP points net of the RVT control, while the same-frame chunk-boundary intervention changes S5-B by points ( points on the velocity-evaluable subset).
+- GPTZero signal: unavailable in this run
+- Claude independent assessment: unavailable; local assessment requires human confirmation
+
+### 13. REVIEW — The observational contrast across chunk positions.
+- Source: `submission_2027/paper/latex/main.tex:287-300`
+- Reasons: long sentence / modifier load, dense parenthetical insertion
+- Exact sentence: This contrast compares different frames, so it is differenced against the three RVT checkpoints, evaluated on the same frames with a state that crosses chunk boundaries; that controls for frame-position effects shared with them and leaves points for S5-B ( ) and for S5-S ( ), against placebo differences among the RVT checkpoints of at most points ( ).
+- GPTZero signal: unavailable in this run
+- Claude independent assessment: unavailable; local assessment requires human confirmation
+
+### 14. REVIEW — Event benchmarks and their exposures.
+- Source: `paper/main.tex:250-279`
 - Reasons: long sentence / modifier load
 - Exact sentence: That a frame's exposure is long relative to event timing has been stated: Event-based deblurring~ argues that accumulating events from a single frame timestamp loses information, deblurring work names auto-exposure as why the width is unknown~ , and RENet~ uses a DSEC exposure interval as its event window while describing it as short.
 - GPTZero signal: unavailable in this run
 - Claude independent assessment: unavailable; local assessment requires human confirmation
 
-### 7. REVIEW — Introduction
-- Source: `paper/main.tex:120-125`
+### 15. REVIEW — Event benchmarks and their exposures.
+- Source: `submission_2027/paper/latex/main.tex:228-257`
 - Reasons: long sentence / modifier load
-- Exact sentence: DSEC's published exposure intervals vary in width by a factor of against a fixed frame period, and in the ceiling-exposure sequences a within-box temporal statistic measured inside one published exposure window carries the \,Hz illumination harmonic, so attributing it to object timing requires separating that structure first (Sec.~ )
+- Exact sentence: That a frame's exposure is long relative to event timing has been stated: Event-based deblurring~ argues that accumulating events from a single frame timestamp loses information, deblurring work names auto-exposure as why the width is unknown~ , and RENet~ uses a DSEC exposure interval as its event window while describing it as short.
 - GPTZero signal: unavailable in this run
 - Claude independent assessment: unavailable; local assessment requires human confirmation
 
-### 8. REVIEW — What timing difference the metric resolves
-- Source: `paper/supplement.tex:690-698`
-- Reasons: absolute wording, long sentence / modifier load
-- Exact sentence: Its tightest adjacent pair is separated by points against a paired standard error of and exchanges places in a fraction of replicates. ``The correction changes no ranking'' and ``the benchmark does not resolve this ranking'' are consistent with the same evidence, and the measured noise floor separates them in favor of the second
+### 16. REVIEW — The same frames under four boundary positions
+- Source: `paper/supplement.tex:923-931`
+- Reasons: rhetorical contrast, long sentence / modifier load
+- Exact sentence: The three amounts select the same labeled frames, so the rungs are one population under three doses rather than three separate comparisons; asserts set equality of the selected frames before recording the curve. re-runs the release's own boundary placement through the identical pipeline and serves as the negative control
 - GPTZero signal: unavailable in this run
 - Claude independent assessment: unavailable; local assessment requires human confirmation
 
-### 9. REVIEW — The finite difference used for the velocity.
-- Source: `paper/main.tex:454-472`
-- Reasons: absolute wording, long sentence / modifier load, comma-heavy sentence rhythm
-- Exact sentence: On synthetic tracks whose detector has no lag whatever, with label centers corrupted at the dispersion the supplement's difference ladder measures on Gen1 ( \,px), the forward estimator returns \,ms and the backward one \,ms against a closed form of \,ms, they sum to \,ms, and removing the label noise returns all three to \,ms.
+### 17. REVIEW — Scope and limitations
+- Source: `submission_2027/paper/latex/main.tex:768-770`
+- Reasons: long sentence / modifier load
+- Exact sentence: Temporal-support identifiability is a uniqueness claim, so one controlled pair with identical recorded protocol variables, different effective support, and different score is already a protocol-level counterexample; the second checkpoint tests that the observed violation is not confined to one released weight set.
 - GPTZero signal: unavailable in this run
 - Claude independent assessment: unavailable; local assessment requires human confirmation
 
-### 10. REVIEW — Mains-frequency signature and the per-pixel phase test
-- Source: `paper/main.tex:726-741`
-- Reasons: absolute wording, long sentence / modifier load, comma-heavy sentence rhythm
-- Exact sentence: Sweeping -- \,Hz on each whole recording, with no band fixed in advance and each frequency divided by the median of its own neighborhood, returns that series in every ceiling sequence: the ceiling median is at \,Hz, at \,Hz and at \,Hz, and the second harmonic is the strongest line in of the , never falling below .
-- GPTZero signal: unavailable in this run
-- Claude independent assessment: unavailable; local assessment requires human confirmation
-
-### 11. REVIEW — Recurrent history under the released streaming evaluation.
-- Source: `paper/main.tex:379-404`
+### 18. REVIEW — Recurrent history under the released streaming evaluation.
+- Source: `paper/main.tex:416-453`
 - Reasons: long sentence / modifier load, dense parenthetical insertion
 - Exact sentence: Differencing against the three RVT checkpoints, evaluated on the same frames with a state that crosses chunk boundaries, controls for frame-position effects shared with the RVT checkpoints and leaves points for S5-B ( ) and for S5-S ( ), against placebo differences among the RVT checkpoints of at most points ( ).
 - GPTZero signal: unavailable in this run
 - Claude independent assessment: unavailable; local assessment requires human confirmation
 
-### 12. REVIEW — Introduction
-- Source: `paper/main.tex:107-118`
-- Reasons: long sentence / modifier load, comma-heavy sentence rhythm
-- Exact sentence: Its regression-based output coefficient, estimated on nominal-time-matched detections under Eq.~2 with a vector regression, a placebo term and a sign-flip control on the velocity estimator, is consistent with the label instant and sits \,ms from the newest-window centroid under the reported specification.
+### 19. REVIEW — Exposure and labels
+- Source: `paper/main.tex:708-722`
+- Reasons: absolute wording
+- Exact sentence: DSEC provides a separate exposure-side analysis: published exposure intervals bound the interval within which event timing is observed, while within-exposure event timing contains illumination-locked structure and therefore cannot be uniquely attributed to object timing without separating that structure.
 - GPTZero signal: unavailable in this run
 - Claude independent assessment: unavailable; local assessment requires human confirmation
 
-### 13. REVIEW — The influence profile
-- Source: `paper/supplement.tex:138-156`
-- Reasons: long sentence / modifier load
-- Exact sentence: A bin's influence is the magnitude of the change its ablation produces in the emitted detection tensor, relative to its norm, averaged over samples drawn from the first twelve lexicographically ordered released Gen1 validation sequences, using the first forty post-warm-up samples from each sequence.
-- GPTZero signal: unavailable in this run
-- Claude independent assessment: unavailable; local assessment requires human confirmation
-
-### 14. REVIEW — Instrumental-variable alternative.
-- Source: `paper/supplement.tex:112-123`
-- Reasons: long sentence / modifier load, comma-heavy sentence rhythm
-- Exact sentence: The third-difference kernel forces for white noise, the same code returns on white noise and on the DSEC-Det labels, and pooled-ratio bias, heteroscedastic segments and heavy tails each returned the white-noise value through the identical pooling code, so the departure is a property of the labels.
-- GPTZero signal: unavailable in this run
-- Claude independent assessment: unavailable; local assessment requires human confirmation
-
-### 15. REVIEW — The finite difference used for the velocity.
-- Source: `paper/main.tex:478-490`
-- Reasons: long sentence / modifier load, dense parenthetical insertion, comma-heavy sentence rhythm
-- Exact sentence: Specification & (ms) & placebo (ms) \\ {l}{ }\\ forward difference & \, \, & \, \, \\ backward difference & \, \, & \, \, \\ centered difference & \, \, & \, \, \\ {l}{ }\\ box side along travel & \, \, & \, \, \\ four geometric terms & \, \, & \, \, \\ per-sequence bias & \, \, & \, \, \\
-- GPTZero signal: unavailable in this run
-- Claude independent assessment: unavailable; local assessment requires human confirmation
-
-### 16. REVIEW — What is not shown here.
-- Source: `paper/supplement.tex:362-369`
-- Reasons: long sentence / modifier load
-- Exact sentence: The release distribution available to this work carries the validation split alone, sequences with no test directory, so the levels above are validation-split levels and the published numbers are used only for the parameter comparison and for the ordering within RVT, which is preserved.
-- GPTZero signal: unavailable in this run
-- Claude independent assessment: unavailable; local assessment requires human confirmation
-
-### 17. REVIEW — Introduction
-- Source: `paper/main.tex:70-83`
-- Reasons: long sentence / modifier load
-- Exact sentence: The event branch of the detector examined here~ consumes a window of \,ms divided into bins, and the preprocessing script of its own repository builds the window boundaries by counting backwards from label timestamps, so each window ends at the label it is scored against (Sec.~ ).
-- GPTZero signal: unavailable in this run
-- Claude independent assessment: unavailable; local assessment requires human confirmation
-
-### 18. REVIEW — The window and the instant it is indexed by
-- Source: `paper/main.tex:296-314`
-- Reasons: long sentence / modifier load, comma-heavy sentence rhythm
-- Exact sentence: Gray: the four other checkpoints, each rescaled to its own mean. (b) Average precision against the temporal center displacement applied to the ground-truth boxes, by object speed in px/s, each curve relative to its own value at the label instant, with its maximum marked.
-- GPTZero signal: unavailable in this run
-- Claude independent assessment: unavailable; local assessment requires human confirmation
-
-### 19. REVIEW — Data path.
-- Source: `paper/supplement.tex:463-478`
-- Reasons: long sentence / modifier load
-- Exact sentence: For the dispersion of main Sec.~4.4 a box contributes only if it carries at least events in the window, and a frame only if at least boxes qualify, the reported statistics are medians over frames of a within-frame quantity, so no frame is weighted by its object count.
-- GPTZero signal: unavailable in this run
-- Claude independent assessment: unavailable; local assessment requires human confirmation
-
-### 20. REVIEW — Effect on benchmark mAP.
-- Source: `paper/main.tex:612-636`
-- Reasons: absolute wording, comma-heavy sentence rhythm
-- Exact sentence: Displacing the ground truth to the window's centroid costs absolute mAP ( percentage points, \,\ subset is nearly invariant over the measured label-to-centroid displacement, and at the common \,ms displacement the ordering of all released checkpoints is unchanged.
+### 20. REVIEW — Exposure and labels
+- Source: `submission_2027/paper/latex/main.tex:685-699`
+- Reasons: absolute wording
+- Exact sentence: DSEC provides a separate exposure-side analysis: published exposure intervals bound the interval within which event timing is observed, while within-exposure event timing contains illumination-locked structure and therefore cannot be uniquely attributed to object timing without separating that structure.
 - GPTZero signal: unavailable in this run
 - Claude independent assessment: unavailable; local assessment requires human confirmation
 
 ## Residue scan
 
-### Manuscript sources (`paper/*.tex`, the files that ship)
+### Manuscript sources (`submission_2027/paper/latex/*.tex`, the files that ship)
 
-- `placeholder` in `paper/numbers.tex`
+- `placeholder` in `submission_2027/paper/latex/numbers.tex`
 
 ### Other scanned directories (`src/`, `docs/`; tooling and internal notes, not submitted)
 
-- `Here's` in `paper/cvpr.sty`
+- `rewrite` in `submission_2027/paper/latex/README.md`
+- `placeholder` in `submission_2027/paper/latex/README.md`
+- `Here's` in `submission_2027/paper/latex/cvpr.sty`
+- `prompt` in `submission_2027/paper/latex/CHECKLIST_VERDICT_0916.md`
+- `instruction` in `submission_2027/paper/latex/CHECKLIST_VERDICT_0916.md`
+- `rewrite` in `submission_2027/paper/latex/CHECKLIST_VERDICT_0916.md`
+- `placeholder` in `submission_2027/paper/latex/CHECKLIST_VERDICT_0916.md`
+- `Certainly` in `submission_2027/paper/latex/AI_WRITING_AUDIT.md`
+- `Here's` in `submission_2027/paper/latex/AI_WRITING_AUDIT.md`
+- `prompt` in `submission_2027/paper/latex/AI_WRITING_AUDIT.md`
+- `instruction` in `submission_2027/paper/latex/AI_WRITING_AUDIT.md`
+- `rewrite` in `submission_2027/paper/latex/AI_WRITING_AUDIT.md`
+- `placeholder` in `submission_2027/paper/latex/AI_WRITING_AUDIT.md`
 - `rewrite` in `src/e52_selftest.py`
 - `rewrite` in `src/e51_check.py`
 - `instruction` in `src/SSMViT/README.md`
@@ -183,6 +195,7 @@ A GPTZero flag alone would not trigger a rewrite. In this keyless first pass, RE
 - `prompt` in `docs/CHECKLIST_VERDICT_0916.md`
 - `instruction` in `docs/CHECKLIST_VERDICT_0916.md`
 - `rewrite` in `docs/CHECKLIST_VERDICT_0916.md`
+- `placeholder` in `docs/CHECKLIST_VERDICT_0916.md`
 - `placeholder` in `docs/RESTRUCTURE_0904.md`
 - `rewrite` in `docs/AUDIT_R1_A_H.md`
 - `placeholder` in `docs/AUDIT_R1_A_H.md`

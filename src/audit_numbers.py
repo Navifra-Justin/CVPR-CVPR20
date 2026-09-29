@@ -7,8 +7,13 @@ without a corresponding run fails here rather than in review.
 """
 import json, re, sys, os, numpy as np
 
+# The live submission is submission_2027/paper/latex; the top-level paper/ tree
+# is a stale draft whose numbers.tex differs from the submitted one, so this
+# checker used to validate macros that are not the ones being submitted.
+# PAPER_DIR overrides the directory for testing against a copy.
+PAPER_DIR = os.environ.get('PAPER_DIR', 'submission_2027/paper/latex')
 NUM = dict(re.findall(r'\\newcommand\{\\([A-Za-z]+)\}\{(?:\\ensuremath\{)?([^}]*)\}',
-                      open('paper/numbers.tex').read()))
+                      open(os.path.join(PAPER_DIR, 'numbers.tex')).read()))
 def L(p): return json.load(open(p))
 E45=L('experiments/e45_influence_fixed/result.json')
 E45D=L('experiments/e45_influence_fixed/derived.json')

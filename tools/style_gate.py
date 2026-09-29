@@ -5,7 +5,13 @@ Comment lines and math-only lines are skipped where a rule would false-positive.
 """
 import re, sys, os
 
-FILES = sys.argv[1:] or ['paper/main.tex', 'paper/supplement.tex']
+# The live submission is submission_2027/paper/latex.  The top-level paper/
+# tree is a stale draft, and the supplement is named supp.tex in the
+# submission, not supplement.tex, so the old defaults audited a document that
+# is not being submitted.  PAPER_DIR overrides the directory for testing.
+PAPER_DIR = os.environ.get('PAPER_DIR', 'submission_2027/paper/latex')
+FILES = sys.argv[1:] or [os.path.join(PAPER_DIR, 'main.tex'),
+                         os.path.join(PAPER_DIR, 'supp.tex')]
 
 RULES = [
  # (item, label, regex, flags)
@@ -42,7 +48,10 @@ def strip(line):
 
 hits = 0
 for f in FILES:
-    if not os.path.exists(f): continue
+    # A missing source used to be skipped silently, which is how a renamed
+    # supplement could produce a clean report over nothing.
+    if not os.path.exists(f):
+        sys.exit(f'style_gate: missing manuscript source {f}')
     for n, raw in enumerate(open(f, encoding='utf-8'), 1):
         s = strip(raw)
         if not s.strip(): continue

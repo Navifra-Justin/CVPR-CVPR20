@@ -13,7 +13,10 @@ import json, os, re, sys, urllib.request, urllib.error
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PAPER = ROOT / "paper"
+# The live submission is submission_2027/paper/latex; the top-level paper/
+# tree is a stale draft.  The residue scan used to classify the draft as "the
+# files that ship".  PAPER_DIR overrides the directory for testing.
+PAPER = ROOT / os.environ.get("PAPER_DIR", "submission_2027/paper/latex")
 OUT = ROOT / ".ai-audit"
 RAW = OUT / "gptzero_raw.json"
 REPORT = ROOT / "AI_WRITING_AUDIT.md"
@@ -118,7 +121,7 @@ def report(chunks, gz):
             findings.append({"classification": classification, "file": c["file"], "start": c["start"], "end": c["end"], "section": c["section"], "sentence": s, "reasons": flags})
     findings.sort(key=lambda x: (x["classification"] != "REWRITE", -len(x["sentence"])))
     residue, residue_repo = [], []
-    for p in [ROOT / "paper", ROOT / "src", ROOT / "docs"]:
+    for p in [PAPER, ROOT / "src", ROOT / "docs"]:
         if not p.exists(): continue
         for f in p.rglob("*"):
             if not f.is_file() or f.suffix in {".pdf", ".json", ".npz", ".log"}: continue
@@ -143,7 +146,7 @@ def report(chunks, gz):
     for i, f in enumerate(findings[:20], 1):
         out += [f"### {i}. {f['classification']} — {f['section']}", f"- Source: `{f['file']}:{f['start']}-{f['end']}`", f"- Reasons: {', '.join(f['reasons'])}", f"- Exact sentence: {f['sentence']}", "- GPTZero signal: unavailable in this run", "- Claude independent assessment: unavailable; local assessment requires human confirmation", ""]
     out += ["## Residue scan", "",
-            "### Manuscript sources (`paper/*.tex`, the files that ship)", ""]
+            f"### Manuscript sources (`{PAPER.relative_to(ROOT)}/*.tex`, the files that ship)", ""]
     if residue:
         for f, t in residue[:100]: out.append(f"- `{t}` in `{f}`")
     else: out.append("No requested residue terms found in the manuscript sources.")

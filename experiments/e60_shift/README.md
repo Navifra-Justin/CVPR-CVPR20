@@ -108,10 +108,41 @@ cluster bootstrap over the 406 validation sequences E58 uses (B = 300). E58's di
 differences predicts a gain of roughly +6 to +7 points; if the E58 number were an artifact of
 the parallel-trends assumption rather than of temporal support, this is where it would vanish.
 
+## The dose-response reading
+
+One shift amount establishes that the starved block is recoverable; it does not say how much
+history the recovery needs. The rotation is modular, so the amount is free. `SHIFT` in
+{15, 10, 5} carries positions 0-3 onto 6-9, 11-14 and 16-19, which is +6, +11 and +16 further
+windows of recurrent history, and `SHIFT = 0` is the identity and therefore the negative
+control. All three treated amounts select the *same* 3574 frames, so this is one population
+under three doses rather than three separate comparisons; `e60_dose.py` asserts set equality
+of the selected frames, and asserts the control arm is exactly 0 on all five channels, before
+it writes `dose.json`.
+
+Measured (delta mAP on velocity-evaluable boxes, points, long arm minus short):
+
+| gained | positions | S5-B | S5-S |
+|---|---|---|---|
+| +0 (control) | 0-3 | +0.0000 | +0.0000 |
+| +6 | 6-9 | +3.7331 +- 0.3514 | +3.5435 +- 0.3896 |
+| +11 | 11-14 | +4.9064 +- 0.4975 | +4.2875 +- 0.5204 |
+| +16 | 16-19 | +5.2299 +- 0.4870 | +4.8142 +- 0.5179 |
+
+Monotone in the history gained for both checkpoints, with falling increments. The +16 rung is
+the amount `paired.json` already recorded; `run_e60_paired_sweep.sh` runs it first as a
+regression against that file and withholds the other amounts if any stored field moves. It
+reproduced all 6 stored fields on 2026-09-29.
+
+Because the rungs share their frames, a frame-difficulty confound aligned with chunk position
+cannot produce the gradient: such a confound is fixed once the frames are fixed.
+
 ## Files
 
 - `e51_dump_all.py` with `SHIFT` → `dets-s5vit-{small,base}-shift5.npz`, carrying each frame's position
-- `e60_verify_shift.py` → `positions-shift{5,16}.npz`, `verify-shift{5,16}.log` — the GPU-free precondition
-- `e60_paired.py` → `paired.json` — the within-frame contrast and its cluster bootstrap
+- `e60_verify_shift.py` → `positions-shift{5,10,15,16}.npz`, `verify-shift{5,10,15,16}.log` — the GPU-free precondition
+- `e60_paired.py` → `paired.json`, `paired-shift{0,5,10,15}.json` — the within-frame contrast and its cluster bootstrap
+- `e60_dose.py` → `dose.json` — the four amounts assembled, with the same-frames and null-arm gates
+- `e60_paired_regress_check.py` — SHIFT=5 must reproduce `paired.json` field for field
+- `run_e60_sweep.sh`, `run_e60_paired_sweep.sh` — the four dumps, then the four paired records
 - `run_e60.sh` — verification, then the GPU 1 wait, then both dumps
 - `dets-s5vit-small-shift16.BROKEN-earlier-clamp.npz` — defect A, kept as evidence

@@ -49,6 +49,12 @@ SHORT = (0, 4)
 # and is the null arm: the two dumps are the same protocol, so the paired delta must be 0.
 GAIN = frozenset((p - SHIFT) % CHUNK for p in range(*SHORT))
 
+# Console labels for the two arms, in windows of recurrent history: a frame at chunk
+# position p was given p + 1 windows. Derived from SHORT and GAIN rather than written
+# out, so the log cannot report the SHIFT = 5 block, 17-20, while scoring another.
+SHORT_LAB = f'{SHORT[0] + 1}-{SHORT[1]}'
+GAIN_LAB = f'{min(GAIN) + 1}-{max(GAIN) + 1}'
+
 
 def frames_at(pos, lo, hi):
     return np.flatnonzero((pos >= lo) & (pos < hi))
@@ -182,8 +188,8 @@ if __name__ == '__main__':
                         ('conf', 'mean confidence'), ('conf_tp', 'mean confidence, IoU>=0.5 matched'),
                         ('dpf', 'detections per frame')):
             lo, hi = r[k]
-            print(f'      {unit:38s} 1-4 win {lo:8.4f}   17-20 win {hi:8.4f}   paired {hi - lo:+8.4f}',
-                  flush=True)
+            print(f'      {unit:38s} {SHORT_LAB} win {lo:8.4f}   {GAIN_LAB} win {hi:8.4f}'
+                  f'   paired {hi - lo:+8.4f}', flush=True)
 
     print(f'cluster bootstrap B={B} over {len(BOUNDS)} sequences', flush=True)
     with Pool(NPROC) as p:

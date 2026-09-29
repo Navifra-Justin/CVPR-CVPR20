@@ -28,13 +28,13 @@ metadata. No model is trained.
 how each was caught — twelve cases, including three in which a checker reported a pass while
 printing the failure. The numbers that survived are the ones that survived those.
 
-**`src/audit_numbers.py`** re-derives 118 of the manuscript's macros from the artifacts they
+**`src/audit_numbers.py`** re-derives 328 of the manuscript's macros from the artifacts they
 came from and fails if any disagrees. It is itself mutation-tested, and it fails on a macro it
 knows how to derive whose artifact has gone, because silently dropping such a macro is the
 failure mode that once let eleven withdrawn numbers stand.
 
 ```
-python3 src/audit_numbers.py     # 118 macros checked, 0 disagree
+python3 src/audit_numbers.py     # 328 macros checked, 0 disagree
 ```
 
 ## Reproducing

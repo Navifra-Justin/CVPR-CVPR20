@@ -1038,6 +1038,32 @@
 \newcommand{\ssmPairedMapVelSmallZ}{9.3}
 \newcommand{\ssmPairedConfBaseZ}{12.0}
 \newcommand{\ssmPairedConfSmallZ}{14.6}
+%% Convergent validity of the two chunk-position designs on S5-B, in mAP points:
+%% |E60 same-frame paired - E58 placebo-differenced| = |5.23 - 5.32|. The designs share
+%% no identifying assumption, so their agreement is evidence and not a consistency check.
+\newcommand{\ssmPairedAgreeBase}{0.09}
+
+%% E60 read as a dose-response instead of a single contrast. The boundary is moved by
+%% four amounts, so the same starved frames are re-scored with +0, +6, +11 and +16 further
+%% windows of recurrent history. Because the rotation is modular, all three treated amounts
+%% land on the same \ssmDoseN{} frames: this is one population under three doses, not three
+%% separate comparisons, and src/e60_dose.py asserts the frame sets are equal before
+%% writing experiments/e60_shift/dose.json. The +0 arm re-runs the release's own boundary
+%% placement through the whole pipeline and must come out exactly zero, which is the
+%% intervention's negative control; \ssmDoseNull is |dS5-B| + |dS5-S| on that arm.
+%% The +16 rung is the amount already reported above, so it is not renamed here --
+%% \ssmPairedMapVelBase and its three companions are that rung, and audit_numbers.py
+%% checks them against dose.json as well as against paired.json.
+\newcommand{\ssmDoseN}{3\,574}
+\newcommand{\ssmDoseNull}{0.00}
+\newcommand{\ssmDoseBaseSix}{3.73}
+\newcommand{\ssmDoseBaseSixSE}{0.35}
+\newcommand{\ssmDoseSmallSix}{3.54}
+\newcommand{\ssmDoseSmallSixSE}{0.39}
+\newcommand{\ssmDoseBaseEleven}{4.91}
+\newcommand{\ssmDoseBaseElevenSE}{0.50}
+\newcommand{\ssmDoseSmallEleven}{4.29}
+\newcommand{\ssmDoseSmallElevenSE}{0.52}
 %% The qualitative pair in Fig. 2, and the population it was chosen from. The four
 %% count macros record what the panels themselves draw, so the drawn text and this
 %% file are checked against one source. The frame is the

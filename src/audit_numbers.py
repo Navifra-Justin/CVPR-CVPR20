@@ -368,8 +368,14 @@ for tag,key in (('small','s5vit-small-chunked'),('base','s5vit-base-chunked')):
         U=tag[0].upper()
         CHECKS += [(f'ssmParams{U}', _E47[key]['params_M'],        0.005),
                    (f'ssmBin{U}',    _E47[key]['bin_centroid_ms'], 0.005)]
-if _E48 and _E47:
-    _all=[v['bin_centroid_ms'] for v in list(_E48.values())+list(_E47.values())]
+# One value per released checkpoint, each driven the way its own release drives it,
+# which is what the manuscript's sentence counts. E47d added rvt-{t,s,b}-chunked.json
+# beside the SSM rows: those are the same three RVT checkpoints pushed through the SSM's
+# chunked instrument as E58's control, not further checkpoints, so counting the directory
+# would report each of them twice and make \archCkpts read 8.
+_E47SSM={k:v for k,v in _E47.items() if k.startswith('s5vit')}
+if _E48 and _E47SSM:
+    _all=[v['bin_centroid_ms'] for v in list(_E48.values())+list(_E47SSM.values())]
     CHECKS += [
      ('archCkpts',   len(_all),                                    0),
      ('archSpan',    max(_all)-min(_all),                          0.005),
@@ -378,7 +384,7 @@ if _E48 and _E47:
      ('archUnifMax', max(abs(v+25.0) for v in _all),               0.005),
      ('archUnifPct', 100*max(abs(v+25.0) for v in _all)/5.0,       0.5),
      ('archSamples', max((v.get('n') or 0) for v in _E48.values()),0),
-     ('archSamplesSsm', min((v.get('n') or 0) for v in _E47.values()),0),
+     ('archSamplesSsm', min((v.get('n') or 0) for v in _E47SSM.values()),0),
      ('archOther',   len(_all)-1,                                  0),
     ]
 _SP={}
@@ -437,6 +443,38 @@ if os.path.exists('experiments/e00_exposure_survey/fig7_stats.json'):
     CHECKS += [('ceilVarNight', _F7['zurich_city_09_a']['rate_max_over_min'], 0.05),
                ('ceilVarDay',   _F7['interlaken_00_c']['rate_max_over_min'],  0.05)]
 
+# E60 read at four shift amounts. dose.json is written by src/e60_dose.py, which also
+# gates the two properties the ladder depends on: every treated arm scores the same frames,
+# and the SHIFT = 0 arm is exactly inert. The +16 row is the headline shift and is already
+# covered by the \ssmPairedMapVel* entries above, so only the two intermediate doses get
+# their own macros and the null arm gets one shared zero.
+_DOSEWORD={6:'Six', 11:'Eleven', 16:'Sixteen'}
+if os.path.exists('experiments/e60_shift/dose.json'):
+    _DOSE=L('experiments/e60_shift/dose.json')
+    CHECKS.append(('ssmDoseN', _DOSE['n_paired'], 0))
+    for _r in _DOSE['rows']:
+        if _r['gained']==0:
+            CHECKS += [('ssmDoseNull', abs(_r['base'])+abs(_r['small']), 1e-12)]
+            continue
+        if _r['gained'] not in _DOSEWORD:
+            continue
+        # The +16 rung is the amount E60 already reported, so it is already named by the
+        # headline macros. Checking it under a second name would put the same measurement
+        # in numbers.tex twice and let the two copies drift; pointing this rung at the
+        # existing names instead makes the audit confirm that dose.json and the immutable
+        # paired.json agree on the rung they share.
+        if _r['gained']==16:
+            CHECKS += [('ssmPairedMapVelBase',    _r['base'],     0.005),
+                       ('ssmPairedMapVelBaseSE',  _r['base_se'],  0.005),
+                       ('ssmPairedMapVelSmall',   _r['small'],    0.005),
+                       ('ssmPairedMapVelSmallSE', _r['small_se'], 0.005)]
+            continue
+        _w=_DOSEWORD[_r['gained']]
+        CHECKS += [(f'ssmDoseBase{_w}',    _r['base'],     0.005),
+                   (f'ssmDoseBase{_w}SE',  _r['base_se'],  0.005),
+                   (f'ssmDoseSmall{_w}',   _r['small'],    0.005),
+                   (f'ssmDoseSmall{_w}SE', _r['small_se'], 0.005)]
+
 bad=0
 
 # A macro whose artifact has gone is worse than one that disagrees: it drops out of the
@@ -453,7 +491,9 @@ DERIVABLE={'archCkpts','archSpan','archLo','archHi','archSamples','archUnifMax',
            'stPxSlow','stPxMid','stPxHigh','stPxTop',
            'stCostSlow','stCostMid','stCostHigh','stCostTop',
            'stSpanAll','stNmoving',
-           'sweepRealFast','sweepRealPx','ceilVarNight','ceilVarDay'}
+           'sweepRealFast','sweepRealPx','ceilVarNight','ceilVarDay',
+           'ssmDoseN','ssmDoseNull'} | {f'ssmDose{_m}{_w}{_s}'
+           for _m in ('Base','Small') for _w in ('Six','Eleven') for _s in ('','SE')}
 _checked={c[0] for c in CHECKS}
 for name in sorted(DERIVABLE - _checked):
     if name in NUM:

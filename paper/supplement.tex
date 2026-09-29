@@ -917,6 +917,52 @@ precision move the same way: the starved arm emits more boxes and scores the rea
 lower. Neither channel is available to a reader of the pooled number, which averages over
 the chunk position that sets them.
 
+\subsection{The same frames under four boundary positions}
+\label{sup:dose}
+
+The comparison above moves the boundary by one amount, so it establishes that the starved
+block is recoverable without fixing how much history the recovery needs. Because the
+rotation $(p-S)\bmod\ssmEvalChunk{}$ is modular, the amount is a free parameter: at
+$S\in\{15,10,5\}$ the starved block, positions $0$--$3$, lands on $6$--$9$, $11$--$14$ and
+$16$--$19$, which is $+6$, $+11$ and $+16$ further windows of recurrent history. The three
+amounts select the same \ssmDoseN{} labeled frames, so the rungs are one population under
+three doses rather than three separate comparisons; \texttt{src/e60\_dose.py} asserts set
+equality of the selected frames before recording the curve. $S=0$ re-runs the release's own
+boundary placement through the identical pipeline and serves as the negative control.
+
+\begin{table}[h]
+\centering\footnotesize
+\setlength{\tabcolsep}{3.0pt}\renewcommand{\arraystretch}{0.95}
+\begin{tabular}{lrrr}
+\toprule
+windows of history gained & positions & S5-B & S5-S \\
+\midrule
+$+0$ (control) & $0$--$3$ & $\ssmDoseNull$ & $\ssmDoseNull$ \\
+$+6$ & $6$--$9$ & $\ssmDoseBaseSix\pm\ssmDoseBaseSixSE$ & $\ssmDoseSmallSix\pm\ssmDoseSmallSixSE$ \\
+$+11$ & $11$--$14$ & $\ssmDoseBaseEleven\pm\ssmDoseBaseElevenSE$ & $\ssmDoseSmallEleven\pm\ssmDoseSmallElevenSE$ \\
+$+16$ & $16$--$19$ & $\ssmPairedMapVelBase\pm\ssmPairedMapVelBaseSE$ & $\ssmPairedMapVelSmall\pm\ssmPairedMapVelSmallSE$ \\
+\bottomrule
+\end{tabular}
+\caption{$\Delta$mAP on velocity-evaluable boxes, in points, for the same \ssmDoseN{}
+frames re-scored after the chunk boundary is moved by four amounts. The sign is the long
+arm minus the short one. Cluster bootstrap over the \outSeqsScanned{} sequences with
+\ssmPairedB{} replicates; the $+16$ row is the paired estimate of Tab.~\ref{tab:paired}.
+The control arm is exactly zero rather than small: with $S=0$ the rotation is the identity,
+so every frame is compared with its own score.}
+\label{tab:dose}
+\end{table}
+
+Both checkpoints increase monotonically in the history gained, and the increments fall as
+the history grows: on S5-B the first $+6$ windows recover \ssmDoseBaseSix{} of the
+\ssmPairedMapVelBase{} points, and the remaining $+10$ windows recover the rest. S5-S
+behaves the same way at a lower level. Two properties of the measurement follow. The effect
+is graded in the quantity the intervention manipulates, which a frame-difficulty confound
+aligned with chunk position would not produce, since that confound is fixed once the frames
+are fixed and these rungs share their frames. And the response is closer to saturation at
+$+16$ than at $+6$, so the deficit is concentrated in the first windows after a boundary.
+The curve is measured at four amounts on one dataset and one architecture family, and the
+saturation point is therefore not estimated beyond the ordering of these rungs.
+
 \section{The recurrent influence tail}
 
 Main Sec.~3.3 reports that the window-ablation-sensitivity centroid tracks the horizon

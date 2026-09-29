@@ -40,10 +40,15 @@ for TAG in small base; do
     hostfree=$(free -m | awk '/^메모리:|^Mem:/{print $7}')
     if [ "${free1:-0}" -ge "$NEED" ] && [ "${hostfree:-0}" -ge "$HOSTNEED" ]; then
       echo "=== s5vit-$TAG shift=$SHIFT on GPU$G (gpu free ${free1} MiB, host free ${hostfree} MiB) $(date -u +%H:%M:%SZ)"
+      # h5py is not in the image; it arrives with hdf5plugin from this pip install, so a failed
+      # pip surfaces later as ModuleNotFoundError at e51_dump_all.py line 21 and reads like a
+      # code fault. The earlier form piped pip through `tail -0`, which discarded the real
+      # error. Keep the output and exit 90 on a dependency failure, so the retry below is
+      # known to be retrying a download and not re-running broken code.
       docker run --rm --gpus "\"device=$G\"" --memory=32g --user $(id -u):$(id -g) -e HOME=/tmp \
         -e DEV=cuda:0 -e FAM=ssm -e TAG=$TAG -e SHIFT=$SHIFT -e OUT=$OUT \
         -v $PWD:/work -w /work cvpr19-gpu-g1:torch2.7.1-cu128 \
-        bash -lc "pip install -q --user hdf5plugin omegaconf hydra-core einops StrEnum scipy 2>&1|tail -0; python3 -u /work/src/e51_dump_all.py"
+        bash -lc "pip install --user hdf5plugin omegaconf hydra-core einops StrEnum scipy >/tmp/pip.log 2>&1 || { echo PIP_FAILED; tail -15 /tmp/pip.log; exit 90; }; python3 -u /work/src/e51_dump_all.py"
       rc=$?; echo "TAG=$TAG exit=$rc $(date -u +%H:%M:%SZ)"
       [ $rc -eq 0 ] && break
       echo "retry in 300s"; sleep 300

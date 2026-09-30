@@ -28,7 +28,7 @@ in Event-Detection Evaluation Pipelines\\[0.3em]
 \maketitle
 
 \noindent
-This document holds the material referred to from the main paper: the
+This document holds the material referred to from the main paper. It covers the
 errors-in-variables treatment of the velocity regressor, the protocol behind the
 ablation measurement, the data paths of the DSEC measurements, and additional
 implementation and control analyses. The RVT source revision is
@@ -39,7 +39,7 @@ validation-split claims obtained from ported released checkpoints, and sequence-
 claims use the \outSeqsScanned{} sequences represented in the stored-detection evaluation.
 
 \section{The velocity regressor}
-\paragraph{Reproducibility.} Code, configuration files, data-preparation scripts and the exact evaluation scripts used for every table and figure in the main paper and this supplement will be released upon acceptance; all reported numbers were produced with the released configuration.
+\paragraph{Reproducibility.} Code, configuration files, data-preparation scripts and the exact evaluation scripts used for every table and figure in the main paper and this supplement will be released upon acceptance. All reported numbers were produced with the released configuration.
 
 \label{sup:denominator}
 
@@ -60,7 +60,7 @@ difference over $\pm\Delta$. The differenced speed then carries noise with varia
 and $\tau$ is attenuated toward zero by
 $\lambda_{\mathrm{att}}=\mathrm{Var}(v)/(\mathrm{Var}(v)+\sigma_{\eta}^{2})$.
 The noise is the label noise of the dataset the fit runs on, so it is measured
-there: Sec.~\ref{sup:labelnoise} solves for $\sigma_{c}=\labelSigmaGen$\,px on
+there. Sec.~\ref{sup:labelnoise} solves for $\sigma_{c}=\labelSigmaGen$\,px on
 Gen1 itself, and Eq.~\ref{eq:dilution} is evaluated row by row instead of assuming a fixed cadence. On the
 reported rows $\mathrm{Var}(\eta)$ is \eivVarNoise{} against a
 $\mathrm{Var}(\tilde v)$ of \eivVarObs{} in px$^{2}$/s$^{2}$, so
@@ -96,14 +96,14 @@ interpretation.
 regressor alone. The third couples the regressor to the response. A forward
 difference $(c^{*}_{k+1}-c^{*}_{k})/\Delta$ carries the label noise $\delta_{k}$ of
 the current center with weight $-1/\Delta$, and the residual
-$\hat{c}-c^{*}_{k}$ carries the same $\delta_{k}$ with weight $-1$, so
+$\hat{c}-c^{*}_{k}$ carries the same $\delta_{k}$ with weight $-1$. The two therefore covary.
 
 \begin{equation}
 \operatorname{Cov}\!\left(\hat{c}-c^{*}_{k},\,v_{f}\right)=\frac{\operatorname{Var}(\delta)}{\Delta}
 \label{eq:shared}
 \end{equation}
 
-\noindent even at $\tau=0$, and the induced slope is
+\noindent That holds even at $\tau=0$, and the induced slope is
 $\operatorname{Var}(\delta)/\Delta\operatorname{Var}(v)$. A backward difference
 carries $\delta_{k}$ with the opposite sign. The centered difference omits
 $c^{*}_{k}$ and removes the direct same-frame shared-noise term. Residual bias
@@ -116,9 +116,9 @@ estimate would replace the current speed by a velocity finite differenced from a
 strictly disjoint earlier label pair, on the argument that disjointness implies
 independent errors. DSEC provides a counterexample to assuming that disjoint
 label errors are generally independent. The third-difference kernel $(1,-3,3,-1)$ forces
-$\rho(1)=\labelAcfTheory$ for white noise, the same code returns
-$\labelAcfWhite$ on white noise and $\labelAcfMeasured$ on the DSEC-Det labels,
-and pooled-ratio bias, heteroscedastic segments and heavy tails each returned the
+$\rho(1)=\labelAcfTheory$ for white noise, and the same code returns
+$\labelAcfWhite$ on white noise and $\labelAcfMeasured$ on the DSEC-Det labels.
+Pooled-ratio bias, heteroscedastic segments and heavy tails each returned the
 white-noise value through the identical pooling code, so the departure is a
 property of the labels. That measurement does not identify what the correlation
 structure is, beyond excluding a first-order autoregressive form. The paper does
@@ -142,10 +142,10 @@ Main Sec.~3.3 measures the window-ablation sensitivity profile of the released
 \rvtBins{} bins of \rvtBinWidth\,ms covering the \rvtWindow\,ms preceding the
 query time. For each sample the recurrent state is advanced over
 \rvtWarmSteps{} preceding steps so that the network is not read out of a zero
-state, the reference output is recorded, and then each bin in turn is zeroed and
+state. The reference output is recorded, and then each bin in turn is zeroed and
 the output recorded again. A bin's influence is the magnitude of the change its
-ablation produces in the emitted detection tensor, relative to its norm,
-averaged over
+ablation produces in the emitted detection tensor, relative to its norm. That
+magnitude is averaged over
 \rvtInfluenceSamples{} samples drawn from the first twelve lexicographically
 ordered released Gen1 validation sequences, using the first forty post-warm-up
 samples from each sequence. This deterministic rule gives 480 samples. The
@@ -177,13 +177,13 @@ history is used for the reference and ablated passes at each lag.
 Two fills define $q_{\ell}$, and the manuscript reports both. Under the \emph{zero fill}
 the selected window is set to zero. Under the \emph{swap fill} it is replaced by the window
 at the same within-chunk index drawn from an unrelated sample in a different validation
-sequence, which preserves a real window's bin statistics and dynamic range while removing
+sequence. That fill preserves a real window's bin statistics and dynamic range while removing
 that window's own content. Everything else is held identical across the two: the same lag,
 the same restored reference history, the same propagation through the intervening windows,
 and the same relative $L_{2}$ read-out. The two are interventions rather than ground truth
 and they do not agree on scale, which is why both are reported. From lag $0$ to lag $19$ the
-zero fill decays by a factor of \histDecayZero{} and the swap fill by \histDecaySwap{}, and
-the ratio of swap to zero sensitivity rises from \histSwapRatioLo{} at lag $0$ to
+zero fill decays by a factor of \histDecayZero{} and the swap fill by \histDecaySwap{}. The
+ratio of swap to zero sensitivity rises from \histSwapRatioLo{} at lag $0$ to
 \histSwapRatioHi{} at lag $19$. Under the swap fill a window a second earlier still carries
 \histTailSwapPct\,\% of the newest window's sensitivity. Substantial long-lag sensitivity
 therefore persists under the on-manifold intervention, although its absolute magnitude remains
@@ -197,8 +197,8 @@ derivative of the output, not a decomposition of it.
 
 Because the profile is defined by an intervention, the centroid is reported under four
 instruments instead of one. Zeroing a bin gives \occZero\,ms, setting it to its dataset
-mean \occMean\,ms, replacing it with the same bin of an unrelated sample \occSwap\,ms, and
-the gradient of the output norm with respect to the bin, which ablates nothing at all,
+mean \occMean\,ms, and replacing it with the same bin of an unrelated sample \occSwap\,ms.
+The gradient of the output norm with respect to the bin, which ablates nothing at all, gives
 \occGrad\,ms. The four span \occSpread\,ms. Two of them remove content, one substitutes
 foreign content and one perturbs nothing, so their agreement is not a property shared by
 construction. The property the manuscript uses the centroid for, that it sits tens of milliseconds
@@ -241,7 +241,7 @@ $\sigma^{2}$ from above. Halving the sampling rate multiplies the motion term by
 $4^{k}$ and leaves $\sigma^{2}$ untouched, giving a second equation in the same
 two unknowns, $\sigma^{2}=(4^{k}V_{\text{full}}-V_{\text{half}})/(4^{k}-1)$.
 Tracks are rebuilt by the same-class overlap linking the output-time
-measurement uses, giving \labelTracksGen{} tracks of at least twelve labels on
+measurement uses. That gives \labelTracksGen{} tracks of at least twelve labels on
 uniform annotation grids with cadences of 250, 500, or 1000\,ms, corresponding
 to 4, 2, or 1\,Hz. The reported regression rows instead use the two adjacent
 label neighbors with variable intervals. Their row-wise noise variance is
@@ -300,16 +300,16 @@ specification carrying geometric controls, including speed floors from 5 to
 ablation-sensitivity centroid.
 
 \paragraph{Association independent of nominal-time overlap.} The rows are built by
-matching a detection to a label at the label's nominal time, so a gate on overlap could in
+matching a detection to a label at the label's nominal time. A gate on overlap could in
 principle discard exactly those detections whose temporal offset is large and select $\tau$
 toward zero. Raising the floor cannot detect that, because it discards more. The informative
 direction is to open the gate or to remove it. \texttt{src/e62\_association.py} rebuilds
 the rows from the five-checkpoint detection dump of Sec.~11 under \assocRules{} association
-rules and refits the reported specification under each: greedy and Hungarian assignment at
-overlap floors from 0.05 to 0.50, and a rule that never tests overlap at all, admitting a
-detection whose center falls within a fixed multiple of the label's box scale. That dump is
+rules and refits the reported specification under each. The rules are greedy and Hungarian
+assignment at overlap floors from 0.05 to 0.50. One rule never tests overlap at all, admitting
+a detection whose center falls within a fixed multiple of the label's box scale. That dump is
 re-thresholded to the regression's confidence floor of 0.1, but its non-maximum suppression
-was run at 0.65 against the 0.45 of the dump behind main Tab.~1, and re-thresholding does not
+was run at 0.65 against the 0.45 of the dump behind main Tab.~1. Re-thresholding does not
 undo the looser suppression. The rebuild's own $0.30$ gate therefore keeps \assocGateN{} rows
 against the \outMatches{} of the reported table and returns
 $\assocGate\,\pm\,\assocGateSE$\,ms against
@@ -362,7 +362,7 @@ by speed. Main Eq.~2 includes an intercept.
 
 The released \texttt{rvt-t} checkpoint loads into a model built from the
 repository's own configuration files with \rvtMissingKeys{} missing and
-\rvtUnexpectedKeys{} unexpected keys at \rvtParams\,M parameters, and runs
+\rvtUnexpectedKeys{} unexpected keys at \rvtParams\,M parameters. It runs
 forward under a current framework without the training code it was serialized
 from. Both predictor measurements run on that port. A key count is a structural
 check, so two numerical ones are reported alongside it.
@@ -382,11 +382,11 @@ the scorer.
 
 \paragraph{Validation-split and checkpoint-port limitations.} The published Gen1 tables are reported on the
 \emph{test} split. The release distribution available to this work carries the validation
-split alone, \portSeqs{} sequences with no test directory, so the levels above are
-validation-split levels and the published numbers are used only for the parameter comparison
+split alone, \portSeqs{} sequences with no test directory. The levels above are therefore
+validation-split levels, and the published numbers are used only for the parameter comparison
 and for the ordering within RVT, which is preserved. A pass of the original training-code
 path on identical samples, to give a per-sample output difference against the port, requires
-the training framework the checkpoints were serialized from and is left to the artifact
+the training framework the checkpoints were serialized from. That pass is left to the artifact
 release. Of the 429 released validation sequences, 406 enter the stored-detection evaluation
 used for sequence resampling. The remaining 23 are excluded because they contribute no
 stored-detection rows. All bootstrap results in Secs.~12--13 resample these 406 sequences.
@@ -485,7 +485,7 @@ with each other. The locked fraction denotes the fraction of boxes whose local e
 
 \paragraph{Data path.} For each labeled frame of a sequence, the frame's own
 exposure interval $[a,b]$ is read from the dataset's published
-\texttt{image\_exposure\_timestamps\_left} file, the event stream is sliced to
+\texttt{image\_exposure\_timestamps\_left} file. The event stream is sliced to
 that interval through the release's \texttt{ms\_to\_idx} index, and the events
 inside each released box are collected. The \texttt{ms\_to\_idx} index resolves to
 whole milliseconds, so the slice it returns is filtered to $a\le t<b$ in
@@ -493,7 +493,7 @@ microseconds before any statistic is formed, and the analytic null is computed f
 the same interval. Events and frames share one clock in this dataset, so no
 calibration step enters. For the dispersion of main Sec.~5.4 a box contributes
 only if it carries at least \minEvents{} events in the window, and a frame only
-if at least \minObjects{} boxes qualify, the reported statistics are medians over
+if at least \minObjects{} boxes qualify. The reported statistics are medians over
 frames of a within-frame quantity, so no frame is weighted by its object count.
 For the per-box statistics of Table~\ref{tab:sixseq} a box contributes with at
 least \sixMinEvents{} events and no frame-level requirement applies. The selected
@@ -518,7 +518,7 @@ entries are the medians of $d_f$, $n_f$, and $e_f$ over eligible frames.
 
 \paragraph{The stereo exposures.} The left and right exposures open at the same microsecond
 in \dsecCotriggerPct\,\% of the \dsecCotriggerFrames{} frames checked and differ only in
-when they close, and the published image timestamp equals the mean of the two
+when they close. The published image timestamp equals the mean of the two
 mid-exposures to within \dsecTsResidual\,\micro s.
 
 \paragraph{Archive version and track association.} DSEC-Det ships more than
@@ -527,13 +527,13 @@ one annotation version. The numbers in main Sec.~5.1 describe the archive
 retrieved \ddArchiveDate{}. Whether those labels are tracker output on the RGB
 frames, which the dataset's own description states, is not distinguishable from
 human annotation by a second-difference residual. On the Gen1 side the
-\texttt{track\_id} field is a per-frame index instead of a persistent identifier,
-so association for the output-time fit is rebuilt by same-class overlap between
+\texttt{track\_id} field is a per-frame index instead of a persistent identifier.
+Association for the output-time fit is rebuilt by same-class overlap between
 adjacent label times, at which \outLinkPct\,\% of boxes link.
 
 \paragraph{Null.} For events uniform on $[a,b]$ the mean of $N_{i}$ times has
 variance $w^{2}/12N_{i}$ with $w=b-a$. Each frame therefore carries its own null,
-formed from the published width and the observed counts, and the excess of main
+formed from the published width and the observed counts. The excess of main
 Sec.~4.4 is summarized over frames rather than formed from the medians of the two
 summaries. That is why the excess column of Table~\ref{tab:controls} is not
 $(\mathrm{sd}^{2}-\mathrm{null}^{2})^{1/2}$ of the two columns beside it.
@@ -568,19 +568,19 @@ and the daytime control.
 
 \paragraph{Pixel exclusion and modulation strata.} The exclusion mask of
 Table~\ref{tab:controls} is the set of pixels reaching $p<10^{-3}$ in the
-per-pixel test, and the
+per-pixel test. The
 matched control draws a random pixel set of exactly the same size, so the two
 arms remove the same number of pixels. The mask is built from a six-second slice
-at every fourth event. The stratification uses no mask: the quartiles of $m$ are
+at every fourth event. The stratification uses no mask. The quartiles of $m$ are
 taken over all \modBoxes{} qualifying boxes, and a frame contributes to a stratum
-when at least \minObjects{} of its boxes fall inside it, which is why the frame
-counts of that block are not a partition of the first row's.
+when at least \minObjects{} of its boxes fall inside it. The frame
+counts of that block are therefore not a partition of the first row's.
 
 \section{The permutation null}
 \label{sup:perm}
 
 The analytic null $w^{2}/12N_{i}$ for the main Sec.~5.4 statistic is the variance of a mean of
-$N_{i}$ draws uniform on the exposure, so it assumes the events of a box arrive
+$N_{i}$ draws uniform on the exposure. It assumes the events of a box arrive
 independently and uniformly.
 
 The permutation null does not assume independent or uniform event arrivals. Instead,
@@ -618,19 +618,19 @@ and therefore no output. The carried state is inert.
 We verify this code-level property empirically. Driving each model the way its own release
 drives it and zeroing the state entering a chunk of \ssmChunkMeas{} windows, the relative
 $L_{2}$ change in the emitted detection tensor is \ssmStateEffect{} at every position for
-SSM-ViT, and \rvtStateEffectOne{} at position one falling to \rvtStateEffect{} at the last
-position for \texttt{rvt-t}. A model that ignored its history altogether would return zero to
-both arms, so the control ablates the window one position earlier inside the same chunk:
-SSM-ViT answers \ssmInchunkOne{} there, falling to \ssmInchunkLast{}, so it is recurrent
-within a chunk and only across chunks is the state lost.
+SSM-ViT. For \texttt{rvt-t} it is \rvtStateEffectOne{} at position one, falling to
+\rvtStateEffect{} at the last position. A model that ignored its history altogether would return zero to
+both arms, so the control ablates the window one position earlier inside the same chunk.
+SSM-ViT answers \ssmInchunkOne{} there, falling to \ssmInchunkLast{}. It is recurrent
+within a chunk, and only across chunks is the state lost.
 
 \section{Effect of temporal displacement on checkpoint ordering}
 
 Main Sec.~3.5 reports that displacing the ground truth to the newest window's ablation-sensitivity centroid costs
 \mapCost{} points on one checkpoint. Whether the interval changes a \emph{comparison} needs
 more than one detector, so all \rankCkpts{} released checkpoints of main Sec.~4.3 were run
-over the Gen1 validation split under one protocol: the same frames, the same confidence
-floor of 0.01 and non-maximum-suppression overlap of 0.65, and ground truth that is identical
+over the Gen1 validation split under one protocol. That protocol fixes the same frames, the same confidence
+floor of 0.01 and non-maximum-suppression overlap of 0.65. The ground truth is identical
 across the five and identical to the dump main Sec.~4.5 already uses. Each was then scored at the label instant
 and again at the displacement it prefers, which ranges from \rankArgLo{} to \rankArgHi\,ms
 across the five.
@@ -671,8 +671,9 @@ The released streaming evaluation steps through the split in non-overlapping chu
 available recurrent history of a released detection therefore depends on where its frame falls
 inside that chunk, from a full \ssmEvalChunk{} windows at the last position to the current window
 alone at the first. This is reported as a property of the release that its documentation does
-not state, which is the same class of undeclared quantity the rest of this paper measures,
-and not as a claim about what the architecture could support if the state were carried.
+not state, which is the same class of undeclared quantity the rest of this paper measures.
+It is not reported as a claim about what the architecture could support if the state were
+carried.
 
 
 \section{Timing differences against the sampling uncertainty of the score}
@@ -682,13 +683,13 @@ mAP by \mapCost{} points and reorders no checkpoint. On a fixed split both are
 deterministic functions of the stored detections, so neither is interpretable without the
 uncertainty that attaches to reading them as statements about the sequence population the
 split samples. Frames inside a sequence are
-dependent, so the resampling unit is the sequence: a cluster bootstrap over the
+dependent, so the resampling unit is the sequence. A cluster bootstrap over the
 \outSeqsScanned{} validation sequences was run for all \rankCkpts{} checkpoints at each
 displacement, resampling sequences with replacement and rescoring from the stored
 detections.
 
 Two standard errors must be distinguished. A claim made \emph{within} one paper compares
-that paper's own score at two displacements on one set of detections, so the relevant
+that paper's own score at two displacements on one set of detections. The relevant
 quantity is the paired $\mathrm{SE}(\Delta\mathrm{mAP})$, which is \seDmapLo--\seDmapHi{}
 points across the five checkpoints. A claim that compares \emph{across} papers compares two
 absolute numbers, and the relevant quantity is $\mathrm{SE}(\mathrm{mAP})$, which is
@@ -717,7 +718,7 @@ to timing displacements of this size cannot be used to certify that a timing con
 immaterial.
 
 That ordering is itself unstable. The reference ordering here is the one the \rankCkpts{}
-checkpoints take on this validation split at the nominal label time, not the ordering of
+checkpoints take on this validation split at the nominal label time. It is not the ordering of
 the published Gen1 tables, which are reported on the test split this release does not carry
 (Sec.~\ref{sup:port}). Resampling the same \outSeqsScanned{} sequences and re-ranking
 within each replicate, that validation-split ordering is reproduced in \rankHoldMov\,\% of
@@ -741,14 +742,14 @@ each stratum's median $r$ increases the dispersion of the $5\,\%$-loss timescale
 mAP thresholds each box instead of averaging over them. Under the single-threshold
 caricature, in which a box loses its match once displaced past $d^{\star}$ box-widths and is
 untouched before, the fraction of boxes lost at displacement $\delta$ is
-$P(r > d^{\star}/\delta)$, so the displacement at which a loss level $p$ is reached is
+$P(r > d^{\star}/\delta)$. The displacement at which a loss level $p$ is reached is
 $D(p) = d^{\star} / Q_{1-p}(r)$. The scale-setter is the quantile \emph{matched to the loss
 level being read off}, not the median or any fixed quantile. Scaled that way the strata
 do collapse, to a coefficient of variation of \collapseCV{} at the $5\,\%$ level over three
 strata and \rankCkpts{} checkpoints, with $d^{\star} = \collapseD \pm \collapseDsd$
 box-widths. That constant also follows from the matching geometry. Displacing a square box by a
 fraction $d$ of its width gives $\mathrm{IoU} = (1-d)/(1+d)$, so $d^{\star}$ is the
-displacement that breaks a match at $\mathrm{IoU} = \collapseIoU$, inside the
+displacement that breaks a match at $\mathrm{IoU} = \collapseIoU$. That threshold lies inside the
 $0.50$:$0.05$:$0.95$ range this mAP averages over and near its top, where the first few
 percent of loss arise. The model degrades as the caricature should, to \collapseCVten{}
 at $10\,\%$ loss and \collapseCVqtr{} at $25\,\%$. The $\geq\mapCutHi\,$px/s stratum is the
@@ -773,26 +774,26 @@ motion and box-size distributions.
 
 \section{Recurrent support under the released streaming evaluation}
 
-The previous section established that the carried state of the SSM release is inert, so
-under its own streaming evaluation the recurrent history behind a detection is bounded by
+The previous section established that the carried state of the SSM release is inert. Under
+its own streaming evaluation the recurrent history behind a detection is bounded by
 the current chunk of \ssmEvalChunk{} windows. That bound is not constant across detections:
 a frame at the first position of a chunk carries one window, and a frame at the last carries
 \ssmEvalChunk{}. The reported Gen1 number averages over all \ssmEvalChunk{} positions, and
 neither the metric, the protocol, nor the published table names the variable.
 
 The position is recoverable without running anything. The release derives its chunk starts
-from the index files it ships: the first chunk begins at
+from the index files it ships. The first chunk begins at
 \begin{center}\footnotesize\ttfamily
 max(objframe\_idx\_2\_repr\_idx[0]\\ $-$ sequence\_length $+$ 1, 0)
 \end{center}
-and later chunks step by \texttt{sequence\_length}, so the position of every labeled frame
-follows from those files alone. Reconstructing it over the \mapFrames{} labeled frames reproduces, position by
+and later chunks step by \texttt{sequence\_length}. The position of every labeled frame
+therefore follows from those files alone. Reconstructing it over the \mapFrames{} labeled frames reproduces, position by
 position, the positions the instrumented dumper records at run time.
 
 Comparing the frames at positions $0$--$3$ with those at positions $16$--$20$ confounds
 support with scene content, since these are different frames. The three RVT checkpoints
-control for that: they see the identical frames in the identical order, but their ConvLSTM
-state is carried across chunks, so position in the chunk is not a support variable for them
+control for that. They see the identical frames in the identical order, but their ConvLSTM
+state is carried across chunks. Position in the chunk is not a support variable for them,
 and any difference they show is scene content. Differencing removes it. Sec.~\ref{sup:rvtbound}
 measures that insensitivity on the same checkpoints instead of assuming it. Tab.~\ref{tab:chunk}
 scores every labeled box, the population the released numbers use, and bootstraps over the
@@ -831,7 +832,7 @@ differencing them reproduces the raw column exactly. Cluster bootstrap over
 The RVT placebos isolate chunk-position effects under the parallel-trends assumption, which
 Sec.~\ref{sup:rvtbound} tests directly by shifting the boundary under the RVT checkpoints
 themselves. The RVT checkpoints span the same
-\chunkShortT--\chunkShortB{} mAP range and are scored on the same frames, and their rows
+\chunkShortT--\chunkShortB{} mAP range and are scored on the same frames. Their rows
 show no comparable shift, which argues against frame difficulty at early chunk positions as the source
 (Fig.~\ref{fig:chunkfull}).
 
@@ -849,11 +850,11 @@ Shaded: the one-to-four-window block.}
 
 A permutation null tests whether the reconstructed correspondence itself can account for the effect.
 Chunk position is
-reshuffled among the frames of each sequence, which preserves the scene, the sequence
+reshuffled among the frames of each sequence. That preserves the scene, the sequence
 lengths, the label density and the sizes of both blocks, and destroys only the
 correspondence between a frame and the history the protocol gave it. Over \chunkPermB{}
 reshuffles the difference-in-differences is centered on zero with a standard deviation of
-\chunkPermSd{} points, and the observed values lie \chunkPermZBase{} and
+\chunkPermSd{} points. The observed values lie \chunkPermZBase{} and
 \chunkPermZSmall{} standard deviations outside it ($p=\chunkPermP$, the smallest value
 \chunkPermB{} reshuffles can return), while every placebo stays within
 \chunkPermPlaceboZ{}. The effect disappears when the correspondence between a frame and
@@ -874,7 +875,7 @@ their respective full-support frames.
 \label{sup:paired}
 
 Every estimate above compares different frames and therefore rests on a parallel-trends
-assumption: absent the support difference, frames that fall early and late in a chunk are
+assumption. Absent the support difference, frames that fall early and late in a chunk are
 assumed to differ only by a model-independent offset. The placebos make that
 assumption testable, but they do not remove it.
 
@@ -882,9 +883,9 @@ The release's chunk starts follow from the index files, so moving them is a one-
 to the protocol and not to the model. Shifting every start \ssmPairedShift{} windows later
 sends the frame the release gave position $p$ to position $(p-\ssmPairedShift)\bmod
 \ssmEvalChunk{}$, which carries the starved block, positions $0$--$3$, onto $16$--$19$.
-Those frames are then scored twice: once with one to four windows of recurrent history, as
-the release scores them, and once with seventeen to twenty, under the same weights, the same
-ground truth and the same evaluator. \ssmPairedN{} labeled frames satisfy both, and the
+Those frames are then scored twice. The first arm gives one to four windows of recurrent
+history, as the release scores them, and the second seventeen to twenty. Both use the same
+weights, the same ground truth and the same evaluator. \ssmPairedN{} labeled frames satisfy both, and the
 comparison is within model and within frame. Shifting \emph{earlier} does not work: the
 release's own first start is already clamped at zero for most sequences, so most frames
 would keep the position they had.
@@ -917,8 +918,8 @@ Both paired estimates move in the same direction as the chunk-position contrast.
 are not compared directly because the velocity-evaluable and all-label populations differ.
 The remaining two rows of Tab.~\ref{tab:paired} show what moves. Confidence rises on the detections that
 match a label, by \ssmPairedConfTpBase{} and \ssmPairedConfTpSmall{}, and total output
-falls by \ssmPairedDpfBase{} and \ssmPairedDpfSmall{} boxes per frame, so both terms of
-precision move the same way: the starved arm emits more boxes and scores the real ones
+falls by \ssmPairedDpfBase{} and \ssmPairedDpfSmall{} boxes per frame. Both terms of
+precision move the same way. The starved arm emits more boxes and scores the real ones
 lower. Neither channel is available to a reader of the pooled number, which averages over
 the chunk position that sets them.
 
@@ -927,11 +928,11 @@ the chunk position that sets them.
 
 The comparison above moves the boundary by one amount, so it establishes that the starved
 block is recoverable without fixing how much history the recovery needs. Because the
-rotation $(p-S)\bmod\ssmEvalChunk{}$ is modular, the amount is a free parameter: at
+rotation $(p-S)\bmod\ssmEvalChunk{}$ is modular, the amount is a free parameter. At
 $S\in\{15,10,5\}$ the starved block, positions $0$--$3$, lands on $6$--$9$, $11$--$14$ and
 $16$--$19$, which is $+6$, $+11$ and $+16$ further windows of recurrent history. The three
 amounts select the same \ssmDoseN{} labeled frames, so the rungs are one population under
-three doses rather than three separate comparisons; \texttt{src/e60\_dose.py} asserts set
+three doses rather than three separate comparisons. \texttt{src/e60\_dose.py} asserts set
 equality of the selected frames before recording the curve. $S=0$ re-runs the release's own
 boundary placement through the identical pipeline and serves as the negative control.
 
@@ -962,8 +963,8 @@ the history grows: on S5-B the first $+6$ windows recover \ssmDoseBaseSix{} of t
 \ssmPairedMapVelBase{} points, and the remaining $+10$ windows recover the rest. S5-S
 behaves the same way at a lower level. Two properties of the measurement follow. The effect
 is graded in the quantity the intervention manipulates, which a frame-difficulty confound
-aligned with chunk position would not produce, since that confound is fixed once the frames
-are fixed and these rungs share their frames. And the response is closer to saturation at
+aligned with chunk position would not produce. That confound is fixed once the frames
+are fixed, and these rungs share their frames. And the response is closer to saturation at
 $+16$ than at $+6$, so the deficit is concentrated in the first windows after a boundary.
 The curve is measured at four amounts on one dataset and one architecture family, and the
 saturation point is therefore not estimated beyond the ordering of these rungs.
@@ -980,13 +981,14 @@ property is measured here rather than taken from the source.
 RVT's per-window calls are grouped onto the same \ssmEvalChunk{}-window grid the SSM release
 uses, so a chunk position can be recorded for each frame and a boundary shift applied. With
 no shift and the state carried, the grouping is inert by construction, and
-\texttt{src/e65\_regress\_check.py} confirms it on the artifacts: every one of the
+\texttt{src/e65\_regress\_check.py} confirms it on the artifacts. Every one of the
 \rvtBoundDetsS{} RVT-\texttt{s} and \rvtBoundDetsB{} RVT-\texttt{b} detections is bit-identical to the
-stored per-window dump, the ground truth matches, and the recorded positions equal the
+stored per-window dump. The ground truth matches, and the recorded positions equal the
 release placement frame for frame. Without that identity a null below would be indistinguishable
 from a driver that dropped the treatment. Two regimes are then compared on the \rvtBoundN{}
-frames the shift carries from positions $0$--$3$ to $16$--$19$, the same selection rule and the
-same estimand as Tab.~\ref{tab:dose}: \emph{carry}, the released behavior, and \emph{reset},
+frames the shift carries from positions $0$--$3$ to $16$--$19$, under the same selection rule
+and the same estimand as Tab.~\ref{tab:dose}. The first is \emph{carry}, the released
+behavior. The second is \emph{reset},
 with the recurrent state dropped at every chunk start, which places RVT in the condition the
 SSM release is already in.
 
@@ -1019,7 +1021,7 @@ same weights on the same frames gain at least \rvtBoundResetMin{} points, a magn
 comparable to the \ssmPairedMapVelBase{} and \ssmPairedMapVelSmall{} points the SSM
 checkpoints show under the identical intervention. The carried arm therefore supports the
 parallel-trends control of main Sec.~3 as a measurement, and the reset arm shows
-that the shift reaches the model, so the null is a property of the released evaluation rather
+that the shift reaches the model. The null is a property of the released evaluation rather
 than of an intervention that failed to reach the model. Within this protocol the boundary deficit
 follows whether the recurrent state survives a boundary and not the architecture. The
 comparison covers two RVT capacities on Gen1 validation at one shift amount, and no claim is
@@ -1049,13 +1051,13 @@ For a support whose first moment has converged, the centroid ratio approaches $1
 increases, and a
 particular finite doubling need not give exactly $1$. The measured ratio is \tailRatio{}
 $[\tailRatioLo,\tailRatioHi]$, an interval excluding $1$, and follows from
-two measured centroids without a fit, so over the horizons measured here the centroid is
+two measured centroids without a fit. Over the horizons measured here the centroid is
 still moving with the horizon instead of settling. Two finite horizons cannot separate a
 slowly converging tail from a divergent one, and the exponent is fitted over the observed
 lag range. The measured horizons do not determine a converged full-history centroid.
 Conditionally, if the observed
 $I(L)\propto L^{-a}$ with $a<1$ persisted asymptotically, then both $\sum_L I(L)$ and
-$\sum_L L\,I(L)$ would diverge and the centroid over a horizon of $H$ windows of width $w$
+$\sum_L L\,I(L)$ would diverge. The centroid over a horizon of $H$ windows of width $w$
 would be $-wH(1-a)/(2-a)$, linear in $H$, and the first moment would then not exist. Either way
 \tailOutside\,\% of the summed window-ablation sensitivity already lies outside the current window, which is
 what the identifiability claim rests on.

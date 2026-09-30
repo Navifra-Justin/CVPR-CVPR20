@@ -486,3 +486,45 @@ evidence. This adds the case where there is no checker at all because the job's 
 looks like one: *verify that the intervention happened, not that the run finished.* An
 experiment whose treatment is a change of indexing can be checked on indices, and indexing is
 free. The check belongs before the GPU, not after it.
+
+## Case 14 — the gate whose fixture never looked like the artifact (2026-09-30)
+
+**What happened.** E65's wiring gate, `src/e65_regress_check.py`, is what decides whether the
+shifted arms are allowed to run: it requires the chunked SHIFT = 0 `carry` dump to reproduce
+the released per-window dump detection for detection. It was mutation-tested before it ran,
+7 of 7 corruptions rejected. Pointed at the real artifacts it died on its fourth check with
+`KeyError: 'pos is not a file in the archive'`, and the orchestrator correctly withheld the
+shifted arms.
+
+**It was the checker, not the wiring.** The three checks that had already passed were the
+substantive ones — detection count, bit-identity of all 101 591 detections, identical ground
+truth. The failure was a read of `a['pos']` on `experiments/e51_ranking/dets-rvt-s.npz`, which
+has no `pos` key at all because the per-window dumper predates that column. Absence is the
+expected state for that file.
+
+**Why the mutation test did not catch it.** The fixture in `src/e65_gate_selftest.py` built
+its reference dump with a `pos` array. Every one of the seven corruptions was applied to a
+file shaped unlike the real one, so the branch that the real artifact takes — the key missing
+entirely — was never executed. A mutation test only covers the shapes its fixture can produce.
+
+**The repair.** The check now accepts either form, absence or an all `-1` column. The fixture
+was changed to omit `pos`, as the real file does, and three cases were added: the all `-1`
+form must pass, a reference that already carries real positions must fail, and chunked
+positions that disagree with `experiments/e58_chunkpos/positions.npy` must fail. That last one
+is a new substantive requirement, not only a test: the chunked driver must land on the
+placement the released streaming evaluation already produced, frame for frame, or the RVT rows
+and the SSM rows would be two similar-looking comparisons on two different grids. The gate is
+now 10 checks, mutation-tested 10 of 10, and passes on both tags.
+
+**The rule this adds.** Case 11 established that a checker's summary line is not evidence, and
+Case 13 that a clean exit is not evidence the treatment was applied. This adds: *a checker's
+fixture must be able to produce the artifact's actual shape, including its absent fields.* The
+cheapest form of the rule is to build the fixture by reading one real artifact's key set rather
+than by writing down the key set the checker expects.
+
+**The same rule bit twice, the second time harmlessly.** `src/e65_paired_selftest.sh`, written
+to exercise the analysis on synthetic dumps, built its detections with the class in column 5
+and the score in column 6; the dumps use score then class. Nothing matched, the matched-
+confidence channel was all NaN, and the bootstrap raised `IndexError` on an empty vector
+rather than reporting a wrong number. It cost one run of the self-test and touched no measured
+quantity, but it is the identical failure: a fixture that does not have the artifact's shape.

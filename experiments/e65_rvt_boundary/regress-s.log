@@ -1,0 +1,12 @@
+E65 regression gate, rvt-s
+  [PASS] detection count  ref 101591  new 101591
+  [PASS] every detection bit-identical to the stored per-window dump
+  [PASS] ground truth identical
+  [PASS] the per-window dump carries no chunk position, as expected
+  [PASS] chunked dump assigns a position to 100.00% of frames
+  [PASS] positions reach the end of the 21-window chunk (max 20)
+  [PASS] chunked positions equal the recorded release placement frame for frame
+  [PASS] reset arm scores the same ground truth
+  [PASS] reset arm places frames at the same positions
+  [PASS] dropping the state at the boundary changes the detections (the flag is live)
+E65_REGRESS_OK

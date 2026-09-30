@@ -480,6 +480,45 @@ if os.path.exists('experiments/e60_shift/dose.json'):
                    (f'ssmDoseSmall{_w}',   _r['small'],    0.005),
                    (f'ssmDoseSmall{_w}SE', _r['small_se'], 0.005)]
 
+# E65: the same chunk-boundary shift applied to RVT, which carries its recurrent state
+# across chunk boundaries, in two regimes. `carry` is the released streaming evaluation and
+# is the arm the Sec. 5 difference-in-differences control assumes to be insensitive to the
+# boundary; `reset` drops the state at every chunk start and is the positive control that
+# proves the treatment reaches the model. src/e65_regress_check.py gates the wiring before
+# this file ever sees the json: the SHIFT = 0 carry dump must be bit-identical to the
+# e51 release dump, and the reset dump must differ from it.
+if os.path.exists('experiments/e65_rvt_boundary/paired-shift5.json'):
+    _E65=L('experiments/e65_rvt_boundary/paired-shift5.json')
+    _A=_E65['arms']
+    _n65={k:v['n'] for k,v in _A.items()}
+    CHECKS += [('rvtBoundN',     next(iter(_n65.values())), 0),
+               ('rvtBoundShift', _E65['shift'], 0),
+               ('rvtBoundB',     _E65['B'],     0),
+               ('rvtBoundPermR', _E65['rperm'], 0)]
+    for _t,_lab in (('s','S'),('b','B')):
+        for _reg,_rlab in (('carry','Carry'),('reset','Reset')):
+            _k=f'{_t}-{_reg}'
+            if _k not in _A: continue
+            _d=_A[_k]['map_vel_boot']
+            CHECKS += [(f'rvtBound{_rlab}{_lab}',    _d['obs'], 0.005),
+                       (f'rvtBound{_rlab}{_lab}SE',  _d['se'],  0.005),
+                       (f'rvtBound{_rlab}{_lab}Z',   _d['z'],   0.05),
+                       (f'rvtBound{_rlab}{_lab}All', _A[_k]['map_all_boot']['obs'], 0.005)]
+    _c65=[_A[_k]['map_vel_boot']['obs'] for _k in _A if _k.endswith('-carry')]
+    _r65=[_A[_k]['map_vel_boot']['obs'] for _k in _A if _k.endswith('-reset')]
+    _p65=[_A[_k]['perm_null'] for _k in _A]
+    # The supplement quotes the size of the bit-identity check, so the counts are read from
+    # the same release dumps e65_regress_check.py compares against rather than transcribed.
+    for _t,_lab in (('s','S'),('b','B')):
+        _rp=f'experiments/e51_ranking/dets-rvt-{_t}.npz'
+        if os.path.exists(_rp):
+            import numpy as _np
+            CHECKS += [(f'rvtBoundDets{_lab}', int(_np.load(_rp)['det'].shape[0]), 0)]
+    CHECKS += [('rvtBoundCarryMax', max(abs(_x) for _x in _c65), 0.005),
+               ('rvtBoundResetMin', min(_r65),                   0.005),
+               ('rvtBoundPermMax',  max(abs(_p['mean']) for _p in _p65), 0.0005),
+               ('rvtBoundPermSd',   max(_p['sd'] for _p in _p65),        0.005)]
+
 bad=0
 
 # A macro whose artifact has gone is worse than one that disagrees: it drops out of the
@@ -497,8 +536,12 @@ DERIVABLE={'archCkpts','archSpan','archLo','archHi','archSamples','archUnifMax',
            'stCostSlow','stCostMid','stCostHigh','stCostTop',
            'stSpanAll','stNmoving',
            'sweepRealFast','sweepRealPx','ceilVarNight','ceilVarDay',
-           'ssmDoseN','ssmDoseNull'} | {f'ssmDose{_m}{_w}{_s}'
-           for _m in ('Base','Small') for _w in ('Six','Eleven') for _s in ('','SE')}
+           'ssmDoseN','ssmDoseNull',
+           'rvtBoundN','rvtBoundShift','rvtBoundB','rvtBoundPermR',
+           'rvtBoundCarryMax','rvtBoundResetMin','rvtBoundPermMax','rvtBoundPermSd',
+           'rvtBoundDetsS','rvtBoundDetsB'} | {f'ssmDose{_m}{_w}{_s}'
+           for _m in ('Base','Small') for _w in ('Six','Eleven') for _s in ('','SE')} | {f'rvtBound{_r}{_t}{_s}'
+           for _r in ('Carry','Reset') for _t in ('S','B') for _s in ('','SE','Z','All')}
 _checked={c[0] for c in CHECKS}
 for name in sorted(DERIVABLE - _checked):
     if name in NUM:

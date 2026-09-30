@@ -1,0 +1,10 @@
+# src/e65_shard_selftest.sh 0 12 3 -- first 12 validation sequences, one process vs three shards merged
+# dumps in experiments/e65_rvt_boundary/selftest/, comparison re-run after the comparator was
+# corrected to compare NaN velocity cells as equal (the first run reported gt different for
+# that reason alone; det, pos and seq were identical in both runs).
+# 2026-09-29T21:04:12Z
+  det  single (2298, 7) merged (2298, 7)  identical True
+  gt   single (1110, 8) merged (1110, 8)  identical True
+  pos  single (621,) merged (621,)  identical True
+  seq  single (621,) merged (621,)  identical True
+E65_SHARD_OK

@@ -1,0 +1,26 @@
+  rvt-s carry: n=3574 paired frames
+      pt mAP, velocity-evaluable       1-4 win  32.6470   17-20 win  32.6369   paired  -0.0101
+      pt mAP, all boxes                1-4 win  38.4435   17-20 win  38.5090   paired  +0.0655
+      mean confidence                  1-4 win   0.3731   17-20 win   0.3723   paired  -0.0009
+      detections per frame             1-4 win   5.1074   17-20 win   5.1200   paired  +0.0126
+  rvt-s reset: n=3574 paired frames
+      pt mAP, velocity-evaluable       1-4 win  23.3689   17-20 win  28.7601   paired  +5.3913
+      pt mAP, all boxes                1-4 win  30.4523   17-20 win  35.2884   paired  +4.8361
+      mean confidence                  1-4 win   0.1554   17-20 win   0.2608   paired  +0.1054
+      detections per frame             1-4 win  12.1270   17-20 win   7.2969   paired  -4.8302
+  rvt-b carry: n=3574 paired frames
+      pt mAP, velocity-evaluable       1-4 win  36.6161   17-20 win  36.6682   paired  +0.0522
+      pt mAP, all boxes                1-4 win  41.6700   17-20 win  41.6961   paired  +0.0261
+      mean confidence                  1-4 win   0.4672   17-20 win   0.4650   paired  -0.0022
+      detections per frame             1-4 win   3.7146   17-20 win   3.7359   paired  +0.0213
+  rvt-b reset: n=3574 paired frames
+      pt mAP, velocity-evaluable       1-4 win  25.1518   17-20 win  32.0662   paired  +6.9144
+      pt mAP, all boxes                1-4 win  31.9110   17-20 win  38.2235   paired  +6.3125
+      mean confidence                  1-4 win   0.1756   17-20 win   0.3094   paired  +0.1338
+      detections per frame             1-4 win   9.2613   17-20 win   5.4205   paired  -3.8408
+cluster bootstrap B=300 over 406 sequences
+  rvt-s-carry      dmAP(vel)  -0.0101 +- 0.0344  95% CI [-0.0591, +0.0786]  z= -0.29   | random-frame null -0.0246 +- 0.0373, z_obs= +0.39
+  rvt-s-reset      dmAP(vel)  +5.3913 +- 0.4490  95% CI [+4.6724, +6.3376]  z=+12.01   | random-frame null -0.1114 +- 0.3315, z_obs=+16.60
+  rvt-b-carry      dmAP(vel)  +0.0522 +- 0.0393  95% CI [-0.0369, +0.1174]  z= +1.33   | random-frame null +0.0216 +- 0.0446, z_obs= +0.68
+  rvt-b-reset      dmAP(vel)  +6.9144 +- 0.6371  95% CI [+5.3509, +7.8387]  z=+10.85   | random-frame null -0.1117 +- 0.3283, z_obs=+21.40
+WROTE experiments/e65_rvt_boundary/paired-shift5.json

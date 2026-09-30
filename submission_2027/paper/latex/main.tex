@@ -74,8 +74,7 @@ weights, ground truth, evaluator and the evaluated timestamp are held fixed
 Effective temporal support alone changes S5-B by \ssmPairedMapAllBase{} mAP over all labeled
 boxes and \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBaseSE{} mAP on the velocity-evaluable
 subset (Sec.~\ref{sec:chunk}); the second released checkpoint moves by
-\ssmPairedMapAllSmall{} and \ssmPairedMapVelSmall{} points. Every quantity the protocol records
-stayed fixed, and the score moved. Since temporal-support identifiability is a uniqueness property, this controlled violation is sufficient to show that the nominal timestamp does not uniquely specify the temporal evidence represented by that score.
+\ssmPairedMapAllSmall{} and \ssmPairedMapVelSmall{} points. Since temporal-support identifiability is a uniqueness property, this controlled violation is sufficient to show that the nominal timestamp does not uniquely specify the temporal evidence represented by that score.
 
 \paragraph{Contributions.}
 \begin{itemize}
@@ -306,6 +305,21 @@ differences among the RVT checkpoints of at most \chunkPlaceboMax{} points
 least \chunkPermZSmall{} standard deviations outside their own null and every placebo inside
 it. The two readings agree in sign and magnitude, and the paired intervention carries the claim
 because it holds the frames fixed (Supplement Sec.~13).
+
+\paragraph{The control, measured rather than assumed.}
+That differencing treats the RVT checkpoints as a control because their state survives a chunk
+boundary. The same-frame intervention applied to RVT measures that property. Driven on the SSM
+chunk grid, RVT reproduces its stored per-window detections bit for bit at zero shift, and the
+same \rvtBoundN{} frames are re-scored with every boundary moved \rvtBoundShift{} windows
+later. With the released state carried across the boundary the paired change is
+$\rvtBoundCarryS\pm\rvtBoundCarrySSE$ points for RVT-\texttt{s} ($z=\rvtBoundCarrySZ$) and
+$\rvtBoundCarryB\pm\rvtBoundCarryBSE$ for RVT-\texttt{b} ($z=\rvtBoundCarryBZ$). Dropping
+the state at every chunk start, the condition the SSM release is already in, moves the same
+weights on the same frames by $\rvtBoundResetS\pm\rvtBoundResetSSE$ ($z=\rvtBoundResetSZ$)
+and $\rvtBoundResetB\pm\rvtBoundResetBSE$ points ($z=\rvtBoundResetBZ$), with random-frame
+nulls centered within \rvtBoundPermMax{} points of zero. The boundary effect follows whether the
+recurrent state survives the boundary, not the architecture, and the control the
+difference-in-differences relies on holds as a measurement (Supplement Sec.~13).
 
 \paragraph{What the pooled score reports.}
 One released number therefore pools detections whose recurrent history differs by a factor of
@@ -775,7 +789,7 @@ object motion.
 
 Each supporting audit is conditional on its stated instrument: local window-ablation sensitivity,
 nominal-time association under the reported regression specification, and a local
-constant-velocity displacement surrogate. The primary SSM chunk-boundary intervention is established on two released SSM-ViT checkpoints under their released streaming evaluator. Temporal-support identifiability is a uniqueness claim, so one controlled pair with identical recorded protocol variables, different effective support, and different score is already a protocol-level counterexample; the second checkpoint tests that the observed violation is not confined to one released weight set. Gen1 and DSEC are separate audits of predictor- and label-side timing, not premises required for that counterexample. All Gen1 quantitative claims are validation-split claims obtained from ported released checkpoints, and sequence-bootstrap claims use the 406 sequences represented in the stored-detection evaluation.
+constant-velocity displacement surrogate. The primary SSM chunk-boundary intervention is established on two released SSM-ViT checkpoints under their released streaming evaluator. The second checkpoint tests that the violation is not confined to one released weight set. Gen1 and DSEC are separate audits of predictor- and label-side timing, not premises required for that counterexample.
 
 \section{Conclusion}
 

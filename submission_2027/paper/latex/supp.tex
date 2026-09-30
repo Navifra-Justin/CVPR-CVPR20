@@ -34,7 +34,9 @@ ablation measurement, the data paths of the DSEC measurements, and additional
 implementation and control analyses. The RVT source revision is
 \texttt{b80f5683a6e2d5de65d4bde8105d796ccb50dbb1}, and the SSM-ViT source revision is
 \texttt{7c871b55a0c5f00673c2c3975f6b6a1c5adbab88}. Section numbers below refer to this document. References labeled
-main Sec.~$n$ refer to the main paper.
+main Sec.~$n$ refer to the main paper. All Gen1 quantitative claims in both documents are
+validation-split claims obtained from ported released checkpoints, and sequence-bootstrap
+claims use the \outSeqsScanned{} sequences represented in the stored-detection evaluation.
 
 \section{The velocity regressor}
 \paragraph{Reproducibility.} Code, configuration files, data-preparation scripts and the exact evaluation scripts used for every table and figure in the main paper and this supplement will be released upon acceptance; all reported numbers were produced with the released configuration.
@@ -791,7 +793,8 @@ Comparing the frames at positions $0$--$3$ with those at positions $16$--$20$ co
 support with scene content, since these are different frames. The three RVT checkpoints
 control for that: they see the identical frames in the identical order, but their ConvLSTM
 state is carried across chunks, so position in the chunk is not a support variable for them
-and any difference they show is scene content. Differencing removes it. Tab.~\ref{tab:chunk}
+and any difference they show is scene content. Differencing removes it. Sec.~\ref{sup:rvtbound}
+measures that insensitivity on the same checkpoints instead of assuming it. Tab.~\ref{tab:chunk}
 scores every labeled box, the population the released numbers use, and bootstraps over the
 \outSeqsScanned{} sequences.
 
@@ -825,7 +828,9 @@ differencing them reproduces the raw column exactly. Cluster bootstrap over
 \label{tab:chunk}
 \end{table}
 
-The RVT placebos isolate chunk-position effects under the parallel-trends assumption. The RVT checkpoints span the same
+The RVT placebos isolate chunk-position effects under the parallel-trends assumption, which
+Sec.~\ref{sup:rvtbound} tests directly by shifting the boundary under the RVT checkpoints
+themselves. The RVT checkpoints span the same
 \chunkShortT--\chunkShortB{} mAP range and are scored on the same frames, and their rows
 show no comparable shift, which argues against frame difficulty at early chunk positions as the source
 (Fig.~\ref{fig:chunkfull}).
@@ -962,6 +967,64 @@ are fixed and these rungs share their frames. And the response is closer to satu
 $+16$ than at $+6$, so the deficit is concentrated in the first windows after a boundary.
 The curve is measured at four amounts on one dataset and one architecture family, and the
 saturation point is therefore not estimated beyond the ordering of these rungs.
+
+\subsection{The same intervention on RVT, in two state regimes}
+\label{sup:rvtbound}
+
+Main Sec.~3 differences the observational chunk-position contrast against the
+RVT checkpoints. That differencing is valid only if an RVT boundary is not a reset, which is
+a property of the released implementation: \texttt{modules/detection.py} keeps the validation
+state in \texttt{mode\_2\_rnn\_states} and clears it only on \texttt{is\_first\_sample}. The
+property is measured here rather than taken from the source.
+
+RVT's per-window calls are grouped onto the same \ssmEvalChunk{}-window grid the SSM release
+uses, so a chunk position can be recorded for each frame and a boundary shift applied. With
+no shift and the state carried, the grouping is inert by construction, and
+\texttt{src/e65\_regress\_check.py} confirms it on the artifacts: every one of the
+\rvtBoundDetsS{} RVT-\texttt{s} and \rvtBoundDetsB{} RVT-\texttt{b} detections is bit-identical to the
+stored per-window dump, the ground truth matches, and the recorded positions equal the
+release placement frame for frame. Without that identity a null below would be indistinguishable
+from a driver that dropped the treatment. Two regimes are then compared on the \rvtBoundN{}
+frames the shift carries from positions $0$--$3$ to $16$--$19$, the same selection rule and the
+same estimand as Tab.~\ref{tab:dose}: \emph{carry}, the released behavior, and \emph{reset},
+with the recurrent state dropped at every chunk start, which places RVT in the condition the
+SSM release is already in.
+
+\begin{table}[h]
+\centering\footnotesize
+\setlength{\tabcolsep}{3.0pt}\renewcommand{\arraystretch}{0.95}
+\begin{tabular}{llrrr}
+\toprule
+state at the boundary & checkpoint & $\Delta$mAP (vel.) & $z$ & all boxes \\
+\midrule
+carried (released) & RVT-\texttt{s} & $\rvtBoundCarryS\pm\rvtBoundCarrySSE$ & $\rvtBoundCarrySZ$ & $\rvtBoundCarrySAll$ \\
+carried (released) & RVT-\texttt{b} & $\rvtBoundCarryB\pm\rvtBoundCarryBSE$ & $\rvtBoundCarryBZ$ & $\rvtBoundCarryBAll$ \\
+dropped at the boundary & RVT-\texttt{s} & $\rvtBoundResetS\pm\rvtBoundResetSSE$ & $\rvtBoundResetSZ$ & $\rvtBoundResetSAll$ \\
+dropped at the boundary & RVT-\texttt{b} & $\rvtBoundResetB\pm\rvtBoundResetBSE$ & $\rvtBoundResetBZ$ & $\rvtBoundResetBAll$ \\
+\bottomrule
+\end{tabular}
+\caption{The chunk-boundary intervention of Sec.~\ref{sup:dose} applied to RVT. The same
+\rvtBoundN{} frames are scored twice, once with the boundary at the release's own placement
+and once with it \rvtBoundShift{} windows later. The sign is the long arm minus the short one.
+Cluster bootstrap over the \outSeqsScanned{} sequences with \rvtBoundB{} replicates. A
+random-frame permutation null with \rvtBoundPermR{} draws per arm, matched in size to the
+treated set, is centred within \rvtBoundPermMax{} points of zero with a spread of at most
+\rvtBoundPermSd{} points in every arm.}
+\label{tab:rvtbound}
+\end{table}
+
+With the state carried, as the release leaves it, neither checkpoint moves: both intervals cover zero and the
+larger magnitude is \rvtBoundCarryMax{} points. With the state dropped at the boundary the
+same weights on the same frames gain at least \rvtBoundResetMin{} points, a magnitude
+comparable to the \ssmPairedMapVelBase{} and \ssmPairedMapVelSmall{} points the SSM
+checkpoints show under the identical intervention. The carried arm therefore supports the
+parallel-trends control of main Sec.~3 as a measurement, and the reset arm shows
+that the shift reaches the model, so the null is a property of the released evaluation rather
+than of an intervention that failed to reach the model. Within this protocol the boundary deficit
+follows whether the recurrent state survives a boundary and not the architecture. The
+comparison covers two RVT capacities on Gen1 validation at one shift amount, and no claim is
+made about training-time behavior, which is not what either release's streaming evaluator
+exercises.
 
 
 \section{The recurrent influence tail}

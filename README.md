@@ -25,16 +25,16 @@ metadata. No model is trained.
 ## The two things worth reading first
 
 **`docs/PROTOCOL_LEDGER.md`** records every defect found in this work's own measurements and
-how each was caught — twelve cases, including three in which a checker reported a pass while
+how each was caught — fourteen cases, including three in which a checker reported a pass while
 printing the failure. The numbers that survived are the ones that survived those.
 
-**`src/audit_numbers.py`** re-derives 328 of the manuscript's macros from the artifacts they
+**`src/audit_numbers.py`** re-derives 354 of the manuscript's macros from the artifacts they
 came from and fails if any disagrees. It is itself mutation-tested, and it fails on a macro it
 knows how to derive whose artifact has gone, because silently dropping such a macro is the
 failure mode that once let eleven withdrawn numbers stand.
 
 ```
-python3 src/audit_numbers.py     # 328 macros checked, 0 disagree
+python3 src/audit_numbers.py     # 354 macros checked, 0 disagree
 ```
 
 ## Reproducing

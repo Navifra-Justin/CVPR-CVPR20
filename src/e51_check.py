@@ -5,6 +5,11 @@ reproduce E37's dets.npz, then every comparison built on E51 is measuring the re
 than the models. This compares the two arrays directly before any of that is trusted.
 """
 import numpy as np, os, sys
+import os as _os, sys as _sys
+# Every artifact path below is relative, so which files this gate read used to depend on
+# the caller's working directory. Anchoring the root to this file's own location makes the
+# same command compare the same population from any cwd.
+_os.chdir(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
 A='experiments/e37_map/dets.npz'; B='experiments/e51_ranking/dets-rvt-t.npz'
 if not os.path.exists(B): raise SystemExit("rvt-t dump not written yet")
 Za,Zb=np.load(A),np.load(B)
@@ -29,6 +34,10 @@ for k in ('det','gt'):
             n=int((dd>0).sum())+int((f1!=f2).sum())
             if n: print(f"     column {cols[c]}: {n} differ, max {dd.max() if len(dd) else float('nan'):.4g}")
         FAIL=True
+print(f"compared 2 arrays: det {Za['det'].shape[0]} rows, gt {Za['gt'].shape[0]} rows")
+if Za['det'].shape[0] == 0 or Za['gt'].shape[0] == 0:
+    raise SystemExit('e51_check: a compared array has 0 rows; nothing was compared, and an '
+                     'empty population must not become a clean verdict')
 print()
 if FAIL:
     print("E51 does NOT reproduce E37's rvt-t dump. Until it does, a cross-model comparison "

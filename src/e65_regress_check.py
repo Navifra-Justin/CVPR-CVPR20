@@ -20,16 +20,25 @@ here too and the check fails if they do not differ.
 """
 import sys, os, numpy as np
 
+# The artifact paths used to be relative to the caller's working directory, so the same
+# command read a different population -- or none -- depending on where it was run. The root
+# is this file's own repository; E65_ROOT overrides it, which is how src/e65_gate_selftest.py
+# points the real script at its fixture tree.
+ROOT = os.environ.get('E65_ROOT') or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 TAG = sys.argv[1] if len(sys.argv) > 1 else 's'
-REF = f'experiments/e51_ranking/dets-rvt-{TAG}.npz'
-NEW = f'experiments/e65_rvt_boundary/dets-rvt-{TAG}-carry-shift0.npz'
-RST = f'experiments/e65_rvt_boundary/dets-rvt-{TAG}-reset-shift0.npz'
+REF = os.path.join(ROOT, f'experiments/e51_ranking/dets-rvt-{TAG}.npz')
+NEW = os.path.join(ROOT, f'experiments/e65_rvt_boundary/dets-rvt-{TAG}-carry-shift0.npz')
+RST = os.path.join(ROOT, f'experiments/e65_rvt_boundary/dets-rvt-{TAG}-reset-shift0.npz')
 
 ok = True
+ran = 0        # checks actually evaluated
+skipped = 0    # checks that could not run because their input was not dumped
 
 
 def chk(cond, msg):
-    global ok
+    global ok, ran
+    ran += 1
     print(('  [PASS] ' if cond else '  [FAIL] ') + msg)
     ok = ok and bool(cond)
 
@@ -62,7 +71,7 @@ chk(pos.max() == 20, f'positions reach the end of the 21-window chunk (max {pos.
 # The chunked driver must land on the placement the released streaming evaluation already
 # produced, frame for frame. Without this the RVT rows and the SSM rows would be two
 # similar-looking comparisons on two different grids rather than the same one.
-PA = 'experiments/e58_chunkpos/positions.npy'
+PA = os.path.join(ROOT, 'experiments/e58_chunkpos/positions.npy')
 if not os.path.exists(PA):
     print(f'  [FAIL] missing {PA}')
     sys.exit(1)
@@ -79,6 +88,14 @@ if os.path.exists(RST):
     chk(diff, 'dropping the state at the boundary changes the detections (the flag is live)')
 else:
     print(f'  [skip] {RST} not dumped yet')
+    skipped += 3
 
+# The verdict line carries the examined count, so a pass that ran three checks cannot be
+# mistaken for the pass that ran nine.
+print(f'{ran} check(s) run, {skipped} skipped')
+if ran == 0:
+    print('E65_REGRESS_FAIL')
+    sys.exit('E65 gate: 0 checks run; nothing was verified, and an empty population must '
+             'not become a clean verdict')
 print('E65_REGRESS_OK' if ok else 'E65_REGRESS_FAIL')
 sys.exit(0 if ok else 1)

@@ -9,9 +9,21 @@ import re, sys, os
 # tree is a stale draft, and the supplement is named supp.tex in the
 # submission, not supplement.tex, so the old defaults audited a document that
 # is not being submitted.  PAPER_DIR overrides the directory for testing.
-PAPER_DIR = os.environ.get('PAPER_DIR', 'submission_2027/paper/latex')
+#
+# The default is anchored to this file's own location rather than left relative
+# to the caller's working directory.  A relative default means the same command
+# audits a different population -- or none at all -- depending on where it is
+# run from, and "audited nothing" is the one outcome a gate must never report
+# as a clean document.
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PAPER_DIR = os.environ.get('PAPER_DIR') or os.path.join(REPO, 'submission_2027/paper/latex')
+if not os.path.isabs(PAPER_DIR):
+    PAPER_DIR = os.path.join(REPO, PAPER_DIR)
 FILES = sys.argv[1:] or [os.path.join(PAPER_DIR, 'main.tex'),
                          os.path.join(PAPER_DIR, 'supp.tex')]
+if not FILES:
+    sys.exit('style_gate: no manuscript source given and no default resolved; '
+             'nothing would be examined, and an empty population is not a clean verdict')
 
 RULES = [
  # (item, label, regex, flags)
@@ -47,6 +59,7 @@ def strip(line):
     return s
 
 hits = 0
+lines_read = 0        # lines of prose actually put through the rules
 for f in FILES:
     # A missing source used to be skipped silently, which is how a renamed
     # supplement could produce a clean report over nothing.
@@ -55,9 +68,18 @@ for f in FILES:
     for n, raw in enumerate(open(f, encoding='utf-8'), 1):
         s = strip(raw)
         if not s.strip(): continue
+        lines_read += 1
         for item, label, rx in RULES:
             m = re.search(rx, s, re.I if item in ('56','63','65','68','197') else 0)
             if m:
                 hits += 1
                 print(f'{f}:{n}  [{item}] {label}  ->  {m.group(0)[:60]!r}')
-print(f'\nTOTAL {hits} hit(s) over {len(FILES)} file(s)')
+# The examined count is printed so a reader can tell a clean document from an
+# empty one, and a population of zero exits non-zero rather than reporting a
+# document with no findings.
+print(f'\nexamined {lines_read} prose line(s) in {len(FILES)} file(s) under {PAPER_DIR}')
+print(f'TOTAL {hits} hit(s) over {len(FILES)} file(s)')
+if lines_read == 0:
+    sys.exit(f'style_gate: 0 prose lines examined under {PAPER_DIR}; the sources are '
+             'empty or stripped to nothing, and an empty population must not become a '
+             'clean verdict')

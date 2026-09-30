@@ -7,13 +7,31 @@ without a corresponding run fails here rather than in review.
 """
 import json, re, sys, os, numpy as np
 
+# Every path below -- numbers.tex and every experiments/ artifact -- is relative, so the
+# population this checker reads used to depend on the caller's working directory: run from
+# anywhere but the repository root it died in open(), and run from a tree where only some
+# artifacts resolved it would have checked a subset. The root is taken from this file's own
+# location and made the working directory, so the same command reads the same population
+# from any cwd.
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(REPO)
+
 # The live submission is submission_2027/paper/latex; the top-level paper/ tree
 # is a stale draft whose numbers.tex differs from the submitted one, so this
 # checker used to validate macros that are not the ones being submitted.
 # PAPER_DIR overrides the directory for testing against a copy.
-PAPER_DIR = os.environ.get('PAPER_DIR', 'submission_2027/paper/latex')
+PAPER_DIR = os.environ.get('PAPER_DIR') or 'submission_2027/paper/latex'
+if not os.path.isabs(PAPER_DIR):
+    PAPER_DIR = os.path.join(REPO, PAPER_DIR)
+_NUMTEX = os.path.join(PAPER_DIR, 'numbers.tex')
+if not os.path.exists(_NUMTEX):
+    sys.exit(f'audit_numbers: no numbers.tex at {_NUMTEX}; no macro would be checked, '
+             'and an unread manuscript is not a manuscript whose numbers agree')
 NUM = dict(re.findall(r'\\newcommand\{\\([A-Za-z]+)\}\{(?:\\ensuremath\{)?([^}]*)\}',
-                      open(os.path.join(PAPER_DIR, 'numbers.tex')).read()))
+                      open(_NUMTEX).read()))
+if not NUM:
+    sys.exit(f'audit_numbers: {_NUMTEX} declares 0 macros; the population is empty and an '
+             'empty population must not become a clean verdict')
 def L(p): return json.load(open(p))
 E45=L('experiments/e45_influence_fixed/result.json')
 E45D=L('experiments/e45_influence_fixed/derived.json')
@@ -520,6 +538,9 @@ if os.path.exists('experiments/e65_rvt_boundary/paired-shift5.json'):
                ('rvtBoundPermSd',   max(_p['sd'] for _p in _p65),        0.005)]
 
 bad=0
+if not CHECKS:
+    sys.exit(f'audit_numbers: 0 macros to check against {_NUMTEX}; nothing was verified, '
+             'and an empty population must not become a clean verdict')
 
 # A macro whose artifact has gone is worse than one that disagrees: it drops out of the
 # checks silently and the paper keeps quoting it. Every macro this file knows how to derive
@@ -553,7 +574,8 @@ for name,truth,tol in CHECKS:
     except ValueError: print(f"  UNPARSED \\{name} = {NUM[name]!r}"); bad+=1; continue
     if abs(got-float(truth))>tol:
         print(f"  MISMATCH \\{name}: numbers.tex {got}, artifact {float(truth):.6g}"); bad+=1
-print(f"\n{len(CHECKS)} macros checked against their artifacts, {bad} disagree")
+print(f"\nexamined {len(NUM)} macro declaration(s) in {_NUMTEX}")
+print(f"{len(CHECKS)} macros checked against their artifacts, {bad} disagree")
 
 # The checker is itself tested. A checker that is never tried against a wrong value has
 # not been shown to reject one, so every entry is mutated in turn and must be caught.

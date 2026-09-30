@@ -60,6 +60,11 @@ def asset_paths():
 
 def main():
     problems = 0
+    # How many assets were actually opened and byte-compared. Printing it is the only
+    # way a reader can tell a clean run from one that compared nothing: an absent
+    # paper/figs/ makes every asset uncomparable and used to leave no trace but a note.
+    compared = 0
+    uncompared = 0
     if not os.path.isdir(PAPER):
         print(f"FAIL: {PAPER} is not a directory; nothing was checked")
         return 1
@@ -92,13 +97,16 @@ def main():
         if not os.path.exists(mine):
             print(f"note: {ref} has no copy at {rel(mine)}, where {src} writes; the "
                   "submitted file cannot be compared against a rendered one")
+            uncompared += 1
             continue
+        compared += 1
         if open(mine, "rb").read() != open(target, "rb").read():
             print(f"FAIL: {ref} differs from {rel(mine)}, the file {src} writes, so the "
                   "submitted figure is not that renderer's current output; copy it "
                   "across, or re-render if the copy is the stale one")
             problems += 1
-    print(f"figure assets: {len(found)} included, {problems} problem(s)")
+    print(f"figure assets: {len(found)} included, {problems} problem(s); "
+          f"{compared} byte-compared against {rel(EMITTER_DIR)}, {uncompared} uncomparable")
     return problems
 
 

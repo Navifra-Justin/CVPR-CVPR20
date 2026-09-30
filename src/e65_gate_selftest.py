@@ -30,7 +30,10 @@ def run(label, ref, new, rst, expect_ok):
     w(f'{tmp}/experiments/e51_ranking/dets-rvt-s.npz', **ref)
     w(f'{tmp}/experiments/e65_rvt_boundary/dets-rvt-s-carry-shift0.npz', **new)
     w(f'{tmp}/experiments/e65_rvt_boundary/dets-rvt-s-reset-shift0.npz', **rst)
-    r = subprocess.run(['python3', 'x.py', 's'], cwd=tmp, capture_output=True, text=True)
+    # E65_ROOT, not cwd: the gate now anchors its artifact paths, and the fixture tree is
+    # named explicitly so the mutation test still drives the real script over real files.
+    r = subprocess.run(['python3', 'x.py', 's'], cwd=tmp, capture_output=True, text=True,
+                       env={**os.environ, 'E65_ROOT': tmp})
     good = (r.returncode == 0) == expect_ok
     print(f'  {"[PASS]" if good else "[FAIL]"} {label:50s} rc={r.returncode} expect_ok={expect_ok}')
     return good

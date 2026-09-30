@@ -16,10 +16,17 @@ ROOT = Path(__file__).resolve().parents[1]
 # The live submission is submission_2027/paper/latex; the top-level paper/
 # tree is a stale draft.  The residue scan used to classify the draft as "the
 # files that ship".  PAPER_DIR overrides the directory for testing.
-PAPER = ROOT / os.environ.get("PAPER_DIR", "submission_2027/paper/latex")
-OUT = ROOT / ".ai-audit"
+PAPER = Path(os.environ.get("PAPER_DIR", "submission_2027/paper/latex"))
+if not PAPER.is_absolute():
+    PAPER = ROOT / PAPER
+# The prose population used to be ROOT.rglob("*.tex"), which swept the stale
+# top-level paper/ draft in alongside the submission: 194 of 404 chunks, and
+# highest-priority passages quoted from a file that is not submitted.  The
+# population is now the shipping directory alone.
+SCAN_DIRS = [PAPER, ROOT / "src", ROOT / "docs"]
+OUT = Path(os.environ.get("AUDIT_OUT") or (ROOT / ".ai-audit"))
 RAW = OUT / "gptzero_raw.json"
-REPORT = ROOT / "AI_WRITING_AUDIT.md"
+REPORT = Path(os.environ.get("AUDIT_REPORT") or (ROOT / "AI_WRITING_AUDIT.md"))
 
 RESIDUE = ["Here is the revised", "Certainly", "As requested", "the provided text",
            "the revised version", "Here's", "AI language model", "prompt",
@@ -39,6 +46,12 @@ REVIEW_PATTERNS = [
     (r"\bThis (result|finding|observation)\b", "generic result transition"),
 ]
 
+def rel_root(p: Path) -> str:
+    """Display path, tolerant of an output location outside the repository."""
+    try: return str(p.relative_to(ROOT))
+    except ValueError: return str(p)
+
+
 def visible(text: str) -> str:
     text = re.sub(r"%.*", "", text)
     text = re.sub(r"\\(?:ref|cite|label|eqref|begin|end|section|subsection|subsubsection|paragraph|texttt|emph|textbf|footnote)\{[^}]*\}", " ", text)
@@ -47,11 +60,24 @@ def visible(text: str) -> str:
     text = re.sub(r"\s+", " ", text)
     return text.strip(" ~,.:;")
 
-def source_chunks():
+def manuscript_sources():
+    """The .tex files that actually ship, named explicitly so the count is auditable."""
+    if not PAPER.is_dir():
+        sys.exit(f"gptzero_audit: {PAPER} is not a directory; no manuscript source "
+                 "would be read, and a report over nothing is not a clean document")
+    files = sorted(p for p in PAPER.glob("*.tex")
+                   if not any(part in {".git", ".ai-audit", "build", "submission_package"}
+                              for part in p.parts))
+    if not files:
+        sys.exit(f"gptzero_audit: no .tex under {PAPER}; the glob matched zero files, "
+                 "so nothing was audited and an empty population must not become a "
+                 "clean verdict")
+    return files
+
+
+def source_chunks(files):
     chunks = []
-    for path in sorted(ROOT.rglob("*.tex")):
-        if any(part in {".git", ".ai-audit", "build", "submission_package"} for part in path.parts):
-            continue
+    for path in files:
         lines = path.read_text(errors="replace").splitlines()
         section = "Preamble"
         buf, start = [], None
@@ -62,7 +88,7 @@ def source_chunks():
             raw = "\n".join(buf).strip()
             txt = visible(raw)
             if len(txt.split()) >= 8:
-                chunks.append(dict(file=str(path.relative_to(ROOT)), start=start,
+                chunks.append(dict(file=rel_root(path), start=start,
                                    end=end, section=section, text=txt, raw=raw))
             buf, start = [], None
         for i, line in enumerate(lines, 1):
@@ -110,7 +136,7 @@ def gptzero(chunks):
 def claude_status():
     return "configured but not called in the first pass" if os.environ.get("ANTHROPIC_API_KEY") else "not configured"
 
-def report(chunks, gz):
+def report(chunks, gz, files):
     findings = []
     for c in chunks:
         for s in sentences(c):
@@ -120,19 +146,36 @@ def report(chunks, gz):
             classification = "REWRITE" if strong else "REVIEW"
             findings.append({"classification": classification, "file": c["file"], "start": c["start"], "end": c["end"], "section": c["section"], "sentence": s, "reasons": flags})
     findings.sort(key=lambda x: (x["classification"] != "REWRITE", -len(x["sentence"])))
+    total_sentences = sum(len(sentences(c)) for c in chunks)
     residue, residue_repo = [], []
-    for p in [PAPER, ROOT / "src", ROOT / "docs"]:
-        if not p.exists(): continue
+    scanned = 0            # files whose bytes were actually read
+    unreadable = []
+    missing = [str(p) for p in SCAN_DIRS if not p.exists()]
+    if missing:
+        # A directory that is not there used to be skipped in silence, which is how a
+        # residue scan over nothing printed "No requested residue terms found".
+        sys.exit("gptzero_audit: residue-scan directory missing: " + ", ".join(missing) +
+                 "; an unread directory is not a directory with no residue")
+    for p in SCAN_DIRS:
         for f in p.rglob("*"):
             if not f.is_file() or f.suffix in {".pdf", ".json", ".npz", ".log"}: continue
             try: t = f.read_text(errors="ignore")
-            except Exception: continue
+            except Exception as e:
+                unreadable.append((str(f), type(e).__name__)); continue
+            scanned += 1
             ships = f.parent == PAPER and f.suffix == ".tex"
             for term in RESIDUE:
                 if re.search(re.escape(term), t, re.I):
-                    (residue if ships else residue_repo).append((str(f.relative_to(ROOT)), term))
+                    (residue if ships else residue_repo).append((rel_root(f), term))
+    ship_scanned = sum(1 for f in PAPER.glob("*.tex"))
+    if scanned == 0 or ship_scanned == 0:
+        sys.exit(f"gptzero_audit: residue scan read {scanned} file(s), {ship_scanned} of them "
+                 f"shipping .tex under {PAPER}; nothing was scanned and an empty population "
+                 "must not become a clean verdict")
+    if unreadable:
+        sys.exit("gptzero_audit: unreadable input, so the scan is incomplete: " +
+                 ", ".join(f"{f} ({e})" for f, e in unreadable))
     flagged = {(x["file"], x["sentence"]) for x in findings}
-    total_sentences = sum(len(sentences(c)) for c in chunks)
     counts = {"SAFE": max(0, total_sentences - len(flagged)),
               "REVIEW": sum(x["classification"] == "REVIEW" for x in findings),
               "REWRITE": sum(x["classification"] == "REWRITE" for x in findings)}
@@ -140,13 +183,17 @@ def report(chunks, gz):
     out = ["# AI Writing Audit (first pass)", "", "This report is diagnostic only. No manuscript source was edited.", "",
            f"GPTZero status: **{gz['status']}**" + (f" ({gz.get('reason')})" if gz.get('reason') else ""),
            f"Claude status: **{claude}**; no external Claude assessment is claimed unless an Anthropic review is run.", "",
-           "## Summary", "", f"- Extracted prose chunks: {len(chunks)}", f"- SAFE passages: {counts['SAFE']} (unflagged; not a proof of human authorship)", f"- REVIEW passages: {counts['REVIEW']}", f"- REWRITE passages: {counts['REWRITE']}", "- GPTZero confidence: unavailable because the API key is not configured.", ""]
+           "## Summary", "",
+           f"- Manuscript sources read: {len(files)} — " + ", ".join(rel_root(f) for f in files),
+           f"- Residue-scan files read: {scanned} ({ship_scanned} shipping `.tex`)",
+           f"- Sentences examined: {total_sentences}",
+           f"- Extracted prose chunks: {len(chunks)}", f"- SAFE passages: {counts['SAFE']} (unflagged; not a proof of human authorship)", f"- REVIEW passages: {counts['REVIEW']}", f"- REWRITE passages: {counts['REWRITE']}", "- GPTZero confidence: unavailable because the API key is not configured.", ""]
     out += ["## Classification policy", "", "A GPTZero flag alone would not trigger a rewrite. In this keyless first pass, REVIEW/REWRITE labels are independent local writing-quality signals and require author review before any edit.", ""]
     out += ["## Highest-priority passages", ""]
     for i, f in enumerate(findings[:20], 1):
         out += [f"### {i}. {f['classification']} — {f['section']}", f"- Source: `{f['file']}:{f['start']}-{f['end']}`", f"- Reasons: {', '.join(f['reasons'])}", f"- Exact sentence: {f['sentence']}", "- GPTZero signal: unavailable in this run", "- Claude independent assessment: unavailable; local assessment requires human confirmation", ""]
     out += ["## Residue scan", "",
-            f"### Manuscript sources (`{PAPER.relative_to(ROOT)}/*.tex`, the files that ship)", ""]
+            f"### Manuscript sources (`{rel_root(PAPER)}/*.tex`, the files that ship)", ""]
     if residue:
         for f, t in residue[:100]: out.append(f"- `{t}` in `{f}`")
     else: out.append("No requested residue terms found in the manuscript sources.")
@@ -154,16 +201,26 @@ def report(chunks, gz):
     if residue_repo:
         for f, t in residue_repo[:100]: out.append(f"- `{t}` in `{f}`")
     else: out.append("No requested residue terms found.")
-    out += ["", "## GPTZero raw-response location", "", f"`{RAW.relative_to(ROOT)}`", ""]
+    out += ["", "## GPTZero raw-response location", "", f"`{rel_root(RAW)}`", ""]
     REPORT.write_text("\n".join(out) + "\n")
     return findings, counts
 
 def main():
-    OUT.mkdir(exist_ok=True)
-    chunks = source_chunks()
+    OUT.mkdir(parents=True, exist_ok=True)
+    files = manuscript_sources()
+    chunks = source_chunks(files)
+    if not chunks:
+        sys.exit(f"gptzero_audit: {len(files)} source(s) under {PAPER} yielded 0 prose "
+                 "chunks; nothing was audited and an empty population must not become a "
+                 "clean verdict")
     gz = gptzero(chunks)
     RAW.write_text(json.dumps(gz, indent=2, ensure_ascii=False))
-    findings, counts = report(chunks, gz)
-    print(json.dumps({"report": str(REPORT), "raw": str(RAW), "chunks": len(chunks), "counts": counts}, indent=2))
+    findings, counts = report(chunks, gz, files)
+    print(json.dumps({"report": str(REPORT), "raw": str(RAW),
+                      "paper_dir": str(PAPER),
+                      "sources": [rel_root(f) for f in files],
+                      "chunks": len(chunks),
+                      "sentences": sum(len(sentences(c)) for c in chunks),
+                      "counts": counts}, indent=2))
 
 if __name__ == "__main__": main()

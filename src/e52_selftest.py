@@ -6,6 +6,11 @@ used it is run on the rvt-t dump and compared against E37b's own sweep and E46b'
 at the corrected centroid, both of which are already in the manuscript.
 """
 import numpy as np, json, sys
+import os as _os, sys as _sys
+# Every artifact path below is relative, so which files this gate read used to depend on
+# the caller's working directory. Anchoring the root to this file's own location makes the
+# same command compare the same population from any cwd.
+_os.chdir(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
 src=open('src/e52_ranking.py').read()
 head=src[:src.index('DELTAS=np.round')]
 head=head.replace("FILES=sorted(glob.glob('experiments/e51_ranking/dets-*.npz'))",
@@ -21,6 +26,9 @@ checks=[('delta=0',0.0,cen['zero']['map']),
         ('delta=-23.810 (E46b)',-0.023810,cen['centroid_new']['map']),
         ('delta=-25 (E37b grid)',-0.025,ref['map'][ref['deltas_ms'].index(-25.0)]),
         ('delta=-10 (E37b argmax)',-0.010,ref['map'][ref['deltas_ms'].index(-10.0)])]
+if not checks:
+    sys.exit('e52_selftest: 0 pinned comparisons; nothing was self-tested, and an empty '
+             'population must not become a clean verdict')
 bad=0
 for name,d,want in checks:
     got=evaluate(db,d,None,None)

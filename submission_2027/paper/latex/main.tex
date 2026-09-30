@@ -38,12 +38,12 @@ in Event-Detection Evaluation Pipelines}
 \maketitle
 
 \begin{abstract}
-An event-detection benchmark identifies each scored sample by one nominal timestamp, but a recurrent detector forms its prediction from a longer history, and the benchmark does not record how long. We state the missing requirement as a property of the protocol, \emph{temporal-support identifiability}: the benchmark variables must uniquely determine the temporal evidence supporting a reported prediction. This makes effective temporal support part of the benchmark specification rather than a hidden property of one evaluation implementation. A released SSM-ViT evaluation pipeline provides a direct counterexample. At the same evaluated timestamp, with frames, weights, labels and evaluator fixed, moving only the chunk boundary changes the recurrent history from one to twenty-one windows within the pooled score, and changes S5-B by \ssmPairedMapAllBase{} mAP over all labeled boxes and by \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBaseSE{} mAP on the velocity-evaluable subset. Because identifiability is a uniqueness property, one controlled pair in which identical recorded protocol variables yield different effective support and different scores is sufficient to show that the protocol under-specifies the score. Two supporting diagnostics bound the interpretation without being used as recurrent-support estimators: on the predictor side, the newest RVT input window has an ablation-sensitivity centroid \rvtCentroidMagMeas\,ms before the label instant and a nominal-time-matched regression coefficient of \ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms; on the label side, within-exposure event timing contains an illumination-locked component. Timing comparisons between recurrent detectors therefore require the support that produced each score to be stated and equalized, a condition an event-detection protocol can record with its labels.
+An event-detection benchmark identifies each scored sample by one nominal timestamp, but a recurrent detector forms its prediction from a longer history, and the benchmark does not record how long. We state the missing requirement as a property of the protocol, \emph{temporal-support identifiability}: the benchmark variables must uniquely determine the temporal evidence supporting a reported prediction. This makes effective temporal support part of the benchmark specification rather than a hidden property of one evaluation implementation. A released SSM-ViT evaluation pipeline provides a direct counterexample. At the same evaluated timestamp, with frames, weights, labels and evaluator fixed, moving only the chunk boundary changes the recurrent history from one to twenty-one windows within the pooled score, and changes S5-B by \ssmPairedMapAllBase{} mAP over all labeled boxes and by \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBaseSE{} mAP on the velocity-evaluable subset. Because identifiability is a uniqueness property, one controlled pair in which identical recorded protocol variables yield different effective support and different scores is sufficient to show that the protocol under-specifies the score. Two supporting diagnostics bound the interpretation without being used as recurrent-support estimators: on the predictor side, the newest RVT input window has an ablation-sensitivity centroid \rvtCentroidMagMeas\,ms before the label instant and a nominal-time-matched regression coefficient of \ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms; on the label side, within-exposure event timing contains an illumination-locked component. Over all labeled boxes the validation-split ordering of the \rankCkpts{} released checkpoints is itself reproduced in only \rankHoldBox\,\% of sequence-bootstrap replicates, so that ordering cannot certify a timing convention as immaterial. Timing comparisons between recurrent detectors therefore require the support that produced each score to be stated and equalized, a condition an event-detection protocol can record with its labels.
 \end{abstract}
 
 \section{Introduction}
 
-A timestamp says when a prediction is scored, not what temporal evidence produced it. Two recurrent detectors evaluated at the same nominal timestamp are therefore not comparable in time unless the history each one actually used is also identified.
+Two recurrent detectors evaluated at the same nominal timestamp are not comparable in time unless the history each one actually used is also identified.
 
 An event-detection benchmark defines a sample by a nominal timestamp. A prediction $\hat{s}$ is scored against the ground truth $s^{*}$ carried at query time $t$ through a function $\rho(\hat{s},s^{*})$ of position, shape and class. Beyond selecting the label at $t$, that function contains no variable for the temporal evidence behind either argument, so any temporal discrepancy enters the score disguised as displacement.
 
@@ -73,7 +73,7 @@ weights, ground truth, evaluator and the evaluated timestamp are held fixed
 
 Effective temporal support alone changes S5-B by \ssmPairedMapAllBase{} mAP over all labeled
 boxes and \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBaseSE{} mAP on the velocity-evaluable
-subset (Sec.~\ref{sec:chunk}); the second released checkpoint moves by
+subset (Sec.~\ref{sec:chunk}); a second checkpoint of the same released pipeline moves by
 \ssmPairedMapAllSmall{} and \ssmPairedMapVelSmall{} points. Since temporal-support identifiability is a uniqueness property, this controlled violation is sufficient to show that the nominal timestamp does not uniquely specify the temporal evidence represented by that score.
 
 \paragraph{Contributions.}
@@ -83,11 +83,12 @@ subset (Sec.~\ref{sec:chunk}); the second released checkpoint moves by
 timestamp a protocol records from the effective temporal support and label-acquisition support a
 reported score represents.
 \item A paired intervention that isolates recurrent support: the frames, weights, labels,
-evaluator, and evaluated timestamp are fixed, while only the recurrent history changes. The two
-audits below support the interpretation and are not second primary results.
+evaluator, and evaluated timestamp are fixed, while only the recurrent history changes.
 \item Its measured consequence: support the protocol does not record moves a pooled
 leaderboard-style score by \ssmPairedMapAllBase{} mAP overall and \ssmPairedMapVelBase{} mAP on
-the velocity-evaluable subset, with predictor-side and label-side audits delimiting the result.
+the velocity-evaluable subset, while the same benchmark reproduces its validation-split ordering
+over all labeled boxes in only \rankHoldBox\,\% of sequence-bootstrap replicates;
+predictor-side and label-side audits delimit the result.
 \end{itemize}
 
 Work on event-detection timing takes that index as given and improves what is measured against
@@ -123,10 +124,8 @@ component (Secs.~\ref{sec:flicker}--\ref{sec:cost}).
 
 Identifiability under the metric is then read in the metric's own units. On the
 velocity-evaluable subset, displacing ground-truth centers across the measured label-to-centroid
-interval changes mAP by \mapCost{} points, and at that displacement the five released
-checkpoints are not reordered. Separately, over all labeled boxes the nominal validation-split
-ordering is reproduced in only \rankHoldBox\,\% of sequence-bootstrap replicates. These results
-place the observed displacement effect at the benchmark's sampling-resolution floor.
+interval changes mAP by \mapCost{} points without reordering the \rankCkpts{} released
+checkpoints, an effect at the benchmark's sampling-resolution floor.
 Table~\ref{tab:strata} relates this resolution to the benchmark's speed composition (Supplement
 Secs.~11--12).
 
@@ -789,15 +788,15 @@ object motion.
 
 Each supporting audit is conditional on its stated instrument: local window-ablation sensitivity,
 nominal-time association under the reported regression specification, and a local
-constant-velocity displacement surrogate. The primary SSM chunk-boundary intervention is established on two released SSM-ViT checkpoints under their released streaming evaluator. The second checkpoint tests that the violation is not confined to one released weight set. Gen1 and DSEC are separate audits of predictor- and label-side timing, not premises required for that counterexample.
+constant-velocity displacement surrogate. The primary SSM chunk-boundary intervention is established on two released SSM-ViT checkpoints under their released streaming evaluator; the second tests that the violation is not confined to one weight set. Gen1 and DSEC are separate audits of predictor- and label-side timing, not premises required for that counterexample.
 
 \section{Conclusion}
 
-In the released SSM-ViT pipeline one pooled score combines predictions with one to twenty-one windows of recurrent history, and moving only the chunk boundary shifts S5-B by \ssmPairedMapAllBase{} mAP over all labeled validation boxes and \ssmPairedMapVelBase{} mAP on the velocity-evaluable subset, at fixed frames, weights, labels and evaluator. The chunk boundary is an unreported degree of freedom of the protocol: it changes the recurrent support behind the reported score while every recorded quantity stays fixed, which is exactly a failure of temporal-support identifiability. Effective temporal support is therefore part of what a recurrent benchmark score means, not an implementation detail.
+In the released SSM-ViT pipeline one pooled score combines predictions with one to twenty-one windows of recurrent history, and moving only the chunk boundary shifts S5-B by \ssmPairedMapAllBase{} mAP over all labeled validation boxes and \ssmPairedMapVelBase{} mAP on the velocity-evaluable subset, at fixed frames, weights, labels and evaluator. The chunk boundary is an unreported degree of freedom of the protocol: it changes the recurrent support behind the reported score while every recorded quantity stays fixed, which is exactly a failure of temporal-support identifiability.
 
 The result does not single out a canonical temporal-support statistic, nor attribute the shift to one stage of the pipeline. RVT's input sensitivity and its regression-based temporal coefficient remain descriptors rather than estimates of recurrent support, and DSEC's within-exposure timing carries illumination-locked structure that must be separated before it is attributed to object motion.
 
-The actionable rule is short. Two scores at the same nominal timestamp are not performance at the same effective time when the recurrent support behind them differs, so comparisons across recurrent architectures should report or control predictor initialization, reset policy, chunk boundaries, effective history and label-acquisition intervals alongside the score, which makes these quantities protocol-identifiable.
+Two scores at the same nominal timestamp are not performance at the same effective time when the recurrent support behind them differs, so comparisons across recurrent architectures should report or control predictor initialization, reset policy, chunk boundaries, effective history and label-acquisition intervals alongside the score, making them protocol-identifiable.
 {\footnotesize
 \setlength{\itemsep}{0.4pt}
 \clearpage

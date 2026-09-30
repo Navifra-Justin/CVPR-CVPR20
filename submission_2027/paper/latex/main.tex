@@ -146,9 +146,15 @@ RVT and SSM-ViT redesign or parameterize temporal windows
 \cite{gehrig2023rvt,zubic2024ssm}, while adaptive-window methods compare
 alternative partitions \cite{sui2026astw}. Event--RGB frequency mismatch and
 exposure duration have also been noted \cite{faod2024,sun2023refid,kim2022unknownexposure}.
-The closest accepted work above calibrates sensor or runtime latency or redesigns temporal
-windows, each holding the benchmark's temporal index fixed. We make that index the measured
-quantity, reading the released per-frame windows and exposures and separating predictor
+Both released implementations leave a frame's position inside the evaluation chunk
+unspecified by the protocol rather than fixed by the model: the recurrent state entering a
+chunk is the state saved at the end of the previous chunk and is reset only at the first
+sample of a sequence, and under streaming sampling every timestep emits predictions while otherwise only the last does
+(RVT \texttt{modules/detection.py}:232,\,243 and SSM-ViT :315,\,318).
+LEOD~\cite{wu2024leod} states that event detectors take only events triggered before the
+query time and builds a time-flip augmentation on that premise. It does not measure where inside that window the evidence sits.
+This is a reading of the released code and text, not a measurement of those systems.
+We read the released per-frame windows and exposures and separate predictor
 support, output-time interpretation, and label-acquisition support.
 
 \paragraph{Benchmark reliability and evaluation analysis.}
@@ -796,7 +802,7 @@ In the released SSM-ViT pipeline one pooled score combines predictions with one 
 
 The result does not single out a canonical temporal-support statistic, nor attribute the shift to one stage of the pipeline. RVT's input sensitivity and its regression-based temporal coefficient remain descriptors rather than estimates of recurrent support, and DSEC's within-exposure timing carries illumination-locked structure that must be separated before it is attributed to object motion.
 
-Two scores at the same nominal timestamp are not performance at the same effective time when the recurrent support behind them differs, so comparisons across recurrent architectures should report or control predictor initialization, reset policy, chunk boundaries, effective history and label-acquisition intervals alongside the score, making them protocol-identifiable.
+Two scores at the same nominal timestamp are not performance at the same effective time when the recurrent support behind them differs, so comparisons across recurrent architectures should report or control the three latent temporal quantities alongside the score.
 {\footnotesize
 \setlength{\itemsep}{0.4pt}
 \clearpage

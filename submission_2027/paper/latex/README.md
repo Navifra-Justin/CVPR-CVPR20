@@ -2,36 +2,50 @@
 
 Title: *Temporal-Support Identifiability in Event-Detection Benchmarks*.
 Rebuilt 2026-09-16 from `paper/` after the third checklist pass. Every file here is
-current; no build artifact (`.aux`, `.log`, `.out`, `.blg`, `.brf`, `.bbl`) is shipped.
+current.  The build artifacts `.aux`, `.log`, `.out`, `.blg`, `.brf`, `.fls`, `.fdb_latexmk`
+are present in this working directory but are not tracked and are not part of the upload.
+`main.bbl` and the two `.buildlog` files are tracked deliberately, the first so `main.tex`
+compiles without a `bibtex` step and the logs as the build record.  `supp.bbl` is also
+tracked and is zero bytes: `supp.tex` has no bibliography, so the file is a remnant that
+the build neither writes nor reads.
 
 ## Upload these
 
 | File | Pages / size | Notes |
 |---|---|---|
 | `main.pdf` | 9 (body 8, references on 9) | anonymous, `\usepackage[review]{cvpr}`, `\author{Anonymous CVPR submission}` |
-| `supplement.pdf` | 10 | supplementary material |
-| `CVPR20_paper_video.mp4` | 87.9 s, 1280x720, 30 fps, 9.0 MB | research video, nine scenes |
+| `supp.pdf` | 11 | supplementary material |
+| `video/main.mp4` | 87.9 s, 1280x720, 30 fps, 9,466,456 bytes | research video, nine scenes |
 
 ## Sources (for the camera-ready and for the record)
 
-`main.tex`, `supplement.tex`, `numbers.tex`, `cvpr.sty`, `figs/` (8 PDFs: `chunkpos`,
-`chunkpos_full`, `fig1_dsec_exposure`, `fig3_day_night`, `fig5_qualitative`,
-`fig6_sweep_real`, `fig7_ceiling_vs_day`, `fig_predictor`).
+`main.tex`, `supp.tex`, `numbers.tex`, `cvpr.sty`, `figs/` (9 PDFs read by the two
+documents: `chunkpos`, `chunkpos_full`, `fig1_dsec_exposure`, `fig3_day_night`,
+`fig5_qualitative`, `fig6_sweep_real`, `fig7_ceiling_vs_day`, `fig_predictor`,
+`paired_frame`).  `figs/fig2_evidence_time.pdf` is also present and is read by neither.
 
 These compile standalone from this directory with no other input:
 
 ```
 pdflatex main && bibtex main && pdflatex main && pdflatex main
-pdflatex supplement && bibtex supplement && pdflatex supplement && pdflatex supplement
+pdflatex supp && pdflatex supp && pdflatex supp
 ```
 
-Verified in `cvpr19-tex:cvpr2026-v1` from a clean copy of this directory:
-`main 9 pages, supplement 10 pages, undef=0, overfull=0, 0 missing-figure placeholders`.
+Verified in `cvpr19-tex:cvpr2026-v1` from a clean copy of this directory, and re-verified
+2026-10-01 in `texlive/texlive:latest`:
+`main 9 pages, supp 11 pages, undef=0, overfull=0, 0 missing-figure placeholders`.
+Both documents built from a clean copy reproduce the shipped PDFs' `pdftotext` output
+exactly, and `main.pdf` passes the reference-page check (references start on page 9 with
+no body text on it).  `main` needs no `bibtex` run when `main.bbl` is present.
 (`\figasset` substitutes a visible box for a missing figure rather than failing, so the
 placeholder count is checked explicitly, not assumed.)
 
 The bibliography is an inline `thebibliography` environment in `main.tex`; there is no
 `.bib` file, and the `bibtex` step above is a no-op kept for the camera-ready workflow.
+`supp.tex` cites nothing and carries no bibliography, so it needs no `bibtex` step.  It does
+need three `pdflatex` passes: at two, one table has not yet reached its final page and the
+text stream differs from the shipped `supp.pdf`.  This was checked by building a clean copy
+at two and at three passes and comparing `pdftotext` output against the shipped file.
 37 entries, 37 cited, 0 undefined, 0 orphaned, 0 duplicated.
 
 ## Verification records

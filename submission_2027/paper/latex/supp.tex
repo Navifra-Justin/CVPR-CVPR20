@@ -18,6 +18,9 @@
    \centering\small\texttt{#1}\\[2pt]\textit{asset not yet rendered}%
    \end{minipage}}}}
 \newcommand{\eff}{\ensuremath{\hat{\tau}}}
+% E66 cells: value with its 95% interval, read from numbers.tex (src/e66_macros.py).
+\newcommand{\fhcell}[2]{\csname fhMap#1#2\endcsname{} [\csname fhMap#1#2Lo\endcsname,\,\csname fhMap#1#2Hi\endcsname]}
+\newcommand{\fhgap}[3]{\csname fhGap#1#2#3\endcsname{} [\csname fhGap#1#2#3Lo\endcsname,\,\csname fhGap#1#2#3Hi\endcsname]}
 
 \title{Temporal-Support Identifiability\\
 in Event-Detection Evaluation Pipelines\\[0.3em]
@@ -1032,6 +1035,68 @@ comparison covers two RVT capacities on Gen1 validation at one shift amount, and
 made about training-time behavior, which is not what either release's streaming evaluator
 exercises.
 
+
+\subsection{Scoring at a fixed history}
+\label{sup:fixedh}
+
+Main Sec.~5 scores the five released Gen1 checkpoints with the recurrent history fixed to $H\in\{1,5,10,21\}$ windows. This subsection gives the construction, the checks that were run on it, and the tables and curve that the main text summarizes.
+
+\paragraph{Construction.}
+For every labeled frame at window index $r$ and every $H$, the checkpoint is run on windows $r-H+1,\dots,r$ only, from a fresh recurrent state, and the detections of window $r$ are kept. An RVT checkpoint is called once per window with its state carried inside the $H$-window run and started empty at the first of them, as in the release's own per-window call. An SSM-ViT checkpoint receives the $H$ windows as one chunk of length $H$ with a fresh state and the detection head applied at the last position, as in the release's chunked call. Nothing before window $r-H+1$ reaches the model. The nominal history is $H$, and a frame with fewer than $H$ earlier windows receives $H_{\mathrm{forced}}=\min(H,r+1)$. Ground truth, frame admission and label linking are those of the released-protocol dumps, and the confidence floor and NMS overlap are the ones of Sec.~\ref{sup:ordering}. All five checkpoints are scored on the \fhNCommon{} common frames, those with $H_{\mathrm{forced}}=H_{\mathrm{nominal}}$ at every $H$, out of \fhNAll{} labeled frames, in \fhNSeq{} sequences. Intervals are 95\,\% percentile intervals over \fhB{} bootstrap draws that resample sequences, with one draw shared by every checkpoint and column, so every difference below is paired.
+
+\paragraph{Checks.}
+Each run records which windows the loader returned for each (frame, $H$) cell, independently of the formula above. For all five checkpoints the number of distinct windows read equals $H_{\mathrm{forced}}$ in every cell, and the first window read is $r-H_{\mathrm{forced}}+1$ in every cell, so no earlier window reached the model. The weight hash of each checkpoint is unchanged by the run, one ground-truth array serves every $H$, and the evaluated frame set is the same at every $H$. An oldest-window probe replaces the oldest admitted window and records whether the output changes. It changed the output in \fhProbeHit{} of \fhProbeN{} probed cells for RVT-\texttt{s}, RVT-\texttt{b}, S5-S and S5-B, and in \fhProbeHitT{} of \fhProbeN{} for RVT-\texttt{t}. The verification script requires every probed cell to change and therefore reports failure for all five checkpoints. We state the counts and give no explanation for the cells that did not change. The mAP of the table is computed by a vectorized evaluator that reproduces the E56 scorer up to the order of equal float32 confidences. Over all models and columns the largest difference between the two is $\fhFastDiff\times10^{-6}$ points.
+
+\begin{table}[h]
+\centering\scriptsize
+\setlength{\tabcolsep}{3.0pt}\renewcommand{\arraystretch}{0.95}
+\begin{tabular}{lp{3.9cm}rr}
+\toprule
+column & ordering (best to worst) & $\tau$ & repro.\ (\%) \\
+\midrule
+pooled & RVT-\texttt{b}, RVT-\texttt{s}, S5-B, RVT-\texttt{t}, S5-S & \fhTauPool & \fhReproPool \\
+$H=1$ & S5-B, S5-S, RVT-\texttt{b}, RVT-\texttt{s}, RVT-\texttt{t} & \fhTauHOne & \fhReproHOne \\
+$H=5$ & S5-B, RVT-\texttt{b}, S5-S, RVT-\texttt{s}, RVT-\texttt{t} & \fhTauHFive & \fhReproHFive \\
+$H=10$ & S5-B, RVT-\texttt{b}, S5-S, RVT-\texttt{s}, RVT-\texttt{t} & \fhTauHTen & \fhReproHTen \\
+$H=21$ & S5-B, RVT-\texttt{b}, RVT-\texttt{s}, S5-S, RVT-\texttt{t} & \fhTauHTwentyone & \fhReproHTwentyone \\
+\bottomrule
+\end{tabular}
+\caption{Ordering of the five checkpoints by mAP in each column of main Tab.~1, Kendall's $\tau$ against the pooled ordering, and the share of the \fhB{} bootstrap draws whose full ordering equals the column's point ordering.}
+\label{tab:scorder}
+\end{table}
+
+\begin{table*}[t]
+\centering\scriptsize
+\setlength{\tabcolsep}{3.0pt}\renewcommand{\arraystretch}{0.95}
+\begin{tabular}{lrrrrr}
+\toprule
+pair (first $-$ second) & pooled & $H=1$ & $H=5$ & $H=10$ & $H=21$ \\
+\midrule
+RVT-\texttt{t} $-$ RVT-\texttt{s} & \fhgap{Rt}{Rs}{Pool} & \fhgap{Rt}{Rs}{HOne} & \fhgap{Rt}{Rs}{HFive} & \fhgap{Rt}{Rs}{HTen} & \fhgap{Rt}{Rs}{HTwentyone} \\
+RVT-\texttt{t} $-$ RVT-\texttt{b} & \fhgap{Rt}{Rb}{Pool} & \fhgap{Rt}{Rb}{HOne} & \fhgap{Rt}{Rb}{HFive} & \fhgap{Rt}{Rb}{HTen} & \fhgap{Rt}{Rb}{HTwentyone} \\
+RVT-\texttt{t} $-$ S5-S & \fhgap{Rt}{Ss}{Pool} & \fhgap{Rt}{Ss}{HOne} & \fhgap{Rt}{Ss}{HFive} & \fhgap{Rt}{Ss}{HTen} & \fhgap{Rt}{Ss}{HTwentyone} \\
+RVT-\texttt{t} $-$ S5-B & \fhgap{Rt}{Sb}{Pool} & \fhgap{Rt}{Sb}{HOne} & \fhgap{Rt}{Sb}{HFive} & \fhgap{Rt}{Sb}{HTen} & \fhgap{Rt}{Sb}{HTwentyone} \\
+RVT-\texttt{s} $-$ RVT-\texttt{b} & \fhgap{Rs}{Rb}{Pool} & \fhgap{Rs}{Rb}{HOne} & \fhgap{Rs}{Rb}{HFive} & \fhgap{Rs}{Rb}{HTen} & \fhgap{Rs}{Rb}{HTwentyone} \\
+RVT-\texttt{s} $-$ S5-S & \fhgap{Rs}{Ss}{Pool} & \fhgap{Rs}{Ss}{HOne} & \fhgap{Rs}{Ss}{HFive} & \fhgap{Rs}{Ss}{HTen} & \fhgap{Rs}{Ss}{HTwentyone} \\
+RVT-\texttt{s} $-$ S5-B & \fhgap{Rs}{Sb}{Pool} & \fhgap{Rs}{Sb}{HOne} & \fhgap{Rs}{Sb}{HFive} & \fhgap{Rs}{Sb}{HTen} & \fhgap{Rs}{Sb}{HTwentyone} \\
+RVT-\texttt{b} $-$ S5-S & \fhgap{Rb}{Ss}{Pool} & \fhgap{Rb}{Ss}{HOne} & \fhgap{Rb}{Ss}{HFive} & \fhgap{Rb}{Ss}{HTen} & \fhgap{Rb}{Ss}{HTwentyone} \\
+RVT-\texttt{b} $-$ S5-B & \fhgap{Rb}{Sb}{Pool} & \fhgap{Rb}{Sb}{HOne} & \fhgap{Rb}{Sb}{HFive} & \fhgap{Rb}{Sb}{HTen} & \fhgap{Rb}{Sb}{HTwentyone} \\
+S5-S $-$ S5-B & \fhgap{Ss}{Sb}{Pool} & \fhgap{Ss}{Sb}{HOne} & \fhgap{Ss}{Sb}{HFive} & \fhgap{Ss}{Sb}{HTen} & \fhgap{Ss}{Sb}{HTwentyone} \\
+\bottomrule
+\end{tabular}
+\caption{Paired mAP gaps (points) between the five released Gen1 checkpoints on the \fhNCommon{} common frames, with 95\,\% intervals from \fhB{} bootstrap draws over the \fhNSeq{} sequences. Pooled is the released evaluation restricted to the same frames. A gap whose interval excludes zero is a difference the sequence resampling does not remove. The sign of the pooled gap and the sign at $H=1$ are opposite, with both intervals excluding zero, for RVT-\texttt{t} $-$ S5-S, RVT-\texttt{s} $-$ S5-S and RVT-\texttt{b} $-$ S5-B.}
+\label{tab:scpairs}
+\end{table*}
+
+\begin{figure}[t]
+\centering
+\figasset{figs/e66_hcurve.pdf}{\columnwidth}
+\caption{mAP of the five checkpoints on the common frames at $H=1,5,10,21$ (filled markers, equal spacing on the axis) and in the pooled released evaluation (open markers). RVT-\texttt{t} and S5-B coincide at the pooled position. Intervals are in main Tab.~1 and the paired gaps in Tab.~\ref{tab:scpairs}.}
+\label{fig:schcurve}
+\end{figure}
+
+\paragraph{Reading.}
+S5-B is first at every fixed $H$, and RVT-\texttt{b} minus S5-B shrinks from \fhgap{Rb}{Sb}{HOne} at $H=1$ to \fhgap{Rb}{Sb}{HTwentyone} at $H=21$. At $H=21$ the RVT-\texttt{s} $-$ S5-S gap is \fhgap{Rs}{Ss}{HTwentyone}, which does not exclude zero, and the same gap is \fhgap{Rs}{Ss}{Pool} in the pooled score. The pooled score of each RVT checkpoint is above all four of its fixed-$H$ scores, whereas that of each S5 checkpoint lies between its $H=1$ and $H=21$ scores. The pooled column comes from the released evaluation, in which the RVT checkpoints carry their state across the whole sequence and the S5 checkpoints are limited to the current chunk (Sec.~\ref{sup:support}). The fixed-$H$ protocol caps both at 21 windows and resets both, and it starts the RVT checkpoints from a state they are not given at evaluation in the release. The reset-regime measurement of Sec.~\ref{sup:rvtbound} (\rvtBoundResetS{} and \rvtBoundResetB{} points) shows that the RVT checkpoints respond to the history length after a reset. It does not separate the reset from the history in the fixed-$H$ scores.
 
 \section{The recurrent influence tail}
 \label{sup:tail}

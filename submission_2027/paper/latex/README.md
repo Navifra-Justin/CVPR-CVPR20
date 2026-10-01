@@ -13,16 +13,16 @@ the build neither writes nor reads.
 
 | File | Pages / size | Notes |
 |---|---|---|
-| `main.pdf` | 6 (body 5, references on 6) | anonymous, `\usepackage[review]{cvpr}`, `\author{Anonymous CVPR submission}` |
-| `supp.pdf` | 16 | supplementary material, including the predictor-side and label-side audits (Secs. 15 and 16) that main Sec. 4 summarizes |
+| `main.pdf` | 7 (body 6, references on 7) | anonymous, `\usepackage[review]{cvpr}`, `\author{Anonymous CVPR submission}` |
+| `supp.pdf` | 17 | supplementary material, including the predictor-side and label-side audits (Secs. 15 and 16) that main Sec. 4 summarizes and the fixed-history scoring of Sec. 13.4 that main Sec. 5 summarizes |
 | `video/main.mp4` | 87.9 s, 1280x720, 30 fps, 9,466,456 bytes | research video, nine scenes |
 
 ## Sources (for the camera-ready and for the record)
 
-`main.tex`, `supp.tex`, `numbers.tex`, `cvpr.sty`, `figs/` (9 PDFs read by the two
+`main.tex`, `supp.tex`, `numbers.tex`, `cvpr.sty`, `figs/` (10 PDFs read by the two
 documents: `chunkpos`, `chunkpos_full`, `fig1_dsec_exposure`, `fig3_day_night`,
 `fig5_qualitative`, `fig6_sweep_real`, `fig7_ceiling_vs_day`, `fig_predictor`,
-`paired_frame`).  `figs/fig2_evidence_time.pdf` is also present and is read by neither.
+`paired_frame`, `e66_hcurve`).  `figs/fig2_evidence_time.pdf` is also present and is read by neither.
 
 These compile standalone from this directory with no other input:
 
@@ -33,9 +33,9 @@ pdflatex supp && pdflatex supp && pdflatex supp
 
 Verified in `cvpr19-tex:cvpr2026-v1` from a clean copy of this directory, and re-verified
 2026-10-01 in `texlive/texlive:latest`:
-`main 6 pages, supp 16 pages, undef=0, overfull=0, 0 missing-figure placeholders`.
+`main 7 pages, supp 17 pages, undef=0, overfull=0, 0 missing-figure placeholders`.
 Both documents built from a clean copy reproduce the shipped PDFs' `pdftotext` output
-exactly, and `main.pdf` passes the reference-page check (references start on page 6 with
+exactly, and `main.pdf` passes the reference-page check (references start on page 7 with
 no body text on it).  `main` needs no `bibtex` run when `main.bbl` is present.
 (`\figasset` substitutes a visible box for a missing figure rather than failing, so the
 placeholder count is checked explicitly, not assumed.)
@@ -57,7 +57,7 @@ at two and at three passes and comparing `pdftotext` output against the shipped 
 - `VERIFY_3ROUND_E58.md` — three independent verifications of the headline chunk-position
   result (mechanism from released source, mutation-tested numbers, permutation null at
   9.84 sigma / 7.61 sigma with all placebos inside). The 209/209 macro count quoted there
-  is the count at the time of that round; the current manuscript carries 314.
+  is the count at the time of that round; the current manuscript carries 623.
 - `AI_WRITING_AUDIT.md` — first-pass writing audit. GPTZero status is `not_run`: the
   `GPTZERO_API_KEY` environment variable is not configured on this machine, so no
   detector score is reported and none is inferred. The local heuristic pass returns
@@ -65,8 +65,8 @@ at two and at three passes and comparing `pdftotext` output against the shipped 
   file: `.ai-audit/gptzero_raw.json` in the repository.
 - `video_README.md` — scene list, screen times, and the defect log for the video.
 
-All 314 manuscript numbers re-derive from their artifacts:
-`python3 src/audit_numbers.py` (314 checked, 0 disagree, 314/314 reject a corrupted
+All 623 manuscript numbers re-derive from their artifacts:
+`python3 src/audit_numbers.py` (623 checked, 0 disagree, 623/623 reject a corrupted
 value, blind: none).
 
 ## Video

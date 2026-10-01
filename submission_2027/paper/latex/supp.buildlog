@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.8.9)  1 OCT 2026 02:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.8.9)  1 OCT 2026 11:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -422,8 +422,8 @@ Package cleveref Info: always capitalise cross-reference names on input line 78
 52.
 )
 ==> First Aid for cleveref.sty applied!
-LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 2
-7.
+LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 3
+0.
 (/usr/local/texlive/2026/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
@@ -434,24 +434,24 @@ File: l3backend-pdftex.def 2026-07-20 L3 backend support: PDF output (pdfTeX)
 (./supp.aux)
 \openout1 = `supp.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
 
 (/usr/local/texlive/2026/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -488,32 +488,32 @@ Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
 
 ABD: EveryShipout initializing macros
-Package backref Info: ** backref set up for natbib ** on input line 27.
-Package hyperref Info: Link coloring ON on input line 27.
+Package backref Info: ** backref set up for natbib ** on input line 30.
+Package hyperref Info: Link coloring ON on input line 30.
  (./supp.out) (./supp.out)
 \@outlinefile=\write3
 \openout3 = `supp.out'.
 
 LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 3
-6.
+9.
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 38.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 41.
 
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 38.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 41.
 
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Trying to load font information for OT1+phv on input line 1
-05.
+08.
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/psnfss/ot1phv.fd
 File: ot1phv.fd 2020/03/25 scalable font definitions for OT1/phv.
@@ -522,78 +522,85 @@ File: ot1phv.fd 2020/03/25 scalable font definitions for OT1/phv.
 
 
 ] [2] [3]
-<figs/fig6_sweep_real.pdf, id=166, 239.93639pt x 101.604pt>
+<figs/fig6_sweep_real.pdf, id=170, 239.93639pt x 101.604pt>
 File: figs/fig6_sweep_real.pdf Graphic file (type pdf)
 <use figs/fig6_sweep_real.pdf>
-Package pdftex.def Info: figs/fig6_sweep_real.pdf  used on input line 329.
+Package pdftex.def Info: figs/fig6_sweep_real.pdf  used on input line 332.
 (pdftex.def)             Requested size: 225.27841pt x 95.40234pt.
  [4 <./figs/fig6_sweep_real.pdf>]
-<figs/fig3_day_night.pdf, id=209, 247.53227pt x 141.31319pt>
+<figs/fig3_day_night.pdf, id=213, 247.53227pt x 141.31319pt>
 File: figs/fig3_day_night.pdf Graphic file (type pdf)
 <use figs/fig3_day_night.pdf>
-Package pdftex.def Info: figs/fig3_day_night.pdf  used on input line 396.
+Package pdftex.def Info: figs/fig3_day_night.pdf  used on input line 399.
 (pdftex.def)             Requested size: 237.13594pt x 135.37663pt.
-<figs/fig5_qualitative.pdf, id=214, 159.71358pt x 161.15407pt>
+<figs/fig5_qualitative.pdf, id=218, 159.71358pt x 161.15407pt>
 File: figs/fig5_qualitative.pdf Graphic file (type pdf)
 <use figs/fig5_qualitative.pdf>
-Package pdftex.def Info: figs/fig5_qualitative.pdf  used on input line 447.
+Package pdftex.def Info: figs/fig5_qualitative.pdf  used on input line 450.
 (pdftex.def)             Requested size: 118.56796pt x 119.6382pt.
  [5 <./figs/fig3_day_night.pdf> <./figs/fig5_qualitative.pdf>] [6]
 [7] [8]
-<figs/chunkpos_full.pdf, id=324, 503.619pt x 168.02711pt>
+<figs/chunkpos_full.pdf, id=328, 503.619pt x 168.02711pt>
 File: figs/chunkpos_full.pdf Graphic file (type pdf)
 <use figs/chunkpos_full.pdf>
-Package pdftex.def Info: figs/chunkpos_full.pdf  used on input line 845.
+Package pdftex.def Info: figs/chunkpos_full.pdf  used on input line 848.
 (pdftex.def)             Requested size: 496.85625pt x 165.77815pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[9] [10 <./figs/chunkpos_full.pdf>] [11]
-<figs/fig_predictor.pdf, id=373, 251.50337pt x 207.75304pt>
+[9] [10 <./figs/chunkpos_full.pdf>]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<figs/e66_hcurve.pdf, id=366, 238.33667pt x 134.40651pt>
+File: figs/e66_hcurve.pdf Graphic file (type pdf)
+<use figs/e66_hcurve.pdf>
+Package pdftex.def Info: figs/e66_hcurve.pdf  used on input line 1093.
+(pdftex.def)             Requested size: 237.13594pt x 133.73347pt.
+[11] [12 <./figs/e66_hcurve.pdf>]
+<figs/fig_predictor.pdf, id=413, 251.50337pt x 207.75304pt>
 File: figs/fig_predictor.pdf Graphic file (type pdf)
 <use figs/fig_predictor.pdf>
-Package pdftex.def Info: figs/fig_predictor.pdf  used on input line 1118.
+Package pdftex.def Info: figs/fig_predictor.pdf  used on input line 1183.
 (pdftex.def)             Requested size: 225.27841pt x 186.09155pt.
- [12 <./figs/fig_predictor.pdf>]
-[13]
-<figs/fig1_dsec_exposure.pdf, id=456, 512.44017pt x 145.37961pt>
+ [13 <./figs/fig_predictor.pdf>] [14] [15]
+<figs/fig1_dsec_exposure.pdf, id=502, 512.44017pt x 145.37961pt>
 File: figs/fig1_dsec_exposure.pdf Graphic file (type pdf)
 <use figs/fig1_dsec_exposure.pdf>
-Package pdftex.def Info: figs/fig1_dsec_exposure.pdf  used on input line 1419.
+Package pdftex.def Info: figs/fig1_dsec_exposure.pdf  used on input line 1484.
 (pdftex.def)             Requested size: 397.48651pt x 112.76561pt.
- [14]
-<figs/fig7_ceiling_vs_day.pdf, id=469, 239.93639pt x 169.1118pt>
+<figs/fig7_ceiling_vs_day.pdf, id=509, 239.93639pt x 169.1118pt>
 File: figs/fig7_ceiling_vs_day.pdf Graphic file (type pdf)
 <use figs/fig7_ceiling_vs_day.pdf>
-Package pdftex.def Info: figs/fig7_ceiling_vs_day.pdf  used on input line 1468.
+Package pdftex.def Info: figs/fig7_ceiling_vs_day.pdf  used on input line 1533.
 
 (pdftex.def)             Requested size: 156.51057pt x 110.31616pt.
- [15 <./figs/fig1_dsec_exposure.pdf> <./figs/fig7_ceiling_vs_day.pdf>] (./supp.
-brf)
+
+(./supp.brf)
 \tf@brf=\write4
 \openout4 = `supp.brf'.
 
- [16
+ [16] [17
 
-] (./supp.aux)
+ <./figs/fig1_dsec_exposure.pdf> <./figs/fig7_ceiling_vs_day.pdf>] (./supp.aux)
  ***********
 LaTeX2e <2026-06-01>
 L3 programming layer <2026-07-20>
  ***********
 Package rerunfilecheck Info: File `supp.out' has not changed.
-(rerunfilecheck)             Checksum: EC114822E899C20B1202EB37A26377FE;7162.
+(rerunfilecheck)             Checksum: 3036CBABAD468C9CFDE611AD1FF3E61E;7364.
 Package rerunfilecheck Info: File `supp.brf' has not changed.
-(rerunfilecheck)             Checksum: ED6610C329421785E165D9322016608C;272.
+(rerunfilecheck)             Checksum: DA47210667C8913D4E1DF9A1F93BFCC4;272.
  ) 
 Here is how much of TeX's memory you used:
- 16100 strings out of 467159
- 262584 string characters out of 5409225
- 749957 words of memory out of 5000000
- 45078 multiletter control sequences out of 15000+600000
- 657113 words of font info for 97 fonts, out of 8000000 for 9000
+ 16405 strings out of 467159
+ 267051 string characters out of 5409225
+ 759420 words of memory out of 5000000
+ 45374 multiletter control sequences out of 15000+600000
+ 658753 words of font info for 101 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 89i,10n,98p,1997b,489s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,10n,98p,1997b,608s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb>
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
@@ -614,10 +621,10 @@ s/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1
 /urw/times/utmb8a.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/urw/times
 /utmr8a.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/urw/times/utmri8a.p
 fb>
-Output written on supp.pdf (16 pages, 1225949 bytes).
+Output written on supp.pdf (17 pages, 1249457 bytes).
 PDF statistics:
- 626 PDF objects out of 1000 (max. 8388607)
- 472 compressed objects within 5 object streams
- 98 named destinations out of 1000 (max. 500000)
- 260 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 667 PDF objects out of 1000 (max. 8388607)
+ 499 compressed objects within 5 object streams
+ 106 named destinations out of 1000 (max. 500000)
+ 273 words of extra memory for PDF output out of 10000 (max. 10000000)
 

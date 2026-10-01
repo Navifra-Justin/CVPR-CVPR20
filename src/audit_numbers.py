@@ -537,6 +537,86 @@ if os.path.exists('experiments/e65_rvt_boundary/paired-shift5.json'):
                ('rvtBoundPermMax',  max(abs(_p['mean']) for _p in _p65), 0.0005),
                ('rvtBoundPermSd',   max(_p['sd'] for _p in _p65),        0.005)]
 
+# E66 Support-Conditioned AP: five released checkpoints scored under exactly H windows of
+# history. Every number is re-read from results.json (and, for the audit-trail counts, from the
+# verify logs) with its own expression, and the ordering statements the prose makes are
+# asserted here rather than trusted: a changed ordering must break this file, not the review.
+_E66F='experiments/e66_fixedH/results.json'
+_FH_DERIVED=set()
+if os.path.exists(_E66F):
+    import re as _re
+    _R=L(_E66F)
+    _MS=['rvt-t','rvt-s','rvt-b','s5vit-small','s5vit-base']
+    _MC=dict(zip(_MS,('Rt','Rs','Rb','Ss','Sb')))
+    _CC={'pooled':'Pool','H1':'HOne','H5':'HFive','H10':'HTen','H21':'HTwentyone'}
+    assert _R['models']==_MS and list(_R['cols'])==list(_CC), 'E66 model or column set changed'
+    _E66=[('fhNAll',_R['n_frames'],0),('fhNCommon',_R['n_common'],0),('fhNExcl',_R['n_excluded'],0),
+          ('fhNSeq',_R['n_seq_common'],0),('fhB',_R['B'],0)]
+    assert _R['n_frames']-_R['n_common']==_R['n_excluded']
+    for _m in _MS:
+        for _c,_cc in _CC.items():
+            _E66+=[(f'fhMap{_MC[_m]}{_cc}',_R['map'][_m][_c],0.005),
+                   (f'fhMap{_MC[_m]}{_cc}Lo',_R['ci'][_m][_c][0],0.005),
+                   (f'fhMap{_MC[_m]}{_cc}Hi',_R['ci'][_m][_c][1],0.005)]
+        _E66+=[(f'fhMap{_MC[_m]}All',_R['pooled_all_frames'][_m],0.005)]
+    for _c,_cc in _CC.items():
+        _E66+=[(f'fhTau{_cc}',_R['kendall_vs_pooled'][_c],0.005),
+               (f'fhRepro{_cc}',100*_R['rank_repro'][_c],0.05)]
+    _PAIRS=[(a,b) for i,a in enumerate(_MS) for b in _MS[i+1:]]
+    for _a,_b in _PAIRS:
+        _g=_R['gap'][f'{_a}-{_b}']
+        for _c,_cc in _CC.items():
+            # a gap is re-derived from the two models' own mAP, not only read from the stored gap
+            assert abs(_g[_c][0]-(_R['map'][_a][_c]-_R['map'][_b][_c]))<1e-9, (_a,_b,_c)
+            _E66+=[(f'fhGap{_MC[_a]}{_MC[_b]}{_cc}',_g[_c][0],0.005),
+                   (f'fhGap{_MC[_a]}{_MC[_b]}{_cc}Lo',_g[_c][1],0.005),
+                   (f'fhGap{_MC[_a]}{_MC[_b]}{_cc}Hi',_g[_c][2],0.005)]
+        _hp=[_R['map'][_a][c]-_R['map'][_b][c] for c in ('H1','H5','H10','H21')]
+        _E66+=[(f'fhGap{_MC[_a]}{_MC[_b]}Min',min(_hp),0.005),(f'fhGap{_MC[_a]}{_MC[_b]}Max',max(_hp),0.005)]
+    _PV={}
+    for _m in _MS:
+        _t=open(f'experiments/e66_fixedH/verify-{_m}.log').read()
+        _x=_re.search(r'changed the output in (\d+)/(\d+) probed cells',_t)
+        _PV[_m]=(int(_x.group(1)),int(_x.group(2)))
+        for _need in ('[PASS] (4)(5) effective support count == H_forced in every cell',
+                      '[PASS] (4) first window read == ri-H_forced+1 in every cell',
+                      '[PASS] (3) weights sha256 unchanged'):
+            assert _need in _t, f'verify-{_m}.log lost the line {_need!r}'
+    _E66+=[('fhProbeN',_PV['rvt-t'][1],0),('fhProbeHit',_PV['rvt-s'][0],0),('fhProbeHitT',_PV['rvt-t'][0],0)]
+    assert {v[1] for v in _PV.values()}=={_PV['rvt-t'][1]} and \
+           {_PV[m][0] for m in _MS if m!='rvt-t'}=={_PV['rvt-s'][0]}, 'probe counts differ across checkpoints'
+    _fd=[float(x) for x in _re.findall(r'so far ([0-9.e+-]+)',open('experiments/e66_fixedH/eval.log').read())]
+    _E66+=[('fhFastDiff',max(_fd)*1e6,0.005)]
+    # --- statements the prose makes about orderings and signs ---
+    _O=_R['order']
+    assert _O['pooled']==['rvt-b','rvt-s','s5vit-base','rvt-t','s5vit-small'], 'pooled ordering changed'
+    assert all(_O[h][0]=='s5vit-base' for h in ('H1','H5','H10','H21')), 'S5-B is no longer first at every H'
+    assert all(_O[h]!=_O['pooled'] for h in ('H1','H5','H10','H21')), 'an H ordering equals the pooled one'
+    _gp=lambda a,b,c: _R['gap'][f'{a}-{b}'][c]
+    _opp=lambda g,h: g[1]>0>h[2] or h[1]>0>g[2]       # intervals exclude zero on opposite sides
+    _flip=[(a,b) for a,b in _PAIRS if _opp(_gp(a,b,'pooled'),_gp(a,b,'H1'))]
+    assert _flip==[('rvt-t','s5vit-small'),('rvt-s','s5vit-small'),('rvt-b','s5vit-base')], _flip
+    for _a,_b in (('rvt-s','s5vit-base'),('rvt-t','s5vit-base')):
+        assert _gp(_a,_b,'pooled')[1]<0<_gp(_a,_b,'pooled')[2], 'pooled interval no longer covers zero'
+        assert all(_gp(_a,_b,h)[2]<0 for h in ('H1','H5','H10','H21')), 'a fixed-H gap interval reaches zero'
+    assert all(_gp('rvt-b','s5vit-base',h)[2]<0 for h in ('H1','H5','H10','H21'))
+    for _m in ('rvt-t','rvt-s','rvt-b'):
+        assert _R['map'][_m]['pooled']>max(_R['map'][_m][h] for h in ('H1','H5','H10','H21')), _m
+    for _m in ('s5vit-small','s5vit-base'):
+        assert _R['map'][_m]['H1']<_R['map'][_m]['pooled']<_R['map'][_m]['H21'], _m
+    assert _O['H1']==['s5vit-base','s5vit-small','rvt-b','rvt-s','rvt-t']
+    assert _O['H5']==['s5vit-base','rvt-b','s5vit-small','rvt-s','rvt-t']
+    assert _O['H10']==['s5vit-base','rvt-b','s5vit-small','rvt-s','rvt-t']
+    assert _O['H21']==['s5vit-base','rvt-b','rvt-s','s5vit-small','rvt-t']
+    _tau=[_R['kendall_vs_pooled'][h] for h in ('H1','H5','H10','H21')]
+    assert min(_tau)==_tau[0] and max(_tau)==_tau[-1], 'abstract names tau(H=1) and tau(H=21) as the range ends'
+    _gap=lambda a,b,c: _R['gap'][f'{a}-{b}'][c]
+    assert _gap('rvt-s','s5vit-small','H21')[1]<0<_gap('rvt-s','s5vit-small','H21')[2]
+    _FH_DERIVED={c[0] for c in _E66}
+    CHECKS+=_E66
+else:
+    _FH_DERIVED={n for n in NUM if n.startswith('fh')}   # artifact gone: each such macro is an ORPHAN
+
 bad=0
 if not CHECKS:
     sys.exit(f'audit_numbers: 0 macros to check against {_NUMTEX}; nothing was verified, '
@@ -563,6 +643,7 @@ DERIVABLE={'archCkpts','archSpan','archLo','archHi','archSamples','archUnifMax',
            'rvtBoundDetsS','rvtBoundDetsB'} | {f'ssmDose{_m}{_w}{_s}'
            for _m in ('Base','Small') for _w in ('Six','Eleven') for _s in ('','SE')} | {f'rvtBound{_r}{_t}{_s}'
            for _r in ('Carry','Reset') for _t in ('S','B') for _s in ('','SE','Z','All')}
+DERIVABLE|=_FH_DERIVED
 _checked={c[0] for c in CHECKS}
 for name in sorted(DERIVABLE - _checked):
     if name in NUM:

@@ -28,13 +28,13 @@ metadata. No model is trained.
 how each was caught — fourteen cases, including three in which a checker reported a pass while
 printing the failure. The numbers that survived are the ones that survived those.
 
-**`src/audit_numbers.py`** re-derives 354 of the manuscript's macros from the artifacts they
+**`src/audit_numbers.py`** re-derives 623 of the manuscript's macros from the artifacts they
 came from and fails if any disagrees. It is itself mutation-tested, and it fails on a macro it
 knows how to derive whose artifact has gone, because silently dropping such a macro is the
 failure mode that once let eleven withdrawn numbers stand.
 
 ```
-python3 src/audit_numbers.py     # 354 macros checked, 0 disagree
+python3 src/audit_numbers.py     # 623 macros checked, 0 disagree
 ```
 
 ## Reproducing
@@ -44,6 +44,11 @@ records where the SSM-ViT code and checkpoints came from with their checksums; t
 checkpoints and the preprocessed Gen1 archive come from the RVT release. Every GPU experiment
 runs in the `cvpr19-gpu-g1:torch2.7.1-cu128` image through the `run_e*.sh` wrappers, which
 wait for a card and for host memory before starting, because the machine is shared.
+
+The fixed-history re-scoring (Support-Conditioned AP, main Sec. 5) is `run_e66.sh` with
+`src/e66_*.py`; its numbers are `experiments/e66_fixedH/results.json` and `tables.md`, its
+audit-trail logs are `verify-*.log`, its macros come from `src/e66_macros.py` and its curve
+from `src/e66_fig.py`. The per-detection dumps (`dets-*.npz`) are not committed.
 
 The vendored upstream sources under `src/RVT/` and `src/SSMViT/` are excluded from this
 repository; they are third-party code that is read and driven, not modified.

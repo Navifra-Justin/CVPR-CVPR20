@@ -13,6 +13,10 @@
 
 \newcommand{\micro}{\ensuremath{\mu}}
 \newcommand{\eff}{\ensuremath{\hat{\tau}}}
+% E66 table cells: mAP or gap with its 95% interval, read from the macros of numbers.tex
+% (emitted by src/e66_macros.py).  #1 model code, #2 column code.
+\newcommand{\fhcell}[2]{\csname fhMap#1#2\endcsname{} [\csname fhMap#1#2Lo\endcsname,\,\csname fhMap#1#2Hi\endcsname]}
+\newcommand{\fhgap}[3]{\csname fhGap#1#2#3\endcsname{} [\csname fhGap#1#2#3Lo\endcsname,\,\csname fhGap#1#2#3Hi\endcsname]}
 
 % Figure assets are rendered by five scripts, not one: src/make_figs.py
 % (fig1_dsec_exposure, fig3_day_night, fig_predictor), src/e58f_fig.py (chunkpos,
@@ -38,7 +42,7 @@ in Event-Detection Evaluation Pipelines}
 \maketitle
 
 \begin{abstract}
-An event-detection benchmark identifies each scored sample by one nominal timestamp, but a recurrent detector forms its prediction from a longer history, and the benchmark does not record how long. We state the missing requirement as a property of the protocol, \emph{temporal-support identifiability}: the benchmark variables must uniquely determine the temporal evidence supporting a reported prediction. This makes effective temporal support part of the benchmark specification rather than a hidden property of one evaluation implementation. A released SSM-ViT evaluation pipeline provides a direct counterexample. At the same evaluated timestamp, with frames, weights, labels and evaluator fixed, moving only the chunk boundary changes the recurrent history from one to twenty-one windows within the pooled score. The same move changes S5-B by \ssmPairedMapAllBase{} mAP over all labeled boxes and by \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBaseSE{} mAP on the velocity-evaluable subset. Because identifiability is a uniqueness property, one controlled pair in which identical recorded protocol variables yield different effective support and different scores is sufficient to show that the protocol under-specifies the score. Two supporting diagnostics reported in the supplement, an input-sensitivity measurement on the RVT predictor and an exposure analysis of DSEC label timing, bound the interpretation without being used as recurrent-support estimators. Over all labeled boxes the validation-split ordering of the \rankCkpts{} released checkpoints is itself reproduced in only \rankHoldBox\,\% of sequence-bootstrap replicates, so that ordering cannot certify a timing convention as immaterial. Timing comparisons between recurrent detectors therefore require the support that produced each score to be stated and equalized, a condition an event-detection protocol can record with its labels.
+An event-detection benchmark identifies each scored sample by one nominal timestamp, but a recurrent detector forms its prediction from a longer history, and the benchmark does not record how long. We state the missing requirement as a property of the protocol, \emph{temporal-support identifiability}: the benchmark variables must uniquely determine the temporal evidence supporting a reported prediction. This makes effective temporal support part of the benchmark specification rather than a hidden property of one evaluation implementation. A released SSM-ViT evaluation pipeline provides a direct counterexample. At the same evaluated timestamp, with frames, weights, labels and evaluator fixed, moving only the chunk boundary changes the recurrent history from one to twenty-one windows within the pooled score. The same move changes S5-B by \ssmPairedMapAllBase{} mAP over all labeled boxes and by \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBaseSE{} mAP on the velocity-evaluable subset. Because identifiability is a uniqueness property, one controlled pair in which identical recorded protocol variables yield different effective support and different scores is sufficient to show that the protocol under-specifies the score. Two supporting diagnostics reported in the supplement, an input-sensitivity measurement on the RVT predictor and an exposure analysis of DSEC label timing, bound the interpretation without being used as recurrent-support estimators. Over all labeled boxes the validation-split ordering of the \rankCkpts{} released checkpoints is itself reproduced in only \rankHoldBox\,\% of sequence-bootstrap replicates, so that ordering cannot certify a timing convention as immaterial. Support-Conditioned AP scores each checkpoint with the recurrent history fixed to $H$ windows and so equalizes the history across checkpoints. For five released Gen1 checkpoints, S5-B ranks third in the pooled score on the common frames and first at each of $H=1,5,10,21$, and Kendall's $\tau$ between the pooled ordering and the fixed-$H$ orderings lies between \fhTauHOne{} and \fhTauHTwentyone{}. This is measured for these five checkpoints under this evaluation only. Timing comparisons between recurrent detectors therefore require the support that produced each score to be stated and equalized, a condition an event-detection protocol can record with its labels.
 \end{abstract}
 
 \section{Introduction}
@@ -76,6 +80,8 @@ boxes and \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBaseSE{} mAP on the veloc
 subset (Sec.~\ref{sec:chunk}). A second checkpoint of the same released pipeline moves by
 \ssmPairedMapAllSmall{} and \ssmPairedMapVelSmall{} points. Since temporal-support identifiability is a uniqueness property, this controlled violation is sufficient to show that the nominal timestamp does not uniquely specify the temporal evidence represented by that score. The consequence is at the level of the protocol rather than of one implementation: where the protocol does not record the support behind a score, the reported score is underdetermined. We measure that condition on the two protocols examined here and do not assert it of event-detection scores in general.
 
+The counterexample has a corrected counterpart. Support-Conditioned AP scores a checkpoint with the recurrent history fixed to a stated number of windows $H$ (Sec.~\ref{sec:sc}). Applied to five released Gen1 checkpoints on \fhNCommon{} common frames, it orders them differently from the pooled score: S5-B is third in the pooled score and first at each of $H=1,5,10,21$, and for three pairs the pooled and $H=1$ gaps have intervals that exclude zero on opposite sides. This describes these five checkpoints under this evaluation and is not a ranking of the architectures.
+
 \paragraph{Contributions.}
 \begin{itemize}
 \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}\setlength{\topsep}{2pt}
@@ -89,6 +95,7 @@ leaderboard-style score by \ssmPairedMapAllBase{} mAP overall and \ssmPairedMapV
 the velocity-evaluable subset. The same benchmark reproduces its validation-split ordering
 over all labeled boxes in only \rankHoldBox\,\% of sequence-bootstrap replicates.
 Predictor-side and label-side audits delimit the result.
+\item A corrected protocol: Support-Conditioned AP, which fixes the recurrent history behind each score, applied to five released checkpoints, together with the fields a benchmark would need to record so that the support behind a score is identifiable.
 \end{itemize}
 
 Work on event-detection timing takes that index as given and improves what is measured against
@@ -391,11 +398,53 @@ DSEC-Det ships more than one annotation version~\cite{beyondduality2026}, and Su
 names the one measured here.
 
 
+\section{Support-conditioned AP}
+\label{sec:sc}
+
+Sec.~\ref{sec:chunk} shows that one released protocol pools detections that received different histories. This section scores the \rankCkpts{} released Gen1 checkpoints at a stated history and compares the result with the pooled score. It follows the counterexample with the corresponding protocol.
+
+\paragraph{Protocol.}
+For a labeled frame scored at window $r$ and a history length $H$, the detector starts from a reset recurrent state at window $r-H+1$ and runs through window $r$, and the detections of window $r$ are scored with the labels, confidence threshold, NMS and evaluator of the released-protocol dumps. We call the resulting AP at fixed $H$ Support-Conditioned AP. $H$ is the number of recurrent windows allowed before scoring, $H_{\mathrm{nominal}}$. A frame with fewer than $H$ earlier windows receives $H_{\mathrm{forced}}=\min(H,r+1)$ windows instead. All checkpoints are scored on the same \fhNCommon{} frames, those with $H_{\mathrm{forced}}=H_{\mathrm{nominal}}$ at every $H\in\{1,5,10,21\}$. The other \fhNExcl{} of the \fhNAll{} labeled frames have fewer than 21 windows of history and are excluded. The common frames lie in \fhNSeq{} sequences. The column \emph{pooled} is the released evaluation of each checkpoint, in which the history depends on the release and on the frame, restricted to the same common frames. The score of the released evaluation on all \fhNAll{} frames is listed separately. The access log of every run shows that the number of distinct windows read equals $H_{\mathrm{forced}}$ and that the first window read is $r-H_{\mathrm{forced}}+1$ in every cell of every checkpoint (Supplement Sec.~13).
+
+\begin{table*}[t]
+\centering\scriptsize
+\setlength{\tabcolsep}{3.2pt}\renewcommand{\arraystretch}{0.95}
+\begin{tabular}{lrrrrrr}
+\toprule
+ & pooled & $H=1$ & $H=5$ & $H=10$ & $H=21$ & pooled, all frames \\
+\midrule
+RVT-\texttt{t} & \fhcell{Rt}{Pool} & \fhcell{Rt}{HOne} & \fhcell{Rt}{HFive} & \fhcell{Rt}{HTen} & \fhcell{Rt}{HTwentyone} & \fhMapRtAll \\
+RVT-\texttt{s} & \fhcell{Rs}{Pool} & \fhcell{Rs}{HOne} & \fhcell{Rs}{HFive} & \fhcell{Rs}{HTen} & \fhcell{Rs}{HTwentyone} & \fhMapRsAll \\
+RVT-\texttt{b} & \fhcell{Rb}{Pool} & \fhcell{Rb}{HOne} & \fhcell{Rb}{HFive} & \fhcell{Rb}{HTen} & \fhcell{Rb}{HTwentyone} & \fhMapRbAll \\
+S5-S & \fhcell{Ss}{Pool} & \fhcell{Ss}{HOne} & \fhcell{Ss}{HFive} & \fhcell{Ss}{HTen} & \fhcell{Ss}{HTwentyone} & \fhMapSsAll \\
+S5-B & \fhcell{Sb}{Pool} & \fhcell{Sb}{HOne} & \fhcell{Sb}{HFive} & \fhcell{Sb}{HTen} & \fhcell{Sb}{HTwentyone} & \fhMapSbAll \\
+\midrule
+Kendall $\tau$ against pooled & \fhTauPool & \fhTauHOne & \fhTauHFive & \fhTauHTen & \fhTauHTwentyone & \\
+ordering reproduced (\%) & \fhReproPool & \fhReproHOne & \fhReproHFive & \fhReproHTen & \fhReproHTwentyone & \\
+\bottomrule
+\end{tabular}
+\caption{mAP (points) of the five released Gen1 checkpoints on the \fhNCommon{} common frames, over every labeled box, with the recurrent history fixed to $H$ windows (reset state, exactly $H$ windows read) or as given by the released evaluation (pooled). Brackets: 95\,\% interval from \fhB{} cluster-bootstrap draws over the \fhNSeq{} sequences, the same draw for every checkpoint and column. Last column: the released score on all \fhNAll{} frames. The final rows give Kendall's $\tau$ between the ordering of each column and the pooled ordering, and the share of bootstrap draws whose full ordering equals that column's point ordering.}
+\label{tab:sc}
+\end{table*}
+
+\paragraph{Result.}
+Table~\ref{tab:sc} lists the scores. On the common frames the pooled ordering is RVT-\texttt{b}, RVT-\texttt{s}, S5-B, RVT-\texttt{t}, S5-S. S5-B is first at each of $H=1,5,10,21$. At $H=1$ the ordering is S5-B, S5-S, RVT-\texttt{b}, RVT-\texttt{s}, RVT-\texttt{t}, and at $H=21$ it is S5-B, RVT-\texttt{b}, RVT-\texttt{s}, S5-S, RVT-\texttt{t}. Kendall's $\tau$ between the pooled ordering and the ordering at $H=1,5,10,21$ is \fhTauHOne, \fhTauHFive, \fhTauHTen and \fhTauHTwentyone. The pooled ordering is reproduced in \fhReproPool\,\% of the bootstrap draws, whereas the rate for all labeled boxes in Supplement Sec.~11 is \rankHoldBox\,\%. The fixed-$H$ orderings are reproduced in \fhReproHOne, \fhReproHFive, \fhReproHTen and \fhReproHTwentyone\,\% of draws.
+
+Several pairwise gaps change sign. RVT-\texttt{t} minus S5-S is \fhgap{Rt}{Ss}{Pool} points in the pooled score and \fhgap{Rt}{Ss}{HOne} at $H=1$. RVT-\texttt{s} minus S5-S is \fhgap{Rs}{Ss}{Pool} pooled and \fhgap{Rs}{Ss}{HOne} at $H=1$. RVT-\texttt{b} minus S5-B is \fhgap{Rb}{Sb}{Pool} pooled and negative at every $H$, down to \fhgap{Rb}{Sb}{HTwentyone} at $H=21$. For RVT-\texttt{s} and RVT-\texttt{t} against S5-B the pooled intervals include zero (\fhgap{Rs}{Sb}{Pool} and \fhgap{Rt}{Sb}{Pool}), while at every $H$ the point gaps lie between \fhGapRsSbMin{} and \fhGapRsSbMax{} and between \fhGapRtSbMin{} and \fhGapRtSbMax{} and the intervals exclude zero. The pairwise gaps for all pairs and the curves over $H$ are in Supplement Sec.~13. For the RVT checkpoints the pooled score exceeds the $H=21$ score (RVT-\texttt{b}: \fhMapRbPool{} against \fhMapRbHTwentyone), and for the S5 checkpoints it is below it (S5-B: \fhMapSbPool{} against \fhMapSbHTwentyone). The RVT release carries its state beyond 21 windows, which the fixed-$H$ protocol does not.
+
+\paragraph{What the comparison supports.}
+$H$ is the history allowed before scoring, not a measurement of how many windows influenced the detections. The access log shows which windows were read. In an oldest-window probe, replacing the oldest admitted window changed the output in \fhProbeHit{} of \fhProbeN{} probed cells for four checkpoints and in \fhProbeHitT{} of \fhProbeN{} for RVT-\texttt{t}. Every $H$ starts the RVT checkpoints from a reset state, which the RVT release does not do at evaluation: it carries its state and clears it only at the first sample of a sequence. A short $H$ therefore combines a shorter history with a reset the checkpoint did not see in this form, and the experiment does not separate the two. Supplement Sec.~13 reports that RVT-\texttt{s} and RVT-\texttt{b} score \rvtBoundResetS{} and \rvtBoundResetB{} points higher on the velocity-evaluable subset when a reset block is given seventeen to twenty windows instead of one to four. The SSM-ViT release already evaluates each chunk from a reset state (Sec.~\ref{sec:chunk}). The ordering change is therefore a result for these five checkpoints under this evaluation. It does not rank the architectures, and it does not show that either family is better in general.
+
+\paragraph{What a benchmark should record.}
+The three quantities of Sec.~\ref{sec:support} are not recoverable from a nominal timestamp, and the intervention above shows a case in which the missing one changes the score. We propose that a benchmark record, for each scored sample, five fields. The \emph{nominal timestamp} is the instant at which the sample is scored. The \emph{input window} is what the detector reads at that timestamp. The \emph{state-reset policy} states where the recurrent state is cleared, including chunk boundaries and sequence starts. The \emph{effective history length} is the number of windows read, as the access log of the evaluation run records it. The \emph{label-acquisition support} is the interval over which the label's evidence was acquired. Together, the reset policy and the history length determine the effective temporal support. A score is then reported at a declared history length, as in Table~\ref{tab:sc}, together with the distribution of history lengths that the pooled score contains. These fields do not equalize the support across checkpoints. They record it, so that scores can be compared at a history that both detectors received.
+
 \section{Scope and limitations}
 
 Each supporting audit (Sec.~\ref{sec:support}, Supplement Secs.~15 and 16) is conditional on its
 stated instrument: local window-ablation sensitivity, nominal-time association under the reported
 regression specification, and a local constant-velocity displacement surrogate. The primary chunk-boundary intervention is established on two released SSM-ViT checkpoints under their released streaming evaluator, the second testing that the violation is not confined to one weight set. Gen1 and DSEC are separate timing audits, not premises of that counterexample.
+
+Support-Conditioned AP (Sec.~\ref{sec:sc}) covers five released Gen1 checkpoints on the \fhNCommon{} frames that have at least 21 windows of history, at $H\le 21$, with a reset state at every $H$ and intervals from \fhB{} sequence-bootstrap draws. It does not test $H>21$, and it does not measure how many windows influenced a detection. The orderings it reports hold for these checkpoints under this evaluation, and no claim about the two architecture families in general follows from them.
 
 \section{Conclusion}
 
@@ -403,7 +452,9 @@ At the same evaluated timestamp, with frames, weights, labels and evaluator fixe
 
 The result does not single out a canonical temporal-support statistic, nor attribute the shift to one stage of the pipeline. The predictor-side and label-side audits stay descriptors of timing rather than estimates of recurrent support.
 
-Where a protocol does not record the support behind a score, the reported score is underdetermined. Two scores at the same nominal timestamp are not performance at the same effective time when the recurrent support behind them differs. Comparisons across recurrent architectures should therefore report or control the three latent temporal quantities alongside the score.
+Support-Conditioned AP is the corrected counterpart of the counterexample: it fixes the recurrent history behind each score. For the five released Gen1 checkpoints on the \fhNCommon{} common frames, S5-B ranks third in the pooled score and first at each of $H=1,5,10,21$, the Kendall $\tau$ between the pooled and fixed-$H$ orderings lies between \fhTauHOne{} and \fhTauHTwentyone{}, and for three pairs the pooled and $H=1$ gaps have intervals that exclude zero on opposite sides. Part of the short-$H$ deficit of the RVT checkpoints may come from the reset that every $H$ imposes on them, and the experiment does not separate it from the shorter history. These statements hold for these checkpoints under this evaluation.
+
+Where a protocol does not record the support behind a score, the reported score is underdetermined. Two scores at the same nominal timestamp are not performance at the same effective time when the recurrent support behind them differs. Comparisons across recurrent architectures should therefore report or control the three latent temporal quantities alongside the score. Concretely, a benchmark can record the nominal timestamp, the input window, the state-reset policy, the effective history length and the label-acquisition support of each scored sample, and report the score at a declared history length.
 {\footnotesize
 \setlength{\itemsep}{0.4pt}
 \clearpage

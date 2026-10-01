@@ -39,6 +39,7 @@ EMITTER = {
     "fig5_qualitative.pdf": "src/make_fig_qualitative.py",
     "fig6_sweep_real.pdf": "src/make_fig_real.py",
     "fig7_ceiling_vs_day.pdf": "src/make_fig_real.py",
+    "e66_hcurve.pdf": "src/e66_fig.py",
 }
 
 

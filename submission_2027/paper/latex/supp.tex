@@ -30,8 +30,9 @@ in Event-Detection Evaluation Pipelines\\[0.3em]
 \noindent
 This document holds the material referred to from the main paper. It covers the
 errors-in-variables treatment of the velocity regressor, the protocol behind the
-ablation measurement, the data paths of the DSEC measurements, and additional
-implementation and control analyses. The RVT source revision is
+ablation measurement, the data paths of the DSEC measurements, additional
+implementation and control analyses, and, in Secs.~15 and 16, the predictor-side and
+label-side audits that main Sec.~4 summarizes. The RVT source revision is
 \texttt{b80f5683a6e2d5de65d4bde8105d796ccb50dbb1}, and the SSM-ViT source revision is
 \texttt{7c871b55a0c5f00673c2c3975f6b6a1c5adbab88}. Section numbers below refer to this document. References labeled
 main Sec.~$n$ refer to the main paper. All Gen1 quantitative claims in both documents are
@@ -43,7 +44,7 @@ claims use the \outSeqsScanned{} sequences represented in the stored-detection e
 
 \label{sup:denominator}
 
-The regression of main Eq.~2 uses the finite-differenced label velocity
+The regression of Eq.~\ref{eq:outreg} uses the finite-differenced label velocity
 $\tilde v=v+\eta$, where $v$ is latent true velocity and $\eta$ is label noise.
 Three error mechanisms enter, and they behave differently. The shared-noise term
 determines the estimator choice.
@@ -129,15 +130,14 @@ constructed between anchors adds a term to $e_{\parallel}$, where
 $e_{\parallel}=\langle\hat c-c^{*},\hat u\rangle$, that has nothing to do
 with the predictor. The chord of a curved image trajectory runs ahead of the
 truth throughout the interval and meets it at the anchors, which produces a
-signed, frame-locked, resetting residual for a predictor with no lag. Main
-Sec.~4.1 shows that exact adjacent-frame linear interpolation is inconsistent
+signed, frame-locked, resetting residual for a predictor with no lag. Sec.~\ref{sec:labelclock} shows that exact adjacent-frame linear interpolation is inconsistent
 with the observed DSEC-Det label trajectories as the sole construction mechanism,
-and the Gen1 measurements of main Sec.~4 are taken at label times.
+and the Gen1 measurements of Sec.~\ref{sec:outputtime} are taken at label times.
 
 \section{The influence profile}
 \label{sup:influence}
 
-Main Sec.~3.3 measures the window-ablation sensitivity profile of the released
+Sec.~\ref{sec:influence} measures the window-ablation sensitivity profile of the released
 \texttt{rvt-t} checkpoint. The stored input is a stacked histogram of
 \rvtBins{} bins of \rvtBinWidth\,ms covering the \rvtWindow\,ms preceding the
 query time. For each sample the recurrent state is advanced over
@@ -309,7 +309,7 @@ rules and refits the reported specification under each. The rules are greedy and
 assignment at overlap floors from 0.05 to 0.50. One rule never tests overlap at all, admitting
 a detection whose center falls within a fixed multiple of the label's box scale. That dump is
 re-thresholded to the regression's confidence floor of 0.1, but its non-maximum suppression
-was run at 0.65 against the 0.45 of the dump behind main Tab.~1. Re-thresholding does not
+was run at 0.65 against the 0.45 of the dump behind Tab.~\ref{tab:outtime}. Re-thresholding does not
 undo the looser suppression. The rebuild's own $0.30$ gate therefore keeps \assocGateN{} rows
 against the \outMatches{} of the reported table and returns
 $\assocGate\,\pm\,\assocGateSE$\,ms against
@@ -327,7 +327,7 @@ Fig.~\ref{fig:sweepreal} draws one frame of the sweep.
 \begin{figure}[t]
 \centering
 \figasset{figs/fig6_sweep_real.pdf}{0.95\columnwidth}
-\caption{One validation frame of the sweep of Main Fig.~1b:
+\caption{One validation frame of the sweep of Fig.~\ref{fig:predictor}b:
 released detections (solid), ground truth at its label instant (dashed) and
 displaced to the newest window's ablation-sensitivity centroid (dotted). The frame is
 chosen by rule, the largest median label speed among frames with two labels
@@ -345,17 +345,17 @@ demeaning, which reproduces the full design’s coefficient to \fwlAgree\,ms.
 \section{The per-object ratio}
 \label{sup:ratio}
 
-For comparison with the estimator in main Eq.~2, we evaluate the per-object ratio
+For comparison with the estimator in Eq.~\ref{eq:outreg}, we evaluate the per-object ratio
 $-\langle\hat{\mathbf c}-\mathbf c^{*},\hat{\mathbf u}\rangle/\lVert \tilde{\mathbf v}\rVert$
 on the same \outMatches{} rows. Across these rows, it has a sample standard deviation
 of \ratioSD\,ms and an
 interquartile range of \ratioIQR\,ms. Its mean over all rows is
 $\ratioMean\,\pm\,\ratioMeanSE$\,ms, close to the $+\rvtCentroidMagMeas$\,ms coefficient
 corresponding to the newest-window ablation-sensitivity centroid under the convention
-of main Eq.~2. Above a \ratioFloorSpeed\,px/s floor it gives
+of Eq.~\ref{eq:outreg}. Above a \ratioFloorSpeed\,px/s floor it gives
 $\ratioFloor\,\pm\,\ratioFloorSE$\,ms. Because the ratio has no intercept, a
 velocity-independent spatial bias can appear as an apparent temporal offset after division
-by speed. Main Eq.~2 includes an intercept.
+by speed. Eq.~\ref{eq:outreg} includes an intercept.
 
 \section{The port of the released checkpoint}
 \label{sup:port}
@@ -403,7 +403,7 @@ with at least three qualifying boxes. Right: per-pixel Rayleigh statistic $Z=R^{
 \flickerLineHz\,Hz and at \flickerCtrlHz\,Hz for the same two sequences, median
 with a whisker to the ninety-fifth percentile, against the $\mathrm{Exp}(1)$
 null. Both contrasts run in the same direction, and
-Main Sec.~4.4 reports the controls applied to that dispersion.}
+Sec.~\ref{sec:cost} reports the controls applied to that dispersion.}
 \label{fig:daynight}
 \end{figure}
 
@@ -430,7 +430,7 @@ $m\in[\modQthreeHi,\modQfourHi]$ & \framesModQfour & \sdModQfour & \nullModQfour
 \caption{Per-object event centroid inside one published exposure window of
 \texttt{zurich\_city\_09\_a}, in \micro s, each entry the median over frames of a
 within-frame statistic against that frame's own null $w^{2}/12N_{i}$. The first
-block's excess follows the main Sec.~5.4 statistic summarized over frames. Rows two and
+block's excess follows the Sec.~\ref{sec:cost} statistic summarized over frames. Rows two and
 three remove the \excessMaskPix{} pixels phase-locked at \flickerLineHz\,Hz and a
 random subset of that size, row four places boxes of the same shapes at random
 positions. In the lower block a frame enters a stratum when \minObjects{} of its
@@ -491,7 +491,7 @@ inside each released box are collected. The \texttt{ms\_to\_idx} index resolves 
 whole milliseconds, so the slice it returns is filtered to $a\le t<b$ in
 microseconds before any statistic is formed, and the analytic null is computed for
 the same interval. Events and frames share one clock in this dataset, so no
-calibration step enters. For the dispersion of main Sec.~5.4 a box contributes
+calibration step enters. For the dispersion of Sec.~\ref{sec:cost} a box contributes
 only if it carries at least \minEvents{} events in the window, and a frame only
 if at least \minObjects{} boxes qualify. The reported statistics are medians over
 frames of a within-frame quantity, so no frame is weighted by its object count.
@@ -522,7 +522,7 @@ when they close. The published image timestamp equals the mean of the two
 mid-exposures to within \dsecTsResidual\,\micro s.
 
 \paragraph{Archive version and track association.} DSEC-Det ships more than
-one annotation version. The numbers in main Sec.~5.1 describe the archive
+one annotation version. The numbers in Sec.~\ref{sec:labelclock} describe the archive
 \texttt{dsec-det\_left\_object\_detections.zip}, \ddArchiveBytes{} bytes,
 retrieved \ddArchiveDate{}. Whether those labels are tracker output on the RGB
 frames, which the dataset's own description states, is not distinguishable from
@@ -533,8 +533,8 @@ adjacent label times, at which \outLinkPct\,\% of boxes link.
 
 \paragraph{Null.} For events uniform on $[a,b]$ the mean of $N_{i}$ times has
 variance $w^{2}/12N_{i}$ with $w=b-a$. Each frame therefore carries its own null,
-formed from the published width and the observed counts. The excess of main
-Sec.~4.4 is summarized over frames rather than formed from the medians of the two
+formed from the published width and the observed counts. The excess of
+Sec.~\ref{sec:cost} is summarized over frames rather than formed from the medians of the two
 summaries. That is why the excess column of Table~\ref{tab:controls} is not
 $(\mathrm{sd}^{2}-\mathrm{null}^{2})^{1/2}$ of the two columns beside it.
 
@@ -547,7 +547,7 @@ least \flickerMinEvents{} events over the tested slice, and every fourth event i
 used to reduce sample size. The off-frequency and daytime controls remain close
 to their nominal reference under the same procedure. Two arms hold the estimator to its null, an
 off-frequency arm on the same events and the same frequency on daytime events.
-The fraction of locked pixels is reported relative to live pixels in main Sec.~5.2 and
+The fraction of locked pixels is reported relative to live pixels in Sec.~\ref{sec:line} and
 separately relative to the full sensor. The two denominators differ, and each statement
 identifies its denominator.
 
@@ -579,7 +579,7 @@ counts of that block are therefore not a partition of the first row's.
 \section{The permutation null}
 \label{sup:perm}
 
-The analytic null $w^{2}/12N_{i}$ for the main Sec.~5.4 statistic is the variance of a mean of
+The analytic null $w^{2}/12N_{i}$ for the Sec.~\ref{sec:cost} statistic is the variance of a mean of
 $N_{i}$ draws uniform on the exposure. It assumes the events of a box arrive
 independently and uniformly.
 
@@ -598,14 +598,15 @@ random-position draw evaluated against the permutation null, boxes of the same s
 to annotated object regions, although object regions may still affect it.
 
 \section{The carried state of the SSM release}
+\label{sup:state}
 
 
-Main Sec.~3.3 measures five released checkpoints of two architectures. The second is
+Sec.~\ref{sec:influence} measures five released checkpoints of two architectures. The second is
 SSM-ViT (Zubic et al., CVPR 2024), a fork of the RVT repository in which each stage's
 ConvLSTM is
 replaced by an S5 layer. It distributes RVT's own preprocessed Gen1 and builds its window
-boundaries with the same statement of the same script, so the window convention of main
-Sec.~3.2 holds there unchanged.
+boundaries with the same statement of the same script, so the window convention of
+Sec.~\ref{sec:window} holds there unchanged.
 
 Its recurrent state does not. Let $s$ denote the carried state entering the first
 step of a chunk. That release injects it as
@@ -625,13 +626,14 @@ SSM-ViT answers \ssmInchunkOne{} there, falling to \ssmInchunkLast{}. It is recu
 within a chunk, and only across chunks is the state lost.
 
 \section{Effect of temporal displacement on checkpoint ordering}
+\label{sup:ordering}
 
-Main Sec.~3.5 reports that displacing the ground truth to the newest window's ablation-sensitivity centroid costs
+Sec.~\ref{sec:extrapolation} reports that displacing the ground truth to the newest window's ablation-sensitivity centroid costs
 \mapCost{} points on one checkpoint. Whether the interval changes a \emph{comparison} needs
-more than one detector, so all \rankCkpts{} released checkpoints of main Sec.~4.3 were run
+more than one detector, so all \rankCkpts{} released checkpoints of Sec.~\ref{sec:influence} were run
 over the Gen1 validation split under one protocol. That protocol fixes the same frames, the same confidence
 floor of 0.01 and non-maximum-suppression overlap of 0.65. The ground truth is identical
-across the five and identical to the dump main Sec.~4.5 already uses. Each was then scored at the label instant
+across the five and identical to the dump Sec.~\ref{sec:extrapolation} already uses. Each was then scored at the label instant
 and again at the displacement it prefers, which ranges from \rankArgLo{} to \rankArgHi\,ms
 across the five.
 
@@ -677,8 +679,9 @@ carried.
 
 
 \section{Timing differences against the sampling uncertainty of the score}
+\label{sup:timing}
 
-Main Sec.~3.5 reports that displacing the ground truth across the measured interval moves
+Sec.~\ref{sec:extrapolation} reports that displacing the ground truth across the measured interval moves
 mAP by \mapCost{} points and reorders no checkpoint. On a fixed split both are
 deterministic functions of the stored detections, so neither is interpretable without the
 uncertainty that attaches to reading them as statements about the sequence population the
@@ -706,7 +709,7 @@ for \effTauResolved{} of \rankCkpts{} checkpoints. The measured interval therefo
 the paired sampling-resolution floor under sequence resampling. The identifiability conclusion
 rests on where the evidence lies, not on that comparison. The
 \mapCost{}-point figure measures the sensitivity of the pooled benchmark to the interval,
-which follows from the benchmark's speed composition (main Tab.~2) and places no bound on
+which follows from the benchmark's speed composition (Tab.~\ref{tab:strata}) and places no bound on
 the interval itself.
 
 The same computation gives the timing difference a \emph{leaderboard} could resolve. Let
@@ -731,7 +734,7 @@ this split, and that the ranking is unstable under sequence resampling. The meas
 sampling uncertainty separates them in favor of the second.
 
 \paragraph{Normalized image speed and timing resolution.} The natural reading of
-main Tab.~2 is that a benchmark of faster objects would resolve the interval. What an
+Tab.~\ref{tab:strata} is that a benchmark of faster objects would resolve the interval. What an
 IoU-thresholded metric registers is displacement relative to box size, so the scale-free
 quantity is $r = |v| / \sqrt{wh}$, box-widths of motion per second, which is invariant to
 sensor resolution and therefore comparable across benchmarks. A single fixed summary of $r$,
@@ -773,6 +776,7 @@ insensitivity should not be generalized to event-based detection benchmarks with
 motion and box-size distributions.
 
 \section{Recurrent support under the released streaming evaluation}
+\label{sup:support}
 
 The previous section established that the carried state of the SSM release is inert. Under
 its own streaming evaluation the recurrent history behind a detection is bounded by
@@ -817,7 +821,7 @@ S5-B & \chunkShortBase & \chunkFullBase & $\chunkRiseBase$ & $\chunkDidBase\pm\c
 \end{tabular}
 \caption{mAP over every labeled box, by the amount of recurrent history the released
 streaming evaluation gives the frame. Raw $\Delta$mAP is the full column minus the short
-one, the quantity main Fig.~1 plots, so positive means longer history scored higher. The last
+one, the quantity the top panel of main Fig.~1 plots, so positive means longer history scored higher. The last
 column subtracts the placebo trend from it, using the mean of the other two RVT rows for an
 RVT row and the mean of all three for an SSM row. The RVT rows are the placebos: their
 state crosses chunk boundaries, so position carries no support for them. Net of that
@@ -840,7 +844,7 @@ show no comparable shift, which argues against frame difficulty at early chunk p
 \centering
 \figasset{figs/chunkpos_full.pdf}{\textwidth}
 \caption{The chunk-position contrast at each of the \ssmEvalChunk{} positions.
-(a) mAP over every labeled box, the main-paper Fig.~2 at full width.
+(a) mAP over every labeled box, the top panel of main Fig.~1 at full width.
 (b) Mean detection confidence at the same positions, which uses neither the ground truth
 nor the evaluator. Both panels separate the two SSM checkpoints from the three RVT
 placebos in the same direction, so the contrast is present upstream of the matching rule.
@@ -1030,8 +1034,9 @@ exercises.
 
 
 \section{The recurrent influence tail}
+\label{sup:tail}
 
-Main Sec.~3.3 reports that the window-ablation-sensitivity centroid tracks the horizon
+Sec.~\ref{sec:influence} reports that the window-ablation-sensitivity centroid tracks the horizon
 instead of converging. Two horizons alone cannot distinguish a slowly converging support
 from a divergent one, so the tail is characterized directly.
 
@@ -1065,5 +1070,483 @@ what the identifiability claim rests on.
 A fill artifact could in principle produce persistent long-lag sensitivity, so the control
 defined in Sec.~2 applies here. The zero and swap fills decay by factors of 10.3 and 2.2 over
 the same lags, while substantial long-lag sensitivity remains detectable under both fills.
+
+\section{Predictor-side temporal descriptors}
+\label{sec:predictor}
+
+\subsection{Identifiability and the timing estimands}
+
+Main Sec.~4 defines the three latent temporal quantities of a benchmark tuple
+and the term protocol-identifiable. This subsection fixes the notation for the two predictor-side
+descriptors.
+
+Let a predictor $P$ emit a state at query time $t$. A signed effective-weight
+model uses bin centers $c_k$ and weights $a_k$ with $\sum_k a_k=1$, giving the
+effective timestamp offset $\tau_P=\sum_k a_kc_k$ under constant velocity. The
+empirical ablation profile instead assigns non-negative sensitivities $s_k\geq0$
+to bins and has centroid $c_s=\sum_k s_kc_k/\sum_k s_k$. These are distinct
+quantities: zero-ablation sensitivity depends on both the predictor and the
+input, and is not in general a decomposition of temporal weights. Sections~\ref{sec:window}--\ref{sec:influence} measure this
+operational input-sensitivity profile over the newest window. Section~\ref{sec:outputtime}
+estimates the regression coefficient $\tau$ under Eq.~\ref{eq:outreg}. Interpreting $-\tau$ as an
+effective state-time offset requires the absence of residual velocity-proportional
+spatial bias.
+Section~\ref{sec:extrapolation} compares $-c_s$ with the regression coefficient
+$\tau$, equivalently $c_s$ with the regression-implied timestamp $\tau_P=-\tau$.
+
+\subsection{The input window and its indexing instant}
+\label{sec:window}
+
+Two released files fix the input side. The dataset configuration
+\texttt{config/dataset/gen1.yaml} of the detector's own
+repository~\cite{gehrig2023rvt} names the representation
+\texttt{stacked\_histogram\_dt=50\_nbins=10}, a window of \rvtWindow\,ms divided
+into \rvtBins{} bins of \rvtBinWidth\,ms. Line \rvtSourceLine{} of
+\texttt{scripts/genx/preprocess\_dataset.py} constructs the array
+\texttt{ev\_repr\_timestamps\_us\_end} by counting backwards from a label
+timestamp in steps of the window duration, and extends it between consecutive
+label timestamps. Each representation is therefore indexed by the end of its
+window, and those ends are placed on label times. A window attached to a label at
+time $t$ holds the events of $[t-\rvtWindow\,\mathrm{ms},\,t]$, whose uniform
+weighting centroid falls \rvtCentroidMag\,ms before the instant $t$ at which the
+label asserts a state. We read both statements from the released source, and
+the \rvtCentroidMag\,ms figure is a reference point instead of a property of
+the trained network.
+
+\begin{figure}[t]
+\centering
+\figasset{figs/fig_predictor.pdf}{0.95\columnwidth}
+\caption{Input sensitivity and the regression-based temporal coefficient summarize the same
+nominal timestamp without being equivalent, and are not competing estimates of a common latent
+timestamp; their point estimates are \outInterval\,ms apart. Panel
+(b) shows that average precision on the velocity-evaluable subset is nearly
+invariant over the measured \rvtCentroidMagMeas\,ms
+label-to-centroid displacement. The \outInterval\,ms separation is not an estimate of
+architectural latency.
+(a) Window-ablation influence of each of the \rvtBins{} bins of the released
+\texttt{rvt-t} input window, over \rvtInfluenceSamples{} Gen1 validation samples with the
+recurrent state warmed \rvtWarmSteps{} steps, with sample-level standard errors. Error bars are
+descriptive standard errors across the sampled instances and are not used for inference.
+Uncertainty of the ablation-sensitivity centroid is evaluated by sequence bootstrap in
+Sec.~\ref{sup:influence}. Dashed:
+the mean over bins. Dotted: the label instant. Solid: the ablation-sensitivity centroid.
+Dash-dot, with its standard error shaded: the regression-implied timestamp under Eq.~\ref{eq:outreg},
+$\tau_P=-\tau$, of Sec.~\ref{sec:outputtime}.
+Gray: the four other checkpoints, each rescaled to its own mean. (b) Average precision
+against the temporal center displacement $\delta$ applied to the ground-truth boxes, by
+object speed in px/s, each curve relative to its own value at the label instant, with its
+maximum marked. The shaded band runs from the centroid to the label instant, spanning
+\outPxNinety\,px at the ninetieth percentile of label speed against an annotation
+dispersion of \labelSigmaGenAnn\,px (Sec.~\ref{sup:labelnoise}). The mAP span is \stSpanAll{}
+points over all moving boxes and \mapSpanHigh{} points in the
+\mapCutMid--\mapCutHi\,px/s stratum, where the centroid displacement costs
+\stCostHigh{} points.}
+\label{fig:predictor}
+\end{figure}
+
+\subsection{The measured influence profile}
+\label{sec:influence}
+
+The newest-window ablation-sensitivity centroid is computed from the measured
+bin-ablation sensitivities of a released checkpoint. We take \rvtInfluenceSamples{} samples of the released Gen1
+validation split with the released \texttt{rvt-t} checkpoint, warm the recurrent
+state for \rvtWarmSteps{} steps, and ablate each bin in turn. For sample $i$, let
+$Y_i$ denote the emitted detection tensor from the unablated input and
+$Y_i^{(-k)}$ the tensor obtained after zeroing temporal bin $k$ while keeping the
+incoming recurrent state identical. We define the ablation sensitivity, or influence, of bin $k$ as
+\begin{equation}
+\begin{aligned}
+s_k&=\frac{1}{N}\sum_{i=1}^{N}
+\frac{\left\|Y_i^{(-k)}-Y_i\right\|_2}{\left\|Y_i\right\|_2},\quad N=480,\\
+c_s&=\frac{\sum_k s_k c_k}{\sum_k s_k},
+\end{aligned}
+\end{equation}
+where $c_k$ is the center time of bin $k$ relative to the label instant. The
+ablated forward pass receives the same incoming recurrent state as the
+corresponding reference pass, and its returned state is discarded. The profile is
+a property of the current window and not of a perturbed history.
+
+The profile is balanced between the two halves of the window (Fig.~\ref{fig:predictor}a)
+and yields an ablation-sensitivity centroid of \rvtCentroidMeas\,ms, compared
+with \rvtCentroidUnif\,ms for uniform weighting. The released configuration
+therefore places the measured centroid near the window reference without implying
+uniform network sensitivity.
+Across zero, mean, cross-sample replacement, and gradient instruments, the centroid spans
+\occMean{} to \occGrad{} ms (Sec.~\ref{sup:influence}).
+The reported centroid applies to the deterministic 12-sequence subset described in Sec.~\ref{sup:influence}.
+This is the current window's window-ablation sensitivity profile with the recurrent
+state held fixed, not a decomposition of the full temporal support.
+
+\paragraph{Recurrent support beyond the newest window.}
+Over a 1000\,ms horizon, the newest window accounts for 22.7\% of the summed
+window-ablation sensitivity, while the remaining 77.3\% lies in preceding windows. The
+horizon centroid shifts from
+\histCentroidTen\,ms at \histHorizonA\,ms to \histCentroidTwenty\,ms at \histHorizonB\,ms,
+so the measured range does not determine a converged full-history centroid. Sec.~\ref{sup:tail}
+characterizes the tail and its fill controls.
+
+\paragraph{Across the released checkpoints and a second architecture.}
+RVT releases three Gen1 checkpoints differing only in embedding width, attention
+head dimension and FPN depth. SSM-ViT~\cite{zubic2024ssm} releases two more in
+which each stage's ConvLSTM is replaced by an S5 state space layer, at \ssmParamsS{}
+and \ssmParamsB{} M parameters against RVT's \capParamsS{} and \capParamsB{}.
+It distributes RVT's own preprocessed Gen1 and inherits its window construction. On the same sequences, and
+with each driven as its own release specifies, all \archCkpts{} checkpoints put the
+newest window's ablation-sensitivity centroid between \archHi{} and \archLo\,ms. None sits further than
+\archUnifMax\,ms, or \archUnifPct\,\% of one bin, from the uniform-weight value.
+
+The support within the newest window
+is not fixed across capacities. Over \capSamples{} samples of the
+three RVT capacities, the newest window's share of a \capHorizon\,ms horizon
+falls from \capShareT\,\% to \capShareB\,\%, and the sensitivity centroid moves
+from \capSuppT{} to \capSuppB\,ms.
+
+\subsection{Regression-based temporal coefficient}
+\label{sec:outputtime}
+
+The influence profile is a statement about the network's input. Even a predictor
+with uniform local sensitivity can emit a state describing a later instant,
+and that quantity is measured from the same checkpoint's own detections.
+
+A detector reporting the state an object occupied $\tau$ earlier incurs the
+physical displacement $-\tau v$, where $v$ is the latent true velocity. We
+observe only the finite-differenced label velocity $\tilde v=v+\eta$ and
+therefore fit Eq.~\ref{eq:outreg} using $\tilde v$. Thus
+$\tau=-\tau_{P}$ on the axis of Sec.~\ref{sec:predictor}. With $\hat{c}$ the
+predicted center, $c^{*}$ the label center, $A$ the area of the ground-truth
+box, $\hat{u}=\tilde v/\lVert \tilde v\rVert$ and $\mathrm{R}$ a quarter turn,
+$b$ is a two-dimensional intercept. That intercept is fitted globally or as
+per-sequence intercepts in the reported specification.
+
+\begin{equation}
+\hat{c}-c^{*}=b-\tau\,\tilde v+\rho\,\mathrm{R}\tilde v+\gamma\sqrt{A}\,\hat{u}+\varepsilon
+\label{eq:outreg}
+\end{equation}
+
+\noindent It is fitted by stacking both components of every match into one least
+squares problem, with standard errors clustered by sequence. It is the temporal
+calibration of~\cite{qin2018temporal} carried to a box center, taken as a slope
+, not as the per-object ratio $-\langle
+\hat{c}-c^{*},\hat{u}\rangle/\lVert \tilde v\rVert$, whose variance diverges as its
+denominator approaches zero. For comparison, the per-object ratio evaluated on
+the same rows has a mean of
+$\ratioMean\,\pm\,\ratioMeanSE$\,ms, on the hypothesis evaluated in
+Sec.~\ref{sec:extrapolation}, with an interquartile range of \ratioIQR\,ms.
+Written this way, Eq.~\ref{eq:outreg} fits the two-dimensional residual directly with $\tilde v$ as a
+regressor. Unlike the per-object ratio, it does not first project the residual onto $\hat u$
+and divide by $\|\tilde v\|$.
+The reported full specification adds four coordinate/size regressors and
+per-sequence intercepts to the terms displayed in Eq.~\ref{eq:outreg}.
+The coefficient is a temporal offset only if no velocity-proportional spatial
+bias remains after these controls. Such a bias is indistinguishable from $\tau$ in Eq.~\ref{eq:outreg}.
+
+$\mathrm{R}\tilde v$ is the label velocity rotated a quarter turn. Because a pure
+temporal offset acts along $\tilde v$, not $\mathrm{R}\tilde v$, $\rho$ serves
+as a negative-control coefficient. A nonzero value implies residual spatial
+misspecification.
+$\sqrt{A}\,\hat{u}$ absorbs a displacement along travel proportional to box side,
+which is needed because that residual grows with box size and box size correlates
+with label speed at \outSpeedSizeCorr{} on this split.
+
+\paragraph{The finite difference used for the velocity.}
+$\tilde v$ is finite differenced from labels. Label noise enters forward and backward
+velocity differences with opposite shared-noise signs. The centered difference excludes the
+current label center and removes this direct same-frame term. Secs.~\ref{sup:denominator} and \ref{sup:signflip} derive
+and calibrate this effect, so the reported regression uses the centered estimator.
+
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3.2pt}\renewcommand{\arraystretch}{0.95}
+\begin{tabular}{lrr}
+\toprule
+Specification & $\tau$ (ms) & placebo $\rho$ (ms) \\
+\midrule
+\multicolumn{3}{l}{\emph{velocity estimator, no geometric controls}}\\
+\quad forward difference   & \sfMinFwd\,$\pm$\,\sfMinFwdSE   & \sfMinPlFwd\,$\pm$\,\sfMinPlFwdSE \\
+\quad backward difference  & \sfMinBack\,$\pm$\,\sfMinBackSE & \sfMinPlBack\,$\pm$\,\sfMinPlBackSE \\
+\quad centered difference  & \sfMinCen\,$\pm$\,\sfMinCenSE   & \sfMinPlCen\,$\pm$\,\sfMinPlCenSE \\
+\midrule
+\multicolumn{3}{l}{\emph{controls added, centered difference throughout}}\\
+\quad $+$ box side along travel & \ladderMinTau\,$\pm$\,\ladderMinTauSE  & \ladderMinPl\,$\pm$\,\ladderMinPlSE \\
+\quad $+$ four geometric terms  & \ladderGeoTau\,$\pm$\,\ladderGeoTauSE  & \ladderGeoPl\,$\pm$\,\ladderGeoPlSE \\
+\quad $+$ per-sequence bias     & \ladderFullTau\,$\pm$\,\ladderFullTauSE& \ladderFullPl\,$\pm$\,\ladderFullPlSE \\
+\bottomrule
+\end{tabular}
+\caption{The regression-based temporal coefficient $\tau$ of the released \texttt{rvt-t} checkpoint
+over \outMatches{} matched boxes of \outSeqs{} Gen1 validation sequences, and the
+placebo $\rho$ beside it, the coefficient on the rotated label velocity, which
+no temporal offset can reach. Standard errors are clustered by sequence. The
+forward and backward fits above are calibrated in Sec.~\ref{sup:signflip}.}
+\label{tab:outtime}
+\end{table}
+
+\paragraph{Regression dataset and matching.}
+Rows are detections matched to nominal-time ground truth at IoU $\geq 0.3$ with centered
+label velocities available, leaving \outMatches{} matches from \outSeqs{} sequences. The
+estimate is conditional on this matched subset. Sec.~\ref{sup:sweeps} reports association-rule
+sweeps, including overlap-free matching.
+
+Table~\ref{tab:outtime} is a specification ladder, and the specification was
+chosen by the placebo, not by $\tau$. Under Eq.~\ref{eq:outreg} with only
+the box-side term, $\tau=\ladderMinTau\,\pm\,\ladderMinTauSE$\,ms, but $\rho$ is
+\ladderMinPl\,ms at \ladderMinPlSigmas{} standard errors, which indicates a term
+omitted from Eq.~\ref{eq:outreg} that $\mathrm{R}\tilde v$ is a proxy for. A split by
+the sign of the horizontal velocity locates it: $\rho$ changes sign across that
+split, at \plRight\,ms and \plLeft\,ms, which a rotational term would not do.
+Most label motion here is horizontal, so $\mathrm{R}\tilde v$ maps a horizontal speed
+onto a vertical residual. The rotated regressor represents a bias that differs
+between oncoming and same-direction traffic. Entering
+box height and image row along $\hat{y}$ and box width and image column along
+$\hat{x}$, and then a constant vector per sequence, returns the placebo to
+\ladderFullPl\,ms at \ladderFullPlSigmas{} standard errors. That is the
+specification reported, and the criterion that selected it is a coefficient on a
+regressor orthogonal to $\tilde v$.
+
+Under the reported specification, $\tau=\ladderFullTau\,\pm\,\ladderFullTauSE$\,ms, with a
+sequence-bootstrap 95\% interval of [\outBootLo,\,\outBootHi]\,ms. Across geometric-control
+specifications, $\tau$ spans \satLo{} to \satHi{} ms. Because the reported specification was
+selected using the orthogonal placebo coefficient, its nominal standard error does not include
+specification-selection uncertainty. We treat the point estimate descriptively and use
+the full specification sweep to assess robustness.
+
+\subsection{Relating input-sensitivity timing to the regression-based temporal coefficient}
+\label{sec:extrapolation}
+
+The comparison combines measurements under different recurrent-state conditions.
+The centroid uses an eight-step warm-up with the incoming state fixed during
+ablation. The regression uses detections from the validation stream with the
+released state carried across frames. The \outInterval\,ms numerical separation is descriptive only: the two quantities are
+distinct operational summaries and are not competing estimates of a common latent timestamp.
+Under the reported specification and its
+annotation-error assumptions, the point-estimate difference is \outInterval\,ms. The regression
+coefficient has a standard error of \outIntervalSE\,ms. This is a regression-coefficient
+result instead of a latency estimate of this architecture. Expressed on Eq.~\ref{eq:outreg}'s
+sign convention, the newest-window centroid corresponds
+numerically to $\tau=+\rvtCentroidMagMeas$\,ms. This comparison relates two operational
+estimands and does not assume that Eq.~\ref{eq:outreg} must recover the ablation centroid.
+Thus, \rvtCentroidMagMeas\,ms is the measured interval between the label
+instant and the newest-window ablation-sensitivity centroid, whereas \outInterval\,ms
+is the point-estimate difference between that centroid and the reported regression
+coefficient. The measured horizons do not determine a converged full-history centroid. The variation across specifications is substantial
+relative to the reported standard error and is not captured by that standard error.
+
+The detector is trained against the ground truth at the label time on a window
+ending there, so a measured offset near zero is consistent with the training
+objective indexed at the label time. The objective
+does not enforce the
+interval, and the instant the output describes and the centroid of the evidence
+used to produce it are different quantities that one benchmark timestamp stands
+for. At the ninetieth percentile of label speed on this split, \outSpeedNinety\,px/s, the
+\rvtCentroidMagMeas\,ms is \outPxNinety\,px of displacement, comparable to the
+annotation dispersion of the labels themselves (\labelSigmaGenAnn\,px), and at the
+ninety-ninth it is \outPxNinetynine\,px. That ablation-sensitivity centroid and
+the regression-based temporal coefficient are measured from released artifacts alone.
+
+
+\paragraph{Effect on benchmark mAP.}
+This experiment is not a test of whether temporal support matters in general. It asks whether
+Gen1's particular speed composition makes the measured RVT interval visible to its current mAP.
+We translate each ground-truth box
+center by $\delta\tilde v$, keeping its size and class fixed, a
+first-order surrogate for temporal displacement under local constant velocity.
+The released predictions remain unchanged, since a detection
+has no velocity of its own. Over \mapFrames{} frames, \mapGTvelPct\,\% of the \mapGT{}
+ground-truth boxes carry a centered velocity. Ground-truth
+boxes without a centered velocity are marked ignored during evaluation, and detections
+matched to ignored boxes are excluded from TP/FP accounting. The resulting mAP against
+$\delta$ is smooth with its maximum at \mapArgmax\,ms
+(Fig.~\ref{fig:predictor}b). Along the axis of Eq.~\ref{eq:outreg} that is
+$\tau=\mapArgmaxTau$\,ms, and mAP varies by at most \mapCost{} points over the
+interval. This descriptive curve does not by itself identify a preferred temporal
+value.
+
+The full $-60$ to $+60$\,ms sweep moves mAP by \mapSweepSpan{} points. On the
+$-50$ to $+30$\,ms grid summarized in Table~\ref{tab:strata}, the all-moving
+span is \stSpanAll{} points. Displacing the ground truth to the window's centroid
+costs \mapCostAbs{} absolute mAP (\mapCost{} percentage points,
+\mapCostPct\,\% relative to \mapZero{}). Average precision on the velocity-evaluable
+subset is nearly invariant over the measured label-to-centroid displacement, and at
+the common $-\rvtCentroidMagMeas$\,ms displacement the ordering of all
+\rankCkpts{} released checkpoints is unchanged on the validation split. Scoring each checkpoint at its own
+preferred displacement likewise leaves the validation-split ordering unchanged in the reported
+strata. Both statements are bounded by the stability of the
+ordering under sequence resampling at this scale. The smallest timing difference that would reorder an adjacent
+pair is \dstarAll\,ms over all moving boxes,
+\dstarAllTau$\times$ the measured interval, and \dstarMid\,ms in the
+\mapCutMid--\mapCutHi\,px/s stratum. Separately, on every labeled box instead of the
+velocity-evaluable subset the displacement acts on, the benchmark's own cluster resampling
+holds the validation-split ordering in only \rankHoldBox\,\% of replicates. Its tightest
+adjacent pair is separated by \rankGapMin{} points against a paired standard error of
+\rankGapMinSE{}. A common displacement sweep reveals one localized
+inversion between \texttt{rvt-b} and S5-S in the 25--50\,px/s stratum.
+Table~\ref{tab:strata} locates the
+flatness in that composition. Of the moving boxes, \stShareSlow\,\% travel below
+\mapCutLo\,px/s, where the displacement is \stPxSlow\,px. The sweep deepens
+to \mapSpanHigh{} points between \mapCutMid{} and \mapCutHi\,px/s, where it is
+\stPxHigh\,px, past the labels' own annotation dispersion of
+\labelSigmaGenAnn\,px (Sec.~\ref{sup:labelnoise}).
+The near invariance therefore characterizes Gen1's metric resolution, not the absence of a
+temporal discrepancy.
+
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{1.8pt}\renewcommand{\arraystretch}{0.95}
+\begin{tabular}{lrrrrr}
+\toprule
+speed (px/s) & share (\%) & med.\ speed & centroid (px) & $\Delta$mAP & span \\
+\midrule
+all moving          & 100.0        & \mapSpeedMedian & \mapPxMedian & \mapCost     & \stSpanAll \\
+$<$ \mapCutLo{}     & \stShareSlow & \stSpdSlow      & \stPxSlow    & \stCostSlow  & \mapSpanSlow \\
+\mapCutLo--\mapCutMid{}  & \stShareMid  & \stSpdMid  & \stPxMid     & \stCostMid   & \mapSpanMid \\
+\mapCutMid--\mapCutHi{}  & \stShareHigh & \stSpdHigh & \stPxHigh    & \stCostHigh  & \mapSpanHigh \\
+$\geq$ \mapCutHi{}  & \stShareTop  & \stSpdTop       & \stPxTop     & \stCostTop   & \mapSpanTop \\
+\bottomrule
+\end{tabular}
+\caption{The sweep of Fig.~\ref{fig:predictor}b by object speed over the
+\stNmoving{} ground-truth boxes with centered velocity. Other boxes are ignored.
+$\Delta$mAP is the cost of shifting the ground truth to the newest-window
+ablation-sensitivity centroid at $-\rvtCentroidMagMeas$\,ms. Span is the mAP
+range over the $-50$ to $+30$\,ms sweep. Both values are reported in points.}
+\label{tab:strata}
+\end{table}
+
+
+\section{Label-acquisition timing within one exposure}
+\label{sec:flicker}
+
+\begin{figure*}[t]
+\centering
+\figasset{figs/fig1_dsec_exposure.pdf}{0.80\textwidth}
+\caption{Published per-frame exposure width across the \dsecSeqCount{} DSEC
+training sequences whose exposure files resolve: per sequence (left, log axis,
+median, interquartile range and \pctBandLo--\pctBandHi\,\% band, against the
+fixed \dsecFramePeriod\,ms frame period) and pooled over \dsecFrameCount{}
+frames (right). \dsecPinnedFrac\,\% of frames sit at the auto-exposure ceiling
+of \dsecExpMax\,\micro s and \dsecExpGapCount{} fall between the largest
+non-ceiling width of \dsecExpGapLo\,\micro s and that ceiling, separating the two exposure
+regimes. The \dsecCeilingSeqs{} ceiling sequences are those measured in
+Sec.~\ref{sec:flicker}.}
+\label{fig:exposure}
+\end{figure*}
+
+\subsection{Exposure and labels}
+\label{sec:labelclock}
+
+The predictor-side analysis concerns the temporal support of released detector
+inputs and outputs. DSEC provides a separate exposure-side analysis. Published
+exposure intervals bound the interval within which event timing is observed.
+Within-exposure event timing contains illumination-locked structure and therefore cannot be
+uniquely attributed to object timing without separating that structure.
+DSEC~\cite{gehrig2021dsec} publishes
+per-frame exposure metadata, and the files resolve
+for
+\dsecSeqCount{} train sequences. The width varies by a factor of
+\dsecExpRatio{} against a frame period fixed at \dsecFramePeriod\,ms, and within
+one recording by up to a factor of \dsecWithinSeqRatio{}. The auto-exposure
+ceiling of \dsecExpMax\,\micro s holds \dsecPinnedFrac\,\% of frames, in
+\dsecCeilingSeqs{} of the \dsecSeqCount{} sequences, and the distribution is not
+continuous over that range (Fig.~\ref{fig:exposure}). The gap separates the two
+exposure regimes, and ceiling exposure forms a distinct stratum.
+
+The released DSEC-Det labels comprise \ddBoxes{} boxes on \ddTracks{} tracks
+across \ddSeqs{} sequences. Every label sits on the frame clock, and the median
+spacing between consecutive label times is \ddSpacingMedian\,\micro s. Over
+\ddTriples{} triples of consecutive labels on a track,
+\ddInterpBelowThresh\,\% of middle box centers fall within a hundredth of a
+pixel of their neighbors' linear interpolant. This rules out exact local linear
+interpolation as a general description of the released trajectories without
+identifying the underlying annotation process. DSEC-Det ships more than one annotation
+version~\cite{beyondduality2026}, Sec.~\ref{sup:evidencetime} names the one measured here.
+Median box-center image speed is \labelSpeedMedian\,px/s, with
+\labelSpeedPninetynine\,px/s at the ninety-ninth percentile.
+
+\subsection{Mains-frequency signature and the per-pixel phase test}
+\label{sec:line}
+
+\begin{figure}[t]
+\centering
+\figasset{figs/fig7_ceiling_vs_day.pdf}{0.66\columnwidth}
+\caption{Top: 350\,\micro s slices of the ceiling-exposure sequence
+\texttt{zurich\_city\_09\_a} and of the daytime control, at the peak and trough of the
+ceiling sequence's own event rate inside its densest published exposure window.
+Bottom: that rate in 350\,\micro s bins, each sequence normalized to its own mean. The
+ceiling rate moves by a factor of \ceilVarNight{} between its extremes, the daytime rate
+by \ceilVarDay{}.}
+\label{fig:flickerreal}
+\end{figure}
+
+Swiss mains is \mainsHz\,Hz, and rectified lighting can produce the tested
+\flickerLineHz\,Hz modulation. The pre-specified 100-Hz line and its harmonics appear in
+the event-rate spectrum of every ceiling sequence, while the daytime control lacks the
+same pattern (Fig.~\ref{fig:flickerreal}). Per-pixel phase tests and the pre-specified
+frequency control establish the same illumination signature.
+
+Per pixel, the Rayleigh statistic $Z=R^{2}/N$ is $\mathrm{Exp}(1)$ under
+independent uniform phases. The off-frequency and daytime controls empirically
+calibrate this nominal null, while the ceiling sequence has median
+$Z=\flickerZmedian{}$ at \flickerLineHz\,Hz and
+\flickerFracLockedPct\,\% of live pixels reach the nominal $p<10^{-3}$ threshold under
+the independent-uniform-phase reference. The illumination attribution therefore relies
+primarily on the frequency-matched and daytime controls, not on the nominal Rayleigh
+reference alone.
+
+\subsection{All six ceiling sequences, per labeled box}
+
+The same statistic taken per labeled box, over the events inside that box during that
+frame's own exposure window, extends to every ceiling sequence. Across the
+\dsecCeilingSeqs{} sequences and \sixBoxes{} boxes, \sixLockedLoPct{}--\sixLockedHiPct\%
+satisfy the pre-specified criterion in Table~\ref{tab:sixseq}.
+
+
+\subsection{Within-box temporal dispersion under that signature}
+\label{sec:cost}
+
+That signature limits attribution of within-exposure event timing to object timing. The
+per-box 137-Hz arm is used as a same-event descriptive control, not as an independent
+spectral-resolution test. The illumination attribution is supported primarily by the long-slice
+100-Hz harmonic structure and the daytime control.
+Within-box dispersion is \sigmaEvtNight\,\micro s against a null of
+\sigmaEvtNullNight\,\micro s, with an excess of \sigmaEvtExcessNight\,\micro s.
+A frame-level permutation preserving pooled temporal distributions and box counts gives a
+null of \permNull\,\micro s, and the excess remains after the clean-pixel control.
+Random-position boxes show that the dispersion is not specific to annotated object regions
+(Sec.~\ref{sup:perm}), which supports reading the signature as an attribution limit and not as
+object motion.
+
+
+\begin{thebibliography}{9}
+\footnotesize
+
+\bibitem{gehrig2023rvt}
+M. Gehrig and D. Scaramuzza.
+\newblock Recurrent vision transformers for object detection with event cameras.
+\newblock In {\em IEEE/CVF Conference on Computer Vision and Pattern Recognition
+(CVPR)}, 2023.
+
+\bibitem{zubic2024ssm}
+N. Zubi\'c, M. Gehrig, and D. Scaramuzza.
+\newblock State space models for event cameras.
+\newblock In {\em IEEE/CVF Conference on Computer Vision and Pattern Recognition
+(CVPR)}, 2024.
+
+\bibitem{qin2018temporal}
+T. Qin and S. Shen.
+\newblock Online temporal calibration for monocular visual-inertial systems.
+\newblock In {\em IEEE/RSJ International Conference on Intelligent Robots and
+Systems (IROS)}, 2018.
+
+\bibitem{gehrig2021dsec}
+M. Gehrig, W. Aarents, D. Gehrig, and D. Scaramuzza.
+\newblock DSEC: A stereo event camera dataset for driving scenarios.
+\newblock {\em IEEE Robotics and Automation Letters}, 2021.
+
+\bibitem{beyondduality2026}
+K. Wang, S. Liu, H. Shi, L. Shi, and H. Chen.
+\newblock Beyond duality: A hybrid framework of leveraging shared and private
+features for RGB-Event object detection.
+\newblock In {\em IEEE/CVF Conference on Computer Vision and Pattern Recognition
+(CVPR)}, 2026.
+
+\end{thebibliography}
 
 \end{document}

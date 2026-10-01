@@ -13,8 +13,8 @@ the build neither writes nor reads.
 
 | File | Pages / size | Notes |
 |---|---|---|
-| `main.pdf` | 9 (body 8, references on 9) | anonymous, `\usepackage[review]{cvpr}`, `\author{Anonymous CVPR submission}` |
-| `supp.pdf` | 11 | supplementary material |
+| `main.pdf` | 6 (body 5, references on 6) | anonymous, `\usepackage[review]{cvpr}`, `\author{Anonymous CVPR submission}` |
+| `supp.pdf` | 16 | supplementary material, including the predictor-side and label-side audits (Secs. 15 and 16) that main Sec. 4 summarizes |
 | `video/main.mp4` | 87.9 s, 1280x720, 30 fps, 9,466,456 bytes | research video, nine scenes |
 
 ## Sources (for the camera-ready and for the record)
@@ -33,16 +33,17 @@ pdflatex supp && pdflatex supp && pdflatex supp
 
 Verified in `cvpr19-tex:cvpr2026-v1` from a clean copy of this directory, and re-verified
 2026-10-01 in `texlive/texlive:latest`:
-`main 9 pages, supp 11 pages, undef=0, overfull=0, 0 missing-figure placeholders`.
+`main 6 pages, supp 16 pages, undef=0, overfull=0, 0 missing-figure placeholders`.
 Both documents built from a clean copy reproduce the shipped PDFs' `pdftotext` output
-exactly, and `main.pdf` passes the reference-page check (references start on page 9 with
+exactly, and `main.pdf` passes the reference-page check (references start on page 6 with
 no body text on it).  `main` needs no `bibtex` run when `main.bbl` is present.
 (`\figasset` substitutes a visible box for a missing figure rather than failing, so the
 placeholder count is checked explicitly, not assumed.)
 
 The bibliography is an inline `thebibliography` environment in `main.tex`; there is no
 `.bib` file, and the `bibtex` step above is a no-op kept for the camera-ready workflow.
-`supp.tex` cites nothing and carries no bibliography, so it needs no `bibtex` step.  It does
+`supp.tex` carries its own inline `thebibliography` of the five entries that Secs. 15 and 16
+cite, so it needs no `bibtex` step either.  It does
 need three `pdflatex` passes: at two, one table has not yet reached its final page and the
 text stream differs from the shipped `supp.pdf`.  This was checked by building a clean copy
 at two and at three passes and comparing `pdftotext` output against the shipped file.

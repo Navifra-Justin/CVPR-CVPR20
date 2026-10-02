@@ -1,0 +1,14 @@
+E70 gate failure, 2026-10-02. Both failing checks were mis-specified; no port fault found.
+(b) 'boxes inside canvas' assumed 640x384 and demanded 100 % of boxes at conf>=0.01. Label canvas is 640x360 (GT max x 639.5, y 359.5); 384 is bottom padding.
+    0 detection centres lie outside 640x360; the 17/28176 (S5-B), 3/14917 (RVT carry), 5/24668 (reset) boxes beyond the padded input have score <= 0.2
+    and overshoot an edge by <= 17 px (nothing clips them). Fix: centres in 640x360 for all, >= 99.5 % inside 640x384+2.
+(a) 'frames with detections >= 95 %' was calibrated on Gen1 (99.99 % S5-B, 99.9 % RVT-s). On 1 Mpx it is 87.6 % / 79.7 % / 80.9 %.
+    Missing frames: in 5 of 6 sequences GT boxes in those frames hold median 0-5 events (stationary labelled objects, nothing to detect);
+    sequence 2 (S5-B 180, RVT 317 missing frames) has events in its boxes but still few detections, yet per-sequence mAP there is 32.4 / 36.0.
+    Presence rate is data-dependent, so it is not a port test. Replaced by a localisation check (precision at IoU 0.5 of score>=0.3 boxes >= 0.5):
+    real dumps 0.72-0.78; 2x scale, 0.5x scale, +40 px, y flip, 7-frame roll -> 0.00, 0.00, 0.05, 0.01-0.02, 0.23-0.26 (src/e70_1mpx_gate_selftest.py).
+    Not detected: 1-2 frame offsets (0.57-0.69); timestamp alignment is covered by e70_1mpx_verify_data.py.
+Also checked: corner (bottom/right) padding equals RVT InputPadderFromShape; LSCALE 0.5; partition (6,10); CHUNK 10; strict checkpoint load.
+Official eval filters boxes with diag<30 / side<10 (half scale) from GT and detections and skips the first 0.5 s; this project scores all boxes.
+Size filter alone moves gate mAP 29.04->30.46 (S5-B), 28.29->30.09 (RVT carry); the gap to 44-48 (full test split) is not explained by it and
+cannot be attributed on 6 sequences (per-sequence mAP 19-47).

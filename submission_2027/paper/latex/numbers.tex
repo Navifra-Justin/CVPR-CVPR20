@@ -551,7 +551,7 @@
 \newcommand{\occMean}{\ensuremath{-26.35}}   %% ms, the bin set to its dataset mean
 \newcommand{\occSwap}{\ensuremath{-25.01}}   %% ms, the bin taken from an unrelated sample
 \newcommand{\occGrad}{\ensuremath{-22.35}}   %% ms, d||out||/d(bin), no occlusion at all
-\newcommand{\occSpread}{4.01}                 %% ms, the range across all four instruments
+\newcommand{\occSpread}{4.00}                 %% ms, the range across all four instruments
 \newcommand{\occBootSE}{0.054}                %% ms, bootstrap SE of the zero-fill centroid
 \newcommand{\occGradCV}{0.191}               %% CV over bins of the gradient instrument
 
@@ -777,7 +777,7 @@
 %% released evaluation drives it, a chunk of windows at a time with the detection head
 %% applied per position, and measured at positions carrying half a chunk of history or more
 %% (E47b), the one-window-at-a-time convention is withdrawn, see withdrawn_L1/WHY.md.
-\newcommand{\archCkpts}{5}            %% released checkpoints measured
+\newcommand{\archCkpts}{five}            %% released checkpoints measured
 \newcommand{\archOther}{4}            %% the ones Fig. 2a draws besides rvt-t
 \newcommand{\archSpan}{0.96}       %% ms, range of all their centroids
 \newcommand{\archLo}{\ensuremath{-24.72}}   \newcommand{\archHi}{\ensuremath{-23.76}}
@@ -817,7 +817,7 @@
 %% displacement, in four speed strata. The ordering never changes, and it cannot: in every
 %% stratum the largest gain any model draws from alignment is a fraction of the smallest gap
 %% between adjacent models, so no refinement of the grid can reorder them.
-\newcommand{\rankCkpts}{5}            %% released checkpoints scored
+\newcommand{\rankCkpts}{five}            %% released checkpoints scored
 \newcommand{\rankStrata}{four}          %% speed strata examined
 \newcommand{\rankFlips}{0}              %% pairwise sign flips, of 10 per stratum
 \newcommand{\rankMaxGain}{0.14}      %% mAP points, the largest alignment gain seen
@@ -825,7 +825,7 @@
 \newcommand{\rankRatio}{52}          %% percent: worst-case gain over gap within a stratum
 \newcommand{\rankArgLo}{\ensuremath{-15}}   %% ms, earliest per-model argmax
 \newcommand{\rankArgHi}{\ensuremath{0}}    %% ms, latest per-model argmax
-\newcommand{\rankMover}{\texttt{s5vit-base}}  %% the checkpoint whose rank moves most
+\newcommand{\rankMover}{S5-B}  %% the checkpoint whose rank moves most
 \newcommand{\rankMoverBest}{1}          %% its best rank across strata
 \newcommand{\rankMoverWorst}{5}         %% and its worst
 
@@ -843,7 +843,7 @@
 \newcommand{\effTauHi}{0.081}
 \newcommand{\twoSeDmapLo}{0.070}
 \newcommand{\twoSeDmapHi}{0.116}
-\newcommand{\effTauResolved}{1}
+\newcommand{\effTauResolved}{one}
 \newcommand{\resAbsLo}{153}
 \newcommand{\resAbsHi}{174}
 \newcommand{\dstarAll}{43.7}
@@ -879,14 +879,14 @@
 \newcommand{\chunkNetB}{0.16}
 \newcommand{\chunkPlaceboMax}{0.67}
 \newcommand{\chunkPlaceboZ}{1.56}
-\newcommand{\chunkGapBase}{1.75}
-\newcommand{\chunkGapSmall}{1.33}
+\newcommand{\chunkGapBase}{1.28}
+\newcommand{\chunkGapSmall}{0.86}
 \newcommand{\chunkShortBase}{34.445}
 \newcommand{\chunkFullBase}{40.226}
 \newcommand{\chunkRelBase}{38.9}
 \newcommand{\chunkConfOne}{0.463}
 \newcommand{\chunkConfFull}{0.574}
-\newcommand{\chunkConfPct}{23.8}
+\newcommand{\chunkConfPct}{24.0}
 
 %% Which summary of the label composition sets the resolution, and what buying it
 %% costs (E56e), from experiments/e56_resolving/collapse.json and composition.json.

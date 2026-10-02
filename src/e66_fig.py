@@ -27,7 +27,7 @@ for k, lb, c, mk, ls in SPEC:
     a.plot([XP], [R['map'][k]['pooled']], marker=mk, ms=3.6, color=c, mfc='none', mew=0.9, ls='none')
 a.axvline(3.7, color='0.75', lw=0.5, ls=':')
 a.set_xticks(xs + [XP]); a.set_xticklabels(['1', '5', '10', '21', 'pooled'])
-a.set_xlim(-0.3, 4.8); a.set_xlabel('recurrent windows allowed before the scored window ($H$)')
+a.set_xlim(-0.3, 4.8); a.set_xlabel('windows read up to and including the scored one ($H$)')
 a.set_ylabel('mAP (%)')
 a.tick_params(length=2.5, pad=1.5)
 for sp in ('top', 'right'):

@@ -1,0 +1,12 @@
+{
+ "n_frames": 3000,
+ "n_sequences_eligible": 405,
+ "n_sequences_total": 406,
+ "eligible_frames": 18947,
+ "done_frames": 20296,
+ "min_per_seq": 1,
+ "max_per_seq": 36,
+ "seed": 20261002,
+ "ri_min": 79,
+ "ri_max": 1199
+}

@@ -185,8 +185,8 @@ CHECKS=[
  # The two designs agree on S5-B: |same-frame paired - placebo-differenced|, mAP points.
  ('ssmPairedAgreeBase',  abs(E60['base']['map_vel_boot']['obs']-(-E58A['did']['s5vit-base'])), 0.005),
  ('chunkPlaceboZ',      max(abs(E58A['did'][m])/E58A['boot'][m]['se'] for m in _RVT), 0.005),
- ('chunkGapBase',       -E58A['pooled_gap']['s5vit-base'],                   0.005),
- ('chunkGapSmall',      -E58A['pooled_gap']['s5vit-small'],                  0.005),
+ ('chunkGapBase',       100*(E58A['point']['s5vit-base']['full']-E58A['point']['s5vit-base']['pooled']),   0.005),
+ ('chunkGapSmall',      100*(E58A['point']['s5vit-small']['full']-E58A['point']['s5vit-small']['pooled']), 0.005),
  ('chunkShortBase',     100*E58A['point']['s5vit-base']['short'],            0.0006),
  ('chunkFullBase',      100*E58A['point']['s5vit-base']['full'],             0.0006),
  ('chunkRelBase',       100*E58A['point']['s5vit-base']['pooled'],           0.05),
@@ -651,7 +651,8 @@ for name in sorted(DERIVABLE - _checked):
         bad+=1
 for name,truth,tol in CHECKS:
     if name not in NUM: print(f"  MISSING  \\{name}"); bad+=1; continue
-    try: got=float(NUM[name].replace('\\,','').replace(',','').replace('$',''))
+    _W={'one':1,'two':2,'three':3,'four':4,'five':5,'six':6,'seven':7,'eight':8,'nine':9,'ten':10}
+    try: got=float(_W.get(NUM[name].strip(),NUM[name]).__str__().replace('\\,','').replace(',','').replace('$',''))
     except ValueError: print(f"  UNPARSED \\{name} = {NUM[name]!r}"); bad+=1; continue
     if abs(got-float(truth))>tol:
         print(f"  MISMATCH \\{name}: numbers.tex {got}, artifact {float(truth):.6g}"); bad+=1

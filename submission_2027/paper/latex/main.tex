@@ -42,7 +42,7 @@ in Event-Camera Detection Evaluation Pipelines}
 \maketitle
 
 \begin{abstract}
-An event-camera detection benchmark identifies each scored sample by one nominal timestamp, yet a recurrent detector forms its prediction from a longer history whose length the benchmark never records. We state the missing requirement as \emph{temporal-support identifiability}: the variables a protocol records with a score must uniquely determine the temporal evidence behind every scored prediction. The released SSM-ViT evaluation pipeline is the case study: its reported score is not determined by the nominal timestamp alone, because it also depends on a temporal support that the benchmark does not specify. With frames, weights, labels, evaluator and evaluated timestamps fixed, moving only the chunk boundary of the streaming evaluation changes the recurrent history behind the same frames from 1--4 to 17--20 windows, and changes the SSM-ViT base checkpoint (S5-B) by \ssmPairedMapAllBase\,$\pm$\,\ssmPairedMapAllBaseSE{} mAP over all labeled boxes and by \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBaseSE{} mAP on the velocity-evaluable subset; the released score pools histories of 1 to \ssmEvalChunk{} windows. The same intervention leaves RVT unchanged when its state is carried and moves it by \rvtBoundResetS--\rvtBoundResetB{} mAP when the state is reset, so the effect follows the reset policy of each architecture. Because temporal-support identifiability is a uniqueness property, one controlled pair with identical recorded variables and different scores is sufficient to show that the protocol under-specifies its score. Support-Conditioned AP specifies the support: every checkpoint is scored from the same reset state with the history fixed to $H$ windows. On five released Gen1 checkpoints, S5-B is third in the pooled score and first at every $H\in\{1,5,10,21\}$, with every pairwise gap to it excluding zero, and Kendall's $\tau$ between the pooled and fixed-$H$ orderings is at most \fhTauHTwentyone{}. Predictor-side and label-side audits show that input timing and label-acquisition timing are left implicit by the same timestamp. We list five fields a benchmark can record with its labels so that the support behind a score is identifiable.
+An event-camera detection benchmark scores each sample at one nominal timestamp, while a recurrent detector forms its prediction from a history whose length the benchmark never records. We formalize the missing requirement as \emph{temporal-support identifiability}: the variables a protocol records with a score must determine the temporal evidence behind every scored prediction. Because this is a uniqueness property, one controlled pair of runs with identical records and different supports refutes it, and we construct that pair on the released SSM-ViT evaluation. With frames, weights, labels, evaluator and evaluated timestamps fixed, moving only the chunk boundary of the streaming evaluation changes the recurrent history behind the same \ssmPairedN{} frames from 1--4 to 17--20 windows and changes the base checkpoint (S5-B) by \ssmPairedMapAllBase\,$\pm$\,\ssmPairedMapAllBaseSE{} mAP over all labeled boxes and by \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBaseSE{} mAP on the velocity-evaluable subset, with a graded response at intermediate shifts and an exact zero at zero shift. The same intervention leaves RVT within \rvtBoundCarryMax{} mAP while its state is carried and moves it by \rvtBoundResetS--\rvtBoundResetB{} mAP once the state is reset, so the effect follows the reset policy and not the architecture. The constructive counterpart is Support-Conditioned AP, which scores every checkpoint from the same reset state at a declared history of $H$ windows. On five released Gen1 checkpoints, S5-B is third in the pooled score and first at every $H\in\{1,5,10,21\}$, with every pairwise gap to it excluding zero; three pairwise gaps reverse sign with both intervals excluding zero, and Kendall's $\tau$ against the pooled ordering is at most \fhTauHTwentyone{}. Audits on Gen1 and DSEC show that input timing and label-acquisition timing are left implicit by the same timestamp. Five fields recorded with the labels make the support behind a score identifiable.
 \end{abstract}
 
 \section{Introduction}
@@ -58,9 +58,11 @@ compared against comes from an exposure of finite width, an annotator or tracker
 exposed image, and a geometric transfer into another sensor's frame. The evidence on both sides
 is an interval, while the protocol records an instant.
 
-We use three terms. The \emph{nominal timestamp} is the instant at which the protocol pairs a prediction with a label. The \emph{effective temporal support} is the past that can influence the prediction, including state carried by recurrence. The \emph{label-acquisition support} is the interval over which the label's evidence was acquired. The \emph{protocol record} is the set of variables a benchmark specifies and a paper reports with a score: frames, labels, weights, evaluator, input window, nominal timestamps and published acquisition metadata. A protocol is \emph{temporal-support identifiable} when its record determines the effective temporal support of every scored prediction uniquely. A quantity that can be reconstructed from released code or index files, but is absent from the record, does not meet this condition: two evaluations that agree on the entire record can still differ in it, and nothing reported with the score tells them apart.
+We use four terms. The \emph{nominal timestamp} is the instant at which the protocol pairs a prediction with a label. The \emph{effective temporal support} is the past that can influence the prediction, including state carried by recurrence. The \emph{label-acquisition support} is the interval over which the label's evidence was acquired. The \emph{protocol record} is the set of variables a benchmark specifies and a paper reports with a score: frames, labels, weights, evaluator, input window, nominal timestamps and published acquisition metadata. A protocol is \emph{temporal-support identifiable} when its record determines the effective temporal support of every scored prediction uniquely (Sec.~\ref{sec:def}). A quantity that can be reconstructed from released code or index files, but is absent from the record, does not meet this condition: two evaluations that agree on the entire record can still differ in it, and nothing reported with the score tells them apart.
 
-We test it with a paired intervention on the released SSM-ViT evaluation pipeline, using its base and small checkpoints (S5-B, S5-S). In that
+Prior work on timing in detection takes the benchmark's temporal index as given and changes what is measured against it: latency is folded into the score~\cite{li2020streaming,yang2022streamyolo,chu2026stare}, delay is scored separately~\cite{mao2019delay}, and temporal windows are redesigned~\cite{gehrig2023rvt,zubic2024ssm,sui2026astw}. None of these asks whether the index determines the evidence behind the number reported under it. That question has a sharp form. Identifiability is a uniqueness property, so it is refuted by a single pair of runs that agree on the whole record and differ in support, and it is restored by recording the variables that fix the support.
+
+We build the refuting pair on the released SSM-ViT evaluation pipeline, using its base and small checkpoints (S5-B, S5-S). In that
 implementation the nominally carried state does not enter the outputs across evaluation chunks. The recurrent
 history available to a prediction is a deterministic function of chunk position, and ranges from
 1 to \ssmEvalChunk{} windows inside one pooled score. Moving every chunk boundary
@@ -71,30 +73,31 @@ evaluated timestamp, with frames, weights, labels and evaluator fixed
 Effective temporal support alone changes S5-B by \ssmPairedMapAllBase\,$\pm$\,\ssmPairedMapAllBaseSE{} mAP over all labeled
 boxes and \ssmPairedMapVelBase\,$\pm$\,\ssmPairedMapVelBaseSE{} mAP on the velocity-evaluable
 subset (Sec.~\ref{sec:chunk}). The second checkpoint of the same released pipeline, S5-S, moves by
-\ssmPairedMapAllSmall{} and \ssmPairedMapVelSmall{} points. Since temporal-support identifiability is a uniqueness property, this controlled pair is sufficient to show that the nominal timestamp does not uniquely specify the temporal evidence represented by that score. The consequence is at the level of the protocol, not of one implementation: where the protocol does not record the support behind a score, the reported score is underdetermined. The same intervention on RVT leaves it unchanged while its state is carried and moves it by \rvtBoundResetS{} and \rvtBoundResetB{} points once the state is reset at the boundary, so the effect belongs to the reset policy.
+\ssmPairedMapAllSmall{} and \ssmPairedMapVelSmall{} points. The response is graded in the amount of history returned and is exactly zero at zero shift. The same intervention on RVT leaves it within \rvtBoundCarryMax{} points while its state is carried and moves it by \rvtBoundResetS{} and \rvtBoundResetB{} points once the state is reset at the boundary. The effect therefore belongs to the reset policy, a protocol variable, and not to one implementation: wherever a protocol does not record the support behind a score, the reported score is underdetermined. For scale, the frequency-generalization result that motivates the SSM-ViT design is a 3.31 mAP drop~\cite{zubic2024ssm}.
 
-The controlled pair has a constructive counterpart. Support-Conditioned AP scores a checkpoint with the recurrent history fixed to a stated number of windows $H$ (Sec.~\ref{sec:sc}). Applied to five released Gen1 checkpoints on \fhNCommon{} common frames, it orders them differently from the pooled score: S5-B is third in the pooled score and first at each of $H=1,5,10,21$, and for three pairs the pooled and $H=1$ gaps have intervals that exclude zero on opposite sides.
+The pair has a constructive counterpart. Support-Conditioned AP scores a checkpoint from a reset state with the recurrent history fixed to a declared number of windows $H$ (Sec.~\ref{sec:sc}). It needs no retraining and no new labels, only the released checkpoints. Applied to five released Gen1 checkpoints on \fhNCommon{} common frames, it orders them differently from the pooled score: S5-B is third in the pooled score and first at each of $H=1,5,10,21$, and for three pairs the pooled and $H=1$ gaps have intervals that exclude zero on opposite sides. RVT-\texttt{b} minus S5-B is \fhGapRbSbPool{} points in the pooled score and \fhGapRbSbHOne{} at $H=1$.
+
+All measurements use released checkpoints, released code and public data: five checkpoints of two architecture families on the Gen1 validation split (\fhNAll{} labeled frames, \outSeqsScanned{} sequences) and \dsecSeqCount{} DSEC sequences (\dsecFrameCount{} frames).
 
 \paragraph{Contributions.}
 \begin{itemize}
 \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}\setlength{\topsep}{2pt}
-\item \emph{Temporal-support identifiability}: an evaluation property separating the nominal
-timestamp a protocol records from the effective temporal support and label-acquisition support a
-reported score represents.
-\item A paired intervention that isolates recurrent support. With frames, weights, labels, evaluator and evaluated timestamp fixed, only the chunk boundary changes, and the S5-B score moves by \ssmPairedMapAllBase{} mAP overall and \ssmPairedMapVelBase{} mAP on the velocity-evaluable subset. The same intervention on RVT follows the reset policy.
-\item A protocol, Support-Conditioned AP, which fixes the recurrent history behind each score, applied to five released checkpoints, together with five fields a benchmark can record so that the support behind a score is identifiable.
+\item \emph{Temporal-support identifiability}, an evaluation property with two operational criteria: a witness pair that refutes it and a record that restores it (Sec.~\ref{sec:def}).
+\item A same-frame intervention that isolates recurrent support. Only the chunk boundary changes, and the S5-B score moves by \ssmPairedMapAllBase{} mAP overall and \ssmPairedMapVelBase{} mAP on the velocity-evaluable subset, with a dose response, a zero-shift control, a permutation null, and an RVT control measured in both state regimes (Sec.~\ref{sec:chunk}).
+\item \emph{Support-Conditioned AP}, a protocol that fixes the reset state and the history behind each score. On five released checkpoints it changes the leader and reverses three pairwise gaps with intervals that exclude zero (Sec.~\ref{sec:sc}).
+\item A five-field record that a benchmark can ship with its labels, filled in for two released evaluations, and predictor-side and label-side audits on Gen1 and DSEC of what the timestamp leaves implicit (Secs.~\ref{sec:support} and~\ref{sec:sc}). The evaluation scripts, the boundary-shift driver and the per-frame access logs behind every table will be released.
 \end{itemize}
 
 \section{Related work}
 \label{sec:related}
 
 \paragraph{Sensor and runtime latency.}
-Work on event-camera timing takes the benchmark's temporal index as given and improves what is measured against it. Sensor latency is calibrated away~\cite{yang2024latency,liu2024nighttime}, compute latency is folded into average precision~\cite{li2020streaming,yang2022streamyolo,chu2026stare}, delay is scored separately~\cite{mao2019delay}, and temporal tolerance has been proposed~\cite{softed2024}. Each changes what the predictor does at a fixed benchmark index. The object measured here is that index itself and the support a score reported under it pools: we test whether a released benchmark specification uniquely determines the temporal quantities behind its score.
+Work on event-camera timing takes the benchmark's temporal index as given and improves what is measured against it. Sensor latency is calibrated away~\cite{yang2024latency,liu2024nighttime}, compute latency is folded into average precision~\cite{li2020streaming,yang2022streamyolo,chu2026stare}, delay is scored separately~\cite{mao2019delay}, and temporal tolerance has been proposed~\cite{softed2024}. Each changes what the predictor does at a fixed benchmark index, or how late its answer may arrive. The object measured here is that index itself and the support a score reported under it pools: we test whether a released benchmark specification uniquely determines the temporal quantities behind its score. Streaming metrics move the instant at which a prediction is matched. Support-Conditioned AP holds that instant fixed and controls how much past the prediction was allowed to use, a variable those metrics leave free.
 
 \paragraph{Temporal windows and event benchmarks.}
 RVT and SSM-ViT redesign or parameterize temporal windows
 \cite{gehrig2023rvt,zubic2024ssm}, and adaptive-window methods compare
-alternative partitions \cite{sui2026astw}. Gen1, 1\,Mpx, DSEC-Det and Ev-3DOD use asynchronous measurements, rectified frames, or interpolated labels \cite{detournemire2020gen1,perot2020megapixel,gehrig2024lowlatency,cho2025ev3dod}, and the event count inside one labeled box can be too small to support detection~\cite{kugele2023howmany}. Event--RGB frequency mismatch and exposure duration have also been noted \cite{faod2024,sun2023refid,kim2022unknownexposure}. LEOD~\cite{wu2024leod} states that event detectors take only events triggered before the query time and builds a time-flip augmentation on that premise. It does not record where inside that window the evidence sits. Both released detector implementations leave a frame's position inside the evaluation chunk unspecified by the protocol. The recurrent state entering a chunk is the state saved at the end of the previous chunk, and is reset only at the first sample of a sequence. Under streaming sampling every timestep emits predictions, while otherwise only the last does (RVT \texttt{modules/detection.py}:232,\,243 and SSM-ViT :315,\,318).
+alternative partitions \cite{sui2026astw}. Gen1, 1\,Mpx, DSEC-Det and Ev-3DOD use asynchronous measurements, rectified frames, or interpolated labels \cite{detournemire2020gen1,perot2020megapixel,gehrig2024lowlatency,cho2025ev3dod}, and the event count inside one labeled box can be too small to support detection~\cite{kugele2023howmany}. Event--RGB frequency mismatch and exposure duration have also been noted \cite{faod2024,sun2023refid,kim2022unknownexposure}. LEOD~\cite{wu2024leod} states that event detectors take only events triggered before the query time and builds a time-flip augmentation on that premise. It does not record where inside that window the evidence sits. Both released detector implementations leave a frame's position inside the evaluation chunk unspecified by the protocol. The recurrent state entering a chunk is the state saved at the end of the previous chunk, and is reset only at the first sample of a sequence. Under streaming sampling every timestep emits predictions, while otherwise only the last does (RVT \texttt{modules/detection.py}:232,\,243 and SSM-ViT :315,\,318). These works vary the window a detector reads. None reports the recurrent history behind a score, and none compares detectors at a matched history.
 
 \paragraph{Benchmark reliability and evaluation analysis.}
 Prior work studies detector calibration, stratified model evaluation, label-induced benchmark
@@ -110,6 +113,25 @@ per-box time fields, but their degrees of freedom are not necessarily specified.
 LET-3D-AP and TIDE/DETAD/HOTA decompose or bucket spatial error while taking the
 label clock as given \cite{hung2022let,bolya2020tide,hoiem2012diagnosing,alwassel2018detad,luiten2021hota}.
 
+\section{Temporal-support identifiability}
+\label{sec:def}
+
+\paragraph{Setup.}
+An evaluation run $e$ is everything executed to produce a score: the weights, the data, the evaluator, and the driver that feeds windows to the detector and manages its recurrent state. The protocol record $R(e)$ is the part of $e$ that the benchmark specifies and a paper reports. Let $i$ index the scored predictions and $r_i$ the window at which prediction $i$ is emitted. The effective temporal support $S_i(e)\subseteq\{0,\dots,r_i\}$ is the set of input windows whose content can change prediction $i$ with the rest of $e$ held fixed, and $m(e)$ is the reported score.
+
+\paragraph{Definition.}
+A protocol is \emph{temporal-support identifiable} if, for any two runs $e,e'$ it admits,
+\begin{equation}
+R(e)=R(e')\;\Longrightarrow\; S_i(e)=S_i(e')\quad\text{for every scored } i .
+\label{eq:ident}
+\end{equation}
+
+\paragraph{Criterion 1: a witness pair refutes it.}
+Eq.~\ref{eq:ident} quantifies over all admitted runs, so one pair with $R(e)=R(e')$ and $S_i(e)\neq S_i(e')$ for some $i$ shows that the protocol is not identifiable. If in addition $m(e)\neq m(e')$, the score is not a function of the record, and a reader holding $R$ can neither reproduce $m$ nor say what temporal evidence it summarizes. The refutation is not a population claim. The number of frames and sequences enters only through the precision with which $m(e)-m(e')$ is estimated. Sec.~\ref{sec:chunk} constructs such a pair and measures that difference.
+
+\paragraph{Criterion 2: a record that restores it.}
+Consider a causal detector driven window by window whose recurrent state is cleared at reset points, and let $b_i\le r_i$ be the last reset at or before $r_i$. Nothing before $b_i$ can reach prediction $i$, so $S_i\subseteq\{b_i,\dots,r_i\}$, an interval of $h_i=r_i-b_i+1$ windows. The support spans that whole interval when the oldest admitted window reaches the output, which a replacement probe on that window checks. A record that adds the reset policy, which fixes $b_i$, and the history length $h_i$ therefore determines $S_i$. Two points follow for practice. First, $b_i$ has to be measured on the running evaluation and not read from a configuration: the SSM-ViT release declares a carried state that never reaches its outputs (Sec.~\ref{sec:chunk}), so its realized resets are not its declared ones. Second, fixing $h_i=H$ for every prediction and every detector yields scores whose support is identical by construction. This is Support-Conditioned AP (Sec.~\ref{sec:sc}).
+
 \section{Primary evidence: the same-frame chunk-boundary intervention}
 \label{sec:chunk}
 
@@ -122,6 +144,9 @@ and the reported number averages over all \ssmEvalChunk{} positions. Chunk posit
 deterministic function of the release's own index files and is recorded nowhere in the
 evaluation protocol.
 
+\paragraph{The mechanism, measured.}
+The property is read from the source and then checked on the running model. Zeroing the state that enters a chunk changes the emitted detection tensor of SSM-ViT by a relative $L_2$ of \ssmStateEffect{} at every position of a \ssmChunkMeas-window chunk. The same test on RVT-\texttt{t} gives \rvtStateEffectOne{} at the first position and \rvtStateEffect{} at the last. A model that ignored its history would return zero in both cases, so the control ablates the previous window inside the same chunk: SSM-ViT then changes by \ssmInchunkOne{}. It is recurrent within a chunk and loses its state only across chunks (Supplement Sec.~2).
+
 \paragraph{The same-frame intervention.}
 The intervention moves every chunk boundary \ssmPairedShift{} windows later and changes nothing
 else: the same frames, the same weights, the same labels, the same evaluator, and the evaluated
@@ -129,13 +154,13 @@ timestamp of each frame unchanged. \ssmPairedN{} labeled frames are scored twice
 shift, once with 1--4 windows of recurrent history and once with 17--20.
 They are compared paired within frame with a cluster bootstrap over the \outSeqsScanned{}
 sequences. The long-history arm gains
-\ssmPairedMapVelBase$\pm$\ssmPairedMapVelBaseSE{} mAP points for S5-B and
-\ssmPairedMapVelSmall$\pm$\ssmPairedMapVelSmallSE{} for S5-S on the velocity-evaluable subset,
-and over every labeled box the S5-B gain is
-\ssmPairedMapAllBase$\pm$\ssmPairedMapAllBaseSE{} points. Mean detection confidence, which uses
+\ssmPairedMapVelBase$\pm$\ssmPairedMapVelBaseSE{} mAP points for S5-B ($z=\ssmPairedMapVelBaseZ$) and
+\ssmPairedMapVelSmall$\pm$\ssmPairedMapVelSmallSE{} for S5-S ($z=\ssmPairedMapVelSmallZ$) on the velocity-evaluable subset,
+and over every labeled box the gains are
+\ssmPairedMapAllBase$\pm$\ssmPairedMapAllBaseSE{} and \ssmPairedMapAllSmall$\pm$\ssmPairedMapAllSmallSE{} points. Mean detection confidence, which uses
 no labels, moves with it by \ssmPairedConfBase$\pm$\ssmPairedConfBaseSE{} and
 \ssmPairedConfSmall$\pm$\ssmPairedConfSmallSE{}. Fig.~\ref{fig:chunkpos} (bottom) draws one such
-pair. No quantity the protocol records distinguishes the two arms.
+pair. No quantity the protocol records distinguishes the two arms, so the pair is the witness of Criterion~1.
 
 \paragraph{Graded response and what moves.}
 The size of the boundary shift is a free parameter. Re-scoring the same \ssmDoseN{} frames after
@@ -145,24 +170,42 @@ changes the velocity-subset mAP of S5-B by \ssmDoseBaseSix$\pm$\ssmDoseBaseSixSE
 \ssmPairedMapVelBase$\pm$\ssmPairedMapVelBaseSE{} points, and that of S5-S by
 \ssmDoseSmallSix$\pm$\ssmDoseSmallSixSE{}, \ssmDoseSmallEleven$\pm$\ssmDoseSmallElevenSE{} and
 \ssmPairedMapVelSmall$\pm$\ssmPairedMapVelSmallSE{}. The zero-shift control, which re-runs the
-release's own boundary placement, returns \ssmDoseNull{}. Confidence on detections matched to a
+release's own boundary placement through the same pipeline, returns \ssmDoseNull{}. The three rungs share their frames, so a frame-difficulty confound aligned with chunk position cannot produce the gradient. Confidence on detections matched to a
 label rises by \ssmPairedConfTpBase{} and \ssmPairedConfTpSmall{}, and total output falls by
-\ssmPairedDpfBase{} and \ssmPairedDpfSmall{} boxes per frame, so both terms of precision move.
+\ssmPairedDpfBase{} and \ssmPairedDpfSmall{} boxes per frame, so both terms of precision move: the starved arm emits more boxes and scores the correct ones lower.
 Tab.~\ref{tab:evidence} lists all four amounts.
 
 \paragraph{The observational contrast across chunk positions.}
-Reconstructing chunk position over \mapFrames{} labeled frames of the released evaluation and
+The released evaluation already contains the contrast, without any intervention. Reconstructing chunk position over the \mapFrames{} labeled frames of the released evaluation and
 scoring every labeled box, S5-B reaches \chunkShortBase{} mAP on the frames given 1--4
 windows and \chunkFullBase{} on those given 17--\ssmEvalChunk{}
-(Fig.~\ref{fig:chunkpos}, top). This contrast compares different frames, so it is differenced
+(Fig.~\ref{fig:chunkpos}, top; Tab.~\ref{tab:chunkmain}). This contrast compares different frames, so it is differenced
 against the three RVT checkpoints, evaluated on the same frames with a state that crosses chunk
 boundaries. That controls for frame-position effects shared with them. It leaves
 \chunkDidBase$\pm$\chunkDidBaseSE{} points for S5-B ($z=\chunkDidBaseZ$) and
 \chunkDidSmall$\pm$\chunkDidSmallSE{} for S5-S ($z=\chunkDidSmallZ$), against placebo
 differences among the RVT checkpoints of at most \chunkPlaceboMax{} points
-($z=\chunkPlaceboZ$). Permuting chunk position within each sequence puts both SSM values far outside their own null, whose standard deviation is about \chunkPermSd{} points, and every placebo inside
-it. The two readings agree in sign and magnitude, and the paired intervention carries the claim
+($z=\chunkPlaceboZ$). A permutation null reshuffles chunk position among the frames of each sequence, which preserves the scene, the sequence lengths, the label density and the block sizes and destroys only the correspondence between a frame and its history. Over \chunkPermB{} reshuffles the null has a standard deviation of about \chunkPermSd{} points; both SSM values lie outside every reshuffle ($p=\chunkPermP$, the smallest attainable), and every placebo stays within \chunkPermPlaceboZ{} standard deviations. A label-free statistic shows the same split: the mean confidence of S5-S rises from \chunkConfOne{} at 1 window to \chunkConfFull{} at 17, while that of RVT-\texttt{t} stays flat. The observational and interventional readings agree in sign and magnitude, and the paired intervention carries the claim
 because it holds the frames fixed (Supplement Sec.~1).
+
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3.0pt}\renewcommand{\arraystretch}{0.95}
+\begin{tabular}{lrrrr}
+\toprule
+ & 1--4 win. & 17--\ssmEvalChunk{} win. & raw $\Delta$ & net of RVT \\
+\midrule
+RVT-\texttt{t} & \chunkShortT & \chunkFullT & $\chunkRawT$ & $\chunkNetT\pm\chunkSeT$ \\
+RVT-\texttt{s} & \chunkShortS & \chunkFullS & $\chunkRawS$ & $\chunkNetS\pm\chunkSeS$ \\
+RVT-\texttt{b} & \chunkShortB & \chunkFullB & $\chunkRawB$ & $\chunkNetB\pm\chunkSeB$ \\
+\midrule
+S5-S & \chunkShortSmall & \chunkFullSmall & $\chunkRiseSmall$ & $\chunkDidSmall\pm\chunkDidSmallSE$ \\
+S5-B & \chunkShortBase & \chunkFullBase & $\chunkRiseBase$ & $\chunkDidBase\pm\chunkDidBaseSE$ \\
+\bottomrule
+\end{tabular}
+\caption{Released evaluation, no intervention: mAP over every labeled box of the \mapFrames{} frames, by the recurrent history the release gave the frame. Raw $\Delta$ is the second column minus the first. The last column subtracts the RVT trend (the mean of the other two RVT rows for an RVT row, of all three for an S5 row), $\pm$ one cluster-bootstrap standard error over \outSeqsScanned{} sequences. The RVT rows are placebos: their state crosses chunk boundaries.}
+\label{tab:chunkmain}
+\end{table}
 
 \paragraph{RVT under the same intervention.}
 That differencing treats the RVT checkpoints as a control because their state survives a chunk
@@ -175,9 +218,8 @@ $\rvtBoundCarryB\pm\rvtBoundCarryBSE$ for RVT-\texttt{b} ($z=\rvtBoundCarryBZ$).
 the state at every chunk start, the condition the SSM release is already in, moves the same
 weights on the same frames by $\rvtBoundResetS\pm\rvtBoundResetSSE$ ($z=\rvtBoundResetSZ$)
 and $\rvtBoundResetB\pm\rvtBoundResetBSE$ points ($z=\rvtBoundResetBZ$). Random-frame
-nulls are centered within \rvtBoundPermMax{} points of zero. The boundary effect follows whether the
-recurrent state survives the boundary, and the control the
-difference-in-differences relies on holds as a measurement (Supplement Sec.~1).
+nulls are centered within \rvtBoundPermMax{} points of zero. The carried arm shows that the control the
+difference-in-differences relies on holds as a measurement. The reset arm shows that the shift reaches the model, so the null of the carried arm is a property of the released evaluation and not of an intervention that failed. One model, one set of weights and one set of frames give a zero or a \rvtBoundResetMin{}-point effect depending only on whether the state survives the boundary, a variable that no protocol record contains (Supplement Sec.~1).
 
 \begin{table}[t]
 \centering\footnotesize
@@ -203,8 +245,11 @@ dropped & & $\rvtBoundResetS\pm\rvtBoundResetSSE$ & $\rvtBoundResetB\pm\rvtBound
 \label{tab:evidence}
 \end{table}
 
+\paragraph{Controls.}
+Each alternative reading of the effect has its own null. A pipeline artifact is excluded by the zero-shift control (\ssmDoseNull{}) and by the bit-identical reproduction of the stored RVT detections. Frame difficulty is excluded by pairing within frame, by the dose response on one frame set, and by the permutation null. An evaluator artifact is excluded by the label-free confidence shift and by rescoring every detection dump with \texttt{pycocotools}, which agrees with our evaluator to within \portEvalGap{} points on all five checkpoints. An architecture-specific reading is excluded by the two RVT state regimes. Dependence between frames of a sequence is handled by resampling sequences, not frames, in every interval.
+
 \paragraph{What the pooled score reports.}
-One released number pools detections whose recurrent history differs by a factor of \ssmEvalChunk{}. Restricting evaluation to the frames that receive 17--\ssmEvalChunk{} windows gives an S5-B score \chunkGapBase{} points above the pooled released score, and \chunkGapSmall{} points for S5-S. Two systems compared under this protocol at the same nominal timestamps need not have been given the same temporal evidence, and the protocol record contains no variable by which a reader could tell. For scale, the frequency-generalization result that motivates the SSM-ViT design is a 3.31 mAP drop~\cite{zubic2024ssm}; an unrecorded chunk boundary moves the same model by a comparable amount at a fixed frequency.
+One released number pools detections whose recurrent history differs by a factor of \ssmEvalChunk{}. Restricting evaluation to the frames that receive 17--\ssmEvalChunk{} windows gives an S5-B score \chunkGapBase{} points above the pooled released score, and \chunkGapSmall{} points for S5-S. Two systems compared under this protocol at the same nominal timestamps need not have been given the same temporal evidence, and the protocol record contains no variable by which a reader could tell.
 
 \begin{figure}[t]
 \centering
@@ -215,43 +260,48 @@ One released number pools detections whose recurrent history differs by a factor
 \label{fig:chunkpos}
 \end{figure}
 
-\section{Supporting audits}
+\section{What else the timestamp leaves implicit}
 \label{sec:support}
 
-Two audits delimit how the intervention of Sec.~\ref{sec:chunk} is read. Each measures a
-timing descriptor that the nominal timestamp does not encode, and neither is used as a recurrent-support estimator. Their derivations, figures and tables are in
+Recurrent history is one component of the support behind a score. Two audits measure the others on released artifacts, the input timing inside the newest window and the acquisition timing of the label. Each is a timing descriptor that the nominal timestamp does not encode. Their derivations, figures and tables are in
 Supplement Secs.~5 and 14.
 
 \paragraph{Protocol record.}
 Call a quantity \emph{protocol-identifiable} when the protocol record of Sec.~\ref{sec:intro} determines it uniquely. The input window and the published exposure interval are in the record. The effective predictor timing, the recurrent history pooled in a score, and the attribution of event timing within an exposure are not.
 
-\paragraph{Predictor side.}
+\paragraph{Predictor side (Gen1).}
 The released RVT configuration~\cite{gehrig2023rvt} indexes each \rvtBins-bin, \rvtWindow\,ms input
 window by its end, and places that end on a label time. Ablating each bin of the released RVT-\texttt{t} checkpoint over \rvtInfluenceSamples{} Gen1
 validation samples puts the ablation-sensitivity
-centroid at \rvtCentroidMeas\,ms. A regression of detection-center residuals on label velocity,
+centroid at \rvtCentroidMeas\,ms, so the evidence of the newest window is centered about half a window before the instant the label asserts. A regression of detection-center residuals on label velocity,
 which carries the temporal calibration of~\cite{qin2018temporal} to a box center and is fitted on
 nominal-time-matched detections, gives a coefficient of
-\ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms, compatible with zero. Over a 1000\,ms horizon the newest window accounts for 22.7\,\% of the
-summed window-ablation sensitivity, so the newest-window centroid does not describe the full
-recurrent support (Supplement Secs.~5, 6 and 8).
+\ladderFullTau\,$\pm$\,\ladderFullTauSE\,ms, so the state the output reports is the one at the label time. One timestamp thus stands for two instants whose point estimates are \outInterval\,ms apart, the centroid of the evidence and the time of the state the output reports. All five released checkpoints show the same newest-window centroid to within a fraction of one bin. Over a 1000\,ms horizon the newest window accounts for only 22.7\,\% of the
+summed window-ablation sensitivity. Most of the evidence behind a detection lies in the recurrent history, which is the component Sec.~\ref{sec:chunk} manipulates (Supplement Secs.~5, 6 and 8).
 
-\paragraph{Label side.}
+\paragraph{Label side (DSEC).}
 Across the \dsecSeqCount{} DSEC training sequences whose exposure files
-resolve~\cite{gehrig2021dsec}, published exposure width varies by a factor of \dsecExpRatio{}
-against a frame period fixed at \dsecFramePeriod\,ms. Within-box dispersion of event time inside one exposure is
-\sigmaEvtNight\,\micro s against an analytic null of \sigmaEvtNullNight\,\micro s, so within-exposure event timing contains an illumination-locked component and cannot be
+resolve~\cite{gehrig2021dsec} (\dsecFrameCount{} frames), published exposure width varies by a factor of \dsecExpRatio{}
+against a frame period fixed at \dsecFramePeriod\,ms, and \dsecPinnedFrac\,\% of frames sit at the auto-exposure ceiling. A label on the frame clock therefore summarizes acquisition intervals that differ by two orders of magnitude. Inside one ceiling exposure the event rate moves by a factor of \ceilVarNight{} between its extremes, against \ceilVarDay{} in a daytime control, and its spectrum carries the \flickerLineHz\,Hz line of rectified mains lighting. Across all \dsecCeilingSeqs{} ceiling sequences and \sixBoxes{} labeled boxes, \sixLockedLoPct--\sixLockedHiPct\,\% of boxes per sequence carry that signature above an off-frequency control on the same events. Within-box dispersion of event time inside one exposure is
+\sigmaEvtNight\,\micro s against an analytic null of \sigmaEvtNullNight\,\micro s (Fig.~\ref{fig:daynightmain}). Within-exposure event timing contains an illumination-locked component and cannot be
 attributed to object timing without separating that component first (Supplement Secs.~14 and 16).
 DSEC-Det ships more than one annotation version~\cite{beyondduality2026}, and Supplement Sec.~15
 names the one measured here.
 
-\section{Support-conditioned AP}
+\begin{figure}[t]
+\centering
+\figasset{figs/fig3_day_night.pdf}{0.92\columnwidth}
+\caption{Label-side audit on DSEC. Left: within-frame dispersion of the per-box event-time centroid inside one published exposure against its analytic uniform null, for \sigmaEvtFramesNight{} frames of a ceiling-exposure sequence (\dsecExpMax\,\micro s) and \sigmaEvtFramesDay{} frames of a daytime control (\sigmaEvtExpDay\,\micro s). Right: per-pixel Rayleigh statistic at \flickerLineHz\,Hz and at the \flickerCtrlHz\,Hz off-frequency control for the same two sequences. Details in Supplement Secs.~14--16.}
+\label{fig:daynightmain}
+\end{figure}
+
+\section{Support-Conditioned AP}
 \label{sec:sc}
 
-Sec.~\ref{sec:chunk} shows that one released protocol pools detections that received different histories. This section scores the \rankCkpts{} released Gen1 checkpoints at a stated history and compares the result with the pooled score.
+Sec.~\ref{sec:chunk} shows that one released protocol pools detections that received different histories. Criterion~2 of Sec.~\ref{sec:def} says what to fix. This section scores the \rankCkpts{} released Gen1 checkpoints at a declared history and compares the result with the pooled score.
 
 \paragraph{Protocol.}
-For a labeled frame scored at window $r$ and a history length $H$, the detector starts from a reset recurrent state at window $r-H+1$ and runs through window $r$, and the detections of window $r$ are scored with the labels, confidence threshold, NMS and evaluator of the released-protocol dumps. We call the resulting AP at fixed $H$ Support-Conditioned AP. $H$ counts the windows read up to and including the scored window; we write $H_{\mathrm{nominal}}$ for this requested length. A frame with fewer than $H$ windows available receives $H_{\mathrm{forced}}=\min(H,r+1)$ windows instead. All checkpoints are scored on the same \fhNCommon{} frames, those with $H_{\mathrm{forced}}=H_{\mathrm{nominal}}$ at every $H\in\{1,5,10,21\}$. The other \fhNExcl{} of the \fhNAll{} labeled frames have fewer than \ssmEvalChunk{} windows of history and are excluded. The common frames lie in \fhNSeq{} sequences. The column \emph{pooled} is the released evaluation of each checkpoint, in which the history depends on the release and on the frame, restricted to the same common frames. The score of the released evaluation on all \fhNAll{} frames is listed separately. The access log of every run shows that the number of distinct windows read equals $H_{\mathrm{forced}}$ and that the first window read is $r-H_{\mathrm{forced}}+1$ in every cell of every checkpoint (Supplement Sec.~1.4).
+For a labeled frame scored at window $r$ and a history length $H$, the detector starts from a reset recurrent state at window $r-H+1$ and runs through window $r$, and the detections of window $r$ are scored with the labels, confidence threshold, NMS and evaluator of the released-protocol dumps. We call the resulting AP at fixed $H$ Support-Conditioned AP. $H$ counts the windows read up to and including the scored window; we write $H_{\mathrm{nominal}}$ for this requested length. A frame with fewer than $H$ windows available receives $H_{\mathrm{forced}}=\min(H,r+1)$ windows instead. All checkpoints are scored on the same \fhNCommon{} frames, those with $H_{\mathrm{forced}}=H_{\mathrm{nominal}}$ at every $H\in\{1,5,10,21\}$, which is \fhNCommon{} of the \fhNAll{} labeled frames, in \fhNSeq{} sequences. The column \emph{pooled} is the released evaluation of each checkpoint, in which the history depends on the release and on the frame, restricted to the same common frames. The score of the released evaluation on all \fhNAll{} frames is listed separately and differs from it by at most 0.05 points. The access log of every run shows that the number of distinct windows read equals $H_{\mathrm{forced}}$ and that the first window read is $r-H_{\mathrm{forced}}+1$ in every cell of every checkpoint (Supplement Sec.~1.4). The protocol reuses released weights and labels and adds no training.
 
 \begin{table*}[t]
 \centering\scriptsize
@@ -274,9 +324,9 @@ Kendall $\tau$ against pooled & \fhTauPool & \fhTauHOne & \fhTauHFive & \fhTauHT
 \end{table*}
 
 \paragraph{Result.}
-Table~\ref{tab:sc} lists the scores. On the common frames the pooled ordering is RVT-\texttt{b}, RVT-\texttt{s}, S5-B, RVT-\texttt{t}, S5-S. At $H=1$ the ordering is S5-B, S5-S, RVT-\texttt{b}, RVT-\texttt{s}, RVT-\texttt{t}, and at $H=21$ it is S5-B, RVT-\texttt{b}, RVT-\texttt{s}, S5-S, RVT-\texttt{t}. Kendall's $\tau$ between the pooled ordering and the orderings at $H=1$, 5, 10 and 21 is \fhTauHOne{}, \fhTauHFive{}, \fhTauHTen{} and \fhTauHTwentyone{}. At every $H$, each pairwise gap between S5-B and another checkpoint has a 95\,\% interval that excludes zero (Tab.~\ref{tab:scpairs}), so its first rank does not depend on the bootstrap draw. The pooled ordering, by contrast, is reproduced in \fhReproPool\,\% of draws on the common frames and in \rankHoldBox\,\% over all labeled boxes (Supplement Sec.~4).
+Table~\ref{tab:sc} lists the scores. On the common frames the pooled ordering is RVT-\texttt{b}, RVT-\texttt{s}, S5-B, RVT-\texttt{t}, S5-S. At $H=1$ the ordering is S5-B, S5-S, RVT-\texttt{b}, RVT-\texttt{s}, RVT-\texttt{t}, and at $H=21$ it is S5-B, RVT-\texttt{b}, RVT-\texttt{s}, S5-S, RVT-\texttt{t}. Kendall's $\tau$ between the pooled ordering and the orderings at $H=1$, 5, 10 and 21 is \fhTauHOne{}, \fhTauHFive{}, \fhTauHTen{} and \fhTauHTwentyone{}. At every $H$, each pairwise gap between S5-B and another checkpoint has a 95\,\% interval that excludes zero (Tab.~\ref{tab:scpairs}), so its first rank does not depend on the bootstrap draw. The pooled ordering, by contrast, is reproduced in \fhReproPool\,\% of draws on the common frames and in \rankHoldBox\,\% over all labeled boxes (Supplement Sec.~4), while the full orderings at $H=1$, 5 and 10 are reproduced in \fhReproHOne, \fhReproHFive{} and \fhReproHTen\,\% of draws. At $H=21$ S5-B stays first with every gap excluding zero, and the full ordering is reproduced in \fhReproHTwentyone\,\% of draws because RVT-\texttt{s} and S5-S come within a tenth of a point of each other there.
 
-Several pairwise gaps change sign. RVT-\texttt{t} minus S5-S is \fhgap{Rt}{Ss}{Pool} points in the pooled score and \fhgap{Rt}{Ss}{HOne} at $H=1$. RVT-\texttt{s} minus S5-S is \fhgap{Rs}{Ss}{Pool} pooled and \fhgap{Rs}{Ss}{HOne} at $H=1$. RVT-\texttt{b} minus S5-B is \fhgap{Rb}{Sb}{Pool} pooled and negative at every $H$, shrinking to \fhgap{Rb}{Sb}{HTwentyone} at $H=21$. For RVT-\texttt{s} and RVT-\texttt{t} against S5-B the pooled intervals include zero (\fhgap{Rs}{Sb}{Pool} and \fhgap{Rt}{Sb}{Pool}), while at every $H$ the point gaps lie between \fhGapRsSbMin{} and \fhGapRsSbMax{} and between \fhGapRtSbMin{} and \fhGapRtSbMax{} and the intervals exclude zero. Tab.~\ref{tab:scpairs} lists the gaps for all pairs and Fig.~\ref{fig:schcurve} plots the curves over $H$.
+Several pairwise gaps change sign. RVT-\texttt{t} minus S5-S is \fhgap{Rt}{Ss}{Pool} points in the pooled score and \fhgap{Rt}{Ss}{HOne} at $H=1$. RVT-\texttt{s} minus S5-S is \fhgap{Rs}{Ss}{Pool} pooled and \fhgap{Rs}{Ss}{HOne} at $H=1$. RVT-\texttt{b} minus S5-B is \fhgap{Rb}{Sb}{Pool} pooled, \fhgap{Rb}{Sb}{HOne} at $H=1$, and negative at every $H$, shrinking to \fhgap{Rb}{Sb}{HTwentyone} at $H=21$. For RVT-\texttt{s} and RVT-\texttt{t} against S5-B the pooled intervals include zero (\fhgap{Rs}{Sb}{Pool} and \fhgap{Rt}{Sb}{Pool}), so the pooled score cannot separate them, while at every $H$ the point gaps lie between \fhGapRsSbMin{} and \fhGapRsSbMax{} and between \fhGapRtSbMin{} and \fhGapRtSbMax{} and the intervals exclude zero. Fixing the support thus resolves comparisons that the pooled score leaves open. Tab.~\ref{tab:scpairs} lists the gaps for all pairs and Fig.~\ref{fig:schcurve} plots the curves over $H$.
 
 \begin{table*}[t]
 \centering\scriptsize
@@ -309,35 +359,41 @@ S5-S $-$ S5-B & \fhgap{Ss}{Sb}{Pool} & \fhgap{Ss}{Sb}{HOne} & \fhgap{Ss}{Sb}{HFi
 \end{figure}
 
 \paragraph{What Support-Conditioned AP equalizes.}
-The access log confirms that exactly $H$ windows are read, and replacing the oldest admitted window changes the output in \fhProbeHit{} of \fhProbeN{} probed cells (\fhProbeHitT{} for RVT-\texttt{t}), so the full admitted history reaches the detection. Every checkpoint starts from the same reset state. The protocol therefore equalizes the two things the pooled score leaves free, the reset policy and the history length. Under the released evaluations these differ by family: the RVT release carries its state across a sequence, while the SSM-ViT release scores each chunk from a reset state (Sec.~\ref{sec:chunk}). This is why the pooled RVT scores sit above their $H=\ssmEvalChunk{}$ scores (RVT-\texttt{b}: \fhMapRbPool{} against \fhMapRbHTwentyone) and the pooled S5 scores sit below theirs (S5-B: \fhMapSbPool{} against \fhMapSbHTwentyone). The pooled column compares checkpoints that were given different support. Table~\ref{tab:sc} compares them at the same support, which is the comparison a timing benchmark is taken to make. The ordering change is a result for these five checkpoints under this evaluation and does not rank the architectures.
+The access log confirms that exactly $H$ windows are read, and replacing the oldest admitted window changes the output in \fhProbeHit{} of \fhProbeN{} probed cells (\fhProbeHitT{} for RVT-\texttt{t}), so the full admitted history reaches the detection and the support is the interval of Criterion~2. Every checkpoint starts from the same reset state. The protocol therefore equalizes the two things the pooled score leaves free, the reset policy and the history length. Under the released evaluations these differ by family: the RVT release carries its state across a sequence, while the SSM-ViT release scores each chunk from a reset state (Sec.~\ref{sec:chunk}). This is why the pooled RVT scores sit above their $H=\ssmEvalChunk{}$ scores (RVT-\texttt{b}: \fhMapRbPool{} against \fhMapRbHTwentyone) and the pooled S5 scores sit below theirs (S5-B: \fhMapSbPool{} against \fhMapSbHTwentyone). The pooled column compares checkpoints that were given different support. Table~\ref{tab:sc} compares them at the same support, which is the comparison a timing benchmark is taken to make. The unit compared is the released checkpoint under one evaluation, the unit a leaderboard ranks.
+
+\paragraph{The curve over $H$ as a result.}
+Support-Conditioned AP reports a curve where the pooled protocol reports one number, and the curve carries information the number hides (Fig.~\ref{fig:schcurve}). From $H=1$ to $H=21$ the RVT checkpoints gain between 8.3 and 9.0 points and the S5 checkpoints between 6.3 and 6.5, so at $H=1$ both S5 checkpoints rank above all three RVT checkpoints and the families converge as history grows. A reader choosing a detector for a short-latency budget and a reader choosing one for long sequences would pick differently from the same table, and neither choice can be read from the pooled column.
+
+\paragraph{Reporting recipe.}
+The protocol reduces to five steps that apply to any recurrent detector with a released checkpoint. (i) Declare a set of history lengths; we use $H\in\{1,5,10,21\}$, the last being the chunk length of the released streaming evaluation. (ii) Restrict scoring to the frames that have the largest $H$ available, and state how many are excluded. (iii) For every frame and every $H$, run from a reset state over exactly $H$ windows and keep the detections of the last. (iv) Log the windows the loader returned and probe the oldest one, so that the declared support is the realized one. (v) Report the fixed-$H$ scores with paired sequence-bootstrap intervals beside the pooled score, together with the distribution of history lengths the pooled score contains.
 
 \paragraph{What a benchmark should record.}
-A nominal timestamp does not determine the effective temporal support or the label-acquisition support, and the intervention above shows a case in which the unrecorded support changes the score. We propose that a benchmark record, for each scored sample, five fields. The \emph{nominal timestamp} is the instant at which the sample is scored. The \emph{input window} is what the detector reads at that timestamp. The \emph{state-reset policy} states where the recurrent state is cleared, including chunk boundaries and sequence starts. The \emph{effective history length} is the number of windows read, as the access log of the evaluation run records it. The \emph{label-acquisition support} is the interval over which the label's evidence was acquired. Together, the reset policy and the history length determine the effective temporal support. Tab.~\ref{tab:fields} fills in these fields for the two releases examined here. A score is then reported at a declared history length, as in Tab.~\ref{tab:sc}, together with the distribution of history lengths that the pooled score contains. These fields do not equalize the support across checkpoints. They record it, so that scores can be compared at a history that both detectors received.
+A nominal timestamp does not determine the effective temporal support or the label-acquisition support, and the intervention above shows a case in which the unrecorded support changes the score. We propose that a benchmark record, for each scored sample, five fields. The \emph{nominal timestamp} is the instant at which the sample is scored. The \emph{input window} is what the detector reads at that timestamp. The \emph{state-reset policy} states where the recurrent state is cleared, including chunk boundaries and sequence starts. The \emph{effective history length} is the number of windows read, as the access log of the evaluation run records it. The \emph{label-acquisition support} is the interval over which the label's evidence was acquired. By Criterion~2, the reset policy and the history length determine the effective temporal support. Tab.~\ref{tab:fields} fills in these fields for the two releases examined here. A score is then reported at a declared history length, as in Tab.~\ref{tab:sc}. The record makes support checkable, and Support-Conditioned AP makes it equal, so that scores are compared at a history that both detectors received.
 
 \begin{table}[t]
-\centering\footnotesize
-\setlength{\tabcolsep}{3.0pt}\renewcommand{\arraystretch}{0.95}
-\begin{tabular}{lll}
+\centering\scriptsize
+\setlength{\tabcolsep}{3.0pt}\renewcommand{\arraystretch}{1.0}
+\begin{tabular}{@{}p{1.75cm}p{1.85cm}p{2.0cm}p{1.9cm}@{}}
 \toprule
-field & RVT release & SSM-ViT release \\
+field & RVT release & SSM-ViT release & Support-Cond.\ AP \\
 \midrule
-nominal timestamp & recorded & recorded \\
-input window & recorded & recorded \\
-state-reset policy & sequence start only; not recorded & every \ssmEvalChunk-window chunk; not recorded \\
-effective history length & up to sequence length; not recorded & 1--\ssmEvalChunk{} windows; not recorded \\
+nominal timestamp & recorded & recorded & recorded \\
+input window & recorded & recorded & recorded \\
+state-reset policy & sequence start only; not recorded & every \ssmEvalChunk-window chunk; not recorded & at window $r-H+1$; declared \\
+effective history length & up to sequence length; not recorded & 1--\ssmEvalChunk{} windows; not recorded & $H$ windows; logged and probed \\
 \bottomrule
 \end{tabular}
-\caption{Four of the five fields of Sec.~\ref{sec:sc} for the two released Gen1 evaluations. A field marked not recorded is not part of what the protocol reports with a score. The fifth field, label-acquisition support, belongs to the dataset and is audited on DSEC in Sec.~\ref{sec:support}.}
+\caption{Four of the five fields of Sec.~\ref{sec:sc} for the two released Gen1 evaluations and for Support-Conditioned AP. A field marked not recorded is not part of what the protocol reports with a score. The fifth field, label-acquisition support, belongs to the dataset and is audited on DSEC in Sec.~\ref{sec:support}.}
 \label{tab:fields}
 \end{table}
 
 \section{Conclusion}
 
-With frames, weights, labels, evaluator and evaluated timestamps fixed, moving only the chunk boundary shifts S5-B by \ssmPairedMapAllBase{} mAP over all labeled validation boxes and by \ssmPairedMapVelBase{} mAP on the velocity-evaluable subset. The chunk boundary is a degree of freedom the protocol does not record. It changes the recurrent support behind a reported score while every recorded quantity stays fixed, which is an instance where temporal-support identifiability does not hold. RVT shows the same effect as soon as its state is reset at the boundary, so the effect belongs to the reset policy and not to one architecture.
+A benchmark timestamp does not determine the temporal evidence behind the score reported under it. With frames, weights, labels, evaluator and evaluated timestamps fixed, moving only the chunk boundary shifts S5-B by \ssmPairedMapAllBase{} mAP over all labeled validation boxes and by \ssmPairedMapVelBase{} mAP on the velocity-evaluable subset. The chunk boundary changes the recurrent support behind a reported score while every recorded quantity stays fixed, which is the witness pair that refutes temporal-support identifiability. RVT shows the same effect as soon as its state is reset at the boundary and none while it is carried, so the effect belongs to the reset policy and not to one architecture.
 
 Support-Conditioned AP removes this degree of freedom by fixing the reset state and the history behind every score. On five released Gen1 checkpoints, S5-B moves from third in the pooled score to first at every $H$, Kendall's $\tau$ between the pooled and fixed-$H$ orderings stays at or below \fhTauHTwentyone{}, and three pairwise gaps reverse sign with intervals that exclude zero on both sides.
 
-Two scores at the same nominal timestamp are comparable in time only when the support behind them is the same. A benchmark can make this checkable by recording five fields for each scored sample (nominal timestamp, input window, state-reset policy, effective history length, label-acquisition support) and by reporting scores at a declared history length.
+Two scores at the same nominal timestamp are comparable in time only when the support behind them is the same. A benchmark can make this checkable by recording five fields for each scored sample (nominal timestamp, input window, state-reset policy, effective history length, label-acquisition support), and a paper can make it hold by reporting scores at a declared history length.
 {\footnotesize
 \setlength{\itemsep}{0.4pt}
 \clearpage

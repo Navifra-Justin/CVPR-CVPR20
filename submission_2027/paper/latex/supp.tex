@@ -31,7 +31,7 @@ in Event-Camera Detection Evaluation Pipelines\\[0.3em]
 \maketitle
 
 \noindent
-Secs.~1 and 2 give the chunk-boundary and fixed-history evidence of main Secs.~3 and 5. Secs.~3--6 give the predictor-side audit of main Sec.~4, and Secs.~7--13 its regression, ablation and checkpoint-port details. Secs.~14--16 give the label-side audit and the data paths of the DSEC measurements. The RVT source revision is
+Secs.~1 and 2 give the chunk-boundary and fixed-history evidence of main Secs.~4 and 6. Secs.~3--6 give the predictor-side audit of main Sec.~5, and Secs.~7--13 its regression, ablation and checkpoint-port details. Secs.~14--16 give the label-side audit and the data paths of the DSEC measurements. The RVT source revision is
 \texttt{b80f5683a6e2d5de65d4bde8105d796ccb50dbb1}, and the SSM-ViT source revision is
 \texttt{7c871b55a0c5f00673c2c3975f6b6a1c5adbab88}. Section numbers below refer to this document. References labeled
 main Sec.~$n$ refer to the main paper. All Gen1 quantitative claims in both documents are
@@ -238,7 +238,7 @@ saturation point is therefore not estimated beyond the ordering of these rungs.
 \subsection{The same intervention on RVT, in two state regimes}
 \label{sup:rvtbound}
 
-Main Sec.~3 differences the observational chunk-position contrast against the
+Main Sec.~4 differences the observational chunk-position contrast against the
 RVT checkpoints. That differencing is valid only if an RVT boundary is not a reset, which is
 a property of the released implementation: \texttt{modules/detection.py} keeps the validation
 state in \texttt{mode\_2\_rnn\_states} and clears it only on \texttt{is\_first\_sample}. The
@@ -286,7 +286,7 @@ larger magnitude is \rvtBoundCarryMax{} points. With the state dropped at the bo
 same weights on the same frames gain at least \rvtBoundResetMin{} points, a magnitude
 comparable to the \ssmPairedMapVelBase{} and \ssmPairedMapVelSmall{} points the SSM
 checkpoints show under the identical intervention. The carried arm therefore supports the
-parallel-trends control of main Sec.~3 as a measurement, and the reset arm shows
+parallel-trends control of main Sec.~4 as a measurement, and the reset arm shows
 that the shift reaches the model. The null is a property of the released evaluation rather
 than of an intervention that failed to reach the model. Within this protocol the boundary deficit
 follows whether the recurrent state survives a boundary and not the architecture.
@@ -295,7 +295,7 @@ follows whether the recurrent state survives a boundary and not the architecture
 \subsection{Scoring at a fixed history}
 \label{sup:fixedh}
 
-Main Sec.~5 scores the five released Gen1 checkpoints with the recurrent history fixed to $H\in\{1,5,10,21\}$ windows. This subsection gives the construction, the checks that were run on it, and the ordering table behind main Tab.~2.
+Main Sec.~6 scores the five released Gen1 checkpoints with the recurrent history fixed to $H\in\{1,5,10,21\}$ windows. This subsection gives the construction, the checks that were run on it, and the ordering table behind main Tab.~3.
 
 \paragraph{Construction.}
 For every labeled frame at window index $r$ and every $H$, the checkpoint is run on windows $r-H+1,\dots,r$ only, from a fresh recurrent state, and the detections of window $r$ are kept. An RVT checkpoint is called once per window with its state carried inside the $H$-window run and started empty at the first of them, as in the release's own per-window call. An SSM-ViT checkpoint receives the $H$ windows as one chunk of length $H$ with a fresh state and the detection head applied at the last position, as in the release's chunked call. Nothing before window $r-H+1$ reaches the model. The nominal history is $H$, and a frame with fewer than $H$ earlier windows receives $H_{\mathrm{forced}}=\min(H,r+1)$. Ground truth, frame admission and label linking are those of the released-protocol dumps, and the confidence floor and NMS overlap are the ones of Sec.~\ref{sup:ordering}. All five checkpoints are scored on the \fhNCommon{} common frames, those with $H_{\mathrm{forced}}=H_{\mathrm{nominal}}$ at every $H$, out of \fhNAll{} labeled frames, in \fhNSeq{} sequences. Intervals are 95\,\% percentile intervals over \fhB{} bootstrap draws that resample sequences, with one draw shared by every checkpoint and column, so every difference below is paired.
@@ -317,14 +317,14 @@ $H=10$ & S5-B, RVT-\texttt{b}, S5-S, RVT-\texttt{s}, RVT-\texttt{t} & \fhTauHTen
 $H=21$ & S5-B, RVT-\texttt{b}, RVT-\texttt{s}, S5-S, RVT-\texttt{t} & \fhTauHTwentyone & \fhReproHTwentyone \\
 \bottomrule
 \end{tabular}
-\caption{Ordering of the five checkpoints by mAP in each column of main Tab.~2, Kendall's $\tau_{K}$ against the pooled ordering, and the share of the \fhB{} bootstrap draws whose full ordering equals the column's point ordering.}
+\caption{Ordering of the five checkpoints by mAP in each column of main Tab.~3, Kendall's $\tau_{K}$ against the pooled ordering, and the share of the \fhB{} bootstrap draws whose full ordering equals the column's point ordering.}
 \label{tab:scorder}
 \end{table}
 
 
 
 \paragraph{Reading.}
-S5-B is first at every fixed $H$, and RVT-\texttt{b} minus S5-B shrinks from \fhgap{Rb}{Sb}{HOne} at $H=1$ to \fhgap{Rb}{Sb}{HTwentyone} at $H=21$ (main Tab.~3). At $H=21$ the RVT-\texttt{s} $-$ S5-S gap is \fhgap{Rs}{Ss}{HTwentyone}, which does not exclude zero, and the same gap is \fhgap{Rs}{Ss}{Pool} in the pooled score. The pooled score of each RVT checkpoint is above all four of its fixed-$H$ scores, whereas that of each S5 checkpoint lies between its $H=1$ and $H=21$ scores. The pooled column comes from the released evaluation, in which the RVT checkpoints carry their state across the whole sequence and the S5 checkpoints are limited to the current chunk (Sec.~\ref{sup:support}). The fixed-$H$ protocol gives both families the same reset state and the same cap of 21 windows. The reset-regime measurement of Sec.~\ref{sup:rvtbound} (\rvtBoundResetS{} and \rvtBoundResetB{} points) shows that the RVT checkpoints respond to the history length under that state.
+S5-B is first at every fixed $H$, and RVT-\texttt{b} minus S5-B shrinks from \fhgap{Rb}{Sb}{HOne} at $H=1$ to \fhgap{Rb}{Sb}{HTwentyone} at $H=21$ (main Tab.~4). At $H=21$ the RVT-\texttt{s} $-$ S5-S gap is \fhgap{Rs}{Ss}{HTwentyone}, which does not exclude zero, and the same gap is \fhgap{Rs}{Ss}{Pool} in the pooled score. The pooled score of each RVT checkpoint is above all four of its fixed-$H$ scores, whereas that of each S5 checkpoint lies between its $H=1$ and $H=21$ scores. The pooled column comes from the released evaluation, in which the RVT checkpoints carry their state across the whole sequence and the S5 checkpoints are limited to the current chunk (Sec.~\ref{sup:support}). The fixed-$H$ protocol gives both families the same reset state and the same cap of 21 windows. The reset-regime measurement of Sec.~\ref{sup:rvtbound} (\rvtBoundResetS{} and \rvtBoundResetB{} points) shows that the RVT checkpoints respond to the history length under that state.
 
 \section{The carried state of the SSM release}
 \label{sup:state}
@@ -499,7 +499,7 @@ motion and box-size distributions.
 
 \subsection{Identifiability and the timing estimands}
 
-Main Sec.~4 defines the term protocol-identifiable for quantities the protocol record determines. This subsection fixes the notation for the two predictor-side
+Main Sec.~5 defines the term protocol-identifiable for quantities the protocol record determines. This subsection fixes the notation for the two predictor-side
 descriptors.
 
 Let a predictor $P$ emit a state at query time $t$. A signed effective-weight

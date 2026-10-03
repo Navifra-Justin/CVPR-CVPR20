@@ -1,4 +1,8 @@
-# PAPER_PATCH_e71_e72 (draft only; no .tex file and nothing under submission_2027/ is modified)
+# PAPER_PATCH_e71_e72
+
+STATUS 2026-10-04: APPLIED. E71 (H = 40, 80 on 3,000 stratified frames, every column recomputed on those frames) replaced the numbers of main Sec. 6 and supp Sec. 1.4; E72 entered supp Sec. 2 and one sentence of main Sec. 4. Macros: src/e71_macros.py (prefixes lh, lq, ra), checks: src/audit_numbers.py. Adoption rule 1 (third repository with a different measured reset policy) is NOT met: Tab. 5 keeps its columns (PREREG_e72_followup.md). Adoption rule 2 is met: RVT-b overtakes S5-B between H = 21 and H = 40. The text below is the earlier draft and is kept for the record.
+
+## Earlier draft (2026-10-02)
 
 STATUS 2026-10-02 22:10 KST. Part B (reset-policy audit, E72) is measured. Part A (H = 40, 80 on 3,000 stratified frames, E71) is
 PIPELINE-READY AND QUEUED: no H = 40/80 number exists yet; every `[PENDING]` below is a placeholder, not a value.

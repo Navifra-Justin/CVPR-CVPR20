@@ -1,0 +1,6 @@
+  [PASS] 3000 evaluated frames
+  [PASS] evaluated set == frames.npz
+  [FAIL] H=21 vs E66 H=21 detection-wise: unpaired 4, worst 1-IoU 1.23e-01, worst |score diff| 8.63e-04; bit-identical 1193/3000
+  [PASS] negative control: E71 H=40 differs from E66 H=21 on 2998/3000 frames
+  [PASS] ground truth of every evaluated frame equals E66
+CHECK FAIL

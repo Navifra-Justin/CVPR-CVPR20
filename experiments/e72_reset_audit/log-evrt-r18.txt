@@ -1,0 +1,47 @@
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+  seq 1, 3 chunks
+  seq 2, 6 chunks
+  seq 3, 9 chunks
+
+evrtdetr-r18: relative L2 change of the output by position, state entering the chunk zeroed; chunk 21, 9 chunk starts
+  p= 0  zero-entering-state 6.475e-01 (scores only 5.962e-01)   occlude-previous-window -
+  p= 1  zero-entering-state 6.323e-01 (scores only 5.304e-01)   occlude-previous-window 6.410e-01
+  p= 2  zero-entering-state 6.501e-01 (scores only 5.381e-01)   occlude-previous-window -
+  p= 3  zero-entering-state 6.392e-01 (scores only 5.255e-01)   occlude-previous-window -
+  p= 4  zero-entering-state 6.361e-01 (scores only 5.464e-01)   occlude-previous-window -
+  p= 5  zero-entering-state 6.375e-01 (scores only 4.862e-01)   occlude-previous-window 6.412e-01
+  p= 6  zero-entering-state 6.306e-01 (scores only 5.455e-01)   occlude-previous-window -
+  p= 7  zero-entering-state 6.397e-01 (scores only 5.058e-01)   occlude-previous-window -
+  p= 8  zero-entering-state 6.419e-01 (scores only 4.789e-01)   occlude-previous-window -
+  p= 9  zero-entering-state 6.406e-01 (scores only 5.246e-01)   occlude-previous-window -
+  p=10  zero-entering-state 6.319e-01 (scores only 4.957e-01)   occlude-previous-window 6.388e-01
+  p=11  zero-entering-state 6.399e-01 (scores only 5.177e-01)   occlude-previous-window -
+  p=12  zero-entering-state 6.324e-01 (scores only 4.690e-01)   occlude-previous-window -
+  p=13  zero-entering-state 6.361e-01 (scores only 5.324e-01)   occlude-previous-window -
+  p=14  zero-entering-state 6.375e-01 (scores only 5.499e-01)   occlude-previous-window -
+  p=15  zero-entering-state 6.383e-01 (scores only 5.786e-01)   occlude-previous-window -
+  p=16  zero-entering-state 6.397e-01 (scores only 4.528e-01)   occlude-previous-window -
+  p=17  zero-entering-state 6.333e-01 (scores only 5.308e-01)   occlude-previous-window -
+  p=18  zero-entering-state 6.379e-01 (scores only 4.831e-01)   occlude-previous-window -
+  p=19  zero-entering-state 6.365e-01 (scores only 5.195e-01)   occlude-previous-window -
+  p=20  zero-entering-state 6.427e-01 (scores only 4.651e-01)   occlude-previous-window 6.488e-01
+WROTE /work/experiments/e72_reset_audit/audit-evrtdetr-r18.json
+control (same entering state re-run), max rel over positions and chunks: 0.0

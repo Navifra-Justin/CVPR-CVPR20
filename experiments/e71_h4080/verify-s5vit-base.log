@@ -1,0 +1,12 @@
+  [PASS] (1) evaluated frame set identical for H=[21, 40, 80]: 3000 frames of 20293
+  [PASS] (1) detection frame ids are a subset of the evaluated set for every H
+  [PASS] (2) one ground-truth array for all H
+  [PASS] (3) weights sha256 unchanged by the run 415679d4d65e1680..
+    H=21: cells 3000, with H_forced==H 3000, effective windows min/max 21/21
+    H=40: cells 3000, with H_forced==H 3000, effective windows min/max 40/40
+    H=80: cells 3000, with H_forced==H 3000, effective windows min/max 80/80
+  [PASS] (4)(5) effective support count == H_forced in every cell (access log)
+  [PASS] (4) first window read == ri-H_forced+1 in every cell: no earlier window reached the model
+  [PASS] (5) effective support == nominal H whenever H_forced == H
+  [FAIL] (5) oldest-window probe changed the output in 2254/2259 probed cells
+VERIFY FAIL

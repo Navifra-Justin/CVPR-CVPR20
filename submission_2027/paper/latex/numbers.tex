@@ -1372,3 +1372,419 @@
 \newcommand{\fhProbeHitT}{1216}  % cells whose output changed (RVT-t)
 \newcommand{\fhFastDiff}{5.43}  % x 1e-6 mAP points: fast path vs E56 Scorer, largest difference
 % ---- E66 END ----
+
+% ---- E71 BEGIN (src/e71_macros.py; do not edit by hand) ----
+% E71 Support-Conditioned AP at H = 1..80 on 3,000 frames. Emitted from experiments/e71_h4080/. mAP in points (x100).
+\newcommand{\lhNFrames}{3\,000}  % frames scored at every H (stratified sample of the eligible frames)
+\newcommand{\lhNElig}{18\,947}  % labeled frames with at least 80 windows available (r+1 >= 80)
+\newcommand{\lhNEligSeq}{405}  % validation sequences containing an eligible frame
+\newcommand{\lhNSeqAll}{406}  % validation sequences in all
+\newcommand{\lhNSeq}{405}  % sequences represented in the 3,000 frames
+\newcommand{\lhMaxPerSeq}{36}  % most frames drawn from one sequence
+\newcommand{\lhB}{200}  % sequence-cluster bootstrap draws
+\newcommand{\lhMapRtPool}{39.77}
+\newcommand{\lhMapRtPoolLo}{37.62}
+\newcommand{\lhMapRtPoolHi}{42.66}
+\newcommand{\lhMapRtHOne}{28.58}
+\newcommand{\lhMapRtHOneLo}{26.33}
+\newcommand{\lhMapRtHOneHi}{31.21}
+\newcommand{\lhMapRtHFive}{34.15}
+\newcommand{\lhMapRtHFiveLo}{31.88}
+\newcommand{\lhMapRtHFiveHi}{37.01}
+\newcommand{\lhMapRtHTen}{36.09}
+\newcommand{\lhMapRtHTenLo}{33.67}
+\newcommand{\lhMapRtHTenHi}{38.84}
+\newcommand{\lhMapRtHTwentyone}{37.04}
+\newcommand{\lhMapRtHTwentyoneLo}{34.86}
+\newcommand{\lhMapRtHTwentyoneHi}{39.72}
+\newcommand{\lhMapRtHForty}{38.19}
+\newcommand{\lhMapRtHFortyLo}{35.87}
+\newcommand{\lhMapRtHFortyHi}{40.82}
+\newcommand{\lhMapRtHEighty}{38.80}
+\newcommand{\lhMapRtHEightyLo}{36.56}
+\newcommand{\lhMapRtHEightyHi}{41.72}
+\newcommand{\lhMapRsPool}{40.15}
+\newcommand{\lhMapRsPoolLo}{38.38}
+\newcommand{\lhMapRsPoolHi}{42.70}
+\newcommand{\lhMapRsHOne}{29.04}
+\newcommand{\lhMapRsHOneLo}{26.99}
+\newcommand{\lhMapRsHOneHi}{31.91}
+\newcommand{\lhMapRsHFive}{34.60}
+\newcommand{\lhMapRsHFiveLo}{32.47}
+\newcommand{\lhMapRsHFiveHi}{37.36}
+\newcommand{\lhMapRsHTen}{35.94}
+\newcommand{\lhMapRsHTenLo}{33.95}
+\newcommand{\lhMapRsHTenHi}{38.68}
+\newcommand{\lhMapRsHTwentyone}{37.44}
+\newcommand{\lhMapRsHTwentyoneLo}{35.34}
+\newcommand{\lhMapRsHTwentyoneHi}{40.36}
+\newcommand{\lhMapRsHForty}{38.44}
+\newcommand{\lhMapRsHFortyLo}{36.30}
+\newcommand{\lhMapRsHFortyHi}{41.24}
+\newcommand{\lhMapRsHEighty}{38.93}
+\newcommand{\lhMapRsHEightyLo}{37.00}
+\newcommand{\lhMapRsHEightyHi}{41.62}
+\newcommand{\lhMapRbPool}{42.71}
+\newcommand{\lhMapRbPoolLo}{41.05}
+\newcommand{\lhMapRbPoolHi}{44.91}
+\newcommand{\lhMapRbHOne}{30.96}
+\newcommand{\lhMapRbHOneLo}{28.86}
+\newcommand{\lhMapRbHOneHi}{33.52}
+\newcommand{\lhMapRbHFive}{36.45}
+\newcommand{\lhMapRbHFiveLo}{34.57}
+\newcommand{\lhMapRbHFiveHi}{38.94}
+\newcommand{\lhMapRbHTen}{38.17}
+\newcommand{\lhMapRbHTenLo}{36.33}
+\newcommand{\lhMapRbHTenHi}{40.56}
+\newcommand{\lhMapRbHTwentyone}{39.53}
+\newcommand{\lhMapRbHTwentyoneLo}{37.68}
+\newcommand{\lhMapRbHTwentyoneHi}{41.92}
+\newcommand{\lhMapRbHForty}{40.57}
+\newcommand{\lhMapRbHFortyLo}{38.71}
+\newcommand{\lhMapRbHFortyHi}{42.96}
+\newcommand{\lhMapRbHEighty}{41.22}
+\newcommand{\lhMapRbHEightyLo}{39.31}
+\newcommand{\lhMapRbHEightyHi}{43.58}
+\newcommand{\lhMapSsPool}{36.43}
+\newcommand{\lhMapSsPoolLo}{34.44}
+\newcommand{\lhMapSsPoolHi}{39.26}
+\newcommand{\lhMapSsHOne}{31.45}
+\newcommand{\lhMapSsHOneLo}{29.44}
+\newcommand{\lhMapSsHOneHi}{34.31}
+\newcommand{\lhMapSsHFive}{35.58}
+\newcommand{\lhMapSsHFiveLo}{33.76}
+\newcommand{\lhMapSsHFiveHi}{38.52}
+\newcommand{\lhMapSsHTen}{36.78}
+\newcommand{\lhMapSsHTenLo}{34.87}
+\newcommand{\lhMapSsHTenHi}{39.70}
+\newcommand{\lhMapSsHTwentyone}{37.89}
+\newcommand{\lhMapSsHTwentyoneLo}{35.97}
+\newcommand{\lhMapSsHTwentyoneHi}{40.78}
+\newcommand{\lhMapSsHForty}{35.69}
+\newcommand{\lhMapSsHFortyLo}{33.74}
+\newcommand{\lhMapSsHFortyHi}{38.87}
+\newcommand{\lhMapSsHEighty}{30.91}
+\newcommand{\lhMapSsHEightyLo}{28.87}
+\newcommand{\lhMapSsHEightyHi}{33.89}
+\newcommand{\lhMapSbPool}{39.58}
+\newcommand{\lhMapSbPoolLo}{37.86}
+\newcommand{\lhMapSbPoolHi}{41.74}
+\newcommand{\lhMapSbHOne}{35.10}
+\newcommand{\lhMapSbHOneLo}{33.17}
+\newcommand{\lhMapSbHOneHi}{37.63}
+\newcommand{\lhMapSbHFive}{38.87}
+\newcommand{\lhMapSbHFiveLo}{37.36}
+\newcommand{\lhMapSbHFiveHi}{41.09}
+\newcommand{\lhMapSbHTen}{40.20}
+\newcommand{\lhMapSbHTenLo}{38.55}
+\newcommand{\lhMapSbHTenHi}{42.42}
+\newcommand{\lhMapSbHTwentyone}{40.87}
+\newcommand{\lhMapSbHTwentyoneLo}{39.01}
+\newcommand{\lhMapSbHTwentyoneHi}{43.06}
+\newcommand{\lhMapSbHForty}{39.28}
+\newcommand{\lhMapSbHFortyLo}{37.78}
+\newcommand{\lhMapSbHFortyHi}{41.83}
+\newcommand{\lhMapSbHEighty}{36.43}
+\newcommand{\lhMapSbHEightyLo}{34.91}
+\newcommand{\lhMapSbHEightyHi}{38.90}
+\newcommand{\lhTauPool}{1.00}  % Kendall tau of this ordering against the pooled one
+\newcommand{\lhReproPool}{46.5}  % percent of draws reproducing the point ordering
+\newcommand{\lhTauHOne}{\ensuremath{-0.20}}  % Kendall tau of this ordering against the pooled one
+\newcommand{\lhReproHOne}{67.0}  % percent of draws reproducing the point ordering
+\newcommand{\lhTauHFive}{0.00}  % Kendall tau of this ordering against the pooled one
+\newcommand{\lhReproHFive}{70.5}  % percent of draws reproducing the point ordering
+\newcommand{\lhTauHTen}{\ensuremath{-0.20}}  % Kendall tau of this ordering against the pooled one
+\newcommand{\lhReproHTen}{52.0}  % percent of draws reproducing the point ordering
+\newcommand{\lhTauHTwentyone}{0.00}  % Kendall tau of this ordering against the pooled one
+\newcommand{\lhReproHTwentyone}{54.0}  % percent of draws reproducing the point ordering
+\newcommand{\lhTauHForty}{0.60}  % Kendall tau of this ordering against the pooled one
+\newcommand{\lhReproHForty}{60.0}  % percent of draws reproducing the point ordering
+\newcommand{\lhTauHEighty}{1.00}  % Kendall tau of this ordering against the pooled one
+\newcommand{\lhReproHEighty}{66.5}  % percent of draws reproducing the point ordering
+\newcommand{\lhGapRtRsPool}{\ensuremath{-0.38}}
+\newcommand{\lhGapRtRsPoolLo}{\ensuremath{-1.22}}
+\newcommand{\lhGapRtRsPoolHi}{\ensuremath{+0.45}}
+\newcommand{\lhGapRtRsHOne}{\ensuremath{-0.46}}
+\newcommand{\lhGapRtRsHOneLo}{\ensuremath{-1.49}}
+\newcommand{\lhGapRtRsHOneHi}{\ensuremath{+0.35}}
+\newcommand{\lhGapRtRsHFive}{\ensuremath{-0.44}}
+\newcommand{\lhGapRtRsHFiveLo}{\ensuremath{-1.64}}
+\newcommand{\lhGapRtRsHFiveHi}{\ensuremath{+0.42}}
+\newcommand{\lhGapRtRsHTen}{\ensuremath{+0.15}}
+\newcommand{\lhGapRtRsHTenLo}{\ensuremath{-0.98}}
+\newcommand{\lhGapRtRsHTenHi}{\ensuremath{+1.03}}
+\newcommand{\lhGapRtRsHTwentyone}{\ensuremath{-0.40}}
+\newcommand{\lhGapRtRsHTwentyoneLo}{\ensuremath{-1.63}}
+\newcommand{\lhGapRtRsHTwentyoneHi}{\ensuremath{+0.37}}
+\newcommand{\lhGapRtRsHForty}{\ensuremath{-0.26}}
+\newcommand{\lhGapRtRsHFortyLo}{\ensuremath{-1.28}}
+\newcommand{\lhGapRtRsHFortyHi}{\ensuremath{+0.47}}
+\newcommand{\lhGapRtRsHEighty}{\ensuremath{-0.13}}
+\newcommand{\lhGapRtRsHEightyLo}{\ensuremath{-1.11}}
+\newcommand{\lhGapRtRsHEightyHi}{\ensuremath{+0.74}}
+\newcommand{\lhGapRtRsMin}{\ensuremath{-0.46}}  % smallest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRtRsMax}{\ensuremath{+0.15}}  % largest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRtRbPool}{\ensuremath{-2.93}}
+\newcommand{\lhGapRtRbPoolLo}{\ensuremath{-3.87}}
+\newcommand{\lhGapRtRbPoolHi}{\ensuremath{-2.02}}
+\newcommand{\lhGapRtRbHOne}{\ensuremath{-2.38}}
+\newcommand{\lhGapRtRbHOneLo}{\ensuremath{-3.20}}
+\newcommand{\lhGapRtRbHOneHi}{\ensuremath{-1.72}}
+\newcommand{\lhGapRtRbHFive}{\ensuremath{-2.29}}
+\newcommand{\lhGapRtRbHFiveLo}{\ensuremath{-3.28}}
+\newcommand{\lhGapRtRbHFiveHi}{\ensuremath{-1.43}}
+\newcommand{\lhGapRtRbHTen}{\ensuremath{-2.08}}
+\newcommand{\lhGapRtRbHTenLo}{\ensuremath{-3.06}}
+\newcommand{\lhGapRtRbHTenHi}{\ensuremath{-0.97}}
+\newcommand{\lhGapRtRbHTwentyone}{\ensuremath{-2.49}}
+\newcommand{\lhGapRtRbHTwentyoneLo}{\ensuremath{-3.77}}
+\newcommand{\lhGapRtRbHTwentyoneHi}{\ensuremath{-1.56}}
+\newcommand{\lhGapRtRbHForty}{\ensuremath{-2.38}}
+\newcommand{\lhGapRtRbHFortyLo}{\ensuremath{-3.42}}
+\newcommand{\lhGapRtRbHFortyHi}{\ensuremath{-1.45}}
+\newcommand{\lhGapRtRbHEighty}{\ensuremath{-2.42}}
+\newcommand{\lhGapRtRbHEightyLo}{\ensuremath{-3.59}}
+\newcommand{\lhGapRtRbHEightyHi}{\ensuremath{-1.41}}
+\newcommand{\lhGapRtRbMin}{\ensuremath{-2.49}}  % smallest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRtRbMax}{\ensuremath{-2.08}}  % largest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRtSsPool}{\ensuremath{+3.34}}
+\newcommand{\lhGapRtSsPoolLo}{\ensuremath{+1.94}}
+\newcommand{\lhGapRtSsPoolHi}{\ensuremath{+4.56}}
+\newcommand{\lhGapRtSsHOne}{\ensuremath{-2.88}}
+\newcommand{\lhGapRtSsHOneLo}{\ensuremath{-4.65}}
+\newcommand{\lhGapRtSsHOneHi}{\ensuremath{-1.78}}
+\newcommand{\lhGapRtSsHFive}{\ensuremath{-1.43}}
+\newcommand{\lhGapRtSsHFiveLo}{\ensuremath{-2.98}}
+\newcommand{\lhGapRtSsHFiveHi}{\ensuremath{-0.07}}
+\newcommand{\lhGapRtSsHTen}{\ensuremath{-0.69}}
+\newcommand{\lhGapRtSsHTenLo}{\ensuremath{-2.29}}
+\newcommand{\lhGapRtSsHTenHi}{\ensuremath{+0.46}}
+\newcommand{\lhGapRtSsHTwentyone}{\ensuremath{-0.85}}
+\newcommand{\lhGapRtSsHTwentyoneLo}{\ensuremath{-2.58}}
+\newcommand{\lhGapRtSsHTwentyoneHi}{\ensuremath{+0.22}}
+\newcommand{\lhGapRtSsHForty}{\ensuremath{+2.49}}
+\newcommand{\lhGapRtSsHFortyLo}{\ensuremath{+0.77}}
+\newcommand{\lhGapRtSsHFortyHi}{\ensuremath{+3.64}}
+\newcommand{\lhGapRtSsHEighty}{\ensuremath{+7.89}}
+\newcommand{\lhGapRtSsHEightyLo}{\ensuremath{+6.14}}
+\newcommand{\lhGapRtSsHEightyHi}{\ensuremath{+9.31}}
+\newcommand{\lhGapRtSsMin}{\ensuremath{-2.88}}  % smallest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRtSsMax}{\ensuremath{-0.69}}  % largest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRtSbPool}{\ensuremath{+0.19}}
+\newcommand{\lhGapRtSbPoolLo}{\ensuremath{-1.43}}
+\newcommand{\lhGapRtSbPoolHi}{\ensuremath{+1.91}}
+\newcommand{\lhGapRtSbHOne}{\ensuremath{-6.53}}
+\newcommand{\lhGapRtSbHOneLo}{\ensuremath{-8.82}}
+\newcommand{\lhGapRtSbHOneHi}{\ensuremath{-4.91}}
+\newcommand{\lhGapRtSbHFive}{\ensuremath{-4.72}}
+\newcommand{\lhGapRtSbHFiveLo}{\ensuremath{-6.60}}
+\newcommand{\lhGapRtSbHFiveHi}{\ensuremath{-2.96}}
+\newcommand{\lhGapRtSbHTen}{\ensuremath{-4.11}}
+\newcommand{\lhGapRtSbHTenLo}{\ensuremath{-5.88}}
+\newcommand{\lhGapRtSbHTenHi}{\ensuremath{-2.59}}
+\newcommand{\lhGapRtSbHTwentyone}{\ensuremath{-3.83}}
+\newcommand{\lhGapRtSbHTwentyoneLo}{\ensuremath{-5.44}}
+\newcommand{\lhGapRtSbHTwentyoneHi}{\ensuremath{-2.20}}
+\newcommand{\lhGapRtSbHForty}{\ensuremath{-1.10}}
+\newcommand{\lhGapRtSbHFortyLo}{\ensuremath{-2.85}}
+\newcommand{\lhGapRtSbHFortyHi}{\ensuremath{+0.67}}
+\newcommand{\lhGapRtSbHEighty}{\ensuremath{+2.37}}
+\newcommand{\lhGapRtSbHEightyLo}{\ensuremath{+0.83}}
+\newcommand{\lhGapRtSbHEightyHi}{\ensuremath{+3.66}}
+\newcommand{\lhGapRtSbMin}{\ensuremath{-6.53}}  % smallest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRtSbMax}{\ensuremath{-3.83}}  % largest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRsRbPool}{\ensuremath{-2.56}}
+\newcommand{\lhGapRsRbPoolLo}{\ensuremath{-3.59}}
+\newcommand{\lhGapRsRbPoolHi}{\ensuremath{-1.60}}
+\newcommand{\lhGapRsRbHOne}{\ensuremath{-1.92}}
+\newcommand{\lhGapRsRbHOneLo}{\ensuremath{-2.54}}
+\newcommand{\lhGapRsRbHOneHi}{\ensuremath{-1.03}}
+\newcommand{\lhGapRsRbHFive}{\ensuremath{-1.85}}
+\newcommand{\lhGapRsRbHFiveLo}{\ensuremath{-2.57}}
+\newcommand{\lhGapRsRbHFiveHi}{\ensuremath{-1.09}}
+\newcommand{\lhGapRsRbHTen}{\ensuremath{-2.23}}
+\newcommand{\lhGapRsRbHTenLo}{\ensuremath{-3.22}}
+\newcommand{\lhGapRsRbHTenHi}{\ensuremath{-1.27}}
+\newcommand{\lhGapRsRbHTwentyone}{\ensuremath{-2.10}}
+\newcommand{\lhGapRsRbHTwentyoneLo}{\ensuremath{-2.93}}
+\newcommand{\lhGapRsRbHTwentyoneHi}{\ensuremath{-1.14}}
+\newcommand{\lhGapRsRbHForty}{\ensuremath{-2.12}}
+\newcommand{\lhGapRsRbHFortyLo}{\ensuremath{-2.95}}
+\newcommand{\lhGapRsRbHFortyHi}{\ensuremath{-1.30}}
+\newcommand{\lhGapRsRbHEighty}{\ensuremath{-2.29}}
+\newcommand{\lhGapRsRbHEightyLo}{\ensuremath{-3.17}}
+\newcommand{\lhGapRsRbHEightyHi}{\ensuremath{-1.40}}
+\newcommand{\lhGapRsRbMin}{\ensuremath{-2.23}}  % smallest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRsRbMax}{\ensuremath{-1.85}}  % largest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRsSsPool}{\ensuremath{+3.72}}
+\newcommand{\lhGapRsSsPoolLo}{\ensuremath{+2.25}}
+\newcommand{\lhGapRsSsPoolHi}{\ensuremath{+4.93}}
+\newcommand{\lhGapRsSsHOne}{\ensuremath{-2.42}}
+\newcommand{\lhGapRsSsHOneLo}{\ensuremath{-4.18}}
+\newcommand{\lhGapRsSsHOneHi}{\ensuremath{-1.18}}
+\newcommand{\lhGapRsSsHFive}{\ensuremath{-0.98}}
+\newcommand{\lhGapRsSsHFiveLo}{\ensuremath{-2.44}}
+\newcommand{\lhGapRsSsHFiveHi}{\ensuremath{+0.27}}
+\newcommand{\lhGapRsSsHTen}{\ensuremath{-0.84}}
+\newcommand{\lhGapRsSsHTenLo}{\ensuremath{-2.25}}
+\newcommand{\lhGapRsSsHTenHi}{\ensuremath{+0.42}}
+\newcommand{\lhGapRsSsHTwentyone}{\ensuremath{-0.46}}
+\newcommand{\lhGapRsSsHTwentyoneLo}{\ensuremath{-1.86}}
+\newcommand{\lhGapRsSsHTwentyoneHi}{\ensuremath{+0.96}}
+\newcommand{\lhGapRsSsHForty}{\ensuremath{+2.75}}
+\newcommand{\lhGapRsSsHFortyLo}{\ensuremath{+1.21}}
+\newcommand{\lhGapRsSsHFortyHi}{\ensuremath{+4.05}}
+\newcommand{\lhGapRsSsHEighty}{\ensuremath{+8.03}}
+\newcommand{\lhGapRsSsHEightyLo}{\ensuremath{+6.45}}
+\newcommand{\lhGapRsSsHEightyHi}{\ensuremath{+9.53}}
+\newcommand{\lhGapRsSsMin}{\ensuremath{-2.42}}  % smallest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRsSsMax}{\ensuremath{-0.46}}  % largest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRsSbPool}{\ensuremath{+0.57}}
+\newcommand{\lhGapRsSbPoolLo}{\ensuremath{-1.13}}
+\newcommand{\lhGapRsSbPoolHi}{\ensuremath{+2.02}}
+\newcommand{\lhGapRsSbHOne}{\ensuremath{-6.06}}
+\newcommand{\lhGapRsSbHOneLo}{\ensuremath{-8.07}}
+\newcommand{\lhGapRsSbHOneHi}{\ensuremath{-4.43}}
+\newcommand{\lhGapRsSbHFive}{\ensuremath{-4.28}}
+\newcommand{\lhGapRsSbHFiveLo}{\ensuremath{-5.96}}
+\newcommand{\lhGapRsSbHFiveHi}{\ensuremath{-2.67}}
+\newcommand{\lhGapRsSbHTen}{\ensuremath{-4.26}}
+\newcommand{\lhGapRsSbHTenLo}{\ensuremath{-5.91}}
+\newcommand{\lhGapRsSbHTenHi}{\ensuremath{-2.52}}
+\newcommand{\lhGapRsSbHTwentyone}{\ensuremath{-3.43}}
+\newcommand{\lhGapRsSbHTwentyoneLo}{\ensuremath{-4.91}}
+\newcommand{\lhGapRsSbHTwentyoneHi}{\ensuremath{-1.75}}
+\newcommand{\lhGapRsSbHForty}{\ensuremath{-0.84}}
+\newcommand{\lhGapRsSbHFortyLo}{\ensuremath{-2.19}}
+\newcommand{\lhGapRsSbHFortyHi}{\ensuremath{+0.62}}
+\newcommand{\lhGapRsSbHEighty}{\ensuremath{+2.50}}
+\newcommand{\lhGapRsSbHEightyLo}{\ensuremath{+1.15}}
+\newcommand{\lhGapRsSbHEightyHi}{\ensuremath{+3.71}}
+\newcommand{\lhGapRsSbMin}{\ensuremath{-6.06}}  % smallest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRsSbMax}{\ensuremath{-3.43}}  % largest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRbSsPool}{\ensuremath{+6.28}}
+\newcommand{\lhGapRbSsPoolLo}{\ensuremath{+5.04}}
+\newcommand{\lhGapRbSsPoolHi}{\ensuremath{+7.22}}
+\newcommand{\lhGapRbSsHOne}{\ensuremath{-0.50}}
+\newcommand{\lhGapRbSsHOneLo}{\ensuremath{-2.27}}
+\newcommand{\lhGapRbSsHOneHi}{\ensuremath{+0.43}}
+\newcommand{\lhGapRbSsHFive}{\ensuremath{+0.87}}
+\newcommand{\lhGapRbSsHFiveLo}{\ensuremath{-0.36}}
+\newcommand{\lhGapRbSsHFiveHi}{\ensuremath{+1.84}}
+\newcommand{\lhGapRbSsHTen}{\ensuremath{+1.39}}
+\newcommand{\lhGapRbSsHTenLo}{\ensuremath{+0.37}}
+\newcommand{\lhGapRbSsHTenHi}{\ensuremath{+2.54}}
+\newcommand{\lhGapRbSsHTwentyone}{\ensuremath{+1.64}}
+\newcommand{\lhGapRbSsHTwentyoneLo}{\ensuremath{+0.55}}
+\newcommand{\lhGapRbSsHTwentyoneHi}{\ensuremath{+2.79}}
+\newcommand{\lhGapRbSsHForty}{\ensuremath{+4.87}}
+\newcommand{\lhGapRbSsHFortyLo}{\ensuremath{+3.73}}
+\newcommand{\lhGapRbSsHFortyHi}{\ensuremath{+5.92}}
+\newcommand{\lhGapRbSsHEighty}{\ensuremath{+10.31}}
+\newcommand{\lhGapRbSsHEightyLo}{\ensuremath{+8.84}}
+\newcommand{\lhGapRbSsHEightyHi}{\ensuremath{+11.58}}
+\newcommand{\lhGapRbSsMin}{\ensuremath{-0.50}}  % smallest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRbSsMax}{\ensuremath{+1.64}}  % largest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRbSbPool}{\ensuremath{+3.13}}
+\newcommand{\lhGapRbSbPoolLo}{\ensuremath{+1.82}}
+\newcommand{\lhGapRbSbPoolHi}{\ensuremath{+4.39}}
+\newcommand{\lhGapRbSbHOne}{\ensuremath{-4.15}}
+\newcommand{\lhGapRbSbHOneLo}{\ensuremath{-6.07}}
+\newcommand{\lhGapRbSbHOneHi}{\ensuremath{-2.80}}
+\newcommand{\lhGapRbSbHFive}{\ensuremath{-2.43}}
+\newcommand{\lhGapRbSbHFiveLo}{\ensuremath{-3.78}}
+\newcommand{\lhGapRbSbHFiveHi}{\ensuremath{-1.26}}
+\newcommand{\lhGapRbSbHTen}{\ensuremath{-2.03}}
+\newcommand{\lhGapRbSbHTenLo}{\ensuremath{-3.41}}
+\newcommand{\lhGapRbSbHTenHi}{\ensuremath{-0.82}}
+\newcommand{\lhGapRbSbHTwentyone}{\ensuremath{-1.33}}
+\newcommand{\lhGapRbSbHTwentyoneLo}{\ensuremath{-2.61}}
+\newcommand{\lhGapRbSbHTwentyoneHi}{\ensuremath{+0.06}}
+\newcommand{\lhGapRbSbHForty}{\ensuremath{+1.28}}
+\newcommand{\lhGapRbSbHFortyLo}{\ensuremath{-0.11}}
+\newcommand{\lhGapRbSbHFortyHi}{\ensuremath{+2.53}}
+\newcommand{\lhGapRbSbHEighty}{\ensuremath{+4.79}}
+\newcommand{\lhGapRbSbHEightyLo}{\ensuremath{+3.52}}
+\newcommand{\lhGapRbSbHEightyHi}{\ensuremath{+5.85}}
+\newcommand{\lhGapRbSbMin}{\ensuremath{-4.15}}  % smallest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapRbSbMax}{\ensuremath{-1.33}}  % largest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapSsSbPool}{\ensuremath{-3.15}}
+\newcommand{\lhGapSsSbPoolLo}{\ensuremath{-4.02}}
+\newcommand{\lhGapSsSbPoolHi}{\ensuremath{-1.99}}
+\newcommand{\lhGapSsSbHOne}{\ensuremath{-3.65}}
+\newcommand{\lhGapSsSbHOneLo}{\ensuremath{-4.76}}
+\newcommand{\lhGapSsSbHOneHi}{\ensuremath{-2.41}}
+\newcommand{\lhGapSsSbHFive}{\ensuremath{-3.29}}
+\newcommand{\lhGapSsSbHFiveLo}{\ensuremath{-4.18}}
+\newcommand{\lhGapSsSbHFiveHi}{\ensuremath{-2.17}}
+\newcommand{\lhGapSsSbHTen}{\ensuremath{-3.42}}
+\newcommand{\lhGapSsSbHTenLo}{\ensuremath{-4.39}}
+\newcommand{\lhGapSsSbHTenHi}{\ensuremath{-2.28}}
+\newcommand{\lhGapSsSbHTwentyone}{\ensuremath{-2.98}}
+\newcommand{\lhGapSsSbHTwentyoneLo}{\ensuremath{-4.01}}
+\newcommand{\lhGapSsSbHTwentyoneHi}{\ensuremath{-1.93}}
+\newcommand{\lhGapSsSbHForty}{\ensuremath{-3.59}}
+\newcommand{\lhGapSsSbHFortyLo}{\ensuremath{-5.01}}
+\newcommand{\lhGapSsSbHFortyHi}{\ensuremath{-2.25}}
+\newcommand{\lhGapSsSbHEighty}{\ensuremath{-5.52}}
+\newcommand{\lhGapSsSbHEightyLo}{\ensuremath{-6.88}}
+\newcommand{\lhGapSsSbHEightyHi}{\ensuremath{-4.15}}
+\newcommand{\lhGapSsSbMin}{\ensuremath{-3.65}}  % smallest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGapSsSbMax}{\ensuremath{-2.98}}  % largest point gap over H = 1, 5, 10, 21
+\newcommand{\lhGainRvtLo}{8.4}  % smallest RVT gain from H=1 to H=21 (points)
+\newcommand{\lhGainRvtHi}{8.6}  % largest RVT gain from H=1 to H=21
+\newcommand{\lhGainSsmLo}{5.8}  % smallest S5 gain from H=1 to H=21
+\newcommand{\lhGainSsmHi}{6.4}  % largest S5 gain from H=1 to H=21
+\newcommand{\lhLateRvtLo}{1.5}  % smallest RVT gain from H=21 to H=80
+\newcommand{\lhLateRvtHi}{1.8}  % largest RVT gain from H=21 to H=80
+\newcommand{\lhLateSsmS}{7.0}  % S5-S loss from H=21 to H=80 (points)
+\newcommand{\lhLateSsmB}{4.4}  % S5-B loss from H=21 to H=80 (points)
+\newcommand{\lhCrossLo}{21}  % last H with RVT-b below S5-B
+\newcommand{\lhCrossHi}{40}  % first H with RVT-b above S5-B
+\newcommand{\lhCrossH}{31}  % linear interpolation of the two gaps to zero (rounded)
+\newcommand{\lhHTwentyoneDiff}{0.017}  % largest |mAP(H=21 recomputed) - mAP(H=21 from the E66 dump)| over the five checkpoints, points
+\newcommand{\lqGapRbSbHTwentyone}{\ensuremath{-0.71}}  % population (all eligible frames): RVT-b minus S5-B at H=21
+\newcommand{\lqGapRbSbHTwentyoneLo}{\ensuremath{-1.53}}
+\newcommand{\lqGapRbSbHTwentyoneHi}{\ensuremath{-0.05}}
+\newcommand{\lqNSeq}{405}  % sequences among the eligible frames
+\newcommand{\lhProbeN}{2259}  % oldest-window probe cells per checkpoint
+\newcommand{\lhProbeHitLo}{2251}  % fewest cells whose output changed, over checkpoints
+\newcommand{\lhProbeHitHi}{2254}  % most cells whose output changed, over checkpoints
+\newcommand{\lhProbeMissLo}{5}  % fewest probe cells whose output did not change, over checkpoints
+\newcommand{\lhProbeMissHi}{8}  % most probe cells whose output did not change, over checkpoints
+\newcommand{\lhProbeEmptyMin}{5}  % unchanged cells whose oldest window holds no events: fewest over checkpoints
+\newcommand{\lhProbeEmptyMax}{5}  % same: most
+\newcommand{\lhProbeNoDetMax}{3}  % unchanged cells whose frame has no detection: most over checkpoints
+\newcommand{\lhDetUnpairPct}{0.06}  % percent of H=21 detections without a partner in the other run (largest over checkpoints)
+\newcommand{\lhDetUnpairScore}{0.25}  % largest confidence of an unpaired H=21 detection
+\newcommand{\lhDetP}{7.4}  % x 1e-4: 99.9th percentile of the paired score difference (largest over checkpoints)
+% ---- E71 END ----
+
+% ---- E72 BEGIN (src/e71_macros.py; do not edit by hand) ----
+% E72 reset-policy audit. Emitted from experiments/e72_reset_audit/audit-*.json.
+\newcommand{\raChunk}{21}  % windows per chunk in the reset audit
+\newcommand{\raStarts}{9}  % chunk starts per checkpoint (3 sequences x 3 chunk starts)
+\newcommand{\raEffRtFirst}{0.088}  % relative L2 change of the output, first position of the chunk
+\newcommand{\raEffRtMid}{0.034}  % same, eleventh position
+\newcommand{\raEffRtLast}{0.026}  % same, last position
+\newcommand{\raEffRsFirst}{0.093}  % relative L2 change of the output, first position of the chunk
+\newcommand{\raEffRsMid}{0.033}  % same, eleventh position
+\newcommand{\raEffRsLast}{0.024}  % same, last position
+\newcommand{\raEffRbFirst}{0.084}  % relative L2 change of the output, first position of the chunk
+\newcommand{\raEffRbMid}{0.031}  % same, eleventh position
+\newcommand{\raEffRbLast}{0.024}  % same, last position
+\newcommand{\raEffRvtFirstLo}{0.084}  % smallest over the three RVT checkpoints
+\newcommand{\raEffRvtFirstHi}{0.093}  % largest over the three RVT checkpoints
+\newcommand{\raEffRvtMidLo}{0.031}  % smallest over the three RVT checkpoints
+\newcommand{\raEffRvtMidHi}{0.034}  % largest over the three RVT checkpoints
+\newcommand{\raEffRvtLastLo}{0.024}  % smallest over the three RVT checkpoints
+\newcommand{\raEffRvtLastHi}{0.026}  % largest over the three RVT checkpoints
+\newcommand{\raEffSsMax}{0.000}  % largest relative change over the 21 positions
+\newcommand{\raEffSbMax}{0.000}  % largest relative change over the 21 positions
+\newcommand{\raInSsmLo}{0.009}  % S5 change when the previous window is occluded, smallest over positions 1/10/20 and both checkpoints
+\newcommand{\raInSsmHi}{0.030}  % same, largest
+\newcommand{\raEvFirst}{43.5}  % percent of confident EvRT-DETR detections without a partner after zeroing, first position
+\newcommand{\raEvMid}{15.3}  % same, eleventh position
+\newcommand{\raEvLast}{10.4}  % same, last position
+\newcommand{\raEvInOne}{4.8}  % same when the previous window is occluded, position 1
+% ---- E72 END ----

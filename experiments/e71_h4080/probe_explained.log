@@ -1,0 +1,5 @@
+rvt-t: probed 2259, output changed 2252, unchanged 7 = oldest window all-zero 5 + frame without detections 2 + unexplained 0
+rvt-s: probed 2259, output changed 2254, unchanged 5 = oldest window all-zero 5 + frame without detections 0 + unexplained 0
+rvt-b: probed 2259, output changed 2251, unchanged 8 = oldest window all-zero 5 + frame without detections 3 + unexplained 0
+s5vit-small: probed 2259, output changed 2254, unchanged 5 = oldest window all-zero 5 + frame without detections 0 + unexplained 0
+s5vit-base: probed 2259, output changed 2254, unchanged 5 = oldest window all-zero 5 + frame without detections 0 + unexplained 0

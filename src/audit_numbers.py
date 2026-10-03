@@ -617,6 +617,149 @@ if os.path.exists(_E66F):
 else:
     _FH_DERIVED={n for n in NUM if n.startswith('fh')}   # artifact gone: each such macro is an ORPHAN
 
+# E71 Support-Conditioned AP at H = 1..80 on 3,000 frames (prefix lh) and E72 reset-policy audit (prefix ra).
+# Emitted by src/e71_macros.py; here every value is re-read from the artifacts with its own expression, and the
+# ordering / sign statements the prose makes are asserted, so a changed result breaks this file and not the review.
+_E71F='experiments/e71_h4080/results.json'
+_LH_DERIVED=set()
+if os.path.exists(_E71F):
+    import re as _re
+    _Q=L(_E71F); _FQ=L('experiments/e71_h4080/frames.json')
+    _MS=['rvt-t','rvt-s','rvt-b','s5vit-small','s5vit-base']
+    _MC=dict(zip(_MS,('Rt','Rs','Rb','Ss','Sb')))
+    _CC={'pooled':'Pool','H1':'HOne','H5':'HFive','H10':'HTen','H21':'HTwentyone','H40':'HForty','H80':'HEighty'}
+    assert _Q['models']==_MS and [c for c in _Q['cols'] if c!='H21x']==list(_CC), 'E71 model or column set changed'
+    _E71=[('lhNFrames',_Q['n_frames'],0),('lhNElig',_FQ['eligible_frames'],0),('lhNEligSeq',_FQ['n_sequences_eligible'],0),
+          ('lhNSeqAll',_FQ['n_sequences_total'],0),('lhNSeq',_Q['n_seq'],0),('lhMaxPerSeq',_FQ['max_per_seq'],0),('lhB',_Q['B'],0)]
+    for _m in _MS:
+        for _c,_cc in _CC.items():
+            _E71+=[(f'lhMap{_MC[_m]}{_cc}',_Q['map'][_m][_c],0.005),(f'lhMap{_MC[_m]}{_cc}Lo',_Q['ci'][_m][_c][0],0.005),
+                   (f'lhMap{_MC[_m]}{_cc}Hi',_Q['ci'][_m][_c][1],0.005)]
+    for _c,_cc in _CC.items():
+        _E71+=[(f'lhTau{_cc}',_Q['kendall_vs_pooled'][_c],0.005),(f'lhRepro{_cc}',100*_Q['rank_repro'][_c],0.05)]
+    _PR=[(a,b) for i,a in enumerate(_MS) for b in _MS[i+1:]]
+    for _a,_b in _PR:
+        _g=_Q['gap'][f'{_a}-{_b}']
+        for _c,_cc in _CC.items():
+            assert abs(_g[_c][0]-(_Q['map'][_a][_c]-_Q['map'][_b][_c]))<1e-9, (_a,_b,_c)
+            _E71+=[(f'lhGap{_MC[_a]}{_MC[_b]}{_cc}',_g[_c][0],0.005),(f'lhGap{_MC[_a]}{_MC[_b]}{_cc}Lo',_g[_c][1],0.005),
+                   (f'lhGap{_MC[_a]}{_MC[_b]}{_cc}Hi',_g[_c][2],0.005)]
+        _hp=[_Q['map'][_a][c]-_Q['map'][_b][c] for c in ('H1','H5','H10','H21')]
+        _E71+=[(f'lhGap{_MC[_a]}{_MC[_b]}Min',min(_hp),0.005),(f'lhGap{_MC[_a]}{_MC[_b]}Max',max(_hp),0.005)]
+    _mp=_Q['map']; _rv=_MS[:3]; _sm=_MS[3:]
+    _E71+=[('lhGainRvtLo',min(_mp[m]['H21']-_mp[m]['H1'] for m in _rv),0.05),('lhGainRvtHi',max(_mp[m]['H21']-_mp[m]['H1'] for m in _rv),0.05),
+           ('lhGainSsmLo',min(_mp[m]['H21']-_mp[m]['H1'] for m in _sm),0.05),('lhGainSsmHi',max(_mp[m]['H21']-_mp[m]['H1'] for m in _sm),0.05),
+           ('lhLateRvtLo',min(_mp[m]['H80']-_mp[m]['H21'] for m in _rv),0.05),('lhLateRvtHi',max(_mp[m]['H80']-_mp[m]['H21'] for m in _rv),0.05),
+           ('lhLateSsmS',_mp['s5vit-small']['H21']-_mp['s5vit-small']['H80'],0.05),('lhLateSsmB',_mp['s5vit-base']['H21']-_mp['s5vit-base']['H80'],0.05)]
+    _cr=_Q['crossing_rvt_b_over_s5_base']['first_sign_change']
+    _E71+=[('lhCrossLo',_cr[0],0),('lhCrossHi',_cr[1],0),('lhCrossH',_cr[2],0.5),
+           ('lhHTwentyoneDiff',max(abs(v) for v in _Q['h21_recompute_diff'].values()),0.0005)]
+    _pv={}; _pe=open('experiments/e71_h4080/probe_explained.log').read()
+    for _m in _MS:
+        _t=open(f'experiments/e71_h4080/verify-{_m}.log').read()
+        _x=_re.search(r'changed the output in (\d+)/(\d+) probed cells',_t); _pv[_m]=(int(_x.group(1)),int(_x.group(2)))
+        for _need in ('[PASS] (4)(5) effective support count == H_forced in every cell','[PASS] (4) first window read == ri-H_forced+1 in every cell',
+                      '[PASS] (3) weights sha256 unchanged','[PASS] (5) effective support == nominal H whenever H_forced == H'):
+            assert _need in _t, f'e71 verify-{_m}.log lost the line {_need!r}'
+        _y=_re.search(rf'^{_m}: probed (\d+), output changed (\d+), unchanged (\d+) = oldest window all-zero (\d+) \+ frame without detections (\d+) \+ unexplained (\d+)$',_pe,_re.M)
+        assert _y and int(_y.group(6))==0 and (int(_y.group(2)),int(_y.group(1)))==_pv[_m], f'probe_explained.log disagrees for {_m}'
+    _ez=[int(x) for x in _re.findall(r'oldest window all-zero (\d+) \+',_pe)]; _nd=[int(x) for x in _re.findall(r'frame without detections (\d+) \+',_pe)]
+    _N7=_pv['rvt-t'][1]; assert {v[1] for v in _pv.values()}=={_N7}
+    _E71+=[('lhProbeN',_N7,0),('lhProbeHitLo',min(v[0] for v in _pv.values()),0),('lhProbeHitHi',max(v[0] for v in _pv.values()),0),
+           ('lhProbeMissLo',_N7-max(v[0] for v in _pv.values()),0),('lhProbeMissHi',_N7-min(v[0] for v in _pv.values()),0),
+           ('lhProbeEmptyMin',min(_ez),0),('lhProbeEmptyMax',max(_ez),0),('lhProbeNoDetMax',max(_nd),0)]
+    assert min(_ez)==max(_ez), 'text says the same number of empty-window cells in every checkpoint'
+    _DD=L('experiments/e71_h4080/h21_detdiff.json')
+    _E71+=[('lhDetUnpairPct',max(100*v['n_unpaired']/v['n_dets_e71'] for v in _DD.values()),0.005),
+           ('lhDetUnpairScore',max(v['max_unpaired_score'] for v in _DD.values()),0.005),
+           ('lhDetP',1e4*max(v['p999_abs_score_diff'] for v in _DD.values()),0.05)]
+    # --- statements the prose makes ---
+    _O=_Q['order']; _G=lambda a,b,c: _Q['gap'][f'{a}-{b}'][c]
+    assert _O['pooled']==['rvt-b','rvt-s','rvt-t','s5vit-base','s5vit-small'], 'pooled ordering changed'
+    assert _O['H1']==['s5vit-base','s5vit-small','rvt-b','rvt-s','rvt-t']
+    assert _O['H5']==['s5vit-base','rvt-b','s5vit-small','rvt-s','rvt-t']
+    assert _O['H10']==['s5vit-base','rvt-b','s5vit-small','rvt-t','rvt-s']
+    assert _O['H21']==['s5vit-base','rvt-b','s5vit-small','rvt-s','rvt-t']
+    assert _O['H40']==['rvt-b','s5vit-base','rvt-s','rvt-t','s5vit-small']
+    assert _O['H80']==_O['pooled'], 'text says the ordering at H=80 equals the pooled ordering'
+    assert all(_O[h][0]=='s5vit-base' for h in ('H1','H5','H10','H21')), 'S5-B is no longer first at every H <= 21'
+    # S5-B gaps: interval excludes zero at H = 1, 5, 10, and at H = 21 for all but RVT-b
+    for _a in ('rvt-t','rvt-s','rvt-b','s5vit-small'):
+        for _h in ('H1','H5','H10'): assert _G(_a,'s5vit-base',_h)[2]<0, (_a,_h)
+    for _a in ('rvt-t','rvt-s','s5vit-small'): assert _G(_a,'s5vit-base','H21')[2]<0, _a
+    assert _G('rvt-b','s5vit-base','H21')[1]<0<_G('rvt-b','s5vit-base','H21')[2], 'RVT-b vs S5-B at H=21 must include zero'
+    # crossing of RVT-b over S5-B
+    assert all(_G('rvt-b','s5vit-base',h)[0]<0 for h in ('H1','H5','H10','H21')) and all(_G('rvt-b','s5vit-base',h)[0]>0 for h in ('H40','H80'))
+    assert all(_G('rvt-b','s5vit-base',h)[2]<0 for h in ('H1','H5','H10')) and _G('rvt-b','s5vit-base','H80')[1]>0
+    assert _G('rvt-b','s5vit-base','H40')[1]<0<_G('rvt-b','s5vit-base','H40')[2]
+    assert (_cr[0],_cr[1])==(21,40)
+    # H = 80: each RVT above each S5 with an interval that excludes zero
+    for _a in _rv:
+        for _b in _sm: assert _G(_a,_b,'H80')[1]>0, (_a,_b)
+    # sign reversals between pooled and H=1
+    _opp=lambda g,h: g[1]>0>h[2] or h[1]>0>g[2]
+    _fl=[(a,b) for a,b in _PR if _opp(_G(a,b,'pooled'),_G(a,b,'H1'))]
+    assert _fl==[('rvt-t','s5vit-small'),('rvt-s','s5vit-small'),('rvt-b','s5vit-base')], _fl
+    for _a in ('rvt-s','rvt-t'):
+        assert _G(_a,'s5vit-base','pooled')[1]<0<_G(_a,'s5vit-base','pooled')[2], 'pooled interval no longer covers zero'
+        assert all(_G(_a,'s5vit-base',h)[2]<0 for h in ('H1','H5','H10','H21'))
+    for _m in _rv:
+        assert _mp[_m]['pooled']>max(_mp[_m][h] for h in ('H1','H5','H10','H21','H40','H80')), _m
+        assert _mp[_m]['H21']<_mp[_m]['H40']<_mp[_m]['H80'], f'{_m} no longer rises beyond H=21'
+    for _m in _sm:
+        assert _mp[_m]['H1']<_mp[_m]['pooled']<_mp[_m]['H21'], _m
+        assert _mp[_m]['H21']==max(_mp[_m][h] for h in ('H1','H5','H10','H21','H40','H80')) and _mp[_m]['H21']>_mp[_m]['H40']>_mp[_m]['H80'], f'{_m} no longer peaks at H=21'
+    assert _mp['s5vit-small']['H80']<_mp['s5vit-small']['H1'], 'text: S5-S at H=80 is below its H=1 score'
+    _tq=[_Q['kendall_vs_pooled'][h] for h in ('H1','H5','H10','H21')]
+    assert max(_tq)==0.0, 'abstract says tau is at most 0.00 for H <= 21'
+    _g=_G('rvt-s','s5vit-small','H21'); assert _g[1]<0<_g[2], 'text: RVT-s - S5-S at H=21 includes zero'
+    # supplement sensitivity paragraph, on the E66 full set: S5-B first at H <= 21 with every gap excluding zero
+    for _a in ('rvt-t','rvt-s','rvt-b','s5vit-small'):
+        assert all(_R['gap'][f'{_a}-s5vit-base'][h][2]<0 for h in ('H1','H5','H10','H21')), _a
+    assert max(abs(_R['pooled_all_frames'][m]-_R['map'][m]['pooled']) for m in _MS)<=0.05, 'text: pooled all-frames vs common differ by at most 0.05'
+    # population sensitivity (all eligible frames, H <= 21): same pooled ordering, S5-B first with every gap excluding zero
+    _P=L('experiments/e71_h4080/population.json')
+    assert _P['n_frames']==_FQ['eligible_frames'] and _P['n_seq']==_FQ['n_sequences_eligible']
+    _E71+=[('lqNSeq',_P['n_seq'],0)]
+    for _c,_cc in (('H21','HTwentyone'),):
+        _gq=_P['gap']['rvt-b-s5vit-base'][_c]
+        _E71+=[(f'lqGapRbSb{_cc}',_gq[0],0.005),(f'lqGapRbSb{_cc}Lo',_gq[1],0.005),(f'lqGapRbSb{_cc}Hi',_gq[2],0.005)]
+    assert _P['order']['pooled']==_O['pooled'], 'text: the pooled ordering on all eligible frames equals the sample ordering'
+    assert _P['order']['H1']==_O['H1'] and _P['order']['H5']==_O['H5']
+    assert _P['order']['H10']==['s5vit-base','rvt-b','s5vit-small','rvt-s','rvt-t'] and _P['order']['H21']==['s5vit-base','rvt-b','rvt-s','s5vit-small','rvt-t']
+    for _a in ('rvt-t','rvt-s','rvt-b','s5vit-small'):
+        for _h in ('H1','H5','H10','H21'): assert _P['gap'][f'{_a}-s5vit-base'][_h][2]<0, ('population',_a,_h)
+    _gg=_P['gap']['rvt-s-s5vit-small']['H21']; assert _gg[1]<0<_gg[2], 'text: population RVT-s vs S5-S at H=21 includes zero'
+    for _pr,_cc2 in ((('rvt-t','rvt-s'),'H10'),):
+        _gs=_Q['gap'][f'{_pr[0]}-{_pr[1]}'][_cc2]; assert _gs[1]<0<_gs[2], 'text: the sample interval of RVT-t - RVT-s at H=10 includes zero'
+    _gg=_P['gap']['rvt-t-s5vit-base']['pooled']; assert _gg[1]<0<_gg[2]
+    assert _R['gap']['rvt-t-s5vit-base']['pooled'][1]<0<_R['gap']['rvt-t-s5vit-base']['pooled'][2], 'text: RVT-t vs S5-B pooled interval includes zero on the 19,946 frames'
+    _E71_NAMES={c[0] for c in _E71}
+    CHECKS+=_E71
+    # E72
+    _AU={m:L(f'experiments/e72_reset_audit/audit-{m}.json') for m in (*_MS,'evrtdetr-r18')}
+    _E72=[('raChunk',21,0),('raStarts',9,0)]
+    for _m,_d in _AU.items(): assert _d['chunk']==21 and _d['n_chunk_starts']==9 and _d['control_max_rel']==0.0, _m
+    for _m in _rv:
+        _e=_AU[_m]['effect_by_position']
+        _E72+=[(f'raEff{_MC[_m]}First',_e[0],0.0005),(f'raEff{_MC[_m]}Mid',_e[10],0.0005),(f'raEff{_MC[_m]}Last',_e[20],0.0005)]
+    for _pos,_nm in ((0,'First'),(10,'Mid'),(20,'Last')):
+        _v=[_AU[m]['effect_by_position'][_pos] for m in _rv]
+        _E72+=[(f'raEffRvt{_nm}Lo',min(_v),0.0005),(f'raEffRvt{_nm}Hi',max(_v),0.0005)]
+    for _m in _sm:
+        _E72+=[(f'raEff{_MC[_m]}Max',max(_AU[_m]['effect_by_position']),0.0005)]
+        assert max(_AU[_m]['effect_by_position'])<1e-6, 'SSM-ViT entering-state effect is no longer zero'
+    for _m in _rv: assert min(_AU[_m]['effect_by_position'])>1e-3, f'{_m} carried-state effect vanished'
+    _iv=[_AU[m]['inchunk_by_position'][p] for m in _sm for p in (1,10,20)]
+    _E72+=[('raInSsmLo',min(_iv),0.0005),('raInSsmHi',max(_iv),0.0005)]
+    _ev=_AU['evrtdetr-r18']['effect_unmatched_dets']; _eu=_AU['evrtdetr-r18']['inchunk_unmatched_dets']
+    _E72+=[('raEvFirst',100*_ev[0],0.05),('raEvMid',100*_ev[10],0.05),('raEvLast',100*_ev[20],0.05),('raEvInOne',100*_eu[1],0.05)]
+    assert _ev[0]>_ev[10]>_ev[20]>0 and _eu[1]<_ev[0], 'EvRT-DETR effect no longer decays with position / exceeds the occlusion control'
+    CHECKS+=_E72
+    _LH_DERIVED=_E71_NAMES|{c[0] for c in _E72}
+else:
+    _LH_DERIVED={n for n in NUM if n.startswith('lh') or n.startswith('ra')}
+
 bad=0
 if not CHECKS:
     sys.exit(f'audit_numbers: 0 macros to check against {_NUMTEX}; nothing was verified, '
@@ -643,7 +786,7 @@ DERIVABLE={'archCkpts','archSpan','archLo','archHi','archSamples','archUnifMax',
            'rvtBoundDetsS','rvtBoundDetsB'} | {f'ssmDose{_m}{_w}{_s}'
            for _m in ('Base','Small') for _w in ('Six','Eleven') for _s in ('','SE')} | {f'rvtBound{_r}{_t}{_s}'
            for _r in ('Carry','Reset') for _t in ('S','B') for _s in ('','SE','Z','All')}
-DERIVABLE|=_FH_DERIVED
+DERIVABLE|=_FH_DERIVED|_LH_DERIVED
 _checked={c[0] for c in CHECKS}
 for name in sorted(DERIVABLE - _checked):
     if name in NUM:

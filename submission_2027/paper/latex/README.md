@@ -14,7 +14,7 @@ the build neither writes nor reads.
 | File | Pages / size | Notes |
 |---|---|---|
 | `main.pdf` | 9 (body 8, references on 9) | anonymous, `\usepackage[review]{cvpr}`, `\author{Anonymous CVPR submission}` |
-| `supp.pdf` | 16 | supplementary material, including the predictor-side and label-side audits (Secs. 5 and 14) that main Sec. 5 summarizes and the fixed-history scoring of Sec. 1.4 that main Sec. 6 summarizes |
+| `supp.pdf` | 18 | supplementary material, including the predictor-side and label-side audits (Secs. 5 and 14) that main Sec. 5 summarizes and the fixed-history scoring of Sec. 1.4 that main Sec. 6 summarizes |
 | `video/main.mp4` | 87.9 s, 1280x720, 30 fps, 9,466,456 bytes | research video, nine scenes |
 
 ## Sources (for the camera-ready and for the record)
@@ -22,7 +22,7 @@ the build neither writes nor reads.
 `main.tex`, `supp.tex`, `numbers.tex`, `cvpr.sty`, `figs/` (10 PDFs read by the two
 documents: `chunkpos`, `chunkpos_full`, `fig1_dsec_exposure`, `fig3_day_night`,
 `fig5_qualitative`, `fig6_sweep_real`, `fig7_ceiling_vs_day`, `fig_predictor`,
-`paired_frame`, `e66_hcurve`).  `figs/fig2_evidence_time.pdf` is also present and is read by neither.
+`paired_frame`, `e71_hcurve`).  `figs/fig2_evidence_time.pdf` is also present and is read by neither.
 
 These compile standalone from this directory with no other input:
 
@@ -33,7 +33,7 @@ pdflatex supp && pdflatex supp && pdflatex supp
 
 Verified in `cvpr19-tex:cvpr2026-v1` from a clean copy of this directory, and re-verified
 2026-10-01 in `texlive/texlive:latest`:
-`main 9 pages, supp 16 pages, undef=0, overfull=0, 0 missing-figure placeholders` (rebuilt 2026-10-02 after the main-text revision).
+`main 9 pages, supp 18 pages, undef=0, overfull=0, 0 missing-figure placeholders` (rebuilt 2026-10-04 after adding the H = 40, 80 columns on 3,000 frames and the reset-policy audit).
 Both documents built from a clean copy reproduce the shipped PDFs' `pdftotext` output
 exactly, and `main.pdf` passes the reference-page check (references start on page 9 with
 no body text on it).  `main` needs no `bibtex` run when `main.bbl` is present.
